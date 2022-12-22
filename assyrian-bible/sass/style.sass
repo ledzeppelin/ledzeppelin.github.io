@@ -1,0 +1,290 @@
+@use 'sass:list'
+
+// sass-lint:disable no-ids
+
+$key-color: #1e90ff // dodgerblue
+$primary-color: #000
+$secondary-color: rgb(152, 152, 152)
+
+$link-color: rgb(51, 103, 214) // link blue
+$backdrop-color: rgba(255, 255, 255, .7)
+$speaker-color: rgb(112, 117, 122)
+
+$difficulty-transition: color .5s ease
+$max-width: 768px
+
+$side-padding: 16px
+
+@function vw($px-vw, $base-vw: $max-width)
+  @return calc(($px-vw * 100vw) / $base-vw)
+
+@mixin aii-text($size)
+  direction: rtl
+  font-family: 'Noto Sans Syriac', sans-serif
+  line-height: 1.5em // need extra height in case of accents above/below
+
+  // verify valid font imported in index.html
+  $regular: 400
+  $black: 900
+
+  @if $size == 's'
+    font-size: 18px
+    font-weight: $regular
+  @else if $size == 'm'
+    font-size: 24px
+    font-weight: $regular
+  @else if $size == 'l'
+    font-size: 24px
+    font-weight: $black
+    margin-top: 15px
+  @else if $size == 'xl'
+    font-size: 36px
+    font-weight: $black
+    margin-top: 20px
+  @else if $size == 'xxl'
+    $xl-size: 90px
+    $xl-margin-top: 20px
+    font-size: $xl-size
+    font-weight: $black
+    margin-top: $xl-margin-top
+    @media screen and (max-width: $max-width)
+      font-size: vw($xl-size)
+      margin-top: vw($xl-margin-top)
+  @else
+    @error 'Unknown direction #{$size}.'
+
+@mixin eng-text($size, $weight, $is-italic: 0)
+  font-family: Roboto, sans-serif
+
+  // verify valid font imported in index.html
+  $valid-font: [0 300], [0 400], [0 500], [0 700], [1 400]
+  @if not list.index($valid-font, [$is-italic $weight])
+    @error 'font not available [#{$is-italic} #{$weight}]'
+
+  font-weight: $weight
+  @if $is-italic == 1
+    font-style: italic
+
+  @if $size == 'xs'
+    font-size: 12px
+  @else if $size == 's'
+    font-size: 14px
+  @else if $size == 'm'
+    font-size: 16px
+  @else if $size == 'l'
+    font-size: 22px
+  @else if $size == 'xl'
+    font-size: 28px
+  @else
+    @error 'Unknown direction #{$size}.'
+
+
+
+body
+  margin: 0 auto 50px
+  max-width: $max-width
+
+// ------
+// header
+// ------
+#author
+  @include aii-text('s')
+  color: $link-color
+  padding-right: $side-padding
+  padding-top: 8px
+  text-decoration: underline
+
+#title
+  @include aii-text('xxl')
+  color: $key-color
+  text-align: center
+  transition: $difficulty-transition
+
+#subtitle
+  @include eng-text('xl', 300)
+  color: $key-color
+  margin-top: -10px
+  text-align: center
+  transition: $difficulty-transition
+
+  @media screen and (max-width: $max-width)
+    margin-top: vw(-10px)
+
+
+#tts
+  @include eng-text('xs', 400)
+
+  margin-bottom: 2px
+  margin-top: 4px
+  padding-left: $side-padding
+  padding-right: $side-padding
+  text-align: center
+
+
+.hardmode
+  &#title,
+  &#subtitle
+    color: $primary-color
+
+#bible-books-container
+  -webkit-backdrop-filter: blur(20px) // sass-lint:disable-line no-vendor-prefixes
+  backdrop-filter: blur(20px)
+  background-color: $backdrop-color
+  padding: 8px
+  position: sticky
+  text-align: center
+  top: 0
+  z-index: 1
+
+
+$mobile-device-max-width: 480px
+
+select
+  @include eng-text('l', 400)
+  @media screen and (max-width: $mobile-device-max-width)
+    font-size: 16px
+
+
+button
+  @include eng-text('l', 400)
+  padding: 4px 12px
+  touch-action: manipulation // https://stackoverflow.com/a/53236027
+  @media screen and (max-width: $mobile-device-max-width)
+    font-size: 19px
+    padding: 2px 8px
+
+
+#arrow-container
+  bottom: 100px // should be height of copyright stuff
+  display: flex
+  justify-content: space-between
+  max-width: $max-width + 360px
+  pointer-events: none // allow clicking text in space-between
+  position: sticky
+  z-index: 1
+
+
+  $full-width: $max-width + 120px
+  @media screen and (min-width: $full-width)
+    bottom: 50%
+    left: 50%
+    position: fixed
+    transform: translate(-50%, -50%)
+    width: vw($max-width)
+
+
+#prev-chapter
+  margin-left: $side-padding
+  pointer-events: auto
+
+#next-chapter
+  margin-right: $side-padding
+  pointer-events: auto
+
+// --------------
+// bible contents
+// --------------
+.aii-book-name
+  @include aii-text('xl')
+  padding-left: $side-padding
+  padding-right: $side-padding
+  text-align: center
+
+.header
+  @include aii-text('l')
+  margin-bottom: -6px // "hug" following text for better separation
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+.reference
+  @include aii-text('s')
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+.row
+  margin-bottom: 24px
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+.aii
+  @include aii-text('m')
+
+.verse-num
+  @include eng-text('s', 700)
+  vertical-align: 6px
+
+
+.first-verse-num
+  @include eng-text('xl', 700)
+  vertical-align: -4px
+
+  // @include eng-text('l', 900)
+  // vertical-align: -2px
+
+.aii-latin,
+.eng
+  @include eng-text('m', 400)
+
+.aii-latin
+  color: $primary-color
+  margin-top: 2px
+  position: relative // for svg hitbox
+
+.eng
+  color: $secondary-color
+  margin-top: 2px
+
+.missing-verse
+  @include eng-text('xs', 400, 1)
+
+svg
+  $hitbox: 5px
+  $size: 20px
+
+  cursor: pointer
+  fill: $speaker-color
+  height: $size
+  margin: -$hitbox
+  padding: $hitbox
+  vertical-align: -6px
+  width: $size
+  // outline: 2px solid #FC0
+
+  &.request-mp3
+    fill: $primary-color
+
+  &.playing
+    fill: $key-color
+
+#aramaic-history
+  @include eng-text('xs', 400)
+  margin-bottom: 10px
+  margin-top: 10px
+
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+  text-align: justify
+  text-justify: inter-word
+
+  a
+    color: $link-color
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+.copyright
+  @include eng-text('xs', 400)
+  color: $secondary-color
+  margin-bottom: 6px
+
+  padding-left: $side-padding
+  padding-right: $side-padding
+  text-align: justify
+  text-justify: inter-word
+
+  .emphasis-bible
+    @include eng-text('xs', 400, 1)
+
+

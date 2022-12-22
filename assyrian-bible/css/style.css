@@ -1,0 +1,271 @@
+body {
+  margin: 0 auto 50px;
+  max-width: 768px;
+}
+
+#author {
+  direction: rtl;
+  font-family: "Noto Sans Syriac", sans-serif;
+  line-height: 1.5em;
+  font-size: 18px;
+  font-weight: 400;
+  color: rgb(51, 103, 214);
+  padding-right: 16px;
+  padding-top: 8px;
+  text-decoration: underline;
+}
+
+#title {
+  direction: rtl;
+  font-family: "Noto Sans Syriac", sans-serif;
+  line-height: 1.5em;
+  font-size: 90px;
+  font-weight: 900;
+  margin-top: 20px;
+  color: #1e90ff;
+  text-align: center;
+  transition: color 0.5s ease;
+}
+@media screen and (max-width: 768px) {
+  #title {
+    font-size: 11.71875vw;
+    margin-top: 2.6041666667vw;
+  }
+}
+
+#subtitle {
+  font-family: Roboto, sans-serif;
+  font-weight: 300;
+  font-size: 28px;
+  color: #1e90ff;
+  margin-top: -10px;
+  text-align: center;
+  transition: color 0.5s ease;
+}
+@media screen and (max-width: 768px) {
+  #subtitle {
+    margin-top: -1.3020833333vw;
+  }
+}
+
+#tts {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 2px;
+  margin-top: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+
+.hardmode#title, .hardmode#subtitle {
+  color: #000;
+}
+
+#bible-books-container {
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 8px;
+  position: sticky;
+  text-align: center;
+  top: 0;
+  z-index: 1;
+}
+
+select {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+}
+@media screen and (max-width: 480px) {
+  select {
+    font-size: 16px;
+  }
+}
+
+button {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+  padding: 4px 12px;
+  touch-action: manipulation;
+}
+@media screen and (max-width: 480px) {
+  button {
+    font-size: 19px;
+    padding: 2px 8px;
+  }
+}
+
+#arrow-container {
+  bottom: 100px;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1128px;
+  pointer-events: none;
+  position: sticky;
+  z-index: 1;
+}
+@media screen and (min-width: 888px) {
+  #arrow-container {
+    bottom: 50%;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+  }
+}
+
+#prev-chapter {
+  margin-left: 16px;
+  pointer-events: auto;
+}
+
+#next-chapter {
+  margin-right: 16px;
+  pointer-events: auto;
+}
+
+.aii-book-name {
+  direction: rtl;
+  font-family: "Noto Sans Syriac", sans-serif;
+  line-height: 1.5em;
+  font-size: 36px;
+  font-weight: 900;
+  margin-top: 20px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+
+.header {
+  direction: rtl;
+  font-family: "Noto Sans Syriac", sans-serif;
+  line-height: 1.5em;
+  font-size: 24px;
+  font-weight: 900;
+  margin-top: 15px;
+  margin-bottom: -6px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.reference {
+  direction: rtl;
+  font-family: "Noto Sans Syriac", sans-serif;
+  line-height: 1.5em;
+  font-size: 18px;
+  font-weight: 400;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.row {
+  margin-bottom: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.aii {
+  direction: rtl;
+  font-family: "Noto Sans Syriac", sans-serif;
+  line-height: 1.5em;
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.verse-num {
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  vertical-align: 6px;
+}
+
+.first-verse-num {
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  vertical-align: -4px;
+}
+
+.aii-latin,
+.eng {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.aii-latin {
+  color: #000;
+  margin-top: 2px;
+  position: relative;
+}
+
+.eng {
+  color: rgb(152, 152, 152);
+  margin-top: 2px;
+}
+
+.missing-verse {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 12px;
+}
+
+svg {
+  cursor: pointer;
+  fill: rgb(112, 117, 122);
+  height: 20px;
+  margin: -5px;
+  padding: 5px;
+  vertical-align: -6px;
+  width: 20px;
+}
+svg.request-mp3 {
+  fill: #000;
+}
+svg.playing {
+  fill: #1e90ff;
+}
+
+#aramaic-history {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+#aramaic-history a {
+  color: rgb(51, 103, 214);
+  text-decoration: none;
+}
+#aramaic-history a:hover {
+  text-decoration: underline;
+}
+
+.copyright {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgb(152, 152, 152);
+  margin-bottom: 6px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+.copyright .emphasis-bible {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 12px;
+}
+
+/*# sourceMappingURL=style.css.map */
