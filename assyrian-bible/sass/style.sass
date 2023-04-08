@@ -1,0 +1,307 @@
+@use 'sass:list'
+// sass-lint:disable no-ids
+// sass-lint:disable no-vendor-prefixes
+
+@use '../../shared_sass/colors' as *
+@use '../../shared_sass/shared' as *
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap')
+
+@font-face
+  font-family: 'Noto Sans Syriac Eastern'
+  font-weight: 100 900 // https://stackoverflow.com/a/73857218
+  src: url('../../fonts/NotoSansSyriacEastern[wght].ttf') format('truetype')
+
+
+$key-color: #1e90ff // dodgerblue
+$backdrop-color: rgba($background, .7)
+$backdrop-color-dark: rgba($background-dark, .7)
+$max-width: 768px
+$side-padding: 16px
+
+@mixin aii-text($size)
+  direction: rtl
+  // Roboto for reference text
+  font-family: 'Noto Sans Syriac Eastern', Roboto, sans-serif
+  line-height: 1.5 // need extra height in case of accents above/below
+  $header-spacing: 54px
+
+  @if $size == 's'
+    font-size: 20px
+    font-weight: 400
+  @else if $size == 'm'
+    font-size: 26px
+    font-weight: 400
+  @else if $size == 'l'
+    font-size: 26px
+    font-weight: 700
+    line-height: 1.2 // "hug" following text for better grouping
+    margin-top: $header-spacing
+  @else if $size == 'xl'
+    font-size: 38px
+    font-weight: 600
+    line-height: 1.2 // "hug" following text for better grouping
+    margin-top: 14px
+  @else
+    @error 'Unknown size #{$size}.'
+
+@mixin eng-text($size, $weight, $is-italic: 0)
+  font-family: Roboto, sans-serif
+
+  // verify valid font imported in index.html
+  $valid-font: [0 300], [0 400], [0 500], [0 700], [1 400]
+  @if not list.index($valid-font, [$is-italic $weight])
+    @error 'font not available [#{$is-italic} #{$weight}]'
+
+  font-weight: $weight
+  @if $is-italic == 1
+    font-style: italic
+
+  @if $size == 'xs'
+    font-size: 12px
+  @else if $size == 's'
+    font-size: 14px
+  @else if $size == 'm'
+    font-size: 16px
+  @else if $size == 'l'
+    font-size: 22px
+  @else if $size == 'xl'
+    font-size: 28px
+  @else
+    @error 'Unknown size #{$size}.'
+
+
+
+body
+  background-color: $background
+  @media (prefers-color-scheme: dark)
+    background-color: $background-dark
+  margin: 0 auto 50px
+  max-width: $max-width
+
+// ------
+// header
+// ------
+#author-container
+  @include aii-text('s')
+  padding-bottom: 8px
+  padding-right: $side-padding
+  padding-top: 16px
+
+
+#title
+  @include syrc-header($key-color)
+  text-align: center
+  transition: -webkit-text-stroke-color .5s ease
+
+#subtitle
+  @include subtitle($key-color)
+  text-align: center
+  transition: color .5s ease
+
+#author
+  @include author($side-padding, $black-label, $label-dark)
+
+a
+  color: $link-color
+  @media (prefers-color-scheme: dark)
+    color: $link-color-dark
+
+
+  &.understate
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+.hardmode
+  &#title
+    -webkit-text-stroke-color: $label
+    @media (prefers-color-scheme: dark)
+      -webkit-text-stroke-color: $label-dark
+
+
+  &#subtitle
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+
+#bible-books-container
+  -webkit-backdrop-filter: blur(20px) // sass-lint:disable-line no-vendor-prefixes
+  backdrop-filter: blur(20px)
+  background-color: $backdrop-color
+  @media (prefers-color-scheme: dark)
+    background-color: $backdrop-color-dark
+  padding: 8px
+  position: sticky
+  text-align: center
+  top: 0
+  z-index: 1
+
+
+$mobile-device-max-width: 480px
+
+select
+  @include eng-text('l', 400)
+  @media screen and (max-width: $mobile-device-max-width)
+    font-size: 16px
+
+
+button
+  @include eng-text('l', 400)
+  padding: 4px 12px
+  touch-action: manipulation // https://stackoverflow.com/a/53236027
+  @media screen and (max-width: $mobile-device-max-width)
+    font-size: 19px
+    padding: 2px 8px
+
+
+$full-width: $max-width + 120px
+
+#arrow-container
+  bottom: 100px // should be height of copyright stuff
+  display: flex
+  justify-content: space-between
+  max-width: $max-width + 360px
+  pointer-events: none // allow clicking text in space-between
+  position: sticky
+  z-index: 1
+
+  @media screen and (min-width: $full-width)
+    bottom: 50%
+    left: 50%
+    position: fixed
+    transform: translate(-50%, -50%)
+    width: vw($max-width)
+
+
+#prev-chapter
+  margin-left: $side-padding
+  pointer-events: auto
+
+#next-chapter
+  margin-right: $side-padding
+  pointer-events: auto
+
+// --------------
+// bible contents
+// --------------
+$row-margin-bottom: 24px
+
+// this ensures that the element following the book name (first element)
+// does not have a top margin separating it from the book name
+// test with chapters starting with a verse 2 Corinthians 3 or chapters starting with a header
+#bible
+  div
+    &:nth-child(2)
+      margin-top: 0 // no need for !important as this gets applied at the end
+
+.aii-book-name
+  @include aii-text('xl')
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  padding-left: $side-padding
+  padding-right: $side-padding
+  text-align: center
+
+.header,
+.header-2
+  @include aii-text('l')
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+.header-2
+  margin-top: 0
+
+.reference
+  @include aii-text('s')
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+.row
+  margin-bottom: $row-margin-bottom
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+.aii
+  @include aii-text('m')
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+.verse-num,
+.first-verse-num
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  margin-left: 4px
+
+.verse-num
+  @include eng-text('s', 700)
+  vertical-align: 6px
+
+
+.first-verse-num
+  @include eng-text('xl', 700)
+  vertical-align: -4px
+
+.aii-translit,
+.eng
+  @include eng-text('m', 400)
+
+.aii-translit
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  margin-top: 2px
+
+.eng
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+  margin-top: 2px
+
+.missing-verse
+  @include eng-text('xs', 400, 1)
+
+#aramaic-history
+  @include eng-text('xs', 400)
+  color: $black-label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  margin-bottom: 10px
+  margin-top: $row-margin-bottom
+  @media screen and (min-width: $full-width)
+    margin-top: 50px
+
+  padding-left: $side-padding
+  padding-right: $side-padding
+
+  text-align: justify
+  text-justify: inter-word
+
+.copyright
+  @include eng-text('xs', 400)
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+  margin-bottom: 6px
+
+  padding-left: $side-padding
+  padding-right: $side-padding
+  text-align: justify
+  text-justify: inter-word
+
+  .emphasis-bible
+    @include eng-text('xs', 400, 1)
+
+

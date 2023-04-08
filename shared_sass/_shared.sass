@@ -1,0 +1,53 @@
+// sass-lint:disable no-vendor-prefixes
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap')
+
+@function vw($px-vw, $base-vw: 768px)
+  @return calc(($px-vw * 100vw) / $base-vw)
+
+@mixin syrc-header($key-color, $max-width: 768px)
+  -webkit-text-stroke-color: $key-color
+  -webkit-text-stroke-width: 3px
+  $margin-top: 50px
+
+  color: transparent
+  direction: rtl
+  font-family: 'Noto Sans Syriac', sans-serif
+  $size: 90px
+  font-size: $size
+  font-weight: 900
+  line-height: 1
+  margin-top: $margin-top
+  @media screen and (max-width: $max-width)
+    -webkit-text-stroke-width: vw(4px)
+    font-size: vw($size)
+    margin-top: vw($margin-top)
+
+@mixin subtitle($key-color, $max-width: 768px, $largest-phone-width: 500px)
+  $margin-top: -16px
+  $font-size: 32px
+
+  color: $key-color
+  font-family: Roboto, sans-serif
+  font-size: $font-size
+  font-weight: 300
+  margin-top: $margin-top
+  @media screen and (max-width: $max-width)
+    $shrink-size: 20px
+    font-size: calc($font-size - $shrink-size + vw($shrink-size))
+    margin-top: vw($margin-top)
+  @media screen and (max-width: $largest-phone-width)
+    font-weight: 400
+
+@mixin author($side-padding, $light-color, $dark-color)
+  color: $light-color
+  @media (prefers-color-scheme: dark)
+    color: $dark-color
+  font-family: Roboto, sans-serif
+  font-size: 12px
+  font-weight: 400
+  margin-bottom: 20px
+  margin-top: 2px
+  padding-left: $side-padding
+  padding-right: $side-padding
+  text-align: center

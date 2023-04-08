@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-48Y7ENQMTX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-48Y7ENQMTX');
+</script>
+<title>Assyrian Aramaic Bible</title>
+<!-- charset must be utf8 otherwise we have issues when running on a server
+https://stackoverflow.com/a/65036296 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" href="favicons/favicon-32.png" sizes="32x32">
+<link rel="icon" href="favicons/favicon-128.png" sizes="128x128">
+<link rel="icon" href="favicons/favicon-180.png" sizes="180x180">
+<link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="../assyrian-transliterator/js/aii-translit.js"></script>
+
+<script type="text/javascript" src="js/bible.min.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/docready.js"></script>
+
+</head>
+<body>
+
+<!-- <div id="author-container">
+  <a href='../ܫܪܘܟܝܢ/'>ܫܪܘܟܝܢ</a>created by
+</div> -->
+<div id="title">ܟܬܒ̈ܐ ܩܕܝܫ̈ܐ</div>
+<div id="subtitle">Assyrian Aramaic Bible</div>
+<div id="author">Transliterated verses provided by the <a href='../assyrian-transliterator/'>Assyrian Transliterator</a></div>
+
+
+<div id='bible-books-container'>
+  <select id="difficulty-level">
+    <option value="1">👼</option>
+    <option value="2">🤓</option>
+    <option value="3">💀</option>
+  </select>
+  <select id="bible-books">
+    <option value="loading">Loading...</option>
+  </select>
+  <select id="book-chapters">
+    <option value="1">1</option>
+  </select>
+</div>
+
+<div id='bible'></div>
+
+</body>
+</html>

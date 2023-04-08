@@ -1,0 +1,22 @@
+
+services:
+  site:
+    build: ./
+    ports:
+      - 8000:80
+
+
+  # assyrian-poem:
+  #   build: ./assyrian-poem
+  #   ports:
+  #     - 8003:80
+
+  # assyrian-english-dictionary:
+  #   build: ./assyrian-english-dictionary
+  #   ports:
+  #     - 8004:80
+
+  # assyrian-bible-study:
+  #   build: ./assyrian-bible-study
+  #   ports:
+  #     - 8005:80

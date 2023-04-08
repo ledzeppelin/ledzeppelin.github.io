@@ -1,0 +1,13 @@
+Date: Sat, 12 Nov 2022 03:07:14 GMT
+Content-Type: text/html; charset=utf-8
+Access-Control-Allow-Credentials: true
+Cache-Control: public, max-age=604800
+Cf-Railgun: direct (starting new WAN connection)
+Set-Cookie: version=1080; Domain=.bible.com; Path=/; Expires=Sun, 12 Nov 2023 03:07:14 GMT; Secure
+Set-Cookie: last_read=PSA.81; Domain=.bible.com; Path=/; Expires=Sun, 12 Nov 2023 03:07:14 GMT; Secure
+Strict-Transport-Security: max-age=15552000; includeSubDomains
+Vary: Origin
+Cf-Cache-Status: DYNAMIC
+Server: cloudflare
+Cf-Ray: 768c0e678b81cff1-SJC
+Content-Encoding: gzip

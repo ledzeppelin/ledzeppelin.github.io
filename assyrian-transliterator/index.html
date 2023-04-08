@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-48Y7ENQMTX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-48Y7ENQMTX');
+</script>
+<title>Assyrian Transliterator</title>
+<!-- charset must be utf8 otherwise we have issues when running on a server
+https://stackoverflow.com/a/65036296 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" href="favicons/favicon-32.png" sizes="32x32">
+<link rel="icon" href="favicons/favicon-128.png" sizes="128x128">
+<link rel="icon" href="favicons/favicon-180.png" sizes="180x180">
+<link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+      rel="stylesheet">
+
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="js/aii-translit.js"></script>
+<script type="text/javascript" src="js/tru-translit.js"></script>
+
+<script type="text/javascript" src="js/aii-mark.js"></script>
+<script type="text/javascript" src="js/tru-sentences.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+
+</head>
+<body>
+
+<div id="title">ܪܬܡܐ</div>
+<div id="subtitle">Assyrian Transliterator</div>
+<div id="author">"Assyrian 🎲" types a random verse from the <a href='../assyrian-bible/'>Assyrian Bible</a></div>
+
+<div class="row">
+  <div class="column syrc-column">
+    <div class="btn-group">
+      <button id="roll-dice-aii" class="btn">Assyrian 🎲</button>&nbsp;
+      <button id="roll-dice-tru" class="btn">West Assyrian 🎲</button>&nbsp;
+      <select id="syrc-dialect">
+        <option value="0">Detect Dialect</option>
+        <option value="1">Assyrian</option>
+        <option value="2">West Assyrian</option>
+      </select>
+    </div>
+    <div id="syrc-container">
+      <span id='clear-text' class="material-icons-round md-24">clear</span>
+      <textarea id="syrc" rows='1' placeholder="ܟܬܘܒ ,Enter text"></textarea>
+    </div>
+    <div id="syrc-caption">&nbsp;</div>
+  </div>
+  <div class="column eng-column">
+    <div class="btn-group">
+      <button class="btn active">phonemic</button>
+      <button class="btn">latin</button>
+    </div>
+    <div id="latin-container">
+      <span id='copy-text' class="material-icons-round md-24">copy</span>
+      <div id="latin" data-placeholder="Transliteration"></div>
+    </div>
+  </div>
+</div>
+
+<!-- forces western to preload so if we paste suryoyo, #syrc resizes properly -->
+<div class="suryoyo" style="font-weight:400">&nbsp;</div> 
+
+</body>
+</html>
