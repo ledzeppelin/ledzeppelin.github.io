@@ -75,6 +75,7 @@ function testTranslit() {
     ['ܘܡܰܠܘܰܫܫܶܗ', 'umalwašeh'],
     ['ܝܘܠܦܳܢܰܬ݂ܬ݂ܶܗ', 'yulfonaṯeh'],
     ['ܡܰܠܰܟ݂ܟ݂ܶܗ', 'malaxeh'],
+    ['ܡ̈ܶܠܐ', 'melo'],
 
     // NFC test cases https://www.mediawiki.org/wiki/Unicode_normalization_considerations
     ['ܟ݂ܰܒܪܐ', 'xabro'], // RUKKAKHA then PTHAHA

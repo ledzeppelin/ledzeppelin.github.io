@@ -35,6 +35,106 @@ function usingAiiVowels(text) {
   return text.match(re) != null;
 }
 
+// these regexes include all the combining marks https://r12a.github.io/scripts/syrc/aii.html#index_cchars
+// in the transliterator which are only replaced while attached to a letter
+// as opposed to being standalone find-and-replace'd, ie they are potentially dangle-able
+
+function aiiBottomMarkRegex() {
+  const HBASA = '\u{073C}';
+  const RUKKAKHA = '\u{0742}';
+  const COMBINING_DOT_BELOW = '\u{0323}';
+  const bottomMarks = [
+    HBASA,
+    RUKKAKHA,
+    COMBINING_DOT_BELOW,
+  ];
+
+  return new RegExp(`([${bottomMarks.join('')}])`, 'g');
+}
+
+function aiiTopMarkRegex() {
+  const RWAHA = '\u{073F}';
+  const QUSHSHAYA = '\u{0741}';
+  const topMarks = [
+    RWAHA,
+    QUSHSHAYA,
+  ];
+
+  return new RegExp(`([${topMarks.join('')}])`, 'g');
+}
+
+function aiiOtherMarkRegex() {
+  const COMBINING_BREVE_BELOW = '\u{032E}';
+  const COMBINING_TILDE_BELOW = '\u{0330}';
+  const COMBINING_MACRON_BELOW = '\u{0331}';
+  const COMBINING_TILDE_ABOVE = '\u{0303}';
+  const COMBINING_MACRON = '\u{0304}';
+  const TALQANA_ABOVE = '\u{0747}';
+
+  const otherMarks = [
+    COMBINING_BREVE_BELOW,
+    COMBINING_TILDE_BELOW,
+    COMBINING_MACRON_BELOW,
+    COMBINING_TILDE_ABOVE,
+    COMBINING_MACRON,
+    TALQANA_ABOVE,
+  ];
+
+  return new RegExp(`([${otherMarks.join('')}])`, 'g');
+}
+
+function truTopMarkRegex() {
+  const HBASA_ABOVE = '\u{073A}'; // ḥboṣo
+  const ESASA_ABOVE = '\u{073D}'; // cṣoṣo
+
+  // omit according to https://userblogs.fu-berlin.de/wp-includes/ms-files.php?path=/aramaic-ol/&file=2017/08/Surayt-Orthography.pdf
+  const topMarks = [
+    HBASA_ABOVE,
+    ESASA_ABOVE,
+  ];
+
+  return new RegExp(`([${topMarks.join('')}])`, 'g');
+}
+
+function truOtherMarkRegex() {
+  // common typos
+  const COMBINING_TILDE_ABOVE = '\u{0303}';
+  const COMBINING_DOT_ABOVE = '\u{0307}';
+  const COMBINING_MACRON_BELOW = '\u{0331}';
+  const COMBINING_DOT_BELOW = '\u{0323}';
+  const HBASA_BELOW = '\u{073B}';
+  const HBASA_ESASA_DOTTED = '\u{073C}';
+  const ESASA_BELOW = '\u{073E}';
+  const RWAHA = '\u{073F}';
+  const COMBINING_RING_BELOW = '\u{0325}';
+
+  // vowel diacritics not included since they are always replaced by transliterator
+  const COMBINING_TILDE_BELOW = '\u{0330}';
+  const QUSHSHAYA = '\u{0741}';
+  const RUKKAKHA = '\u{0742}';
+
+  const otherMarks = [
+    COMBINING_TILDE_ABOVE,
+    COMBINING_DOT_ABOVE,
+    COMBINING_MACRON_BELOW,
+    COMBINING_DOT_BELOW,
+    HBASA_BELOW,
+    HBASA_ESASA_DOTTED,
+    ESASA_BELOW,
+    RWAHA,
+    COMBINING_RING_BELOW,
+
+    COMBINING_TILDE_BELOW,
+    QUSHSHAYA,
+    RUKKAKHA,
+  ];
+
+  return new RegExp(`([${otherMarks.join('')}])`, 'g');
+
+  // const vowels = 'wyëäeoaiu37()';
+  // return new RegExp(`([^${otherMarks.join('')}${vowels}fbtṭdkgqjsṣzšḥchmnrlvžpvṯḏxġ ,.;])`, 'g');
+}
+
 function resizeSyrcHeight() {
   $('#syrc').css({ height: 0 });
   const syrcScrollHeight = $('#syrc').prop('scrollHeight');
@@ -52,8 +152,10 @@ function updateTransliteration(syrcResize = false) {
 
   if (useTru) {
     $('#syrc').addClass('suryoyo');
+    $('#suryoyo-caption').show();
   } else {
     $('#syrc').removeClass('suryoyo');
+    $('#suryoyo-caption').hide();
   }
 
   if (syrc.trim().length === 0) {
@@ -67,35 +169,83 @@ function updateTransliteration(syrcResize = false) {
     autoDialectSelector.text('Detect Dialect');
     $('#latin').text('');
     $('#copy-text').fadeOut(0);
+    $('#bottom-mark-caption, #top-mark-caption, #other-mark-caption, #latin-caption-rationale').hide();
   } else if (isInvalidSyrc(syrc)) {
-    $('#syrc-caption').text('Enter Assyrian characters');
+    $('#syrc-caption').text('Enter Assyrian letters');
     autoDialectSelector.text('Detect Dialect');
     $('#latin').text('');
     $('#copy-text').fadeOut(0);
+    $('#bottom-mark-caption, #top-mark-caption, #other-mark-caption, #latin-caption-rationale').hide();
   } else {
-    $('#syrc-caption').text('');
-
     autoDialectSelector.text(usingTruVowelsRes ? 'West Assyrian - detected' : 'Assyrian - detected');
-    // transliterator doesn't have logic to understand newlines as newlines so we split
-    const syrcLines = syrc.split(/\r?\n/);
     if ((useTru && !usingTruVowelsRes) || (!useTru && !usingAiiVowels(syrc))) {
       const abc = '<span style="font-size: 50px"> ◌ܲ ◌ܵ ◌ܸ ◌ܼ ◌ܿ ◌ܹ </span>';
-      $('#syrc-caption').text('Use vowel markers');
+      $('#syrc-caption').text('Use vowel marks');
+    } else {
+      $('#syrc-caption').text('');
     }
 
     const translitType = ($('.eng-column button').index($('.active')) == 0) ? 'phonetic' : 'latin';
+    // transliterator doesn't have logic to understand newlines as word boundary (#) so we split
+    const syrcLines = syrc.split(/\r?\n/);
     const translitLines = syrcLines.map((text) => {
       const translitLine = useTru ? truTranslit(text) : aiiTranslit(text);
       return translitLine[translitType];
     });
 
-    const translit = translitLines.join('\n');
+    let translit = translitLines.join('\n');
+
+    const reAiiBottom = aiiBottomMarkRegex();
+    const reAiiTop = aiiTopMarkRegex();
+    const reAiiOther = aiiOtherMarkRegex();
+    const reTruTop = truTopMarkRegex();
+    const reTruOther = truOtherMarkRegex();
+
     if (!translit.trim().length) {
       $('#latin').text('');
       $('#copy-text').fadeOut(0);
+      $('#bottom-mark-caption, #top-mark-caption, #other-mark-caption, #latin-caption-rationale').hide();
     } else {
-      $('#latin').text(translit);
+      if (!useTru && reAiiBottom.test(translit)) {
+        translit = translit.replaceAll(reAiiBottom, '<span class="typo-circle bottom-mark">$1</span>');
+        $('#bottom-mark-caption').show();
+      } else {
+        $('#bottom-mark-caption').hide();
+      }
+
+      if (!useTru && reAiiTop.test(translit)) {
+        translit = translit.replaceAll(reAiiTop, '<span class="typo-circle top-mark">$1</span>');
+        $('#top-mark-caption .caption-text').removeClass('using-suryoyo');
+        $('#top-mark-caption').show();
+      } else if (useTru && reTruTop.test(translit)) {
+        translit = translit.replaceAll(reTruTop, '<span class="typo-circle top-mark">$1</span>');
+        $('#top-mark-caption .caption-text').addClass('using-suryoyo');
+        $('#top-mark-caption').show();
+      } else {
+        $('#top-mark-caption').hide();
+      }
+
+      if (!useTru && reAiiOther.test(translit)) {
+        translit = translit.replaceAll(reAiiOther, '<span class="typo-circle other-mark">$1</span>');
+        $('#other-mark-caption').show();
+      } else if (useTru && reTruOther.test(translit)) {
+        translit = translit.replaceAll(reTruOther, '<span class="typo-circle other-mark">$1</span>');
+        $('#other-mark-caption').show();
+      } else {
+        $('#other-mark-caption').hide();
+      }
+
+      if ($('#latin-caption ul:first-child').children(':visible').length) {
+        $('#latin-caption-rationale').show();
+        $('#latin-caption').addClass('ul-gap');
+      } else {
+        $('#latin-caption-rationale').hide();
+        $('#latin-caption').removeClass('ul-gap');
+      }
+
+      $('#latin').html(translit);
       $('#copy-text').fadeIn(0);
+      // if (msg != null) { $('#syrc-caption').text(msg); }
     }
   }
 
@@ -111,9 +261,13 @@ function typeWriter(txt, i = 0) {
     $('#syrc').val($('#syrc').val() + txt.charAt(i));
     updateTransliteration(true);
     setTimeout(typeWriter, speed, txt, i + 1);
+
+    // hide typos while typing for words like ܡ̣ܢ
+    $('#latin-caption ul:first-child').hide();
   } else {
     // enable button again
     $('#roll-dice-aii,#roll-dice-tru').prop('disabled', false);
+    $('#latin-caption ul:first-child').show();
   }
 }
 
@@ -131,8 +285,15 @@ function typeWriter(txt, i = 0) {
 // }
 
 $(document).ready(() => {
+  // https://stackoverflow.com/a/10750699
+  // we resize when someone drags browser width
+  // we disregard vertical resizing since mobile triggers that when pasting large amt of text
+  let lastWidth = $(window).width();
   $(window).resize(() => {
-    resizeSyrcHeight();
+    if ($(window).width() !== lastWidth) {
+      lastWidth = $(window).width();
+      resizeSyrcHeight();
+    }
   });
 
   // $('#title').click(() => {
@@ -176,6 +337,7 @@ $(document).ready(() => {
     // console.log(sortedArr[quartile3].length); // 138
     const rand = sortedArr[nthShortestVerse];
     typeWriter(rand);
+    // typeWriter('”ܠܹܐ ܝܘܸܬ ܪܸܚܩܵܐ ܡ̣ܢ ܡܲܠܟܘܼܬܵܐ ܕܐܲܠܵܗܵܐ.“ ܘܠܵܐ ܐܢܵܫܵܐ ܩܘܼܫܕܸܪܹܗ ܙܵܘܕܵܐ ܠܒܲܩܘܼܪܹܗ.');
   });
 
   $('#roll-dice-tru').click((e) => {
@@ -190,6 +352,7 @@ $(document).ready(() => {
   $('#syrc-dialect').change(() => {
     // TODO: only call if dialect is changed
     updateTransliteration();
+    resizeSyrcHeight();
   });
 
   $('#copy-text').click((e) => {
@@ -200,15 +363,12 @@ $(document).ready(() => {
         $(e.currentTarget).text('copy');
       }, 400);
     });
+    // clipboard supported via https (won't work when running webapp locally over http via docker)
     navigator.clipboard.writeText(text);
   });
 
   $('#clear-text').click(() => {
     $('#syrc').val('');
     updateTransliteration(true);
-  });
-
-  $('#syrc-dialect').change(() => {
-    resizeSyrcHeight();
   });
 });

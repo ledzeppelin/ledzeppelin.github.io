@@ -1,22 +1,9 @@
 ###
 
-ܕܝܼܪܵܘܟ݂ܘܿܢ
-ܒ݂ܝܼܪܵܗ̇
-ܥܒ݂ܝܼܪܹܗ
+add delay in typewriter to ignore validator for demo sentences
 
-ܥܵܒ݂ܹܪ
-
-
-
-node aii-translit-pairs.js| grep 'īr' | grep 'dīr'
-node aii-translit-pairs.js| grep 'īr' | grep -v 'dīr' | grep -v 'ḇīr'
-
-
-
-###
-
-
-phonemicization of 'āh' 'ah' should be 'a'
+take into consideration roots where last letter is ALAP
+ܪܘܼܦܹܐ ܠܵܗ̇
 
 
 ########################################

@@ -6,3 +6,7 @@ test cases
 - Matthew 17  // header spacing
 - Matthew 17:21 // missing verse NLT
 - Acts // long aii title
+
+
+check 200f rlm removal
+grep -R $'\u200f' js/bible.min.js

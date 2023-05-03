@@ -8,6 +8,7 @@ function truTranslit(truText) {
   const PTHAHA = '\u{0730}';
   const vowelCaptureGroup = `([${RBASA_BELOW}${PTHAHA_BELOW}${RBASA}${ZQAPHA}${PTHAHA}])`;
 
+  const COMBINING_DIAERESIS = '\u{0308}';
   const COMBINING_TILDE_BELOW = '\u{0330}';
   const QUSHSHAYA = '\u{0741}';
   const RUKKAKHA = '\u{0742}';
@@ -116,6 +117,7 @@ function truTranslit(truText) {
   text = text.replaceAll(' | ', '# | #');
   text = `##${text.replaceAll(' ', '# #')}##`;
   text = text.replaceAll('ـ', '');
+  text = text.replaceAll(COMBINING_DIAERESIS, '');
 
   let re;
   fixes.forEach((fix) => {

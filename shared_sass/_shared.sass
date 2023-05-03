@@ -5,9 +5,10 @@
 @function vw($px-vw, $base-vw: 768px)
   @return calc(($px-vw * 100vw) / $base-vw)
 
-@mixin syrc-header($key-color, $max-width: 768px)
+@mixin syrc-header($key-color, $max-width: 768px, $largest-phone-width: 500px)
+  $stroke-width: 3px
   -webkit-text-stroke-color: $key-color
-  -webkit-text-stroke-width: 3px
+  -webkit-text-stroke-width: $stroke-width
   $margin-top: 50px
 
   color: transparent
@@ -19,9 +20,11 @@
   line-height: 1
   margin-top: $margin-top
   @media screen and (max-width: $max-width)
-    -webkit-text-stroke-width: vw(4px)
+    -webkit-text-stroke-width: vw($stroke-width)
     font-size: vw($size)
     margin-top: vw($margin-top)
+  @media screen and (max-width: $largest-phone-width)
+    -webkit-text-stroke-width: vw($stroke-width + 1px)
 
 @mixin subtitle($key-color, $max-width: 768px, $largest-phone-width: 500px)
   $margin-top: -16px

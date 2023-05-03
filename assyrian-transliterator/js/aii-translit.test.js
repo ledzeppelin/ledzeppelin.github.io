@@ -109,7 +109,7 @@ function testTranslit() {
     ['ܣܘܼܪܝܼܬ݂', 'suriṯ'], // alt spelling
     ['”ܘܦܠܝܼܛ ܠܹܗ“', '“w-pliṭ lēh”'],
     ['’ܘܨܠܹܐ‘', '‘w-ṣlē’'],
-    ['ܘܐܡܝܼܪܹܗ ܐܸܠܵܝܗܝ:', 'w-mīrēh illāyh:'],
+    ['ܘܐܡܝܼܪܹܗ ܐܸܠܵܝܗܝ:', 'w-mirrēh illāyh:'],
     ['ܒܹܐܡܵܪܵܐ:', 'bēmārā:'],
     ['ܡܲܕܢ̱ܚܵܐ', 'madenḥā'],
     ['ܚܲܪܕ̄ܠܵܐ', 'ḥardelā'],
@@ -143,6 +143,13 @@ function testTranslit() {
     ['ܕܘܼܪܕܸܫ̃ܵܐ', 'durdižā'],
     ['ܒܝܼܗܘܼܕܵܐ', 'b-īhudā'],
     ['ܫܡܝܼܥ', 'šmīʿ'],
+    ['ܕܝܑܼܠܹܗ', 'd-īlēh'],
+    // past tense conjugations for root ending in r where yudh+kwasa should be 
+    ['ܥܒ݂ܝܼܪܵܟ݂ܝ', 'ʿḇirrāḵ'],
+    ['ܥܒ݂ܝܼܪܹܗ', 'ʿḇirrēh'],
+    ['ܥܒ݂ܝܼܪܵܗ̇', 'ʿḇirrāh'],
+    ['ܥܒ݂ܝܼܪܲܢ', 'ʿḇirran'],
+    ['ܥܒ݂ܝܼܪܵܘܟ݂ܘܿܢ', 'ʿḇirrāwḵon'],
 
     // NFC test cases https://www.mediawiki.org/wiki/Unicode_normalization_considerations
     ['ܟ̰ܹܟܡܲܟ̰ܵܐ', 'čēkmačā'], // COMBINING_TILDE_BELOW then ZQAPHA

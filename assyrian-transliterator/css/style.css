@@ -45,9 +45,14 @@ body {
 }
 @media screen and (max-width: 768px) {
   #title {
-    -webkit-text-stroke-width: 0.5208333333vw;
+    -webkit-text-stroke-width: 0.390625vw;
     font-size: 11.71875vw;
     margin-top: 6.5104166667vw;
+  }
+}
+@media screen and (max-width: 500px) {
+  #title {
+    -webkit-text-stroke-width: 0.5208333333vw;
   }
 }
 
@@ -135,6 +140,12 @@ a {
     color: rgb(138, 180, 248);
   }
 }
+a.understate {
+  text-decoration: none;
+}
+a.understate:hover {
+  text-decoration: underline;
+}
 
 .row::after {
   clear: both;
@@ -197,13 +208,11 @@ a {
 
 @media screen and (max-width: 993px) {
   .eng-column {
-    border-bottom: 1px solid rgb(203, 203, 205);
     border-top: 1px solid rgb(203, 203, 205);
   }
 }
 @media screen and (max-width: 993px) and (prefers-color-scheme: dark) {
   .eng-column {
-    border-bottom: 1px solid rgb(62, 62, 66);
     border-top: 1px solid rgb(62, 62, 66);
   }
 }
@@ -294,6 +303,7 @@ a {
   border: 2px solid #fff;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.07), 0 3px 3px -2px rgba(0, 0, 0, 0.06), 0 1px 8px 0 rgba(0, 0, 0, 0.1);
   padding-left: 48px;
+  vertical-align: top;
 }
 @media (prefers-color-scheme: dark) {
   #syrc {
@@ -336,18 +346,20 @@ a {
   margin-left: auto;
 }
 
-#syrc-caption {
+#syrc-caption,
+#latin-caption {
   font-family: Roboto, sans-serif;
   font-weight: 400;
   font-size: 14px;
+  padding: 8px 16px;
+}
+
+#syrc-caption {
   color: #fd7b13;
-  margin: 6px 16px 0;
 }
 @media screen and (max-width: 993px) {
   #syrc-caption {
     border-bottom: 1px solid rgb(203, 203, 205);
-    margin: 0;
-    padding: 8px 16px;
   }
 }
 @media screen and (max-width: 993px) and (prefers-color-scheme: dark) {
@@ -394,6 +406,129 @@ a {
   }
 }
 
+#latin-caption {
+  display: flex;
+  flex-direction: column;
+}
+@media screen and (max-width: 993px) {
+  #latin-caption {
+    border-top: 1px solid rgb(203, 203, 205);
+  }
+}
+@media screen and (max-width: 993px) and (prefers-color-scheme: dark) {
+  #latin-caption {
+    border-top: 1px solid rgb(62, 62, 66);
+  }
+}
+#latin-caption.ul-gap {
+  gap: 16px;
+}
+#latin-caption ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.typo-circle,
+.typo-small-circle {
+  border-radius: 50%;
+}
+
+.typo-circle::before,
+.typo-circle::after,
+.typo-small-circle::before,
+.typo-small-circle::after {
+  content: "‌";
+}
+
+.typo-circle::before {
+  padding-left: 5px;
+}
+
+.typo-circle::after {
+  padding-right: 5px;
+}
+
+.typo-small-circle::before {
+  padding-left: 4px;
+}
+
+.typo-small-circle::after {
+  padding-right: 4px;
+}
+
+.bottom-mark {
+  background-color: rgba(253, 123, 19, 0.05);
+  border: 2px dotted rgba(253, 123, 19, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  .bottom-mark {
+    background-color: rgba(253, 123, 19, 0.2);
+  }
+}
+
+.top-mark {
+  background-color: rgba(30, 144, 255, 0.05);
+  border: 2px dotted rgba(30, 144, 255, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  .top-mark {
+    background-color: rgba(30, 144, 255, 0.2);
+  }
+}
+
+.other-mark {
+  background-color: rgba(255, 20, 147, 0.05);
+  border: 2px dotted rgba(255, 20, 147, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  .other-mark {
+    background-color: rgba(255, 20, 147, 0.2);
+  }
+}
+
+#bottom-mark-caption,
+#top-mark-caption,
+#other-mark-caption {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgb(28, 28, 30);
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  #bottom-mark-caption,
+  #top-mark-caption,
+  #other-mark-caption {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#top-mark-caption .caption-text:empty::after {
+  content: " rwakha, qushaya, tipah used interchangeably?";
+}
+#top-mark-caption .using-suryoyo.caption-text:empty::after {
+  content: " express cṣoṣo and ḥboṣo with waw and yuḏ respectively";
+}
+
+#latin-caption-rationale,
+#suryoyo-caption {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  color: rgb(134, 134, 137);
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  #latin-caption-rationale,
+  #suryoyo-caption {
+    color: rgb(149, 149, 157);
+  }
+}
+
 #syrc-container,
 #latin-container {
   position: relative;
@@ -401,6 +536,7 @@ a {
 
 #clear-text,
 #copy-text {
+  -webkit-tap-highlight-color: transparent;
   display: none;
   position: absolute;
 }

@@ -17,6 +17,7 @@ function aiiTranslit(aiiText) {
   // consonants representing vowels (matres lectionis) defined as constants so IDE reads
   // left-to-right more clearly
   const ALAPH = 'ܐ';
+  const SUPERSCRIPT_ALAPH = '\u{0711}';
   const WAW = 'ܘ';
   const YUDH = 'ܝ';
 
@@ -202,12 +203,29 @@ function aiiTranslit(aiiText) {
     ['ܙܹܠ݇ܝ#', 'zē#'], ['ܬܵܐܝ#', 'tā#'],
   ];
 
+  // roots ending in ܪ follow a past tense conjugation pattern where in the following conjugations,
+  // yudh+kwasa, though not sandwiched between voweless atutas, should be <i>, not <ī>
+  // examples
+  //
+  // https://en.wiktionary.org/wiki/%DC%A5%DC%92%DC%AA
+  // https://en.wiktionary.org/wiki/Template:aii-conj-verb/A2
+  // https://en.wiktionary.org/wiki/%DC%95%DC%9D%DC%AA
+  // https://en.wiktionary.org/wiki/Template:aii-conj-verb/A5
+  const rConj = [
+    `${ZQAPHA}ܟ${RUKKAKHA}${YUDH}`, // 2nd person, female
+    `${ZLAMA_ANGULAR}ܗ`, // 3rd person, male
+    `${ZQAPHA}ܗ${COMBINING_DOT_ABOVE}`, // 3rd person, female
+    `${PTHAHA}ܢ`, // 1st person, plural
+    `${ZQAPHA}${WAW}ܟ${RUKKAKHA}${WAW}${RWAHA}ܢ`, // 2nd person, plural
+  ];
+
   let text = aiiText;
   text = text.normalize('NFC');
   text = text.replaceAll(' | ', '# | #');
   text = `##${text.replaceAll(' ', '# #')}##`;
   text = text.replaceAll('ـ', '');
   text = text.replaceAll(COMBINING_DIAERESIS, '');
+  text = text.replaceAll(SUPERSCRIPT_ALAPH, '');
 
   let re;
   fixes.forEach((fix) => {
@@ -218,6 +236,9 @@ function aiiTranslit(aiiText) {
   specialCases.forEach((specialCase) => {
     text = text.replaceAll(specialCase[0], specialCase[1]);
   });
+
+  re = new RegExp(`${YUDH}${HBASA}ܪ(${rConj.join('|')})#`, 'g');
+  text = text.replaceAll(re, `${ZLAMA_HORIZONTAL}ܪ$1#`);
 
   text = text.replaceAll(`ܟ${COMBINING_TILDE_BELOW}`, 'č');
   text = text.replaceAll(`ܓ${COMBINING_TILDE_BELOW}`, 'j');
