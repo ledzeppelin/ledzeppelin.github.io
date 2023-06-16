@@ -144,7 +144,7 @@ function testTranslit() {
     ['ܒܝܼܗܘܼܕܵܐ', 'b-īhudā'],
     ['ܫܡܝܼܥ', 'šmīʿ'],
     ['ܕܝܑܼܠܹܗ', 'd-īlēh'],
-    // past tense conjugations for root ending in r where yudh+kwasa should be 
+    // past tense conjugations for root ending in r where yudh+kwasa should be
     ['ܥܒ݂ܝܼܪܵܟ݂ܝ', 'ʿḇirrāḵ'],
     ['ܥܒ݂ܝܼܪܹܗ', 'ʿḇirrēh'],
     ['ܥܒ݂ܝܼܪܵܗ̇', 'ʿḇirrāh'],

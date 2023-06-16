@@ -130,9 +130,9 @@ body
 /////////////
 
 a
-  color: $link-color
+  color: $link
   @media (prefers-color-scheme: dark)
-    color: $link-color-dark
+    color: $link-dark
 
 
   &.understate
@@ -262,21 +262,17 @@ $lightness-adjust: -8%
 
 $border-width: 2px
 
+
 #syrc
   @include syrc-text('l')
   background-color: $background
-  border: $border-width solid $background
-  // https://codepen.io/nana8/pen/VoXPKQ
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .07), 0 3px 3px -2px rgba(0, 0, 0, .06), 0 1px 8px 0 rgba(0, 0, 0, .1) // dp3
+  border: $border-width solid rgba($separator, .5)
   padding-left: 4 * $button-scalar
   vertical-align: top // removes extra space under textarea in some browsers, per https://stackoverflow.com/a/7144960
 
   @media (prefers-color-scheme: dark)
-    background-color: color.adjust($background-dark, $lightness: 2.5%)
-    border: $border-width solid color.adjust($background-dark, $lightness: 2.5%)
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .7), 0 1px 10px 0 rgba(0, 0, 0, .6), 0 2px 4px -1px rgb(0, 0, 0) // dp04
-    @media screen and (max-width: $dual-layout-max-width)
-      background-color: $background-dark
+    border: $border-width solid $separator-dark
+    background-color: $background-dark
 
   @media screen and (max-width: $dual-layout-max-width)
     @include syrc-text('m')
@@ -292,7 +288,7 @@ $border-width: 2px
     display: flex
     flex-direction: row
     flex-wrap: wrap
-    row-gap: $column-padding
+    row-gap: $column-padding // sass-lint:disable-line no-misspelled-properties
 
 #syrc-dialect
   @include eng-text('s', 400)

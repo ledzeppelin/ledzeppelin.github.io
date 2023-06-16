@@ -122,9 +122,9 @@ def parse_verse(verse_key, verse_num, verse, next_verse, response):
         # there could be multiple elements with .v1 outside of current child so we
         # getall and then join later
         verse_fragments = response.css(f".v{verse_num} .content::text").getall()
-        # 0x200c zero-width joiner
+        # 0x200c zero-width non joiner
 
-        # bible corrections following zero width joiner were determined by counting word occurrences
+        # bible corrections following zero width non joiner were determined by counting word occurrences
         # from a wiktionary dump: https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/index.html
         # and grepping for a talqana, then comparing those word forms with the talqana removed
         # to the common words in the bible

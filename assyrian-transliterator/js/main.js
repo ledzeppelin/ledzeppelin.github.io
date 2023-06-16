@@ -6,7 +6,7 @@ function getRandomInt(minArg, maxArg) {
 
 function isInvalidSyrc(text) {
   const validLetters = 'ܦܒܬܛܕܟܓܩܔܣܨܙܫܚܥܗܡܢܪܠܐܘܝ';
-  const re = new RegExp(`([${validLetters} ])`, 'g');
+  const re = new RegExp(`([${validLetters}])`, 'g');
   return text.match(re) == null;
 }
 
@@ -71,6 +71,9 @@ function aiiOtherMarkRegex() {
   const COMBINING_MACRON = '\u{0304}';
   const TALQANA_ABOVE = '\u{0747}';
 
+  const ZERO_WIDTH_NON_JOINER = '\u{200C}';
+  const LEFT_TO_RIGHT_MARK = '\u{200E}';
+
   const otherMarks = [
     COMBINING_BREVE_BELOW,
     COMBINING_TILDE_BELOW,
@@ -78,6 +81,9 @@ function aiiOtherMarkRegex() {
     COMBINING_TILDE_ABOVE,
     COMBINING_MACRON,
     TALQANA_ABOVE,
+
+    ZERO_WIDTH_NON_JOINER,
+    LEFT_TO_RIGHT_MARK,
   ];
 
   return new RegExp(`([${otherMarks.join('')}])`, 'g');
@@ -113,6 +119,9 @@ function truOtherMarkRegex() {
   const QUSHSHAYA = '\u{0741}';
   const RUKKAKHA = '\u{0742}';
 
+  const ZERO_WIDTH_NON_JOINER = '\u{200C}';
+  const LEFT_TO_RIGHT_MARK = '\u{200E}';
+
   const otherMarks = [
     COMBINING_TILDE_ABOVE,
     COMBINING_DOT_ABOVE,
@@ -127,6 +136,9 @@ function truOtherMarkRegex() {
     COMBINING_TILDE_BELOW,
     QUSHSHAYA,
     RUKKAKHA,
+
+    ZERO_WIDTH_NON_JOINER,
+    LEFT_TO_RIGHT_MARK,
   ];
 
   return new RegExp(`([${otherMarks.join('')}])`, 'g');
@@ -165,15 +177,15 @@ function updateTransliteration(syrcResize = false) {
   }
 
   if (syrc.trim().length === 0) {
-    $('#syrc-caption').text('');
+    $('#syrc-caption').empty();
     autoDialectSelector.text('Detect Dialect');
-    $('#latin').text('');
+    $('#latin').empty();
     $('#copy-text').fadeOut(0);
     $('#bottom-mark-caption, #top-mark-caption, #other-mark-caption, #latin-caption-rationale').hide();
   } else if (isInvalidSyrc(syrc)) {
     $('#syrc-caption').text('Enter Assyrian letters');
     autoDialectSelector.text('Detect Dialect');
-    $('#latin').text('');
+    $('#latin').empty();
     $('#copy-text').fadeOut(0);
     $('#bottom-mark-caption, #top-mark-caption, #other-mark-caption, #latin-caption-rationale').hide();
   } else {
@@ -182,7 +194,7 @@ function updateTransliteration(syrcResize = false) {
       const abc = '<span style="font-size: 50px"> ◌ܲ ◌ܵ ◌ܸ ◌ܼ ◌ܿ ◌ܹ </span>';
       $('#syrc-caption').text('Use vowel marks');
     } else {
-      $('#syrc-caption').text('');
+      $('#syrc-caption').empty();
     }
 
     const translitType = ($('.eng-column button').index($('.active')) == 0) ? 'phonetic' : 'latin';
@@ -202,7 +214,7 @@ function updateTransliteration(syrcResize = false) {
     const reTruOther = truOtherMarkRegex();
 
     if (!translit.trim().length) {
-      $('#latin').text('');
+      $('#latin').empty();
       $('#copy-text').fadeOut(0);
       $('#bottom-mark-caption, #top-mark-caption, #other-mark-caption, #latin-caption-rationale').hide();
     } else {
@@ -285,12 +297,26 @@ function typeWriter(txt, i = 0) {
 // }
 
 $(document).ready(() => {
+  // on mobile if you enter text, then restart phone, textarea still has text but
+  // no translit or clear-text/copy-text icons, so we ensure it's cleared at start
+
+  // on mobile, if transliterator is put in background and the memory is freed up, we want to use the existing value to generate the new translit
+  // https://apple.stackexchange.com/a/363363
+  // https://www.chromium.org/chromium-os/chromiumos-design-docs/tab-discarding-and-reloading/
+  // if value is not empty, call updateTransliteration and change bg color to verify
+
+  $('#syrc').val('');
+
   // https://stackoverflow.com/a/10750699
   // we resize when someone drags browser width
-  // we disregard vertical resizing since mobile triggers that when pasting large amt of text
+  // this is really only to support the two column layout for desktop
   let lastWidth = $(window).width();
   $(window).resize(() => {
     if ($(window).width() !== lastWidth) {
+      // https://stackoverflow.com/a/27966414
+      // we disregard vertical resizing since on mobile the browser nav bar shows/hides on scroll
+      // this tends to happen if you paste large amt of text and scroll up and down between the
+      // the aii and the translit
       lastWidth = $(window).width();
       resizeSyrcHeight();
     }

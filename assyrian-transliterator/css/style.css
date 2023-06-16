@@ -300,20 +300,13 @@ a.understate:hover {
   font-size: 30px;
   font-weight: 400;
   background-color: #fff;
-  border: 2px solid #fff;
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.07), 0 3px 3px -2px rgba(0, 0, 0, 0.06), 0 1px 8px 0 rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(203, 203, 205, 0.5);
   padding-left: 48px;
   vertical-align: top;
 }
 @media (prefers-color-scheme: dark) {
   #syrc {
-    background-color: #222225;
-    border: 2px solid #222225;
-    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.7), 0 1px 10px 0 rgba(0, 0, 0, 0.6), 0 2px 4px -1px rgb(0, 0, 0);
-  }
-}
-@media screen and (prefers-color-scheme: dark) and (max-width: 993px) {
-  #syrc {
+    border: 2px solid rgb(62, 62, 66);
     background-color: rgb(28, 28, 30);
   }
 }

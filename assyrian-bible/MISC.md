@@ -10,3 +10,10 @@ test cases
 
 check 200f rlm removal
 grep -R $'\u200f' js/bible.min.js
+
+
+
+set query string parameters for book and chapter so when background tab containing bible is removed, upon a reload, the state of book/chapter is maintained
+https://apple.stackexchange.com/a/363363
+
+https://www.chromium.org/chromium-os/chromiumos-design-docs/tab-discarding-and-reloading/

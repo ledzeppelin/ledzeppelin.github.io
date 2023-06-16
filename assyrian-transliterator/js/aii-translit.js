@@ -41,7 +41,6 @@ function aiiTranslit(aiiText) {
     ܟ: 'k',
     ܓ: 'g',
     ܩ: 'q',
-    ܔ: 'j',
     ܣ: 's',
     ܨ: 'ṣ',
     ܙ: 'z',
@@ -60,7 +59,7 @@ function aiiTranslit(aiiText) {
   const mhagjana = [...'ܗܠܡܢܥܪ'].map((char) => tt[char]).join('') + ALAPH + YUDH + WAW;
   const mhagjanaCapture = `([${mhagjana}])`;
 
-  const marhetana = [...'ܦܒܬܛܕܟܓܩܔܣܨܙܫܚ'].map((char) => tt[char]).join('');
+  const marhetana = [...'ܦܒܬܛܕܟܓܩܣܨܙܫܚ'].map((char) => tt[char]).join('');
   const marhetanaCapture = `([${marhetana}])`;
 
   // https://r12a.github.io/scripts/syrc/aii.html#single_letter_words
@@ -119,7 +118,8 @@ function aiiTranslit(aiiText) {
   const phoneticReplacementsKeysCapture = `([${Object.keys(phoneticReplacements).join('')}])`;
 
   const glides = `${ALAPH}${YUDH}${WAW}`; // unvoweled, original values of matres lectionis (consonants representing vowels)
-  const consonantsMinusGlides = `${ttValues}cžfḇṯḏḵḡ`;
+  const consonantsMinusGlides = `${ttValues}čjžfḇṯḏḵḡ`;
+
   // console.log(consonantsMinusGlides);
 
   const consonantsCapture = `([${glides}${consonantsMinusGlides}])`;
@@ -356,7 +356,7 @@ function aiiTranslit(aiiText) {
   text = text.replaceAll(re, 'u$1');
 
   // remove consecutive duplicate characters
-  text = text.replaceAll(/([ʿʾāšyḥž])\1+/g, '$1');
+  text = text.replaceAll(/([ʿʾāšyḥčž])\1+/g, '$1');
   text = text.replaceAll('-ʾ', '-');
 
   let phoneticText = text; // maintain word boundaries

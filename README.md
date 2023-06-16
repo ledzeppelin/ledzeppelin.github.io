@@ -9,9 +9,9 @@ Github pages will ignore directories starting with an underscore
 
 ### Generating favicons for apps
 
-Download and install NotoSansSyriac-Black from https://fonts.google.com/noto/specimen/Noto+Sans+Syriac
+Download and install unhinted NotoSansSyriac[wght].ttf from https://notofonts.github.io/#syriac
 
-Export png from favicon.psd using favicon sizes from https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
+Use black weight and export png from favicon.psd using favicon sizes from https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
 
 ### SublimeLinter packages used
 
