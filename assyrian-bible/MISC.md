@@ -1,19 +1,23 @@
-test cases
-- 2 Corinthians 3  // no header, check book name is properly separated from first verse
-- Psalms 1 // header, ref
-- Psalms 42 // header, ref, header
-- Matthew 2  // space between last header and last verses of prev section should have visual separation
-- Matthew 17  // header spacing
+### notes
+scripts loaded before html, so we don't have to worry about the state before bible.min.js is downloaded
+https://stackoverflow.com/a/5642299
+https://stackoverflow.com/a/2920207
+
+
+### test cases
 - Matthew 17:21 // missing verse NLT
 - Acts // long aii title
 
+* font tweaks
+	* support more ligatures
+	* add western to google fonts with same fallback latin characters as estrangela/eastern
+	* adding space after yudh ܥܘܢܝܬܐ, then undoing it causes the ligature not to form, doesn't form in safari https://fonts.google.com/noto/specimen/Noto+Sans+Syriac+Eastern?preview.text=%DC%A5%DC%98%DC%A2%DC%9D%DC%AC%DC%90, forms in chrome
 
-check 200f rlm removal
-grep -R $'\u200f' js/bible.min.js
+after deploying, test incognito on mobile chrome mode w/o trailing slash
+http://192.168.1.5:8000/assyrian-bible?book=MRK&chapter=1%3A18
+http://192.168.1.5:8000/assyrian-bible/?book=MRK&chapter=1%3A18
+and then navigate and observe query string parameters don't update
 
+confirm og links respect query string params
 
-
-set query string parameters for book and chapter so when background tab containing bible is removed, upon a reload, the state of book/chapter is maintained
-https://apple.stackexchange.com/a/363363
-
-https://www.chromium.org/chromium-os/chromiumos-design-docs/tab-discarding-and-reloading/
+check for margin collapsing on all webapps

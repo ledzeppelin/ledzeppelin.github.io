@@ -18,3 +18,7 @@ mark-verses::
 
 phonetic-tests::
 	cd js && node parse-mark-chapter-1.js > ../../assyrian-transliterator/js/phonetic-tests.json
+
+# convert unicode string to string literal for debugging purposes
+convert-verses::
+	cd js && cat bible-verses.json | jq > bible-verses-str-literal.json

@@ -1,33 +1,90 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
-@font-face {
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 100 900;
-  src: url("../../fonts/NotoSansSyriacEastern[wght].ttf") format("truetype");
-}
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @font-face {
   font-family: "Noto Sans Syriac Western";
   font-weight: 100 900;
   src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
 }
-.suryoyo {
-  font-family: "Noto Sans Syriac Western", Roboto, sans-serif !important;
+a {
+  color: rgb(51, 102, 204);
+  text-decoration: none;
+}
+@media (prefers-color-scheme: dark) {
+  a {
+    color: rgb(133, 177, 255);
+  }
+}
+a:hover {
+  text-decoration: underline;
+}
+a:visited {
+  color: rgb(121, 92, 178);
+}
+@media (prefers-color-scheme: dark) {
+  a:visited {
+    color: rgb(186, 159, 239);
+  }
+}
+a:active {
+  color: orange;
+}
+@media (prefers-color-scheme: dark) {
+  a:active {
+    color: rgb(188, 90, 0);
+  }
+}
+a.eng-backlink {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+}
+a.aii-backlink {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  text-decoration: underline;
 }
 
-* {
-  box-sizing: border-box;
+#created-by-container {
+  color: rgb(28, 28, 30);
+  margin-bottom: 30px;
+  margin-top: -2px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  #created-by-container {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#created-by {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+}
+
+sup.tr-sup {
+  font-style: normal;
+  margin-left: 3px;
+  top: -0.35em;
 }
 
 body {
-  background-color: #fff;
+  background-color: rgb(242, 242, 247);
   margin: 0 auto 50px;
-  max-width: 1250px;
+  max-width: 768px;
 }
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: rgb(28, 28, 30);
+    background-color: rgb(54, 54, 57);
   }
 }
 
@@ -36,7 +93,7 @@ body {
   -webkit-text-stroke-width: 3px;
   color: transparent;
   direction: rtl;
-  font-family: "Noto Sans Syriac", sans-serif;
+  font-family: "Noto Sans Syriac";
   font-size: 90px;
   font-weight: 900;
   line-height: 1;
@@ -50,7 +107,7 @@ body {
     margin-top: 6.5104166667vw;
   }
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 480px) {
   #title {
     -webkit-text-stroke-width: 0.5208333333vw;
   }
@@ -61,207 +118,209 @@ body {
   font-family: Roboto, sans-serif;
   font-size: 32px;
   font-weight: 300;
-  margin-top: -16px;
+  margin-top: -18px;
   text-align: center;
 }
 @media screen and (max-width: 768px) {
   #subtitle {
     font-size: calc(12px + 2.6041666667vw);
-    margin-top: -2.0833333333vw;
+    margin-top: -2.34375vw;
   }
 }
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 480px) {
   #subtitle {
     font-weight: 400;
   }
 }
 
-#author {
-  color: #000;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
+#syrc-error-msg {
   font-weight: 400;
-  margin-bottom: 20px;
-  margin-top: 2px;
-  padding-left: 16px;
-  padding-right: 16px;
-  text-align: center;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: rgb(28, 28, 30);
+  text-align: right;
 }
 @media (prefers-color-scheme: dark) {
-  #author {
+  #syrc-error-msg {
     color: rgb(221, 221, 232);
   }
 }
-@media screen and (max-width: 993px) {
-  #author {
-    margin-bottom: 10px;
-  }
+#syrc-error-msg:empty::after {
+  content: "​";
 }
 
-.column {
-  padding: 16px;
+#syrc-error-msg,
+#typo-caption {
+  padding: 8px 16px;
 }
-@media screen and (max-width: 993px) {
-  .column {
-    padding: 0;
-  }
+
+#typo-caption {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
 }
 
 #syrc,
+#rand-sentence-button,
+#syrc-btn-group,
+#latin-btn-group,
 #latin {
-  padding: 16px;
-}
-
-.btn-group {
-  margin-bottom: 10px;
-}
-
-@media screen and (max-width: 993px) {
-  .syrc-column .btn-group {
-    margin: 0 16px 16px;
-  }
-}
-
-.eng-column .btn-group {
-  text-align: center;
-}
-@media screen and (max-width: 993px) {
-  .eng-column .btn-group {
-    margin: 16px 16px 0;
-    text-align: right;
-  }
-}
-
-a {
-  color: rgb(51, 103, 214);
+  background-color: #fff;
 }
 @media (prefers-color-scheme: dark) {
-  a {
-    color: rgb(138, 180, 248);
+  #syrc,
+  #rand-sentence-button,
+  #syrc-btn-group,
+  #latin-btn-group,
+  #latin {
+    background-color: rgb(28, 28, 30);
   }
 }
-a.understate {
-  text-decoration: none;
+
+#rand-sentence-button {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: rgb(28, 28, 30);
+  padding: 0 16px 6px;
 }
-a.understate:hover {
+@media (prefers-color-scheme: dark) {
+  #rand-sentence-button {
+    color: rgb(221, 221, 232);
+  }
+}
+#rand-sentence-button:empty::after {
+  content: "🎲 generate random sentence";
+}
+
+.aii-bible-backlink {
   text-decoration: underline;
 }
 
-.row::after {
-  clear: both;
-  content: "";
-  display: table;
+.btn-group {
+  column-gap: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 16px;
 }
 
-.column {
-  float: left;
-  width: 50%;
-}
-@media screen and (max-width: 993px) {
-  .column {
-    width: 100%;
-  }
+#roll-dice-aii .writing-system {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 500;
+  line-height: 1.4;
+  font-size: 19.6px;
 }
 
-@media screen and (max-width: 993px) {
-  .syrc-column {
-    display: flex;
-    flex-direction: column-reverse;
-  }
+#roll-dice-tru .writing-system {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 500;
+  line-height: 1.4;
+  font-size: 19.6px;
+  font-family: "Noto Sans Syriac Western";
 }
-.syrc-column button {
-  background-color: #fd7b13;
-  color: #fff;
+
+#syrc-btn-group {
+  align-items: flex-end;
+  border-bottom: 1px solid rgb(203, 203, 205);
+  flex-direction: row;
+  padding: 0 16px 16px;
 }
 @media (prefers-color-scheme: dark) {
-  .syrc-column button {
+  #syrc-btn-group {
+    border-bottom: 1px solid rgb(62, 62, 66);
+  }
+}
+#syrc-btn-group button {
+  background-color: #fd7b13;
+  color: #fff;
+  padding: 6px 10px;
+}
+@media (prefers-color-scheme: dark) {
+  #syrc-btn-group button {
     color: rgb(28, 28, 30);
   }
 }
 @media (hover: hover) and (pointer: fine) {
-  .syrc-column button:hover {
+  #syrc-btn-group button:hover {
     background-color: #e56702;
   }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-color-scheme: dark) {
-  .syrc-column button:hover {
+  #syrc-btn-group button:hover {
     background-color: #fd923b;
   }
 }
-.syrc-column button:active {
+#syrc-btn-group button:active {
   background-color: #cf5d02;
 }
 @media (prefers-color-scheme: dark) {
-  .syrc-column button:active {
+  #syrc-btn-group button:active {
     background-color: #fe9e52;
   }
 }
-.syrc-column button:disabled {
+#syrc-btn-group button:disabled {
   background-color: rgba(253, 123, 19, 0.65);
   pointer-events: none;
 }
 @media (prefers-color-scheme: dark) {
-  .syrc-column button:disabled {
+  #syrc-btn-group button:disabled {
     background-color: rgba(253, 123, 19, 0.4);
   }
 }
 
-@media screen and (max-width: 993px) {
-  .eng-column {
-    border-top: 1px solid rgb(203, 203, 205);
-  }
+#latin-btn-group {
+  flex-direction: row-reverse;
+  padding: 16px;
 }
-@media screen and (max-width: 993px) and (prefers-color-scheme: dark) {
-  .eng-column {
-    border-top: 1px solid rgb(62, 62, 66);
-  }
-}
-.eng-column button {
+#latin-btn-group button {
   background-color: rgb(242, 242, 247);
   color: rgb(28, 28, 30);
+  padding: 10px 16px;
 }
 @media (prefers-color-scheme: dark) {
-  .eng-column button {
+  #latin-btn-group button {
     background-color: rgb(54, 54, 57);
     color: rgb(221, 221, 232);
   }
 }
-.eng-column button:hover {
+#latin-btn-group button:hover {
   background-color: #dfdfeb;
 }
 @media (prefers-color-scheme: dark) {
-  .eng-column button:hover {
+  #latin-btn-group button:hover {
     background-color: #454549;
   }
 }
-.eng-column button:active {
+#latin-btn-group button:active {
   background-color: #d2d2e4;
 }
 @media (prefers-color-scheme: dark) {
-  .eng-column button:active {
+  #latin-btn-group button:active {
     background-color: #4f4f53;
   }
 }
-.eng-column button.active {
+#latin-btn-group button.active {
   background-color: rgb(28, 28, 30);
   color: #fff;
   cursor: default;
 }
 @media (prefers-color-scheme: dark) {
-  .eng-column button.active {
+  #latin-btn-group button.active {
     background-color: rgb(242, 242, 247);
     color: rgb(28, 28, 30);
   }
 }
 
 .btn {
-  font-family: Roboto, sans-serif;
   font-weight: 500;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
+  -webkit-tap-highlight-color: transparent;
   border: 0;
   border-radius: 8px;
   cursor: pointer;
-  padding: 10px 16px;
   position: relative;
   text-align: center;
   touch-action: manipulation;
@@ -270,11 +329,8 @@ a.understate:hover {
 
 #syrc,
 #latin {
-  border-radius: 16px;
   color: rgb(28, 28, 30);
-  min-height: 110px;
   resize: none;
-  width: 100%;
 }
 @media (prefers-color-scheme: dark) {
   #syrc,
@@ -286,137 +342,88 @@ a.understate:hover {
 #latin:focus {
   outline: none;
 }
-@media screen and (max-width: 993px) {
-  #syrc,
-  #latin {
-    border-radius: 0;
-  }
+
+#syrc {
+  min-height: 126px;
+}
+
+#latin {
+  min-height: 110px;
 }
 
 #syrc {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern", Roboto, sans-serif;
-  line-height: 1.5;
-  font-size: 30px;
-  font-weight: 400;
-  background-color: #fff;
-  border: 2px solid rgba(203, 203, 205, 0.5);
-  padding-left: 48px;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  padding: 16px 16px 16px 48px;
   vertical-align: top;
+  width: 100%;
 }
-@media (prefers-color-scheme: dark) {
+@media screen and (width > 768px) {
   #syrc {
-    border: 2px solid rgb(62, 62, 66);
-    background-color: rgb(28, 28, 30);
-  }
-}
-@media screen and (max-width: 993px) {
-  #syrc {
-    direction: rtl;
-    font-family: "Noto Sans Syriac Eastern", Roboto, sans-serif;
-    line-height: 1.5;
-    font-size: 26px;
-    font-weight: 400;
-    border: 0;
-    box-shadow: none;
-    padding-left: 48px;
-    width: 100%;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
   }
 }
 
-.syrc-column .btn-group {
-  align-items: flex-end;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  row-gap: 16px;
+.syrc-text {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 30.8px;
+}
+.syrc-text.suryoyo {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 30.8px;
+  font-family: "Noto Sans Syriac Western";
 }
 
 #syrc-dialect {
-  font-family: Roboto, sans-serif;
   font-weight: 400;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   margin-left: auto;
 }
 
-#syrc-caption,
-#latin-caption {
-  font-family: Roboto, sans-serif;
-  font-weight: 400;
-  font-size: 14px;
-  padding: 8px 16px;
-}
-
-#syrc-caption {
-  color: #fd7b13;
-}
-@media screen and (max-width: 993px) {
-  #syrc-caption {
-    border-bottom: 1px solid rgb(203, 203, 205);
-  }
-}
-@media screen and (max-width: 993px) and (prefers-color-scheme: dark) {
-  #syrc-caption {
-    border-bottom: 1px solid rgb(62, 62, 66);
-  }
-}
-
-#syrc-caption:empty::after {
-  content: "​";
-}
-
 #latin {
-  font-family: Roboto, sans-serif;
   font-weight: 400;
-  font-size: 28px;
-  border: 2px dashed rgba(203, 203, 205, 0.5);
+  font-family: Roboto, sans-serif;
+  font-style: italic;
+  font-size: 22px;
   font-family: sans-serif;
   overflow-wrap: break-word;
-  padding-right: 48px;
+  padding: 0 48px 16px 16px;
   white-space: pre-wrap;
-}
-@media (prefers-color-scheme: dark) {
-  #latin {
-    border: 2px dashed rgb(62, 62, 66);
-  }
-}
-@media screen and (max-width: 993px) {
-  #latin {
-    font-family: Roboto, sans-serif;
-    font-weight: 400;
-    font-size: 24px;
-    border: 0;
-    padding-right: 48px;
-  }
 }
 #latin:empty:not(:focus)::before {
   color: rgb(28, 28, 30);
   content: attr(data-placeholder);
+  font-style: normal;
 }
 @media (prefers-color-scheme: dark) {
   #latin:empty:not(:focus)::before {
     color: rgb(221, 221, 232);
   }
 }
+@media screen and (width > 768px) {
+  #latin {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+  }
+}
 
-#latin-caption {
+#typo-caption {
   display: flex;
   flex-direction: column;
 }
-@media screen and (max-width: 993px) {
-  #latin-caption {
-    border-top: 1px solid rgb(203, 203, 205);
-  }
-}
-@media screen and (max-width: 993px) and (prefers-color-scheme: dark) {
-  #latin-caption {
-    border-top: 1px solid rgb(62, 62, 66);
-  }
-}
-#latin-caption.ul-gap {
+#typo-caption.ul-gap {
   gap: 16px;
 }
-#latin-caption ul {
+#typo-caption ul {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -486,8 +493,8 @@ a.understate:hover {
 #bottom-mark-caption,
 #top-mark-caption,
 #other-mark-caption {
-  font-family: Roboto, sans-serif;
   font-weight: 400;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   color: rgb(28, 28, 30);
   display: none;
@@ -507,18 +514,19 @@ a.understate:hover {
   content: " express cṣoṣo and ḥboṣo with waw and yuḏ respectively";
 }
 
-#latin-caption-rationale,
-#suryoyo-caption {
-  font-family: Roboto, sans-serif;
+#aii-orthography,
+#tru-orthography {
   font-weight: 400;
-  font-size: 12px;
-  color: rgb(134, 134, 137);
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  color: rgb(28, 28, 30);
   display: none;
+  padding: 8px 16px;
 }
 @media (prefers-color-scheme: dark) {
-  #latin-caption-rationale,
-  #suryoyo-caption {
-    color: rgb(149, 149, 157);
+  #aii-orthography,
+  #tru-orthography {
+    color: rgb(221, 221, 232);
   }
 }
 
@@ -530,8 +538,18 @@ a.understate:hover {
 #clear-text,
 #copy-text {
   -webkit-tap-highlight-color: transparent;
+  color: rgb(134, 134, 137);
+  cursor: pointer;
   display: none;
+  font-size: 24px;
+  padding: 12px;
   position: absolute;
+}
+@media (prefers-color-scheme: dark) {
+  #clear-text,
+  #copy-text {
+    color: rgb(149, 149, 157);
+  }
 }
 
 #clear-text {
@@ -542,25 +560,6 @@ a.understate:hover {
 #copy-text {
   bottom: 0;
   right: 0;
-}
-
-.md-24 {
-  font-size: 24px;
-}
-
-.md-36 {
-  font-size: 36px;
-}
-
-.material-icons-round {
-  color: rgb(134, 134, 137);
-  cursor: pointer;
-  padding: 12px;
-}
-@media (prefers-color-scheme: dark) {
-  .material-icons-round {
-    color: rgb(149, 149, 157);
-  }
 }
 
 /*# sourceMappingURL=style.css.map */

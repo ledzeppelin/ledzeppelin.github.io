@@ -32,6 +32,10 @@ function aiiTranslit(aiiText) {
   const COMBINING_DOT_BELOW = '\u{0323}';
   const COMBINING_DOT_ABOVE = '\u{0307}';
 
+  // constants for transliterated snippets which are used in later substitutions
+  const TR_THIRD_PERSON_FEM_SUFFIX = 'oh';
+  const TR_WAW_PLUS_RVASA = 'u';
+
   const tt = {
     ܦ: 'p',
     ܒ: 'b',
@@ -124,7 +128,7 @@ function aiiTranslit(aiiText) {
 
   const consonantsCapture = `([${glides}${consonantsMinusGlides}])`;
   const consonantsCaptureMinusAlaph = `([${YUDH}${WAW}${consonantsMinusGlides}])`;
-  const vowelsW = 'uo';
+  const vowelsW = `${TR_WAW_PLUS_RVASA}o`;
   const vowelsY = 'eiēī';
   const vowels = `${vowelsW}${vowelsY}aā`;
   const consonantsAndVowelsCapture = `([${glides}${consonantsMinusGlides}${vowels}])`;
@@ -152,7 +156,7 @@ function aiiTranslit(aiiText) {
     ['ܝܼܕܵܥ', 'īdāʿ'],
     //
 
-    [`#ܒܗ${COMBINING_DOT_ABOVE}ܝ#`, '#bay#'],
+    [`#ܒܗ${COMBINING_DOT_ABOVE}ܝ#`, '#b-ay#'],
     [`ܗ${COMBINING_DOT_ABOVE}ܝ#`, 'aya#'],
     [`ܗ${COMBINING_DOT_ABOVE}ܘ#`, 'awa#'],
     [`ܡ${COMBINING_DOT_ABOVE}ܢ#`, 'man#'],
@@ -170,7 +174,7 @@ function aiiTranslit(aiiText) {
     ['#ܝܘܵܬܝ#', '#ìwāt#'], ['#ܝܬܘܿܢ#', '#ìton#'],
     ['#ܝܠܹܗ#', '#ìlēh#'], ['#ܝܠܵܗ̇#', '#ìlāh#'],
     ['#ܝܢܵܐ#', '#ìnā#'], ['#ܝܗ݇ܘܵܐ#', '#ìwā#'],
-    ['#ܝܗ݇ܘܵܘ#', '#ìwā#'],
+    ['#ܝܗ݇ܘܵܬ݇#', '#ìwā#'], ['#ܝܗ݇ܘܵܘ#', '#ìwā#'],
     // "to be" with inital khwasa, ī
     // https://en.wiktionary.org/wiki/Template:aii-conj-verb/hawe
     ['ܝܼܘܸܢ#', 'īwen#'], ['ܝܼܘܵܢ', 'īwān'],
@@ -188,7 +192,7 @@ function aiiTranslit(aiiText) {
     ['#ܗ݇ܘܹܐ#', '#wē#'],
     // "all", "each", "every"
     ['ܟܠ#', 'kul#'], ['ܟܠܵܢ#', 'kullān#'],
-    ['ܟܠܘܼܟ݂#', 'kulluḵ#'], ['ܟܠܵܟ݂ܝ#', 'kullāḵ#'],
+    ['ܟܠܘܼܟ݂#', 'kulloḵ#'], ['ܟܠܵܟ݂ܝ#', 'kullāḵ#'],
     ['ܟܠܹܗ#', 'kullēh#'], ['ܟܠܵܗ̇#', 'kullāh#'],
     ['ܟܠܘܼܗܝ#', 'kulluh#'], ['ܟܠܘܿܗ̇#', 'kulloh#'],
     ['ܟܠܲܢ#', 'kullan#'], ['ܟܠܵܘܟ݂ܘܿܢ#', 'kullāwḵon#'],
@@ -205,8 +209,8 @@ function aiiTranslit(aiiText) {
 
   // roots ending in ܪ follow a past tense conjugation pattern where in the following conjugations,
   // yudh+kwasa, though not sandwiched between voweless atutas, should be <i>, not <ī>
-  // examples
   //
+  // examples:
   // https://en.wiktionary.org/wiki/%DC%A5%DC%92%DC%AA
   // https://en.wiktionary.org/wiki/Template:aii-conj-verb/A2
   // https://en.wiktionary.org/wiki/%DC%95%DC%9D%DC%AA
@@ -217,6 +221,39 @@ function aiiTranslit(aiiText) {
     `${ZQAPHA}ܗ${COMBINING_DOT_ABOVE}`, // 3rd person, female
     `${PTHAHA}ܢ`, // 1st person, plural
     `${ZQAPHA}${WAW}ܟ${RUKKAKHA}${WAW}${RWAHA}ܢ`, // 2nd person, plural
+  ];
+
+  // roots ending in alap should follow this past tense conjugation pattern
+  // ex. tee lawkhon instead of teh lawkhon
+  //
+  // examples:
+  // https://en.wiktionary.org/wiki/%DC%A1%DC%A0%DC%90#Conjugation
+  // https://en.wiktionary.org/wiki/%DC%9A%DC%9D%DC%90#Conjugation
+  // https://en.wiktionary.org/wiki/%DC%92%DC%AA%DC%90#Conjugation
+  // https://en.wiktionary.org/wiki/Template:aii-conj-verb/A3
+
+  const aConj = [
+    'ܠܝܼ',
+    'ܠܘܼܟ݂',
+    'ܠܵܟ݂ܝ',
+    'ܠܹܗ',
+    'ܠܵܗ̇',
+    'ܠܲܢ',
+    'ܠܵܘܟ݂ܘܿܢ',
+    'ܠܗܘܿܢ',
+  ];
+
+  // roots ending in E should follow this imperative tense conjugation pattern
+  // ex. shmee instead of shmeh
+  //
+  // examples:
+  // https://en.wiktionary.org/wiki/%DC%AB%DC%A1%DC%A5#Conjugation
+  // https://en.wiktionary.org/wiki/%DC%92%DC%A0%DC%A5#Conjugation
+
+  const eConj = [
+    'ܥ', // 2nd person male
+    'ܥܝ', // 2nd person female
+    `ܥܡܘ${HBASA}ܢ`, // 2nd person plural
   ];
 
   let text = aiiText;
@@ -236,6 +273,12 @@ function aiiTranslit(aiiText) {
   specialCases.forEach((specialCase) => {
     text = text.replaceAll(specialCase[0], specialCase[1]);
   });
+
+  re = new RegExp(`${ZLAMA_ANGULAR}(${eConj.join('|')})#`, 'g');
+  text = text.replaceAll(re, `${YUDH}${HBASA}$1#`);
+
+  re = new RegExp(`(${ZLAMA_ANGULAR}${ALAPH})((# #)+(${aConj.join('|')}))`, 'g');
+  text = text.replaceAll(re, `${YUDH}${HBASA}$2`);
 
   re = new RegExp(`${YUDH}${HBASA}ܪ(${rConj.join('|')})#`, 'g');
   text = text.replaceAll(re, `${ZLAMA_HORIZONTAL}ܪ$1#`);
@@ -274,12 +317,12 @@ function aiiTranslit(aiiText) {
   re = new RegExp(`#${bdulCapture}${initialCharCapture}`, 'g');
   text = text.replaceAll(re, '#$1-$2');
 
-  text = text.replaceAll(`${WAW}${HBASA}ܗ${COMBINING_DOT_ABOVE}#`, 'oh#');
+  text = text.replaceAll(`${WAW}${HBASA}ܗ${COMBINING_DOT_ABOVE}#`, `${TR_THIRD_PERSON_FEM_SUFFIX}#`);
 
   text = text.replaceAll(`${YUDH}${HBASA}ܥ`, 'īܥ');
   text = text.replaceAll(`${YUDH}${HBASA}`, '⚹'); // ⚹ is placeholder for later substitution
   text = text.replaceAll(`${WAW}${RWAHA}`, 'o');
-  text = text.replaceAll(`${WAW}${HBASA}`, 'u');
+  text = text.replaceAll(`${WAW}${HBASA}`, TR_WAW_PLUS_RVASA);
 
   re = new RegExp(ttTransposePuncKeysCapture, 'g');
   text = text.replaceAll(re, (match) => ttTransposePunc[match]);
@@ -295,10 +338,17 @@ function aiiTranslit(aiiText) {
   re = new RegExp(`${consonantsCapture}${marhetanaCapture}${COMBINING_MACRON}${consonantsCapture}`, 'g');
   text = text.replaceAll(re, '$1$2e$3');
 
-  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${consonantsCapture}${diacriticVowelsCapture}`, 'g');
-  text = text.replaceAll(re, '$1$2$2$3');
   re = new RegExp(`${consonantsCapture}${TALQANA_ABOVE}`, 'g');
   text = text.replaceAll(re, '');
+
+  // doubling consonants
+  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${consonantsCapture}${diacriticVowelsCapture}`, 'g');
+  text = text.replaceAll(re, '$1$2$2$3');
+  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${consonantsCapture}${TR_WAW_PLUS_RVASA}${consonantsCapture}${diacriticVowelsCapture}`, 'g');
+  text = text.replaceAll(re, `$1$2$2${TR_WAW_PLUS_RVASA}$3$4`);
+  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${consonantsCapture}${TR_THIRD_PERSON_FEM_SUFFIX}`, 'g');
+  text = text.replaceAll(re, `$1$2$2${TR_THIRD_PERSON_FEM_SUFFIX}`);
+  //
 
   text = text.replaceAll(COMBINING_DOT_ABOVE, '');
 
@@ -395,7 +445,7 @@ function aiiTranslit(aiiText) {
   return { latin: text, phonetic: phoneticText };
 }
 
-// this allows use to run code in a Node context and also browser-side js
+// this allows us to run code in a Node context and also browser-side js
 if (typeof module === 'object') {
   module.exports = {
     aiiTranslit,

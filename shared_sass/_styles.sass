@@ -1,0 +1,59 @@
+@use 'colors' as *
+@use 'mixins' as *
+
+
+a
+  color: $link
+  text-decoration: none
+  @media (prefers-color-scheme: dark)
+    color: $link-dark
+
+
+  &:hover
+    text-decoration: underline
+
+  &:visited
+    color: $visited-link
+
+    @media (prefers-color-scheme: dark)
+      color: $visited-link-dark
+
+
+  &:active
+    color: $active-link
+
+    @media (prefers-color-scheme: dark)
+      color: $active-link-dark
+
+
+  &.eng-backlink
+    @include eng-text('xs')
+    text-decoration: underline
+
+  &.aii-backlink
+    @include aii-text('xs', 400)
+    text-decoration: underline
+
+
+// sass-lint:disable no-ids
+#created-by-container
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+  margin-bottom: 30px
+  margin-top: -2px
+  padding-left: 16px // should parameterize side-padding as a global
+  padding-right: 16px // should parameterize side-padding as a global
+  text-align: center
+
+#created-by
+  @include eng-text('xs')
+
+sup
+  &.tr-sup
+    // <sup> https://stackoverflow.com/a/15286817
+    font-style: normal
+    margin-left: 3px
+    top: -.35em // overriding this so it doesn't get overlapped from previous line, ex. bible
+    // background-color: lightgray

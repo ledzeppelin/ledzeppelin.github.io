@@ -3,305 +3,186 @@
 // sass-lint:disable no-vendor-prefixes
 
 @use '../../shared_sass/colors' as *
-@use '../../shared_sass/shared' as *
+@use '../../shared_sass/mixins' as *
+@use '../../shared_sass/styles' as *
+@use '../../shared_sass/symbols' as *
+@use '../../shared_sass/constants' as *
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap')
-
-@font-face
-  font-family: 'Noto Sans Syriac Eastern'
-  font-weight: 100 900 // https://stackoverflow.com/a/73857218
-  src: url('../../fonts/NotoSansSyriacEastern[wght].ttf') format('truetype')
-
-
-$key-color: #1e90ff // dodgerblue
-$backdrop-color: rgba($background, .7)
-$backdrop-color-dark: rgba($background-dark, .7)
+$key-color: dodgerblue // sass-lint:disable-line no-color-keywords
 $max-width: 768px
 $side-padding: 16px
-
-@mixin aii-text($size)
-  direction: rtl
-  // Roboto for reference text
-  font-family: 'Noto Sans Syriac Eastern', Roboto, sans-serif
-  line-height: 1.5 // need extra height in case of accents above/below
-  $header-spacing: 54px
-
-  @if $size == 's'
-    font-size: 20px
-    font-weight: 400
-  @else if $size == 'm'
-    font-size: 26px
-    font-weight: 400
-  @else if $size == 'l'
-    font-size: 26px
-    font-weight: 700
-    line-height: 1.2 // "hug" following text for better grouping
-    margin-top: $header-spacing
-  @else if $size == 'xl'
-    font-size: 38px
-    font-weight: 600
-    line-height: 1.2 // "hug" following text for better grouping
-    margin-top: 14px
-  @else
-    @error 'Unknown size #{$size}.'
-
-@mixin eng-text($size, $weight, $is-italic: 0)
-  font-family: Roboto, sans-serif
-
-  // verify valid font imported in index.html
-  $valid-font: [0 300], [0 400], [0 500], [0 700], [1 400]
-  @if not list.index($valid-font, [$is-italic $weight])
-    @error 'font not available [#{$is-italic} #{$weight}]'
-
-  font-weight: $weight
-  @if $is-italic == 1
-    font-style: italic
-
-  @if $size == 'xs'
-    font-size: 12px
-  @else if $size == 's'
-    font-size: 14px
-  @else if $size == 'm'
-    font-size: 16px
-  @else if $size == 'l'
-    font-size: 22px
-  @else if $size == 'xl'
-    font-size: 28px
-  @else
-    @error 'Unknown size #{$size}.'
-
-
 
 body
   background-color: $background
   @media (prefers-color-scheme: dark)
     background-color: $background-dark
-  margin: 0 auto 50px
+  margin: 0 auto
   max-width: $max-width
 
 // ------
 // header
 // ------
-#author-container
-  @include aii-text('s')
-  padding-bottom: 8px
-  padding-right: $side-padding
-  padding-top: 16px
-
-
 #title
   @include syrc-header($key-color)
-  text-align: center
-  transition: -webkit-text-stroke-color .5s ease
 
 #subtitle
   @include subtitle($key-color)
+
+#reading-level-container
+  margin-bottom: 4px // we need some spacing for iOS so the bottom blue outline doesn't get cut off
+  padding-left: $side-padding
+  padding-right: $side-padding
   text-align: center
-  transition: color .5s ease
 
-#author
-  @include author($side-padding, $black-label, $label-dark)
-
-a
-  color: $link
+#bible-controls-container
+  -webkit-backdrop-filter: blur(10px) // sass-lint:disable-line no-vendor-prefixes
+  align-items: center // controls in row are vertically aligned in the center
+  backdrop-filter: blur(10px)
+  background-color: rgba($background, .65)
   @media (prefers-color-scheme: dark)
-    color: $link-dark
+    background-color: rgba($background-dark, .65)
 
-
-  &.understate
-    text-decoration: none
-
-    &:hover
-      text-decoration: underline
-
-.hardmode
-  &#title
-    -webkit-text-stroke-color: $label
-    @media (prefers-color-scheme: dark)
-      -webkit-text-stroke-color: $label-dark
-
-
-  &#subtitle
-    color: $label
-    @media (prefers-color-scheme: dark)
-      color: $label-dark
-
-
-#bible-books-container
-  -webkit-backdrop-filter: blur(20px) // sass-lint:disable-line no-vendor-prefixes
-  backdrop-filter: blur(20px)
-  background-color: $backdrop-color
-  @media (prefers-color-scheme: dark)
-    background-color: $backdrop-color-dark
-  padding: 8px
+  display: flex
+  justify-content: space-evenly
+  @media screen and (width <= $mobile-viewport-width-max)
+    justify-content: space-between
+  padding: 12px $side-padding
+  // when resizing width of browser, there may be a fractional pixel gap above this container due to variable
+  // #title and #subtitle elements above, see: https://samhermes.com/posts/closing-gap-above-sticky-elements/
   position: sticky
-  text-align: center
   top: 0
-  z-index: 1
+  z-index: 1 // otherwise overlaps with .tr-sup
 
-
-$mobile-device-max-width: 480px
 
 select
-  @include eng-text('l', 400)
-  @media screen and (max-width: $mobile-device-max-width)
-    font-size: 16px
-
+  @include eng-text('m')
+  font-family: sans-serif
 
 button
-  @include eng-text('l', 400)
-  padding: 4px 12px
-  touch-action: manipulation // https://stackoverflow.com/a/53236027
-  @media screen and (max-width: $mobile-device-max-width)
-    font-size: 19px
-    padding: 2px 8px
+  font-family: sans-serif
+  touch-action: manipulation // disable double tap: https://stackoverflow.com/a/53236027
 
-
-$full-width: $max-width + 120px
-
-#arrow-container
-  bottom: 100px // should be height of copyright stuff
-  display: flex
-  justify-content: space-between
-  max-width: $max-width + 360px
-  pointer-events: none // allow clicking text in space-between
-  position: sticky
-  z-index: 1
-
-  @media screen and (min-width: $full-width)
-    bottom: 50%
-    left: 50%
-    position: fixed
-    transform: translate(-50%, -50%)
-    width: vw($max-width)
-
-
-#prev-chapter
-  margin-left: $side-padding
-  pointer-events: auto
-
+#prev-chapter,
 #next-chapter
-  margin-right: $side-padding
-  pointer-events: auto
+  font-size: 24px
+  font-variation-settings: 'OPSZ' 24
+  @media screen and (width <= $mobile-viewport-width-max)
+    font-size: 16px // should match size of eng-text from select element for drop downs
+    font-variation-settings: 'wght' 700, 'OPSZ' 20 // lowest we can go
+
 
 // --------------
 // bible contents
 // --------------
-$row-margin-bottom: 24px
-
-// this ensures that the element following the book name (first element)
-// does not have a top margin separating it from the book name
-// test with chapters starting with a verse 2 Corinthians 3 or chapters starting with a header
-#bible
-  div
-    &:nth-child(2)
-      margin-top: 0 // no need for !important as this gets applied at the end
-
-.aii-book-name
-  @include aii-text('xl')
+.aii-book-name,
+.header,
+.header-2,
+.reference,
+.aii-verse,
+.aii-tr,
+.eng-verse,
+#aramaic-history
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
-  padding-left: $side-padding
-  padding-right: $side-padding
+
+
+#bible
+  margin-left: $side-padding
+  margin-right: $side-padding
+  // https://stackoverflow.com/a/9519147
+
+$row-spacing: 28px
+
+.aii-book-name
+  @include aii-text('xl', 600)
+  margin-bottom:  calc($row-spacing / 2)
+  margin-top:  calc($row-spacing / 2)
   text-align: center
 
 .header,
 .header-2
-  @include aii-text('l')
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-  padding-left: $side-padding
-  padding-right: $side-padding
-
-.header-2
-  margin-top: 0
+  @include aii-text('l', 600)
 
 .reference
-  @include aii-text('s')
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-  padding-left: $side-padding
-  padding-right: $side-padding
+  @include aii-text('m', 400)
 
-.row
-  margin-bottom: $row-margin-bottom
-  padding-left: $side-padding
-  padding-right: $side-padding
+  .bible-backlink
+    text-decoration: underline
 
-.aii
+#search-bible-backlink-container
+  text-align: right
+
+.verses-ol
+  list-style-type: none
+  margin-block-end: 0
+  margin-block-start: 0
+  margin-bottom: 1.5 * $row-spacing
+  padding-inline-start: 0
+
+  &:last-child
+    margin-bottom: 0
+
+li
+  margin-bottom: 4px
+
+  &:first-child
+    margin-top: 0
+
+.aii-verse
   @include aii-text('m')
-  color: $label
+  margin-top: $row-spacing
+  text-align: right
+
+  .marker
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/@counter-style
+    // https://caniuse.com/css-at-counter-style
+    // we dont use ::marker because safari/webkit can't read display aii numerals rtl and we also dont want period after ar numerals
+    color: $key-color
+    font-weight: 600
+
+.aii-tr
+  @include eng-text('m', $is-translit: true)
+
+.eng-verse
+  @include eng-text('m')
+
+  .marker
+    color: $key-color
+    font-weight: 700
+
+
+  .missing-verse
+    @include eng-text('xs')
+
+    &::before
+      content: '('
+
+    &::after
+      content: ')'
+
+
+.highlighted
+  // we don't alpha since transparency causes overlapping highlights between next lines due to line-height
+  // background-color: rgba(80, 151, 255, .18) // color from google search highlighting
+  background-color: rgb(226, 237, 255) // sRGB digital color meter from dark mode google search highlight
   @media (prefers-color-scheme: dark)
-    color: $label-dark
+    background-color: rgba(42, 66, 107) // sRGB digital color meter from dark mode google search highlight
 
 
-.verse-num,
-.first-verse-num
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-  margin-left: 4px
-
-.verse-num
-  @include eng-text('s', 700)
-  vertical-align: 6px
-
-
-.first-verse-num
-  @include eng-text('xl', 700)
-  vertical-align: -4px
-
-.aii-translit,
-.eng
-  @include eng-text('m', 400)
-
-.aii-translit
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-  margin-top: 2px
-
-.eng
-  color: $secondary-label
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
-  margin-top: 2px
-
-.missing-verse
-  @include eng-text('xs', 400, 1)
-
-#aramaic-history
-  @include eng-text('xs', 400)
-  color: $black-label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-  margin-bottom: 10px
-  margin-top: $row-margin-bottom
-  @media screen and (min-width: $full-width)
-    margin-top: 50px
-
-  padding-left: $side-padding
-  padding-right: $side-padding
-
-  text-align: justify
-  text-justify: inter-word
+// footer
+#copyright-container
+  margin: 24px $side-padding
 
 .copyright
-  @include eng-text('xs', 400)
+  @include eng-text('xs')
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
-  margin-bottom: 6px
 
-  padding-left: $side-padding
-  padding-right: $side-padding
+  margin-bottom: 3px
   text-align: justify
   text-justify: inter-word
 
   .emphasis-bible
-    @include eng-text('xs', 400, 1)
-
-
+    font-style: italic

@@ -10,7 +10,24 @@
 
   gtag('config', 'G-48Y7ENQMTX');
 </script>
-<title>Assyrian Transliterator</title>
+<title>Assyrian-English Transliterator</title>
+<meta name="description" content="Transliterate Assyrian (Sureth, Surayt/Suryoyo) to English">
+
+<!-- Facebook Meta Tags -->
+<!-- ignore og:url since we want to respect query string parameters -->
+<!-- <meta property="og:url" content="https://ledzeppelin.github.io/assyrian-transliterator/"> -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Assyrian-English Transliterator">
+<meta property="og:description" content="Transliterate Assyrian (Sureth, Surayt/Suryoyo) to English">
+<meta property="og:image" content="https://ledzeppelin.github.io/assyrian-transliterator/default.jpg">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Assyrian-English Transliterator">
+<meta name="twitter:description" content="Transliterate Assyrian (Sureth, Surayt/Suryoyo) to English">
+<meta name="twitter:image" content="https://ledzeppelin.github.io/assyrian-transliterator/default.jpg">
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+
 <!-- charset must be utf8 otherwise we have issues when running on a server
 https://stackoverflow.com/a/65036296 -->
 <meta charset="utf-8">
@@ -18,85 +35,77 @@ https://stackoverflow.com/a/65036296 -->
 
 <link rel="icon" href="favicons/favicon-32.png" sizes="32x32">
 <link rel="icon" href="favicons/favicon-128.png" sizes="128x128">
-<link rel="icon" href="favicons/favicon-180.png" sizes="180x180">
+<link rel="apple-touch-icon" href="favicons/favicon-180.png" sizes="180x180">
 <link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
-      rel="stylesheet">
-
-
 <link rel="stylesheet" href="css/style.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/aii-translit.js"></script>
 <script type="text/javascript" src="js/tru-translit.js"></script>
 
 <script type="text/javascript" src="js/aii-mark.js"></script>
 <script type="text/javascript" src="js/tru-sentences.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/docready.js"></script>
 
 </head>
 <body>
 
 <div id="title">ܪܬܡܐ</div>
-<div id="subtitle">Assyrian Transliterator</div>
-<div id="author">"Assyrian 🎲" types a random verse from the <a href='../assyrian-bible/'>Assyrian Bible</a></div>
+<div id="subtitle">Assyrian-English Transliterator</div>
+<div id="created-by-container">&nbsp;</div>
 
-<div class="row">
-  <div class="column syrc-column">
-    <div class="btn-group">
-      <button id="roll-dice-aii" class="btn">Assyrian 🎲</button>&nbsp;
-      <button id="roll-dice-tru" class="btn">West Assyrian 🎲</button>&nbsp;
-      <select id="syrc-dialect">
-        <option value="0">Detect Dialect</option>
-        <option value="1">Assyrian</option>
-        <option value="2">West Assyrian</option>
-      </select>
-    </div>
-    <div id="syrc-container">
-      <span id='clear-text' class="material-icons-round md-24">clear</span>
-      <textarea id="syrc" rows='1' placeholder="ܟܬܘܒ ,Enter text"></textarea>
-    </div>
-    <div id="syrc-caption"></div>
-  </div>
-  <div class="column eng-column">
-    <div class="btn-group">
-      <button class="btn active">phonemic</button>
-      <button class="btn">latin</button>
-    </div>
-    <div id="latin-container">
-      <span id='copy-text' class="material-icons-round md-24">copy</span>
-      <div id="latin" data-placeholder="Transliteration"></div>
-    </div>
-    <div id="latin-caption">
-      <ul>
-        <li id="bottom-mark-caption">
-          <span class="typo-small-circle bottom-mark"></span>
-          <span class="caption-text">&nbsp;khwasa/rwasa, rukkakha, tipah used interchangeably?</span>
-        </li>
-        <li id="top-mark-caption">
-          <span class="typo-small-circle top-mark"></span>
-          <span class="caption-text"></span>
-        </li>
-        <li id="other-mark-caption">
-          <span class="typo-small-circle other-mark"></span>
-          <span class="caption-text">&nbsp;dangling marks or non-printing characters?</span>
-        </li>
-      </ul>
-      <ul>
-        <li id="suryoyo-caption">the West Assyrian transliterator is based on the <a class ='understate' href='https://userblogs.fu-berlin.de/wp-includes/ms-files.php?path=/aramaic-ol/&file=2017/08/Surayt-Orthography.pdf'>Surayt Orthography</a></li>
-        <li id="latin-caption-rationale">fixing typos helps build a reliable corpus of training data for machine learning applications like a vocalized assyrian↔️english translator (not to be confused with a "transliterator")</li>
-      </ul>
-    </div>
-  </div>
+<div id="syrc-error-msg"></div>
+<div id="syrc-container">
+  <span id='clear-text' class="material-symbols-rounded">close</span>
+  <textarea id="syrc" class='syrc-text' rows='1' placeholder="ܟܬܘܒ ,Enter text"></textarea>
 </div>
 
 
+<div id="rand-sentence-button"></div>
+<div id="syrc-btn-group" class="btn-group">
+  <button id="roll-dice-aii" class="btn"><span class='writing-system'>ܡܲܕ݂ܢܚܵܝܵܐ</span><span> Eastern</span></button>
+  <button id="roll-dice-tru" class="btn"><span class='writing-system'>ܣܶܪܛܳܐ</span><span> Western</span></button>
+  <select id="syrc-dialect">
+    <option value="0">Detect Dialect</option>
+    <option value="1">Assyrian</option>
+    <option value="2">West Assyrian</option>
+  </select>
+</div>
 
-<!-- forces western to preload so if we paste suryoyo, #syrc resizes properly -->
-<div class="suryoyo" style="font-weight:400">&nbsp;</div> 
+<!-- ܐܘ ܩܰܕܝܫܐ ܡܳܪܝ̱ ܓܰܒܪܺܐܶܝܠ ܒܷܬܠܳܬ̥ܐ ܘܥܷܣܪܝ ܕܟܳܢܘܢ ܐܘ ܩܰܡܳܝܐ ܒܝ ܫܰܬܐ ܕܫܶܬ݂ܡܐ ܘܬܡܳܢܶܐ ܘܐܷܫܬܝ ܡܫܰܢܶܠܶܗ. ܐܘ ܩܰܘܪܰܝܕ݂ܶܗ ܟܰܠܶܗ -->
+
+<div id="latin-btn-group" class="btn-group">
+  <button class="btn">latin</button>
+  <button class="btn active">default</button>
+</div>
+<div id="latin-container">
+  <span id='copy-text' class="material-symbols-rounded">content_copy</span>
+  <div id="latin" data-placeholder="Transliteration"></div>
+</div>
+<div id='aii-orthography'>Transliteration based on <a href='https://r12a.github.io/scripts/syrc/aii.html'>Assyrian Neo-Aramaic Orthography</a></div>
+<div id='tru-orthography'>Transliteration based on <a href='https://r12a.github.io/scripts/syrc/tru.html'>Turoyo (Surayt) Orthography</a></div>
+<div id="typo-caption">
+  <ul>
+    <li id="bottom-mark-caption">
+      <span class="typo-small-circle bottom-mark"></span>
+      <span class="caption-text">&nbsp;khwasa/rwasa, rukkakha, tipah used interchangeably?</span>
+    </li>
+    <li id="top-mark-caption">
+      <span class="typo-small-circle top-mark"></span>
+      <span class="caption-text"></span>
+    </li>
+    <li id="other-mark-caption">
+      <span class="typo-small-circle other-mark"></span>
+      <span class="caption-text">&nbsp;dangling marks or non-printing characters?</span>
+    </li>
+  </ul>
+</div>
+
+
 
 </body>
 </html>

@@ -11,6 +11,23 @@
   gtag('config', 'G-48Y7ENQMTX');
 </script>
 <title>Assyrian Aramaic Bible</title>
+<meta name="description" content="Includes a side-by-side English transliteration & translation">
+
+<!-- Facebook Meta Tags -->
+<!-- ignore og:url since we want to respect query string parameters -->
+<!-- <meta property="og:url" content="https://ledzeppelin.github.io/assyrian-bible/"> -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Assyrian Aramaic Bible">
+<meta property="og:description" content="Includes a side-by-side English transliteration & translation">
+<meta property="og:image" content="https://ledzeppelin.github.io/assyrian-bible/default.jpg">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Assyrian Aramaic Bible">
+<meta name="twitter:description" content="Includes a side-by-side English transliteration & translation">
+<meta name="twitter:image" content="https://ledzeppelin.github.io/assyrian-bible/default.jpg">
+<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+
 <!-- charset must be utf8 otherwise we have issues when running on a server
 https://stackoverflow.com/a/65036296 -->
 <meta charset="utf-8">
@@ -18,46 +35,61 @@ https://stackoverflow.com/a/65036296 -->
 
 <link rel="icon" href="favicons/favicon-32.png" sizes="32x32">
 <link rel="icon" href="favicons/favicon-128.png" sizes="128x128">
-<link rel="icon" href="favicons/favicon-180.png" sizes="180x180">
+<link rel="apple-touch-icon" href="favicons/favicon-180.png" sizes="180x180">
 <link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="css/style.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="../assyrian-transliterator/js/aii-translit.js"></script>
 
 <script type="text/javascript" src="js/bible.min.js"></script>
+<script type="text/javascript" src="js/aii-numeral.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
 <script type="text/javascript" src="js/docready.js"></script>
 
 </head>
 <body>
 
-<!-- <div id="author-container">
-  <a href='../ܫܪܘܟܝܢ/'>ܫܪܘܟܝܢ</a>created by
-</div> -->
+
 <div id="title">ܟܬܒ̈ܐ ܩܕܝܫ̈ܐ</div>
 <div id="subtitle">Assyrian Aramaic Bible</div>
-<div id="author">Transliterated verses provided by the <a href='../assyrian-transliterator/'>Assyrian Transliterator</a></div>
+<!-- <div id="created-by-container"><span id="created-by">Created by </span><a class="aii-backlink" href='../'>ܫܪܘܟܝܢ</a></div> -->
+<div id="created-by-container">&nbsp;</div>
 
-
-<div id='bible-books-container'>
-  <select id="difficulty-level">
-    <option value="1">👼</option>
-    <option value="2">🤓</option>
-    <option value="3">💀</option>
-  </select>
-  <select id="bible-books">
-    <option value="loading">Loading...</option>
-  </select>
-  <select id="book-chapters">
-    <option value="1">1</option>
+<div id='reading-level-container'>
+  <select id="reading-level">
+    <option value="1">Reading Level 👼</option>
+    <option value="2">Reading Level 🤓</option>
+    <option value="3">Reading Level 💀</option>
   </select>
 </div>
 
+
+<div id='bible-controls-container'>
+  <button id="prev-chapter" class="material-symbols-rounded">navigate_before</button>
+  <span id='bible-chapter-controls-container'>
+    <select id="books">
+      <option value="loading">Loading...</option>
+    </select>
+    <select id="chapters">
+      <option value="1">1</option>
+    </select>
+  </span>
+  <button id="next-chapter" class="material-symbols-rounded">navigate_next</button>
+</div>
+
+
 <div id='bible'></div>
+
+
+<div id="copyright-container">
+  <div id="aii-copyright" class="copyright">© 2014, Aramaic Bible Translation, Inc. All rights reserved.</div>
+  <div id="eng-copyright" class="copyright"><span class="emphasis-bible">Holy Bible</span>, New Living Translation, copyright ©1996, 2004, 2015 by Tyndale House Foundation. Used by permission of Tyndale House Publishers, Carol Stream, Illinois 60188. All rights reserved.</div>
+</div>
+
 
 </body>
 </html>

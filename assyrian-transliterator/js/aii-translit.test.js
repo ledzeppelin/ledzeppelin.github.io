@@ -8,7 +8,7 @@ const {
 
 function testTranslit() {
   const examples = [
-    ['ܒܗ̇ܝ', 'bay'],
+    ['ܒܗ̇ܝ', 'b-ay'],
     ['ܒܲܝܬܵܐ', 'baytā'],
     ['ܒܲܝܬܝܼ', 'baytī'],
     ['ܒܲܝܬܵܟ݂ܝ', 'baytāḵ'],
@@ -19,17 +19,17 @@ function testTranslit() {
     ['ܝܵܠܘܿܦܵܐ', 'yālopā'],
     ['ܝܵܠܘܿܦܲܢ', 'yālopan'],
     ['ܝܵܠܘܿܦܬܵܐ', 'yāloptā'],
-    ['ܩܲܕ݇ܡܵܝܵܐ', 'qamāyā'],
+    ['ܩܲܕ݇ܡܵܝܵܐ', 'qammāyā'],
     ['ܚܲܡܫܲܥܣܲܪ', 'ḥamšaʿsar'],
     ['ܒܲܝܬ̈ܘܵܬܹܐ', 'baytwātē'],
-    ['ܩܲܕ݇ܡܵܝܹ̈ܐ', 'qamāyē'],
+    ['ܩܲܕ݇ܡܵܝܹ̈ܐ', 'qammāyē'],
     ['ܚܲܕ݇', 'ḥa'],
     ['ܚܵܕܹܐ', 'ḥādē'],
     ['ܚܕܵܐ', 'ḥdā'],
     ['ܚܕܵܝܵܐ', 'ḥdāyā'],
     ['ܚܸܕܝܵܐ', 'ḥidyā'],
     ['ܚܵܕܹܝܬܘܿܢ', 'ḥādēton'],
-    ['ܚܕܹܐ ܠܗܘܿܢ', 'ḥdē lhon'],
+    ['ܚܕܹܐ ܠܗܘܿܢ', 'ḥdī lhon'],
     ['ܝܵܠܦܹܢ', 'yālpēn'],
     ['ܝܠܝܼܦ ܠܝܼ', 'lip lī'],
     ['ܒܪܘܿܢܵܐ', 'bronā'],
@@ -129,7 +129,7 @@ function testTranslit() {
     ['ܗܲܝܲܪܬܵܐ', 'hayartā'],
     ['ܡܲܚܸܒ', 'maḥib'],
     ['ܕܵܐܟ݂ܝܼܘܵܬܝܼ̈', 'dāḵīwātī'],
-    ['ܡܸܢܘܼܗ̇', 'minoh'],
+    ['ܡܸܢܘܼܗ̇', 'minnoh'],
     ['ܟܠܚܲܕ݇', 'kulḥa'],
     ['ܟܠܚܕ݂ܵܐ', 'kulḥḏā'],
     ['ܟܠܫܲܢ݇ܬ', 'kulšat'],
@@ -150,7 +150,18 @@ function testTranslit() {
     ['ܥܒ݂ܝܼܪܵܗ̇', 'ʿḇirrāh'],
     ['ܥܒ݂ܝܼܪܲܢ', 'ʿḇirran'],
     ['ܥܒ݂ܝܼܪܵܘܟ݂ܘܿܢ', 'ʿḇirrāwḵon'],
-
+    // past tense conjugations for root ending in a
+    ['ܡܠܹܐ       ܠܝܼ', 'mlī       lī'],
+    ['ܡܠܹܐ ܠܘܼܟ݂', 'mlī luḵ'],
+    ['ܡܠܹܐ ܠܵܟ݂ܝ', 'mlī lāḵ'],
+    ['ܡܠܹܐ ܠܹܗ', 'mlī lēh'],
+    ['ܡܠܹܐ ܠܵܗ̇', 'mlī lāh'],
+    ['ܡܠܹܐ ܠܲܢ', 'mlī lan'],
+    ['ܡܠܹܐ ܠܵܘܟ݂ܘܿܢ', 'mlī lāwḵon'],
+    ['ܡܠܹܐ ܠܗܘܿܢ', 'mlī lhon'],
+    ['ܫܡܹܥ', 'šmīʿ'],
+    ['ܫܡܹܥܝ', 'šmīʿ'],
+    ['ܫܡܹܥܡܘܼܢ', 'šmīʿmun'],
     // NFC test cases https://www.mediawiki.org/wiki/Unicode_normalization_considerations
     ['ܟ̰ܹܟܡܲܟ̰ܵܐ', 'čēkmačā'], // COMBINING_TILDE_BELOW then ZQAPHA
     ['ܟ̰ܹܟܡܲܟ̰ܵܐ', 'čēkmačā'], // ZQAPHA then COMBINING_TILDE_BELOW

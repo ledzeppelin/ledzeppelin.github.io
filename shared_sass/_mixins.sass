@@ -1,0 +1,120 @@
+@use 'constants' as *
+
+// sass-lint:disable no-vendor-prefixes
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap')
+
+// replace this when Western is available on google fonts
+@font-face
+  font-family: 'Noto Sans Syriac Western'
+  font-weight: 100 900 // https://stackoverflow.com/a/73857218
+  src: url('../../fonts/NotoSansSyriacWestern[wght].ttf') format('truetype')
+
+@function vw($px-vw, $base-vw: 768px)
+  @return calc(($px-vw * 100vw) / $base-vw)
+
+@mixin syrc-header($key-color, $max-width: 768px, $mobile-viewport-width-max: $mobile-viewport-width-max)
+  $stroke-width: 3px
+  -webkit-text-stroke-color: $key-color
+  -webkit-text-stroke-width: $stroke-width
+  $margin-top: 50px
+
+  color: transparent
+  direction: rtl
+  font-family: 'Noto Sans Syriac'
+  $size: 90px
+  font-size: $size
+  font-weight: 900
+  line-height: 1
+  margin-top: $margin-top
+  text-align: center
+  @media screen and (max-width: $max-width)
+    -webkit-text-stroke-width: vw($stroke-width)
+    font-size: vw($size)
+    margin-top: vw($margin-top)
+  @media screen and (max-width: $mobile-viewport-width-max)
+    -webkit-text-stroke-width: vw($stroke-width + 1px)
+
+@mixin subtitle($key-color, $max-width: 768px, $mobile-viewport-width-max: $mobile-viewport-width-max)
+  $margin-top: -18px
+  $font-size: 32px
+
+  color: $key-color
+  font-family: Roboto, sans-serif
+  font-size: $font-size
+  font-weight: 300
+  margin-top: $margin-top
+  text-align: center
+  @media screen and (max-width: $max-width)
+    $shrink-size: 20px
+    font-size: calc($font-size - $shrink-size + vw($shrink-size))
+    margin-top: vw($margin-top)
+  @media screen and (max-width: $mobile-viewport-width-max)
+    font-weight: 400
+
+
+@mixin aii-text($size, $weight: 400)
+  direction: rtl
+  // in case of mixed assyrian and english we rely on 'Noto Sans Syriac' latin characters
+  // since appending another font like Roboto to the font-family causes line height issues like in <input> placeholders
+  font-family: 'Noto Sans Syriac Eastern'
+  font-weight: $weight
+
+  // we need to safeguard against overlapping with next line and getting cut off text in <input>
+  // for both vocalized and unvocalized spellings, ex. 
+  // ܨܲܦܪܵܐ
+  // ܨܦܪܐ
+  // ܡܵܨܹܐ
+  // ܕܝܘܚܢܢ
+
+  line-height: 1.4
+  $scale: 1.4
+  @if $size == 'xs'
+    font-size: 12px * $scale
+  @else if $size == 's'
+    font-size: 14px * $scale
+  @else if $size == 'm'
+    font-size: 16px * $scale
+  @else if $size == 'l'
+    font-size: 22px * $scale
+  @else if $size == 'xl'
+    font-size: 28px * $scale
+  @else
+    @error 'Unknown size #{$size}.'
+
+@mixin tru-text($size, $weight: 400)
+  @include aii-text($size, $weight)
+  font-family: 'Noto Sans Syriac Western'
+
+@mixin syc-text($size, $weight: 400)
+  @include aii-text($size, $weight)
+  font-family: 'Noto Sans Syriac'
+
+
+@mixin eng-text($size, $weight: 400, $mixed: false, $is-translit: false)
+  font-weight: $weight
+
+  @if $mixed == false
+    font-family: Roboto, sans-serif
+  @else
+    // this should almost never be used since we expect eng to not contain aii
+    // text contains all eng with a small minority of aii
+    font-family: Roboto, sans-serif, 'Noto Sans Syriac Eastern'
+
+  @if $is-translit == true
+    font-style: italic
+
+  @if $size == 'xs'
+    font-size: 12px
+  @else if $size == 's'
+    font-size: 14px
+  @else if $size == 'm'
+    font-size: 16px
+  @else if $size == 'l'
+    font-size: 22px
+  @else if $size == 'xl'
+    font-size: 28px
+  @else
+    @error 'Unknown size #{$size}.'
+

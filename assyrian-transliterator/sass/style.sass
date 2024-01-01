@@ -6,162 +6,96 @@
 // sass-lint:disable no-vendor-prefixes
 
 @use '../../shared_sass/colors' as *
-@use '../../shared_sass/shared' as *
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap')
-
-@font-face
-  font-family: 'Noto Sans Syriac Eastern'
-  font-weight: 100 900 // https://stackoverflow.com/a/73857218
-  src: url('../../fonts/NotoSansSyriacEastern[wght].ttf') format('truetype')
-
-@font-face
-  font-family: 'Noto Sans Syriac Western'
-  font-weight: 100 900 // https://stackoverflow.com/a/73857218
-  src: url('../../fonts/NotoSansSyriacWestern[wght].ttf') format('truetype')
-
-
-.suryoyo
-  font-family: 'Noto Sans Syriac Western', Roboto, sans-serif !important // Roboto for placeholder text
+@use '../../shared_sass/mixins' as *
+@use '../../shared_sass/styles' as *
+@use '../../shared_sass/symbols' as *
 
 $key-color: #fd7b13
-$max-width: 1250px
-$font-shrink-max-width: 768px
-$dual-layout-max-width: $font-shrink-max-width + 225px
-$column-padding: 16px
-$button-scalar: 12px
+$side-padding: 16px
 
-@mixin syrc-text($size)
-  direction: rtl
-  font-family: 'Noto Sans Syriac Eastern', Roboto, sans-serif // Roboto for placeholder text
-  line-height: 1.5 // need extra height in case of accents above/below
+$symbol-width: 24px
+$symbol-padding: calc($symbol-width/2)
+$symbol-width-with-padding: $symbol-width + 2 * $symbol-padding
 
-  @if $size == 'm'
-    font-size: 26px
-    font-weight: 400
-  @else if $size == 'l'
-    font-size: 30px
-    font-weight: 400
-  @else
-    @error 'Unknown size #{$size}.'
-
-
-@mixin eng-text($size, $weight)
-  font-family: Roboto, sans-serif
-
-  // $valid-font: [300, 400, 500]
-  // @if not list.index($valid-font, $weight)
-  //   @error 'font weight not available #{$weight}'
-
-  font-weight: $weight
-
-  @if $size == 'xs'
-    font-size: 12px
-  @else if $size == 's'
-    font-size: 14px
-  @else if $size == 'm'
-    font-size: 16px
-  @else if $size == 'l'
-    font-size: 24px
-  @else if $size == 'xl'
-    font-size: 28px
-  @else
-    @error 'Unknown size #{$size}.'
-
-
-
-// https://www.w3schools.com/howto/howto_css_two_columns.asp
-// required for responsive 2 column layout
-*
-  box-sizing: border-box
+$max-width: 768px
+$lightness-adjust: -8%
+$border-radius: 16px
 
 body
-  background-color: $background
+  background-color: $secondary-background
   @media (prefers-color-scheme: dark)
-    background-color: $background-dark
+    background-color: $secondary-background-dark
   margin: 0 auto 50px
   max-width: $max-width
 
 #title
   @include syrc-header($key-color)
-  text-align: center
 
 #subtitle
   @include subtitle($key-color)
-  text-align: center
 
-#author
-  @include author($column-padding, $black-label, $label-dark)
-  @media screen and (max-width: $dual-layout-max-width)
-    margin-bottom: 10px
+#syrc-error-msg
+  @include eng-text('s', 400)
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  text-align: right
 
+  &:empty::after
+    content: '\200B'
 
-////////////////
-// setting margin/padding is complex because we want to support 1px separator
-// taking full width on mobile without being padded
+#syrc-error-msg,
+#typo-caption
+  padding: calc($side-padding/2) $side-padding
 
-.column
-  padding: $column-padding
-  @media screen and (max-width: $dual-layout-max-width)
-    padding: 0
-
+#typo-caption
+  @include eng-text('s')
 
 #syrc,
+#rand-sentence-button,
+#syrc-btn-group,
+#latin-btn-group,
 #latin
-  padding: $column-padding
+  background-color: $background
+  @media (prefers-color-scheme: dark)
+    background-color: $background-dark
+
+
+#rand-sentence-button
+  @include eng-text('s', 400)
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  padding: 0 $side-padding 6px
+
+  &:empty::after
+    content: '🎲 generate random sentence'
+
+.aii-bible-backlink
+  text-decoration: underline
 
 .btn-group
-  margin-bottom: 10px
+  column-gap: 6px
+  display: flex
+  flex-wrap: wrap
+  row-gap: $side-padding // sass-lint:disable-line no-misspelled-properties
 
-.syrc-column
-  .btn-group
-    @media screen and (max-width: $dual-layout-max-width)
-      margin: 0 $column-padding $column-padding
+#roll-dice-aii
+  .writing-system
+    @include aii-text('s', 500)
+
+#roll-dice-tru
+  .writing-system
+    @include tru-text('s', 500)
 
 
-.eng-column
-  .btn-group
-    text-align: center
-    @media screen and (max-width: $dual-layout-max-width)
-      margin: $column-padding $column-padding 0
-      text-align: right
-
-// end layout
-/////////////
-
-a
-  color: $link
+#syrc-btn-group
+  align-items: flex-end // so dialect dropdown doesn't take whole height and also expands to next row on mobile
+  border-bottom: 1px solid $separator
   @media (prefers-color-scheme: dark)
-    color: $link-dark
-
-
-  &.understate
-    text-decoration: none
-
-    &:hover
-      text-decoration: underline
-
-
-.row
-  &::after
-    clear: both
-    content: ''
-    display: table
-
-.column
-  float: left
-  width: 50%
-
-  @media screen and (max-width: $dual-layout-max-width)
-    width: 100%
-
-$lightness-adjust: -8%
-
-.syrc-column
-  @media screen and (max-width: $dual-layout-max-width)
-    display: flex
-    flex-direction: column-reverse
-
+    border-bottom: 1px solid $separator-dark
+  flex-direction: row
+  padding: 0 $side-padding $side-padding
 
   button
     background-color: $key-color
@@ -169,8 +103,10 @@ $lightness-adjust: -8%
     @media (prefers-color-scheme: dark)
       color: $background-dark
 
-    // hover on mobile lingers after tapping
+    padding: 6px 10px
+
     // https://stackoverflow.com/a/64553121
+    // we only run this on desktop since hover on mobile lingers after tapping
     @media (hover: hover) and (pointer: fine)
       &:hover
         background-color: color.adjust($key-color, $lightness: $lightness-adjust)
@@ -191,13 +127,10 @@ $lightness-adjust: -8%
         background-color: rgba($key-color, .4)
       pointer-events: none
 
-.eng-column
-  @media screen and (max-width: $dual-layout-max-width)
-    border-top: 1px solid $separator
-    @media (prefers-color-scheme: dark)
-      border-top: 1px solid $separator-dark
 
-
+#latin-btn-group
+  flex-direction: row-reverse
+  padding: $side-padding
 
   button
     background-color: $secondary-background
@@ -205,7 +138,7 @@ $lightness-adjust: -8%
     @media (prefers-color-scheme: dark)
       background-color: $secondary-background-dark
       color: $label-dark
-
+    padding: 10px 16px
 
     &:hover
       background-color: color.adjust($secondary-background, $lightness: $lightness-adjust * .75)
@@ -231,10 +164,10 @@ $lightness-adjust: -8%
 // https://getcssscan.com/css-buttons-examples
 .btn
   @include eng-text('s', 500)
+  -webkit-tap-highlight-color: transparent // prevent flicker when tapping on phone
   border: 0
   border-radius: 8px
   cursor: pointer
-  padding: 10px 16px
   position: relative
   text-align: center
   touch-action: manipulation
@@ -243,91 +176,58 @@ $lightness-adjust: -8%
   transition: color $duration, background-color $duration
 
 
-
+$min-height: 110px
 
 #syrc,
 #latin
-  border-radius: $column-padding
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
-  min-height: 110px // should be greater than height with number of rows of textarea
   resize: none
-  width: 100%
 
   &:focus
     outline: none
-  @media screen and (max-width: $dual-layout-max-width)
-    border-radius: 0
+
+#syrc
+  min-height: 110px + $side-padding // should be greater than height with number of rows of textarea
+
+#latin
+  min-height: 110px // should be greater than height with number of rows of textarea
 
 $border-width: 2px
 
-
 #syrc
-  @include syrc-text('l')
-  background-color: $background
-  border: $border-width solid rgba($separator, .5)
-  padding-left: 4 * $button-scalar
+  border: 0
+  border-radius: 0
+  @media screen and (width > $max-width)
+    border-top-left-radius: $border-radius
+    border-top-right-radius: $border-radius
+  box-sizing: border-box // combined with 100% width so textare doesn't stretch outside parent container
+  padding: $side-padding $side-padding $side-padding $symbol-width-with-padding
   vertical-align: top // removes extra space under textarea in some browsers, per https://stackoverflow.com/a/7144960
-
-  @media (prefers-color-scheme: dark)
-    border: $border-width solid $separator-dark
-    background-color: $background-dark
-
-  @media screen and (max-width: $dual-layout-max-width)
-    @include syrc-text('m')
-    border: 0
-    box-shadow: none
-    padding-left: 4 * $button-scalar
-    width: 100%
+  width: 100%
 
 
-.syrc-column
-  .btn-group
-    align-items: flex-end
-    display: flex
-    flex-direction: row
-    flex-wrap: wrap
-    row-gap: $column-padding // sass-lint:disable-line no-misspelled-properties
+.syrc-text
+  @include aii-text('l')
+
+  &.suryoyo
+    @include tru-text('l')
+
 
 #syrc-dialect
-  @include eng-text('s', 400)
+  @include eng-text('s')
   margin-left: auto  // https://stackoverflow.com/a/33924704
 
-
-#syrc-caption,
-#latin-caption
-  @include eng-text('s', 400)
-  // background-color: rgba(0, 0, 0, .05)
-  padding: calc($column-padding/2) $column-padding
-
-#syrc-caption
-  color: $key-color
-  @media screen and (max-width: $dual-layout-max-width)
-    border-bottom: 1px solid $separator
-    @media (prefers-color-scheme: dark)
-      border-bottom: 1px solid $separator-dark
-
-#syrc-caption:empty::after
-  content: '\200B'
-
-
 #latin
-  @include eng-text('xl', 400)
-  border: $border-width dashed rgba($separator, .5)
-  // default sans-serif font improves readability for stuff like ܠܐܝܼܣܚܵܩ (l-ʾīsḥāq)
-  // because the glottal stop doesn't blend into the macron of ī
+  @include eng-text('l', $is-translit: true)
+  // default sans-serif font improves readability for stuff like
+  // plīʿā in mark 3:26
+  // otherwise the modifier letter left half ring blends into the macron of ī
   font-family: sans-serif
-  @media (prefers-color-scheme: dark)
-    border: $border-width dashed $separator-dark
   overflow-wrap: break-word
-  padding-right: 4 * $button-scalar
+  padding: 0 $symbol-width-with-padding $side-padding $side-padding
   white-space: pre-wrap // to preserve newlines
-
-  @media screen and (max-width: $dual-layout-max-width)
-    @include eng-text('l', 400)
-    border: 0
-    padding-right: 4 * $button-scalar
 
 
   &:empty:not(:focus)::before
@@ -335,25 +235,25 @@ $border-width: 2px
     @media (prefers-color-scheme: dark)
       color: $label-dark
     content: attr(data-placeholder)
+    font-style: normal
+
+  @media screen and (width > $max-width)
+    border-bottom-left-radius: $border-radius
+    border-bottom-right-radius: $border-radius
 
 
-#latin-caption
-  @media screen and (max-width: $dual-layout-max-width)
-    border-top: 1px solid $separator
-    @media (prefers-color-scheme: dark)
-      border-top: 1px solid $separator-dark
-
+#typo-caption
   display: flex
   flex-direction: column
 
   &.ul-gap
-    gap: $column-padding // sass-lint:disable-line no-misspelled-properties
+    gap: $side-padding // sass-lint:disable-line no-misspelled-properties
 
   ul
     // https://stackoverflow.com/a/69591701
     display: flex
     flex-direction: column
-    gap: calc($column-padding/2) // sass-lint:disable-line no-misspelled-properties
+    gap: calc($side-padding/2) // sass-lint:disable-line no-misspelled-properties
     list-style-type: none
     margin: 0
     padding: 0
@@ -403,7 +303,7 @@ $border-width: 2px
 #bottom-mark-caption,
 #top-mark-caption,
 #other-mark-caption
-  @include eng-text('s', 400)
+  @include eng-text('s')
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
@@ -413,21 +313,23 @@ $border-width: 2px
   .caption-text:empty::after
     content: '\00a0rwakha, qushaya, tipah used interchangeably?'
 
-
   .using-suryoyo
     &.caption-text:empty::after
       content: '\00a0 express cṣoṣo and ḥboṣo with waw and yuḏ respectively'
 
-
-#latin-caption-rationale,
-#suryoyo-caption
-  @include eng-text('xs', 400)
-  color: $secondary-label
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
+#aii-orthography,
+#tru-orthography
+  @include eng-text('s')
+  color: $label
   display: none
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+  padding: calc($side-padding/2) $side-padding
 
-// https://developers.google.com/fonts/docs/material_icons#rtl_icons_on_the_web
+
+//////////////////////////
+// copy & clear text icons
+//////////////////////////
 #syrc-container,
 #latin-container
   position: relative
@@ -435,7 +337,13 @@ $border-width: 2px
 #clear-text,
 #copy-text
   -webkit-tap-highlight-color: transparent // prevent flicker when tapping on phone
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+  cursor: pointer
   display: none
+  font-size: $symbol-width
+  padding: $symbol-padding
   position: absolute
 
 #clear-text
@@ -446,20 +354,6 @@ $border-width: 2px
   bottom: 0
   right: 0
 
-.md-24
-  font-size: 2 * $button-scalar
 
-.md-36
-  font-size: 3 * $button-scalar
-
-.material-icons-round
-  // border: 1px solid color.adjust($secondary-label, $lightness: 30%)
-  color: $secondary-label
-  cursor: pointer
-  padding: $button-scalar
-
-
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
 
 
