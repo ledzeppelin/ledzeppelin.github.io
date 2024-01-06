@@ -35,20 +35,6 @@ a:active {
     color: rgb(188, 90, 0);
   }
 }
-a.eng-backlink {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  text-decoration: underline;
-}
-a.aii-backlink {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 400;
-  line-height: 1.4;
-  font-size: 16.8px;
-  text-decoration: underline;
-}
 
 #created-by-container {
   color: rgb(28, 28, 30);
@@ -64,10 +50,26 @@ a.aii-backlink {
   }
 }
 
-#created-by {
+.webapp-backlink-meta {
   font-weight: 400;
   font-family: Roboto, sans-serif;
   font-size: 12px;
+}
+
+.webapp-backlink-href {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.creator-backlink-href {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  text-decoration: underline;
 }
 
 sup.tr-sup {

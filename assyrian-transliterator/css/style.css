@@ -36,20 +36,6 @@ a:active {
     color: rgb(188, 90, 0);
   }
 }
-a.eng-backlink {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  text-decoration: underline;
-}
-a.aii-backlink {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 400;
-  line-height: 1.4;
-  font-size: 16.8px;
-  text-decoration: underline;
-}
 
 #created-by-container {
   color: rgb(28, 28, 30);
@@ -65,10 +51,26 @@ a.aii-backlink {
   }
 }
 
-#created-by {
+.webapp-backlink-meta {
   font-weight: 400;
   font-family: Roboto, sans-serif;
   font-size: 12px;
+}
+
+.webapp-backlink-href {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.creator-backlink-href {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  text-decoration: underline;
 }
 
 sup.tr-sup {
@@ -133,35 +135,48 @@ body {
   }
 }
 
+#syrc-status-container {
+  display: flex;
+  padding: 6px 16px;
+}
+
+#rand-sentence-ref,
 #syrc-error-msg {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
   color: rgb(28, 28, 30);
-  text-align: right;
+  flex: 1 1 auto;
 }
 @media (prefers-color-scheme: dark) {
+  #rand-sentence-ref,
   #syrc-error-msg {
     color: rgb(221, 221, 232);
   }
 }
+#rand-sentence-ref:empty::after,
 #syrc-error-msg:empty::after {
   content: "​";
 }
 
-#syrc-error-msg,
-#typo-caption {
+#rand-sentence-ref {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-align: left;
+}
+
+#syrc-error-msg {
+  font-weight: 500;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-align: right;
+}
+
+#aii-typo-caption,
+#tru-typo-caption {
   padding: 8px 16px;
 }
 
-#typo-caption {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-}
-
 #syrc,
-#rand-sentence-button,
+#rand-sentence-caption,
 #syrc-btn-group,
 #latin-btn-group,
 #latin {
@@ -169,7 +184,7 @@ body {
 }
 @media (prefers-color-scheme: dark) {
   #syrc,
-  #rand-sentence-button,
+  #rand-sentence-caption,
   #syrc-btn-group,
   #latin-btn-group,
   #latin {
@@ -177,7 +192,7 @@ body {
   }
 }
 
-#rand-sentence-button {
+#rand-sentence-caption {
   font-weight: 400;
   font-family: Roboto, sans-serif;
   font-size: 14px;
@@ -185,16 +200,9 @@ body {
   padding: 0 16px 6px;
 }
 @media (prefers-color-scheme: dark) {
-  #rand-sentence-button {
+  #rand-sentence-caption {
     color: rgb(221, 221, 232);
   }
-}
-#rand-sentence-button:empty::after {
-  content: "🎲 generate random sentence";
-}
-
-.aii-bible-backlink {
-  text-decoration: underline;
 }
 
 .btn-group {
@@ -416,14 +424,8 @@ body {
   }
 }
 
-#typo-caption {
-  display: flex;
-  flex-direction: column;
-}
-#typo-caption.ul-gap {
-  gap: 16px;
-}
-#typo-caption ul {
+#aii-typo-caption ul,
+#tru-typo-caption ul {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -490,28 +492,29 @@ body {
   }
 }
 
-#bottom-mark-caption,
-#top-mark-caption,
-#other-mark-caption {
+#aii-typo-caption,
+#tru-typo-caption {
+  display: none;
+}
+
+#aii-bottom-mark-caption,
+#aii-top-mark-caption,
+#aii-other-mark-caption,
+#tru-top-mark-caption,
+#tru-other-mark-caption {
   font-weight: 400;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   color: rgb(28, 28, 30);
-  display: none;
 }
 @media (prefers-color-scheme: dark) {
-  #bottom-mark-caption,
-  #top-mark-caption,
-  #other-mark-caption {
+  #aii-bottom-mark-caption,
+  #aii-top-mark-caption,
+  #aii-other-mark-caption,
+  #tru-top-mark-caption,
+  #tru-other-mark-caption {
     color: rgb(221, 221, 232);
   }
-}
-
-#top-mark-caption .caption-text:empty::after {
-  content: " rwakha, qushaya, tipah used interchangeably?";
-}
-#top-mark-caption .using-suryoyo.caption-text:empty::after {
-  content: " express cṣoṣo and ḥboṣo with waw and yuḏ respectively";
 }
 
 #aii-orthography,

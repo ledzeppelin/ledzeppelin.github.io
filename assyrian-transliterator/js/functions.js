@@ -4,6 +4,25 @@ function getRandomInt(minArg, maxArg) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+function urlEncodeSpecialChars(txt) {
+  // When pasting this url
+  // https://ledzeppelin.github.io/assyrian-transliterator/?assyrian=ܒܲܢܵܝܹ̈ܐ،+ܒܲܢܵܝܹ̈ܐ،+ܒܲܢܵܝܹ̈ܐ
+  // into iMessage (mobile or desktop), a line break occurs at the first arabic comma.
+  // so we need to manually encode the following characters.  However when we do that,
+  // it double encodes in other browsers like desktop Chrome, so we decide not to use this
+  // function since this is the edgiest of edge cases
+  //
+  // Note that copying url from mobile safari, copies it unencoded but chrome automatically encodes.
+  // also note that copying url from desktop safari and pasting into text editor is unencoded
+  // however pasting into imessage is encoded
+
+  const ARABIC_QUESTION_MARK = '؟';
+  const ARABIC_COMMA = '،';
+  const ARABIC_SEMICOLON = '؛';
+
+  return txt.replaceAll(ARABIC_QUESTION_MARK, '%D8%9F').replaceAll(ARABIC_COMMA, '%D8%8C').replaceAll(ARABIC_SEMICOLON, '%D8%9B');
+}
+
 function isInvalidSyrc(text) {
   const validLetters = 'ܦܒܬܛܕܟܓܩܔܣܨܙܫܚܥܗܡܢܪܠܐܘܝ';
   const re = new RegExp(`([${validLetters}])`, 'g');
@@ -156,11 +175,12 @@ function resizeSyrcHeight() {
 function updateTransliteration(syrcResize = false) {
   const syrc = $('#syrc').val();
   const autoDialectSelector = $('#syrc-dialect option[value="0"]');
-  const selectedDialect = $('#syrc-dialect').find(':selected').val();
-  const usingAutoDetect = (selectedDialect == 0);
+  const selectedDialect = parseInt($('#syrc-dialect').find(':selected').val(), 10);
+  // const selectedDialect = $('#syrc-dialect').find(':selected').val();
+  const usingAutoDetect = selectedDialect === 0;
 
   const usingTruVowelsRes = usingTruVowels(syrc);
-  const useTru = (selectedDialect == 2 || (usingAutoDetect && usingTruVowelsRes));
+  const useTru = (selectedDialect === 2 || (usingAutoDetect && usingTruVowelsRes));
 
   if (useTru) {
     $('#syrc').addClass('suryoyo');
@@ -209,7 +229,7 @@ function updateTransliteration(syrcResize = false) {
   if (translit.trim().length === 0) {
     $('#latin').empty();
     $('#copy-text').fadeOut(0);
-    $('#bottom-mark-caption, #top-mark-caption, #other-mark-caption').hide();
+    $('#aii-typo-caption, #tru-typo-caption').hide();
   } else {
     $('#copy-text').fadeIn(0);
 
@@ -219,49 +239,56 @@ function updateTransliteration(syrcResize = false) {
     const reTruTop = truTopMarkRegex();
     const reTruOther = truOtherMarkRegex();
 
-    if (!useTru && reAiiBottom.test(translit)) {
-      translit = translit.replaceAll(reAiiBottom, '<span class="typo-circle bottom-mark">$1</span>');
-      $('#bottom-mark-caption').show();
-    } else {
-      $('#bottom-mark-caption').hide();
-    }
+    if (!useTru) {
+      $('#aii-typo-caption').show();
+      $('#tru-typo-caption').hide();
+      if (reAiiBottom.test(translit)) {
+        translit = translit.replaceAll(reAiiBottom, '<span class="typo-circle bottom-mark">$1</span>');
+        $('#aii-bottom-mark-caption').show();
+      } else {
+        $('#aii-bottom-mark-caption').hide();
+      }
 
-    if (!useTru && reAiiTop.test(translit)) {
-      translit = translit.replaceAll(reAiiTop, '<span class="typo-circle top-mark">$1</span>');
-      $('#top-mark-caption .caption-text').removeClass('using-suryoyo');
-      $('#top-mark-caption').show();
-    } else if (useTru && reTruTop.test(translit)) {
-      translit = translit.replaceAll(reTruTop, '<span class="typo-circle top-mark">$1</span>');
-      $('#top-mark-caption .caption-text').addClass('using-suryoyo');
-      $('#top-mark-caption').show();
-    } else {
-      $('#top-mark-caption').hide();
-    }
+      if (reAiiTop.test(translit)) {
+        translit = translit.replaceAll(reAiiTop, '<span class="typo-circle top-mark">$1</span>');
+        $('#aii-top-mark-caption').show();
+      } else {
+        $('#aii-top-mark-caption').hide();
+      }
 
-    if (!useTru && reAiiOther.test(translit)) {
-      translit = translit.replaceAll(reAiiOther, '<span class="typo-circle other-mark">$1</span>');
-      $('#other-mark-caption').show();
-    } else if (useTru && reTruOther.test(translit)) {
-      translit = translit.replaceAll(reTruOther, '<span class="typo-circle other-mark">$1</span>');
-      $('#other-mark-caption').show();
+      if (reAiiOther.test(translit)) {
+        translit = translit.replaceAll(reAiiOther, '<span class="typo-circle other-mark">$1</span>');
+        $('#aii-other-mark-caption').show();
+      } else {
+        $('#aii-other-mark-caption').hide();
+      }
     } else {
-      $('#other-mark-caption').hide();
+      $('#tru-typo-caption').show();
+      $('#aii-typo-caption').hide();
+
+      if (reTruTop.test(translit)) {
+        translit = translit.replaceAll(reTruTop, '<span class="typo-circle top-mark">$1</span>');
+        $('#tru-top-mark-caption').show();
+      } else {
+        $('#tru-top-mark-caption').hide();
+      }
+
+      if (reTruOther.test(translit)) {
+        translit = translit.replaceAll(reTruOther, '<span class="typo-circle other-mark">$1</span>');
+        $('#tru-other-mark-caption').show();
+      } else {
+        $('#tru-other-mark-caption').hide();
+      }
     }
 
     $('#latin').html(translit);
-
-    if ($('#typo-caption ul:first-child').children(':visible').length) {
-      $('#typo-caption').addClass('ul-gap');
-    } else {
-      $('#typo-caption').removeClass('ul-gap');
-    }
   }
 
-  if (selectedDialect == 1) {
+  if (selectedDialect === 1) {
     // manual aii
     $('#aii-orthography').show();
     $('#tru-orthography').hide();
-  } else if (selectedDialect == 2) {
+  } else if (selectedDialect === 2) {
     // manual tru
     $('#aii-orthography').hide();
     $('#tru-orthography').show();
@@ -313,9 +340,9 @@ function typeWriter(txt) {
   window.history.replaceState(null, '', url.toString());
 
   // hide typos while typing for words like ܡ̣ܢ
-  $('#typo-caption ul:first-child').hide();
-  $('#syrc-error-msg').css('visibility', 'hidden');
-
+  $('#aii-typo-caption, #tru-typo-caption').css('visibility', 'hidden');
+  // $('#syrc-error-msg').css('visibility', 'hidden');
+  $('#syrc-error-msg').hide();
   const delay = 50;
 
   for (let i = 0; i < txt.length; i += 1) {
@@ -331,7 +358,7 @@ function typeWriter(txt) {
   setTimeout(() => {
     // enable button again
     $('#roll-dice-aii,#roll-dice-tru').prop('disabled', false);
-    $('#typo-caption ul:first-child').show();
+    $('#aii-typo-caption, #tru-typo-caption').css('visibility', 'visible');
 
     // const url = new URL(window.location);
     // url.searchParams.set('assyrian', txt);
@@ -339,9 +366,10 @@ function typeWriter(txt) {
   }, delay * txt.length);
 
   // disable error msg for first few chars to avoid it looking glitchy
-  const NUM_CHARS = 6;
+  const NUM_CHARS = 10;
   setTimeout(() => {
-    $('#syrc-error-msg').css('visibility', 'visible');
+    // $('#syrc-error-msg').css('visibility', 'visible');
+    $('#syrc-error-msg').show();
   }, delay * NUM_CHARS);
 }
 

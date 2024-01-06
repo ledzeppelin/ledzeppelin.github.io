@@ -34,25 +34,38 @@ body
 #subtitle
   @include subtitle($key-color)
 
+#syrc-status-container
+  display: flex
+  padding: 6px $side-padding
+
+
+#rand-sentence-ref,
 #syrc-error-msg
-  @include eng-text('s', 400)
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
-  text-align: right
+  flex: 1 1 auto
 
   &:empty::after
     content: '\200B'
 
-#syrc-error-msg,
-#typo-caption
+#rand-sentence-ref
+  // background-color: lightblue
+  @include eng-text('xs', 400)
+  text-align: left
+
+#syrc-error-msg
+  // background-color: lightgray
+  @include eng-text('xs', 500)
+  text-align: right
+
+
+#aii-typo-caption,
+#tru-typo-caption
   padding: calc($side-padding/2) $side-padding
 
-#typo-caption
-  @include eng-text('s')
-
 #syrc,
-#rand-sentence-button,
+#rand-sentence-caption,
 #syrc-btn-group,
 #latin-btn-group,
 #latin
@@ -61,18 +74,13 @@ body
     background-color: $background-dark
 
 
-#rand-sentence-button
+#rand-sentence-caption
   @include eng-text('s', 400)
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
   padding: 0 $side-padding 6px
 
-  &:empty::after
-    content: '🎲 generate random sentence'
-
-.aii-bible-backlink
-  text-decoration: underline
 
 .btn-group
   column-gap: 6px
@@ -242,15 +250,10 @@ $border-width: 2px
     border-bottom-right-radius: $border-radius
 
 
-#typo-caption
-  display: flex
-  flex-direction: column
-
-  &.ul-gap
-    gap: $side-padding // sass-lint:disable-line no-misspelled-properties
-
+#aii-typo-caption,
+#tru-typo-caption
   ul
-    // https://stackoverflow.com/a/69591701
+    // need to use flex in order to set gap per https://stackoverflow.com/a/69591701
     display: flex
     flex-direction: column
     gap: calc($side-padding/2) // sass-lint:disable-line no-misspelled-properties
@@ -300,22 +303,20 @@ $border-width: 2px
 .other-mark
   @include color-typos(#ff1493)
 
-#bottom-mark-caption,
-#top-mark-caption,
-#other-mark-caption
+#aii-typo-caption,
+#tru-typo-caption
+  display: none
+
+#aii-bottom-mark-caption,
+#aii-top-mark-caption,
+#aii-other-mark-caption,
+#tru-top-mark-caption,
+#tru-other-mark-caption
   @include eng-text('s')
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
-  display: none
 
-#top-mark-caption
-  .caption-text:empty::after
-    content: '\00a0rwakha, qushaya, tipah used interchangeably?'
-
-  .using-suryoyo
-    &.caption-text:empty::after
-      content: '\00a0 express cṣoṣo and ḥboṣo with waw and yuḏ respectively'
 
 #aii-orthography,
 #tru-orthography

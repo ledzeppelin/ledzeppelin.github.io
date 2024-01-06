@@ -56,16 +56,25 @@ https://stackoverflow.com/a/65036296 -->
 
 <div id="title">ܪܬܡܐ</div>
 <div id="subtitle">Assyrian-English Transliterator</div>
-<div id="created-by-container">&nbsp;</div>
+<div id="created-by-container"><span class="webapp-backlink-meta">Also check out the ✝️ </span><a class="webapp-backlink-href" href='../assyrian-bible/'>Assyrian Bible</a></div>
+<!-- <div id="created-by-container">🎉 <span id="webapp-backlink-meta">check out the new </span><a class="webapp-backlink-href" href='../'>Searchable Assyrian Bible</a> 🎉</div> -->
+<!-- <div id="created-by-container">&nbsp;</div> -->
 
-<div id="syrc-error-msg"></div>
+<div id="syrc-status-container">
+  <div id="rand-sentence-ref"></div>
+  <div id="syrc-error-msg"></div>
+
+<!--   <div id="rand-sentence-ref"><span class="webapp-backlink-meta">sentence from ✝️ </span><a class="webapp-backlink-href" href="../assyrian-bible/?book=MRK&amp;chapter=10:19">Mark 10:19, Assyrian Bible</a></div>
+  <div id="syrc-error-msg">Enter Assyrian Letters Only</div> -->
+</div>
+
 <div id="syrc-container">
   <span id='clear-text' class="material-symbols-rounded">close</span>
   <textarea id="syrc" class='syrc-text' rows='1' placeholder="ܟܬܘܒ ,Enter text"></textarea>
 </div>
 
 
-<div id="rand-sentence-button"></div>
+<div id="rand-sentence-caption">generate random sentence</div>
 <div id="syrc-btn-group" class="btn-group">
   <button id="roll-dice-aii" class="btn"><span class='writing-system'>ܡܲܕ݂ܢܚܵܝܵܐ</span><span> Eastern</span></button>
   <button id="roll-dice-tru" class="btn"><span class='writing-system'>ܣܶܪܛܳܐ</span><span> Western</span></button>
@@ -75,8 +84,6 @@ https://stackoverflow.com/a/65036296 -->
     <option value="2">West Assyrian</option>
   </select>
 </div>
-
-<!-- ܐܘ ܩܰܕܝܫܐ ܡܳܪܝ̱ ܓܰܒܪܺܐܶܝܠ ܒܷܬܠܳܬ̥ܐ ܘܥܷܣܪܝ ܕܟܳܢܘܢ ܐܘ ܩܰܡܳܝܐ ܒܝ ܫܰܬܐ ܕܫܶܬ݂ܡܐ ܘܬܡܳܢܶܐ ܘܐܷܫܬܝ ܡܫܰܢܶܠܶܗ. ܐܘ ܩܰܘܪܰܝܕ݂ܶܗ ܟܰܠܶܗ -->
 
 <div id="latin-btn-group" class="btn-group">
   <button class="btn">latin</button>
@@ -88,17 +95,18 @@ https://stackoverflow.com/a/65036296 -->
 </div>
 <div id='aii-orthography'>Transliteration based on <a href='https://r12a.github.io/scripts/syrc/aii.html'>Assyrian Neo-Aramaic Orthography</a></div>
 <div id='tru-orthography'>Transliteration based on <a href='https://r12a.github.io/scripts/syrc/tru.html'>Turoyo (Surayt) Orthography</a></div>
-<div id="typo-caption">
+
+<div id="aii-typo-caption">
   <ul>
-    <li id="bottom-mark-caption">
+    <li id="aii-bottom-mark-caption">
       <span class="typo-small-circle bottom-mark"></span>
       <span class="caption-text">&nbsp;khwasa/rwasa, rukkakha, tipah used interchangeably?</span>
     </li>
-    <li id="top-mark-caption">
+    <li id="aii-top-mark-caption">
       <span class="typo-small-circle top-mark"></span>
-      <span class="caption-text"></span>
+      <span class="caption-text">&nbsp;rwakha, qushaya, tipah used interchangeably?</span>
     </li>
-    <li id="other-mark-caption">
+    <li id="aii-other-mark-caption">
       <span class="typo-small-circle other-mark"></span>
       <span class="caption-text">&nbsp;dangling marks or non-printing characters?</span>
     </li>
@@ -106,6 +114,18 @@ https://stackoverflow.com/a/65036296 -->
 </div>
 
 
+<div id="tru-typo-caption">
+  <ul>
+    <li id="tru-top-mark-caption">
+      <span class="typo-small-circle top-mark"></span>
+      <span class="caption-text">&nbsp;express cṣoṣo and ḥboṣo with waw and yuḏ respectively</span>
+    </li>
+    <li id="tru-other-mark-caption">
+      <span class="typo-small-circle other-mark"></span>
+      <span class="caption-text">&nbsp;dangling marks or non-printing characters?</span>
+    </li>
+  </ul>
+</div>
 
 </body>
 </html>

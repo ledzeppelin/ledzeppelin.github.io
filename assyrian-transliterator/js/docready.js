@@ -1,6 +1,6 @@
 $(document).ready(() => {
   $('#syrc').on('input', (e) => {
-    $('#rand-sentence-button').empty();
+    $('#rand-sentence-ref').empty();
     updateTransliteration(true);
 
     const url = new URL(window.location);
@@ -50,7 +50,7 @@ $(document).ready(() => {
   });
 
   $('#clear-text').click(() => {
-    $('#rand-sentence-button').empty();
+    $('#rand-sentence-ref').empty();
     $('#syrc').val('');
     updateTransliteration(true);
 
@@ -71,16 +71,18 @@ $(document).ready(() => {
     // from: https://stackoverflow.com/a/37401010
     const randVerse = Object.keys(aiiMark)[Math.floor(Math.random() * Object.keys(aiiMark).length)];
     const chapter = `${aiiMark[randVerse][0]}:${aiiMark[randVerse][1]}`;
+
+    const abc = 'ܐܝܼܢܵܐ ܐܵܢܝܼ ܠܵܐ ܡ̣ܢ ܦܘܼܪܡܹܐ ܠܗܘܿܢ'; // min ܡ̣ܢ to test flicker
     typeWriter(randVerse);
 
-    $('#rand-sentence-button').empty().append(
-      $('<span/>', { text: 'sentence from ' }),
-      $('<a/>', { class: 'aii-bible-backlink', text: `Mark ${chapter}, Assyrian Bible`, href: `../assyrian-bible/index.html?book=MRK&chapter=${chapter}` }),
+    $('#rand-sentence-ref').empty().append(
+      $('<span/>', { class: 'webapp-backlink-meta', text: 'sentence from ✝️ ' }),
+      $('<a/>', { class: 'webapp-backlink-href', text: `Mark ${chapter}, Assyrian Bible`, href: `../assyrian-bible/?book=MRK&chapter=${chapter}` }),
     );
   });
 
   $('#roll-dice-tru').click((e) => {
-    $('#rand-sentence-button').empty().append(
+    $('#rand-sentence-ref').empty().append(
       $('<span/>', { text: 'sentence from ' }),
       $('<a/>', { text: 'Šlomo Surayt Corpus', href: 'https://corpus.surayt.com/search.html?q=' }),
     );
