@@ -127,6 +127,7 @@ function aiiTranslit(aiiText) {
   // console.log(consonantsMinusGlides);
 
   const consonantsCapture = `([${glides}${consonantsMinusGlides}])`;
+  const consonantsNonCapture = `(?:[${glides}${consonantsMinusGlides}])`;
   const consonantsCaptureMinusAlaph = `([${YUDH}${WAW}${consonantsMinusGlides}])`;
   const vowelsW = `${TR_WAW_PLUS_RVASA}o`;
   const vowelsY = 'eiēī';
@@ -338,7 +339,7 @@ function aiiTranslit(aiiText) {
   re = new RegExp(`${consonantsCapture}${marhetanaCapture}${COMBINING_MACRON}${consonantsCapture}`, 'g');
   text = text.replaceAll(re, '$1$2e$3');
 
-  re = new RegExp(`${consonantsCapture}${TALQANA_ABOVE}`, 'g');
+  re = new RegExp(`${consonantsNonCapture}${TALQANA_ABOVE}`, 'g');
   text = text.replaceAll(re, '');
 
   // doubling consonants
@@ -430,7 +431,20 @@ function aiiTranslit(aiiText) {
 
   phoneticText = phoneticText.replaceAll('#', '');
 
-  re = new RegExp(`([${consonantsMinusGlides}${vowels}wy])([ ]+)ì`, 'g'); // hyphen delimited "to be" suffix
+  // this is to support webapps which pad transliterated text with with start and end delimiters
+  // for highlighting for "to be" without inital khwasa cases, see test cases
+  const sDelimiter = ' ❋ '; // we use uncommon dingbat
+  const eDelimiter = ' ❊ '; // we use uncommon dingbat
+  [[sDelimiter, `-${sDelimiter}`], [eDelimiter, `${eDelimiter}-`]].forEach((delimGroup) => {
+    const [delim, hypenTerm] = delimGroup;
+    const nonCG1 = `(?:[ ]+)${delim}(?:[ ]*)`;
+    const nonCG2 = `(?:[ ]*)${delim}(?:[ ]+)`;
+    const nonCG = `(?:${nonCG1}|${nonCG2})`;
+    re = new RegExp(`([${consonantsMinusGlides}${vowels}wy])${nonCG}ì`, 'g');
+    phoneticText = phoneticText.replaceAll(re, `$1${hypenTerm}`);
+  });
+
+  re = new RegExp(`([${consonantsMinusGlides}${vowels}wy])(?:[ ]+)ì`, 'g'); // hyphen delimited "to be" suffix
   phoneticText = phoneticText.replaceAll(re, '$1-');
 
   // No need to check if word starts with 'w-' for this replacement since the

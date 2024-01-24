@@ -49,10 +49,16 @@ a
   @include aii-text('xs', 400)
   text-decoration: underline
 
-sup
-  &.tr-sup
-    // <sup> https://stackoverflow.com/a/15286817
-    font-style: normal
-    margin-left: 3px
-    top: -.35em // overriding this so it doesn't get overlapped from previous line, ex. bible
-    // background-color: lightgray
+// footer
+.copyright
+  @include eng-text('xs')
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+  margin-bottom: 3px
+  text-align: justify
+  text-justify: inter-word
+
+  .emphasis-bible
+    font-style: italic

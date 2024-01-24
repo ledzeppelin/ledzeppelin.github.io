@@ -15,3 +15,8 @@ If webapp links don't contain a trailing slash, then query string parameters are
 
 * http://192.168.1.5:8000/assyrian-transliterator
 	* chrome on ios (incognito tabs only)
+
+
+### set lang to "syr"
+
+if we set <html lang="en"> chrome on iPhone suggests translating to diff lang for searchable assyrian bible

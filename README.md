@@ -2,8 +2,9 @@
 
 Webapp subdirectories will each have an index.html file that can be accessed directly in your web browser.  However to preview webapps on your phone and support cross origin requests, install docker desktop, then run `make up` for a dockerized webserver where individual webapps can be accessed via
 
-* http://localhost:8000/assyrian-bible
-* http://localhost:8000/assyrian-transliterator
+* http://localhost:8000/assyrian-bible/
+* http://localhost:8000/assyrian-transliterator/
+* http://localhost:8000/searchable-assyrian-bible/
 
 Github pages will ignore directories starting with an underscore.  Some webapp subdirectories will contain a Makefile - this is a helpful starting point to grokking how the webapp is cobbled together.
 

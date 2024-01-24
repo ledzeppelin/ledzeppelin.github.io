@@ -169,9 +169,28 @@ function testTranslit() {
     ['ܣܵܒ݂ܵܐ', 'sāḇā'], // ZQAPHA then RUKKAKHA
   ];
 
+  const ana = 'ܐܵܢܵܐ';
+  const wen = 'ܝܘܸܢ';
+  const sDelimiter = ' ❋ ';
+  const eDelimiter = ' ❊ ';
+
+  const phoneticExamples = [
+    // start and end delimiters for transliteration highlighting
+    [`${ana} ${sDelimiter}${wen}`, `ana-${sDelimiter}wen`],
+    [`${ana}${sDelimiter} ${wen}`, `ana-${sDelimiter}wen`],
+    [`${ana} ${eDelimiter}${wen}`, `ana${eDelimiter}-wen`],
+    [`${ana}${eDelimiter} ${wen}`, `ana${eDelimiter}-wen`],
+  ];
+
   examples.forEach((pair) => {
     const [aii, expected] = pair;
     const actual = aiiTranslit(aii).latin;
+    console.assert(actual === expected, '%o', { actual, expected });
+  });
+
+  phoneticExamples.forEach((pair) => {
+    const [aii, expected] = pair;
+    const actual = aiiTranslit(aii).phonetic;
     console.assert(actual === expected, '%o', { actual, expected });
   });
 

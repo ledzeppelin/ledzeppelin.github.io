@@ -1,6 +1,8 @@
 import re
+import unicodedata
 import scrapy
 from yattag import Doc
+
 
 #NLT edge case...
 nlt_edge_cases = {
@@ -812,7 +814,9 @@ def parse_verse(verse_key, verse_num, verse, next_verse, response):
 
         return {
             'meta': verse_key,
-            'body': sentence_single_space,
+            # we're normalizing since the data will be indexed/searched via fuse.js
+            'body': unicodedata.normalize('NFC', sentence_single_space),
+            # 'body': sentence_single_space,
         }
 
     if next_verse is not None:

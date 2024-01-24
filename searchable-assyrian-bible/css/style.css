@@ -1,0 +1,370 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap");
+@font-face {
+  font-family: "Noto Sans Syriac Western";
+  font-weight: 100 900;
+  src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
+}
+a {
+  color: rgb(51, 102, 204);
+  text-decoration: none;
+}
+@media (prefers-color-scheme: dark) {
+  a {
+    color: rgb(133, 177, 255);
+  }
+}
+a:hover {
+  text-decoration: underline;
+}
+a:visited {
+  color: rgb(121, 92, 178);
+}
+@media (prefers-color-scheme: dark) {
+  a:visited {
+    color: rgb(186, 159, 239);
+  }
+}
+a:active {
+  color: orange;
+}
+@media (prefers-color-scheme: dark) {
+  a:active {
+    color: rgb(188, 90, 0);
+  }
+}
+
+#created-by-container {
+  color: rgb(28, 28, 30);
+  margin-bottom: 30px;
+  margin-top: -2px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  #created-by-container {
+    color: rgb(221, 221, 232);
+  }
+}
+
+.webapp-backlink-meta {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+}
+
+.webapp-backlink-href {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.creator-backlink-href {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  text-decoration: underline;
+}
+
+.copyright {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  color: rgb(134, 134, 137);
+  margin-bottom: 3px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+@media (prefers-color-scheme: dark) {
+  .copyright {
+    color: rgb(149, 149, 157);
+  }
+}
+.copyright .emphasis-bible {
+  font-style: italic;
+}
+
+body {
+  background-color: rgb(242, 242, 247);
+  margin: 0 auto 50px;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(28, 28, 30);
+  }
+}
+
+#title {
+  -webkit-text-stroke-color: rgb(240, 0, 0);
+  -webkit-text-stroke-width: 3px;
+  color: transparent;
+  direction: rtl;
+  font-family: "Noto Sans Syriac";
+  font-size: 90px;
+  font-weight: 900;
+  line-height: 1;
+  margin-top: 50px;
+  text-align: center;
+}
+@media screen and (max-width: 768px) {
+  #title {
+    -webkit-text-stroke-width: 0.390625vw;
+    font-size: 11.71875vw;
+    margin-top: 6.5104166667vw;
+  }
+}
+@media screen and (max-width: 480px) {
+  #title {
+    -webkit-text-stroke-width: 0.5208333333vw;
+  }
+}
+
+#subtitle {
+  color: rgb(240, 0, 0);
+  font-family: Roboto, sans-serif;
+  font-size: 32px;
+  font-weight: 300;
+  margin-top: -18px;
+  text-align: center;
+}
+@media screen and (max-width: 768px) {
+  #subtitle {
+    font-size: calc(12px + 2.6041666667vw);
+    margin-top: -2.34375vw;
+  }
+}
+@media screen and (max-width: 480px) {
+  #subtitle {
+    font-weight: 400;
+  }
+}
+
+#app-container {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+#searchbar-container {
+  margin: 32px 16px 8px;
+  position: relative;
+}
+
+#clear-text {
+  -webkit-tap-highlight-color: transparent;
+  color: rgb(134, 134, 137);
+  cursor: pointer;
+  display: none;
+  font-size: 24px;
+  padding: 12px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media (prefers-color-scheme: dark) {
+  #clear-text {
+    color: rgb(149, 149, 157);
+  }
+}
+#clear-text.clear-aii-text {
+  left: 0;
+  right: auto;
+}
+
+#autofocus-tip-container {
+  color: rgb(134, 134, 137);
+  font-family: "Roboto Mono", monospace;
+  font-size: 11px;
+  pointer-events: none;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@media (prefers-color-scheme: dark) {
+  #autofocus-tip-container {
+    color: rgb(149, 149, 157);
+  }
+}
+@media screen and (width <= 1011px) {
+  #autofocus-tip-container {
+    display: none !important;
+  }
+}
+
+kbd {
+  background-color: rgb(242, 242, 247);
+  border: 1px solid rgb(203, 203, 205);
+  box-shadow: 0 1px 1px rgb(203, 203, 205);
+  color: rgb(28, 28, 30);
+  border-radius: 3px;
+  font-weight: 700;
+  padding: 2px 4px;
+}
+@media (prefers-color-scheme: dark) {
+  kbd {
+    background-color: rgb(28, 28, 30);
+    border: 1px solid #7b7b85;
+    box-shadow: 0 1px 1px #7b7b85;
+    color: rgb(221, 221, 232);
+  }
+}
+
+#searchbar,
+.aii-verse,
+.aii-tr,
+.eng-verse {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #searchbar,
+  .aii-verse,
+  .aii-tr,
+  .eng-verse {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#searchbar {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  background-color: #fff;
+  border: 1px solid rgb(203, 203, 205);
+  border-radius: 24px;
+  box-sizing: border-box;
+  direction: ltr;
+  display: block;
+  line-height: 2;
+  outline: 0;
+  padding-bottom: 6px;
+  padding-left: 20px;
+  padding-right: 46px;
+  padding-top: 6px;
+  width: 100%;
+}
+@media (prefers-color-scheme: dark) {
+  #searchbar {
+    background-color: rgb(54, 54, 57);
+    border: 1px solid rgb(54, 54, 57);
+  }
+}
+#searchbar::placeholder {
+  color: rgb(134, 134, 137);
+}
+@media (prefers-color-scheme: dark) {
+  #searchbar::placeholder {
+    color: rgb(149, 149, 157);
+  }
+}
+#searchbar:focus {
+  border: 1px solid rgb(51, 102, 204);
+}
+@media (prefers-color-scheme: dark) {
+  #searchbar:focus {
+    border: 1px solid rgb(133, 177, 255);
+  }
+}
+#searchbar.aii-search-text {
+  direction: rtl;
+  padding-left: 46px;
+  padding-right: 20px;
+  text-indent: 4px;
+}
+
+#search-results {
+  padding: 16px;
+}
+
+.search-result {
+  padding-top: 16px;
+}
+
+.verse-meta {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 22.4px;
+  margin-bottom: 0;
+  margin-top: 16px;
+  text-align: right;
+}
+
+.highlighted {
+  color: rgb(240, 0, 0);
+  font-weight: 500;
+}
+@media (prefers-color-scheme: dark) {
+  .highlighted {
+    color: #ff2424;
+  }
+}
+
+.highlighted2 {
+  text-decoration: underline;
+  text-decoration-color: rgb(240, 0, 0);
+  text-decoration-thickness: 2px;
+}
+@media (prefers-color-scheme: dark) {
+  .highlighted2 {
+    text-decoration-color: #ff2424;
+  }
+}
+
+.aii-verse,
+.aii-tr,
+.eng-verse {
+  margin-bottom: 4px;
+}
+
+.aii-verse {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 22.4px;
+  text-align: right;
+}
+
+.aii-tr {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-style: italic;
+  font-size: 16px;
+}
+
+.tr-backlink-container {
+  font-style: normal;
+  margin-top: -2px;
+  padding-bottom: 6px;
+}
+
+.eng-verse {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+}
+.eng-verse.missing-verse {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+}
+.eng-verse.missing-verse::before {
+  content: "(NLT Translation not available)";
+}
+
+#copyright-container {
+  margin: 24px 16px;
+}
+
+/*# sourceMappingURL=style.css.map */

@@ -73,10 +73,22 @@ a:active {
   text-decoration: underline;
 }
 
-sup.tr-sup {
-  font-style: normal;
-  margin-left: 3px;
-  top: -0.35em;
+.copyright {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  color: rgb(134, 134, 137);
+  margin-bottom: 3px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+@media (prefers-color-scheme: dark) {
+  .copyright {
+    color: rgb(149, 149, 157);
+  }
+}
+.copyright .emphasis-bible {
+  font-style: italic;
 }
 
 body {

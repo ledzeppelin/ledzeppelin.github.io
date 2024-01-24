@@ -24,6 +24,8 @@ function urlEncodeSpecialChars(txt) {
 }
 
 function isInvalidSyrc(text) {
+  // this contains gamal garshuni which is why we don't use
+  // AiiUtils.validLetters from /shared_js/aii-utils.js
   const validLetters = 'ܦܒܬܛܕܟܓܩܔܣܨܙܫܚܥܗܡܢܪܠܐܘܝ';
   const re = new RegExp(`([${validLetters}])`, 'g');
   return text.match(re) == null;

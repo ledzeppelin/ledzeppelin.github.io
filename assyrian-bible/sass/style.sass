@@ -51,8 +51,6 @@ body
   // #title and #subtitle elements above, see: https://samhermes.com/posts/closing-gap-above-sticky-elements/
   position: sticky
   top: 0
-  z-index: 1 // otherwise overlaps with .tr-sup
-
 
 select
   @include eng-text('m')
@@ -111,6 +109,8 @@ $row-spacing: 28px
     text-decoration: underline
 
 #search-bible-backlink-container
+  padding-bottom: 6px
+  padding-top: 2px
   text-align: right
 
 .verses-ol
@@ -144,6 +144,12 @@ li
 .aii-tr
   @include eng-text('m', $is-translit: true)
 
+.tr-backlink-container
+  font-style: normal
+  margin-top: -2px
+  padding-bottom: 6px
+
+
 .eng-verse
   @include eng-text('m')
 
@@ -174,15 +180,3 @@ li
 #copyright-container
   margin: 24px $side-padding
 
-.copyright
-  @include eng-text('xs')
-  color: $secondary-label
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
-
-  margin-bottom: 3px
-  text-align: justify
-  text-justify: inter-word
-
-  .emphasis-bible
-    font-style: italic
