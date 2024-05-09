@@ -10,22 +10,22 @@
 
   gtag('config', 'G-48Y7ENQMTX');
 </script>
-<title>Assyrian-English Transliterator</title>
+<title>assyrian-english transliterator</title>
 <meta name="description" content="Transliterate Assyrian (Sureth, Surayt/Suryoyo) to English">
 
 <!-- Facebook Meta Tags -->
 <!-- ignore og:url since we want to respect query string parameters -->
-<!-- <meta property="og:url" content="https://ledzeppelin.github.io/assyrian-transliterator/"> -->
+<!-- <meta property="og:url" content="https://www.sharrukin.io/assyrian-transliterator/"> -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Assyrian-English Transliterator">
+<meta property="og:title" content="assyrian-english transliterator">
 <meta property="og:description" content="Transliterate Assyrian (Sureth, Surayt/Suryoyo) to English">
-<meta property="og:image" content="https://ledzeppelin.github.io/assyrian-transliterator/default.jpg">
+<meta property="og:image" content="https://www.sharrukin.io/assyrian-transliterator/default.jpg">
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Assyrian-English Transliterator">
+<meta name="twitter:title" content="assyrian-english transliterator">
 <meta name="twitter:description" content="Transliterate Assyrian (Sureth, Surayt/Suryoyo) to English">
-<meta name="twitter:image" content="https://ledzeppelin.github.io/assyrian-transliterator/default.jpg">
+<meta name="twitter:image" content="https://www.sharrukin.io/assyrian-transliterator/default.jpg">
 <!-- Meta Tags Generated via https://www.opengraph.xyz -->
 
 <!-- charset must be utf8 otherwise we have issues when running on a server
@@ -39,24 +39,35 @@ https://stackoverflow.com/a/65036296 -->
 <link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 <link rel="stylesheet" href="css/style.css">
 
+<!-- order of these imports doesn't matter since they don't have dependencies -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/aii-translit.js"></script>
 <script type="text/javascript" src="js/tru-translit.js"></script>
 
-<script type="text/javascript" src="js/aii-mark.js"></script>
-<script type="text/javascript" src="js/tru-sentences.js"></script>
+
+
+
+
+
+<script type="text/javascript" src="js/consts/aii-mark.js"></script>
+<script type="text/javascript" src="js/consts/tru-sentences.js"></script>
+<!-- ######################################################################## -->
+
 <script type="text/javascript" src="js/functions.js"></script>
 <script type="text/javascript" src="js/docready.js"></script>
+
+
+
+
 
 </head>
 <body>
 
 <div id="title">ܪܬܡܐ</div>
-<div id="subtitle">Assyrian-English Transliterator</div>
-<div id="created-by-container"><span class="webapp-backlink-meta">Check out the new 🔎 </span><a class="webapp-backlink-href" href='../searchable-assyrian-bible/'>Searchable Assyrian Bible</a></div>
+<div id="subtitle">assyrian-english transliterator</div>
+<div id="created-by-container">&nbsp;</div>
 
 <div id="syrc-status-container">
   <div id="rand-sentence-ref"></div>
@@ -67,12 +78,12 @@ https://stackoverflow.com/a/65036296 -->
 </div>
 
 <div id="syrc-container">
-  <span id='clear-text' class="material-symbols-rounded">close</span>
+  <button id='clear-text' class="material-symbols-rounded">close</button>
   <textarea id="syrc" class='syrc-text' rows='1' placeholder="ܟܬܘܒ ,Enter text"></textarea>
 </div>
 
 
-<div id="rand-sentence-caption">generate random sentence</div>
+<div id="rand-sentence-caption">generate random sentence:</div>
 <div id="syrc-btn-group" class="btn-group">
   <button id="roll-dice-aii" class="btn"><span class='writing-system'>ܡܲܕ݂ܢܚܵܝܵܐ</span><span> Eastern</span></button>
   <button id="roll-dice-tru" class="btn"><span class='writing-system'>ܣܶܪܛܳܐ</span><span> Western</span></button>
@@ -88,7 +99,7 @@ https://stackoverflow.com/a/65036296 -->
   <button class="btn active">default</button>
 </div>
 <div id="latin-container">
-  <span id='copy-text' class="material-symbols-rounded">content_copy</span>
+  <button id='copy-text' class="material-symbols-rounded">content_copy</button>
   <div id="latin" data-placeholder="Transliteration"></div>
 </div>
 <div id='aii-orthography'>Transliteration based on <a href='https://r12a.github.io/scripts/syrc/aii.html'>Assyrian Neo-Aramaic Orthography</a></div>

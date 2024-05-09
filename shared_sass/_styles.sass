@@ -33,7 +33,7 @@ a
     color: $label-dark
 
   margin-bottom: 30px
-  margin-top: -2px
+  // margin-top: -2px
   padding-left: 16px // should parameterize side-padding as a global
   padding-right: 16px // should parameterize side-padding as a global
   text-align: center
@@ -48,17 +48,3 @@ a
 .creator-backlink-href
   @include aii-text('xs', 400)
   text-decoration: underline
-
-// footer
-.copyright
-  @include eng-text('xs')
-  color: $secondary-label
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
-
-  margin-bottom: 3px
-  text-align: justify
-  text-justify: inter-word
-
-  .emphasis-bible
-    font-style: italic

@@ -1,0 +1,37 @@
+@function curtain-shadow($incr)
+  $step: 1px
+  $ts: ()
+  @for $i from 1 through $incr
+    $ts: append($ts, 0 $step * $i 0 rgba(white, .12 * (1 - (calc(1/$incr) * $i))), comma)
+  @return $ts
+
+
+@mixin song-title-max
+  font-weight: 400
+  text-shadow: curtain-shadow(105)
+  transform: perspective(290px) rotateY(20deg)
+
+@mixin song-title-min
+  font-weight: 200
+  text-shadow: curtain-shadow(65)
+  transform: perspective(1000px) rotateY(20deg)
+
+
+@keyframes perspectivize-lyric
+  0%
+    @include song-title-max
+
+  4%
+    @include song-title-max
+
+  44%
+    @include song-title-min
+
+  52%
+    @include song-title-min
+
+  92%
+    @include song-title-max
+
+  100%
+    @include song-title-max

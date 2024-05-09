@@ -45,12 +45,6 @@ def str_ref_to_list(ref_replacement):
             raise ValueError('the reference is syntactically invalid')
 
 ref_replacements = [
-    # you can run `make process-verses` with ref_replacement logic commented out
-    # and peruse bible-verses-str-literal.json for ':reference:'
-    #
-    # <a> can highlight diff verses if you specify list instead of True
-    # ex. see Luke 9's reference with sub dict
-
     # Mark 1
     'ܡܬܝ 3‏:1‏-12',
     'ܠܘܩܐ 3‏:1‏-9',

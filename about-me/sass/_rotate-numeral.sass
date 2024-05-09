@@ -1,0 +1,67 @@
+// sass-lint:disable no-vendor-prefixes
+// sass-lint:disable no-color-literals
+
+// inspired by https://codepen.io/zitrusfrisch/pen/AYXMXJ
+$clr: #fff
+$end: 40deg
+
+@mixin birth-year-1-max
+  color: #fff
+
+@mixin birth-year-1-min
+  color: transparent
+  transform: rotateX($end)
+
+@mixin birth-year-2-max
+  -webkit-text-stroke-color: #888
+  bottom: 59%
+  color: #888
+
+@mixin birth-year-2-min
+  -webkit-text-stroke-color: rgba(white, .4)
+  bottom: 58%
+  color: transparent
+  transform: rotateX($end)
+
+@keyframes rotate-birth-year-1
+  0%
+    @include birth-year-1-max
+
+  4%
+    @include birth-year-1-max
+
+  44%
+    @include birth-year-1-min
+
+  52%
+    @include birth-year-1-min
+
+  92%
+    @include birth-year-1-max
+
+  100%
+    @include birth-year-1-max
+
+@keyframes rotate-birth-year-2
+  0%
+    @include birth-year-2-max
+
+  4%
+    @include birth-year-2-max
+
+  44%
+    @include birth-year-2-min
+
+  52%
+    @include birth-year-2-min
+
+  92%
+    @include birth-year-2-max
+
+  100%
+    @include birth-year-2-max
+
+
+// 0123456789abcdef
+//      ----
+//             ----

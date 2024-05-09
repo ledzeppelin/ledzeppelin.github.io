@@ -1,0 +1,142 @@
+@use 'sass:color'
+@use 'colors' as *
+@use 'mixins' as *
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap')
+
+// sass-lint:disable no-ids
+@mixin search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x)
+  $button-width: 24px
+
+  body
+    background-color: $secondary-background
+    @media (prefers-color-scheme: dark)
+      background-color: $background-dark
+    margin: 0 auto 50px
+
+  #title
+    @include syrc-header($key-color)
+
+  #subtitle
+    @include subtitle($key-color)
+
+  #app-container
+    margin: 0 auto
+    max-width: $max-width
+
+  #searchbar-container
+    // background-color: lightgray
+    margin: 32px $side-padding 8px
+    position: relative
+
+  #clear-text
+    -webkit-tap-highlight-color: transparent // prevent flicker when tapping on phone
+    // background-color: rgba(255, 0, 0, .1)
+    background-color: transparent
+    border: 0
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+    cursor: pointer
+    display: none
+    font-size: $button-width
+    padding: $button-padding $button-padding + $close-x $button-padding  $button-padding
+    position: absolute
+    right: 0
+    top: 50%
+    transform: translateY(-50%)
+
+    &.clear-aii-text
+      left: 0
+      padding: $button-padding $button-padding $button-padding $button-padding + $close-x
+      right: auto
+
+  #autofocus-tip-container
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+    font-family: 'Roboto Mono', monospace
+    // font-family: 'Roboto', monospace
+    font-size: 11px
+    pointer-events: none
+    position: absolute
+    right: $searchbar-inset-x
+    top: 50%
+    transform: translateY(-50%)
+
+    $desktop-width: 1011px // from github homepage
+    @media screen and (width <= $desktop-width)
+      display: none !important // don't show tip on smaller devices
+
+
+  kbd
+    // style from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/kbd
+    background-color: $secondary-background
+    border: 1px solid $separator
+    border-radius: 3px
+    box-shadow: 0 1px 1px $separator
+    color: $label
+    @media (prefers-color-scheme: dark)
+      $border-color-dark: color.adjust($secondary-label-dark, $lightness: -10%)
+      background-color: $background-dark
+      border: 1px solid $border-color-dark
+      box-shadow: 0 1px 1px $border-color-dark
+      color: $label-dark
+    font-weight: 700
+    padding: 2px 4px
+
+  #searchbar
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+
+  #searchbar
+    // -webkit-appearance: none // removes top shadow (tested on SE 2nd gen iOS 14.5)
+    $text-indent: 4px // need extra padding for letters like ܓ
+    @include aii-text('xs')
+    // height: 100px
+
+    background-color: $background
+    border: 1px solid $separator
+    @media (prefers-color-scheme: dark)
+      background-color: $secondary-background-dark
+      border: 1px solid $secondary-background-dark
+
+    border-radius: 24px
+    box-sizing: border-box // size of input won't increase due to padding
+    direction: ltr // since we're using aii
+    display: block
+
+    // otherwise diacritics for words like ܡܵܨܹܐ gets cut off in safari 
+    // and english gets cutoff and input becomes vertically scrollable in chrome
+    line-height: 2
+
+    // we use border instead of outline because webkit adds 1px of background outside
+    // of the outline (confirm w/ focus when zoomed in)
+    outline: 0
+    padding-bottom: 6px
+    padding-left: $searchbar-inset-x
+    padding-right: $searchbar-inset-x + $button-width + 2px
+    padding-top: 6px
+    width: 100%
+
+    &::placeholder
+      color: $secondary-label
+      @media (prefers-color-scheme: dark)
+        color: $secondary-label-dark
+
+
+    &:focus
+      border: 1px solid $link
+      @media (prefers-color-scheme: dark)
+        border: 1px solid $link-dark
+
+
+    &.aii-search-text
+      direction: rtl
+      padding-left: $searchbar-inset-x + $button-width + 2px
+      padding-right: $searchbar-inset-x - $text-indent
+      text-indent: $text-indent
+

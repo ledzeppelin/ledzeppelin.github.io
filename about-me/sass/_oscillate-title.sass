@@ -1,0 +1,165 @@
+// sass-lint:disable no-vendor-prefixes
+// sass-lint:disable no-color-literals
+// sass-lint:disable property-sort-order
+
+// inspired by https://codepen.io/aardrian/pen/NWaGroB
+$alt-color: #fff
+// clipping needs to be applied after setting background, otherwise clipping doesn't take effect on android
+@keyframes oscillate-title
+  0%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 90%, $alt-color 90%, $alt-color 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  4%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 80%, $alt-color 80%, $alt-color 90%, rgba($alt-color, .4) 90%, rgba($alt-color, .4) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  8%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 70%, $alt-color 70%, $alt-color 80%, rgba($alt-color, .4) 80%, rgba($alt-color, .4) 90%, rgba($alt-color, .3) 90%, rgba($alt-color, .3) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  12%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 60%, $alt-color 60%, $alt-color 70%, rgba($alt-color, .4) 70%, rgba($alt-color, .4) 80%, rgba($alt-color, .3) 80%, rgba($alt-color, .3) 90%, rgba($alt-color, .2) 90%, rgba($alt-color, .2) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  16%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 50%, $alt-color 50%, $alt-color 60%, rgba($alt-color, .4) 60%, rgba($alt-color, .4) 70%, rgba($alt-color, .3) 70%, rgba($alt-color, .3) 80%, rgba($alt-color, .2) 80%, rgba($alt-color, .2) 90%, rgba($alt-color, .1) 90%, rgba($alt-color, .1) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  20%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 40%, $alt-color 40%, $alt-color 50%, rgba($alt-color, .4) 50%, rgba($alt-color, .4) 60%, rgba($alt-color, .3) 60%, rgba($alt-color, .3) 70%, rgba($alt-color, .2) 70%, rgba($alt-color, .2) 80%, rgba($alt-color, .1) 80%, rgba($alt-color, .1) 90%, rgba($alt-color, 0) 90%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  24%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 30%, $alt-color 30%, $alt-color 40%, rgba($alt-color, .4) 40%, rgba($alt-color, .4) 50%, rgba($alt-color, .3) 50%, rgba($alt-color, .3) 60%, rgba($alt-color, .2) 60%, rgba($alt-color, .2) 70%, rgba($alt-color, .1) 70%, rgba($alt-color, .1) 80%, rgba($alt-color, 0) 80%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  28%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 20%, $alt-color 20%, $alt-color 30%, rgba($alt-color, .4) 30%, rgba($alt-color, .4) 40%, rgba($alt-color, .3) 40%, rgba($alt-color, .3) 50%, rgba($alt-color, .2) 50%, rgba($alt-color, .2) 60%, rgba($alt-color, .1) 60%, rgba($alt-color, .1) 70%, rgba($alt-color, 0) 70%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  32%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 10%, $alt-color 10%, $alt-color 20%, rgba($alt-color, .4) 20%, rgba($alt-color, .4) 30%, rgba($alt-color, .3) 30%, rgba($alt-color, .3) 40%, rgba($alt-color, .2) 40%, rgba($alt-color, .2) 50%, rgba($alt-color, .1) 50%, rgba($alt-color, .1) 60%, rgba($alt-color, 0) 60%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  36%
+    background: linear-gradient(to left, $alt-color 0%, $alt-color 10%, rgba($alt-color, .3) 10%, rgba($alt-color, .3) 20%, rgba($alt-color, .2) 20%, rgba($alt-color, .2) 30%, rgba($alt-color, .1) 30%, rgba($alt-color, .1) 40%, rgba($alt-color, 0) 40%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  40%
+    background: linear-gradient(to left, $alt-color 0%, $alt-color 10%, rgba($alt-color, .2) 10%, rgba($alt-color, .2) 20%, rgba($alt-color, .1) 20%, rgba($alt-color, .1) 30%, rgba($alt-color, 0) 30%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  44%
+    background: linear-gradient(to left, $alt-color 0%, $alt-color 10%, rgba($alt-color, .1) 10%, rgba($alt-color, .1) 20%, rgba($alt-color, 0) 20%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  48%
+    background: linear-gradient(to left, $alt-color 0%, $alt-color 10%, rgba($alt-color, 0) 10%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  52%
+    background: linear-gradient(to left, rgba($alt-color, .4) 0%, rgba($alt-color, .4) 10%, $alt-color 10%, $alt-color 20%, rgba($alt-color, 0) 20%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  56%
+    background: linear-gradient(to left, rgba($alt-color, .3) 0%, rgba($alt-color, .3) 10%, rgba($alt-color, .4) 10%, rgba($alt-color, .4) 20%, $alt-color 20%, $alt-color 30%, rgba($alt-color, 0) 30%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  60%
+    background: linear-gradient(to left, rgba($alt-color, .2) 0%, rgba($alt-color, .2) 10%, rgba($alt-color, .3) 10%, rgba($alt-color, .3) 20%, rgba($alt-color, .4) 20%, rgba($alt-color, .4) 30%, $alt-color 30%, $alt-color 40%, rgba($alt-color, 0) 40%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  64%
+    background: linear-gradient(to left, rgba($alt-color, .1) 0%, rgba($alt-color, .1) 10%, rgba($alt-color, .2) 10%, rgba($alt-color, .2) 20%, rgba($alt-color, .3) 20%, rgba($alt-color, .3) 30%, rgba($alt-color, .4) 30%, rgba($alt-color, .4) 40%, $alt-color 40%, $alt-color 50%, rgba($alt-color, 0) 50%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  68%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 10%, rgba($alt-color, .1) 10%, rgba($alt-color, .1) 20%, rgba($alt-color, .2) 20%, rgba($alt-color, .2) 30%, rgba($alt-color, .3) 30%, rgba($alt-color, .3) 40%, rgba($alt-color, .4) 40%, rgba($alt-color, .4) 50%, $alt-color 50%, $alt-color 60%, rgba($alt-color, 0) 60%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  72%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 20%, rgba($alt-color, .1) 20%, rgba($alt-color, .1) 30%, rgba($alt-color, .2) 30%, rgba($alt-color, .2) 40%, rgba($alt-color, .3) 40%, rgba($alt-color, .3) 50%, rgba($alt-color, .4) 50%, rgba($alt-color, .4) 60%, $alt-color 60%, $alt-color 70%, rgba($alt-color, 0) 70%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  76%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 30%, rgba($alt-color, .1) 30%, rgba($alt-color, .1) 40%, rgba($alt-color, .2) 40%, rgba($alt-color, .2) 50%, rgba($alt-color, .3) 50%, rgba($alt-color, .3) 60%, rgba($alt-color, .4) 60%, rgba($alt-color, .4) 70%, $alt-color 70%, $alt-color 80%, rgba($alt-color, 0) 80%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  80%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 40%, rgba($alt-color, .1) 40%, rgba($alt-color, .1) 50%, rgba($alt-color, .2) 50%, rgba($alt-color, .2) 60%, rgba($alt-color, .3) 60%, rgba($alt-color, .3) 70%, rgba($alt-color, .4) 70%, rgba($alt-color, .4) 80%, $alt-color 80%, $alt-color 90%, rgba($alt-color, 0) 90%, rgba($alt-color, 0) 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  84%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 50%, rgba($alt-color, .1) 50%, rgba($alt-color, .1) 60%, rgba($alt-color, .2) 60%, rgba($alt-color, .2) 70%, rgba($alt-color, .3) 70%, rgba($alt-color, .3) 80%, rgba($alt-color, .4) 80%, rgba($alt-color, .4) 90%, $alt-color 90%, $alt-color 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  88%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 60%, rgba($alt-color, .1) 60%, rgba($alt-color, .1) 70%, rgba($alt-color, .2) 70%, rgba($alt-color, .2) 80%, rgba($alt-color, .3) 80%, rgba($alt-color, .3) 90%, $alt-color 90%, $alt-color 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  92%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 70%, rgba($alt-color, .1) 70%, rgba($alt-color, .1) 80%, rgba($alt-color, .2) 80%, rgba($alt-color, .2) 90%, $alt-color 90%, $alt-color 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  96%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 80%, rgba($alt-color, .1) 80%, rgba($alt-color, .1) 90%, $alt-color 90%, $alt-color 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+  100%
+    background: linear-gradient(to left, rgba($alt-color, 0) 0%, rgba($alt-color, 0) 90%, $alt-color 90%, $alt-color 100%)
+    background-clip: text
+    -webkit-background-clip: text
+
+
+@mixin my-name-max
+  -webkit-text-stroke-color: white
+
+@mixin my-name-min
+  -webkit-text-stroke-color: rgba(white, .4)
+
+
+@keyframes my-name-stroke
+  0%
+    @include my-name-max
+
+  4%
+    @include my-name-max
+
+  44%
+    @include my-name-min
+
+  52%
+    @include my-name-min
+
+  92%
+    @include my-name-max
+
+  100%
+    @include my-name-max
+

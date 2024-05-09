@@ -39,7 +39,6 @@ a:active {
 #created-by-container {
   color: rgb(28, 28, 30);
   margin-bottom: 30px;
-  margin-top: -2px;
   padding-left: 16px;
   padding-right: 16px;
   text-align: center;
@@ -70,24 +69,6 @@ a:active {
   line-height: 1.4;
   font-size: 16.8px;
   text-decoration: underline;
-}
-
-.copyright {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  color: rgb(134, 134, 137);
-  margin-bottom: 3px;
-  text-align: justify;
-  text-justify: inter-word;
-}
-@media (prefers-color-scheme: dark) {
-  .copyright {
-    color: rgb(149, 149, 157);
-  }
-}
-.copyright .emphasis-bible {
-  font-style: italic;
 }
 
 body {
@@ -342,6 +323,23 @@ li:first-child {
 
 #copyright-container {
   margin: 24px 16px;
+}
+#copyright-container .copyright {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  color: rgb(134, 134, 137);
+  margin-bottom: 3px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+@media (prefers-color-scheme: dark) {
+  #copyright-container .copyright {
+    color: rgb(149, 149, 157);
+  }
+}
+#copyright-container .copyright .emphasis-bible {
+  font-style: italic;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -85,15 +85,16 @@
   font-family: 'Noto Sans Syriac'
 
 
-@mixin eng-text($size, $weight: 400, $mixed: false, $is-translit: false)
+@mixin eng-text($size, $weight: 400, $is-translit: false, $using-aii: false)
   font-weight: $weight
 
-  @if $mixed == false
-    font-family: Roboto, sans-serif
+  @if $using-aii == true
+    // Generic font family can be placed after Eastern font since Eastern font is
+    // 1. variable - is needed for highlighting
+    // 2. supports uppercase/lowercase latin glyphs
+    font-family: Roboto, 'Noto Sans Syriac Eastern', sans-serif
   @else
-    // this should almost never be used since we expect eng to not contain aii
-    // text contains all eng with a small minority of aii
-    font-family: Roboto, sans-serif, 'Noto Sans Syriac Eastern'
+    font-family: Roboto, sans-serif
 
   @if $is-translit == true
     font-style: italic

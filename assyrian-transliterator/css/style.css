@@ -40,7 +40,6 @@ a:active {
 #created-by-container {
   color: rgb(28, 28, 30);
   margin-bottom: 30px;
-  margin-top: -2px;
   padding-left: 16px;
   padding-right: 16px;
   text-align: center;
@@ -71,24 +70,6 @@ a:active {
   line-height: 1.4;
   font-size: 16.8px;
   text-decoration: underline;
-}
-
-.copyright {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  color: rgb(134, 134, 137);
-  margin-bottom: 3px;
-  text-align: justify;
-  text-justify: inter-word;
-}
-@media (prefers-color-scheme: dark) {
-  .copyright {
-    color: rgb(149, 149, 157);
-  }
-}
-.copyright .emphasis-bible {
-  font-style: italic;
 }
 
 body {
@@ -243,13 +224,13 @@ body {
 
 #syrc-btn-group {
   align-items: flex-end;
-  border-bottom: 1px solid rgb(203, 203, 205);
+  border-bottom: 1px solid rgba(91, 91, 96, 0.29);
   flex-direction: row;
   padding: 0 16px 16px;
 }
 @media (prefers-color-scheme: dark) {
   #syrc-btn-group {
-    border-bottom: 1px solid rgb(62, 62, 66);
+    border-bottom: 1px solid rgba(104, 104, 111, 0.6);
   }
 }
 #syrc-btn-group button {
@@ -553,6 +534,8 @@ body {
 #clear-text,
 #copy-text {
   -webkit-tap-highlight-color: transparent;
+  background-color: transparent;
+  border: 0;
   color: rgb(134, 134, 137);
   cursor: pointer;
   display: none;

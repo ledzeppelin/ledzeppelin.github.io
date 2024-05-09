@@ -4,6 +4,7 @@
 
 @use '../../shared_sass/colors' as *
 @use '../../shared_sass/mixins' as *
+@use '../../shared_sass/mixins_bible' as *
 @use '../../shared_sass/styles' as *
 @use '../../shared_sass/symbols' as *
 @use '../../shared_sass/constants' as *
@@ -176,7 +177,6 @@ li
     background-color: rgba(42, 66, 107) // sRGB digital color meter from dark mode google search highlight
 
 
-// footer
 #copyright-container
-  margin: 24px $side-padding
+  @include copyright-container($side-padding)
 

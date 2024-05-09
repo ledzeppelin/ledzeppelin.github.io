@@ -313,7 +313,7 @@ function updateTransliteration(syrcResize = false) {
 }
 
 function typeWriter(txt) {
-  // iterateive approach to the recursive https://www.w3schools.com/howto/howto_js_typewriter.asp
+  // iterative approach to the recursive https://www.w3schools.com/howto/howto_js_typewriter.asp
 
   // Usually we want to update query string parameters after state change, however this time we do
   // so BEFORE state has changed. This is because of the way some browsers handle state with
@@ -321,7 +321,7 @@ function typeWriter(txt) {
   // params and observe that the content inside of the textarea gets played on top of snapshot
   // cache of intial load when doing the following:
   //
-  // In chrome, access the html file (ie not from http://192.168.1.5:8000/), click button to
+  // In chrome, access the html file (ie not from http://localhost:8000/), click button to
   // generate sentence, then click link to go to source and go back in browser.  Restarting desktop
   // doesn't affect state.  Note playback still occurs in current configuration but it's the lesser
   // of two evils when compared to setting parameters AFTER state change because we can see the

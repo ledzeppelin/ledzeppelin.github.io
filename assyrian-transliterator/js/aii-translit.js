@@ -108,7 +108,7 @@ function aiiTranslit(aiiText) {
     ž: 'zh',
     ḇ: 'v',
     ṯ: 'th',
-    ḏ: 'dh',
+    ḏ: 'd',
     ḵ: 'kh',
     ḡ: 'gh',
     ē: 'e', // 'eh' sound
@@ -407,7 +407,9 @@ function aiiTranslit(aiiText) {
   text = text.replaceAll(re, 'u$1');
 
   // remove consecutive duplicate characters
-  text = text.replaceAll(/([ʿʾāšyḥčž])\1+/g, '$1');
+  text = text.replaceAll(/([ʿʾāšyḥhčžj])\1+/g, '$1');
+  text = text.replaceAll(/([ḥčḡš])h/g, '$1');
+
   text = text.replaceAll('-ʾ', '-');
 
   let phoneticText = text; // maintain word boundaries
@@ -423,8 +425,8 @@ function aiiTranslit(aiiText) {
   // adding phonetic support
   // ///////////////////////
   phoneticText = phoneticText.replaceAll('-ʿ', '-'); // bwdl prefixing ܥ ring
-  phoneticText = phoneticText.replaceAll(/#ʿ/g, '#'); // starting with ܥ E
-  phoneticText = phoneticText.replaceAll(/ʿ#/g, '#'); // ending in ܥ E
+  phoneticText = phoneticText.replaceAll(/#ʿ([^#])/g, '#$1'); // starting with ܥ E
+  phoneticText = phoneticText.replaceAll(/([^#])ʿ#/g, '$1#'); // ending in ܥ E
   phoneticText = phoneticText.replaceAll(/ē([ʿʾ])/g, 'eh$1');
   phoneticText = phoneticText.replaceAll(/ē#/g, 'eh#');
   phoneticText = phoneticText.replaceAll(/uh#/g, 'oo#');
@@ -449,7 +451,8 @@ function aiiTranslit(aiiText) {
 
   // No need to check if word starts with 'w-' for this replacement since the
   // only time we add hyphens is if the word starts with waw in the first place
-  phoneticText = phoneticText.replaceAll('w-', 'oo-')
+  phoneticText = phoneticText
+    .replaceAll('w-', 'oo-')
     .replaceAll('āyh', 'āy')
     .replaceAll('ayh', 'ay'); // ܕܒܹܝܠܲܝܗܝ dbēlay not dbēlayh
 

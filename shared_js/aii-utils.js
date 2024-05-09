@@ -49,7 +49,7 @@ class AiiUtils {
   }
 
   static stripMarkers(aiiV) {
-    // This is a js port of https://en.wiktionary.org/w/index.php?title=Module:aii-translit
+    // This is a js port of https://en.wiktionary.org/wiki/Module:Syrc-entryname
     const nonCaptureGroup = `(?:${AiiUtils.diacriticCharClass})`;
     const re = new RegExp(nonCaptureGroup, 'g');
     return aiiV.replaceAll(re, '');

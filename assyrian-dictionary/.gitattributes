@@ -1,0 +1,4 @@
+js/json/aii.jsonl filter=lfs diff=lfs merge=lfs -text
+js/json/aii.prev.jsonl filter=lfs diff=lfs merge=lfs -text
+js/consts/aii-dict-tags.js filter=lfs diff=lfs merge=lfs -text
+js/consts/aii-dict.min.js filter=lfs diff=lfs merge=lfs -text

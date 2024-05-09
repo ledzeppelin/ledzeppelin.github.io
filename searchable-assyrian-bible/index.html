@@ -10,22 +10,22 @@
 
   gtag('config', 'G-48Y7ENQMTX');
 </script>
-<title>Searchable Assyrian Bible</title>
+<title>searchable assyrian bible</title>
 <meta name="description" content="Search the Assyrian Bible in English or Assyrian">
 
 <!-- Facebook Meta Tags -->
 <!-- ignore og:url since we want to respect query string parameters -->
-<!-- <meta property="og:url" content="https://ledzeppelin.github.io/searchable-assyrian-bible/"> -->
+<!-- <meta property="og:url" content="https://www.sharrukin.io/searchable-assyrian-bible/"> -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Searchable Assyrian Bible">
+<meta property="og:title" content="searchable assyrian bible">
 <meta property="og:description" content="Search the Assyrian Bible in English or Assyrian.">
-<meta property="og:image" content="https://ledzeppelin.github.io/searchable-assyrian-bible/default.jpg">
+<meta property="og:image" content="https://www.sharrukin.io/searchable-assyrian-bible/default.jpg">
 
 <!-- Twitter Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Searchable Assyrian Bible">
+<meta name="twitter:title" content="searchable assyrian bible">
 <meta name="twitter:description" content="Search the Assyrian Bible in English or Assyrian.">
-<meta name="twitter:image" content="https://ledzeppelin.github.io/searchable-assyrian-bible/default.jpg">
+<meta name="twitter:image" content="https://www.sharrukin.io/searchable-assyrian-bible/default.jpg">
 <!-- Meta Tags Generated via https://www.opengraph.xyz -->
 
 <!-- charset must be utf8 otherwise we have issues when running on a server
@@ -39,32 +39,40 @@ https://stackoverflow.com/a/65036296 -->
 <link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 <link rel="stylesheet" href="css/style.css">
 
+<!-- order of these imports doesn't matter since they don't have dependencies -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
 
-<script type="text/javascript" src="../shared_js/book-display-name.js"></script>
+
+
+
+
+<script type="text/javascript" src="../shared_js/consts/book-display-name.js"></script>
 <script type="text/javascript" src="../shared_js/aii-utils.js"></script>
 <script type="text/javascript" src="../assyrian-transliterator/js/aii-translit.js"></script>
+<script type="text/javascript" src="js/consts/searchable-bible.min.js"></script>
+<!-- ######################################################################## -->
 
-<script type="text/javascript" src="js/searchable-bible.min.js"></script>
+<script type="text/javascript" src="js/shared_search_funcs.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
-<script type="text/javascript" src="js/fuse-configs.js"></script>
-<script type="text/javascript" src="js/docready.js"></script>
+<script type="text/javascript" src="js/pre_docready.js"></script>
+<script type="text/javascript" src="js/shared_docready.js"></script>
+
+
 
 </head>
 <body>
 
 <div id="title">ܟܬܒ̈ܐ ܩܕܝܫ̈ܐ</div>
-<div id="subtitle">Searchable Assyrian Bible</div>
+<div id="subtitle">searchable assyrian bible</div>
 <div id="created-by-container">&nbsp;</div>
 
 
 <div id='app-container'>
   <div id='searchbar-container'>
-    <span id='clear-text' class="material-symbols-rounded">close</span>
+    <button id='clear-text' class="material-symbols-rounded">close</button>
     <span id='autofocus-tip-container'>
       <span>type </span><kbd>/</kbd><span> to search</span>
     </span>
@@ -82,3 +90,16 @@ https://stackoverflow.com/a/65036296 -->
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

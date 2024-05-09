@@ -1,0 +1,25 @@
+
+@mixin blur-img-max
+  filter: blur(1px) grayscale(0) saturate(110%) contrast(110%) brightness(1.2)
+
+@mixin blur-img-min
+  filter: blur(0) grayscale(40%)
+
+@keyframes blur-img
+  0%
+    @include blur-img-max
+
+  4%
+    @include blur-img-max
+
+  44%
+    @include blur-img-min
+
+  52%
+    @include blur-img-min
+
+  92%
+    @include blur-img-max
+
+  100%
+    @include blur-img-max

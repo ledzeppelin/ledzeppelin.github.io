@@ -1,0 +1,326 @@
+@use 'sass:color'
+@use '../../shared_sass/colors' as *
+// sass-lint:disable no-ids
+
+$key-color: deeppink
+$key-color-dark: color.adjust($key-color, $lightness: 10%)
+
+// https://developer.apple.com/design/human-interface-guidelines/color
+// Accessible (Light)
+$apple-blue: rgb(0, 64, 221)
+$apple-red: rgb(215, 0, 21)
+$apple-green: rgb(36, 138, 61)
+$apple-purple: rgb(173, 68, 171)
+$apple-colors: ($apple-blue, $apple-red, $apple-green, $apple-purple)
+
+// Accessible (Dark)
+$apple-blue-dark: rgb(64, 156, 255)
+$apple-red-dark: rgb(255, 105, 97)
+$apple-green-dark-1: rgb(49, 222, 75)
+$apple-green-dark: color.mix($apple-green-dark-1, $apple-green, 60%) // since Accessible (Dark) is too bright
+$apple-purple-dark: rgb(218, 143, 255)
+$apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $apple-purple-dark)
+
+@mixin atuta-box-color($color, $dark-color)
+  $border-a: .3
+
+  background-color: rgba($color, .06)
+  border-color: rgba($color, $border-a)
+  color: $color
+
+  @media (prefers-color-scheme: dark)
+    background-color: rgba($dark-color, .12)
+    border-color: rgba($dark-color, $border-a)
+    color: $dark-color
+
+@mixin atuta-box-colors($apple-colors, $apple-colors-dark)
+  @for $i from 0 through 3
+    .atuta-box-#{$i}
+      $color: nth($apple-colors, $i+1)
+      $dark-color: nth($apple-colors-dark, $i+1)
+      @include atuta-box-color($color, $dark-color)
+
+@include atuta-box-colors($apple-colors, $apple-colors-dark)
+
+
+#tag-search-results
+  border-bottom-color: $separator
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    border-bottom-color: $separator-dark
+    color: $secondary-label-dark
+
+
+  .exact-search-match
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+
+.wiktionary-link-container
+  border-bottom-color: $separator
+  @media (prefers-color-scheme: dark)
+    border-bottom-color: $separator-dark
+
+
+  span
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+.more-vocalized
+  background-color: $background
+  border-color: $separator
+  @media (prefers-color-scheme: dark)
+    background-color: $secondary-background-dark
+    border-color: $secondary-background-dark
+
+
+.more-vocalized-icon
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+
+.aii-v-word
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+  .highlighted
+    color: $key-color
+
+
+.aii-v-word-tr-container
+  .aii-v-word-tr
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+
+    .highlighted
+      color: $key-color
+      @media (prefers-color-scheme: dark)
+        color: $key-color-dark
+
+
+.aii-v-meta-container
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+@mixin verb-conj-border($bg, $blue, $red, $green)
+  $clr-gap: 5deg
+  $clr-gap-2: $clr-gap * 2
+
+  $pre-0: $bg $clr-gap-2
+
+  $stop-1: rgba($blue, .75) $clr-gap-2 120deg - $clr-gap
+  $post-1: $bg 120deg - $clr-gap 120deg + $clr-gap
+
+  $stop-2: rgba($red, .75) 120deg + $clr-gap 240deg - $clr-gap
+  $post-2: $bg 240deg - $clr-gap 240deg + $clr-gap
+
+  $stop-3: rgba($green, .75) 240deg + $clr-gap 360deg - $clr-gap-2
+  $post-3: $bg 360deg - $clr-gap-2 - $clr-gap 360deg
+
+  // approach from: https://stackoverflow.com/a/69574606
+  $bg-gradient: linear-gradient($bg, $bg)
+  $border-gradient: conic-gradient($pre-0, $stop-1, $post-1, $stop-2, $post-2, $stop-3, $post-3)
+
+  background: $bg-gradient, $border-gradient
+
+
+.pos
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+  .more-defs-button-container
+    &.not-verb-conj-button
+      background-color: $secondary-background
+      border-color: $separator
+      @media (prefers-color-scheme: dark)
+        background-color: $background-dark
+        border-color: $separator-dark
+
+
+    &.verb-conj-button
+      @include verb-conj-border($secondary-background, $apple-blue, $apple-red, $apple-green)
+      @media (prefers-color-scheme: dark)
+        @include verb-conj-border($background-dark, $apple-blue-dark, $apple-red-dark, $apple-green-dark)
+
+
+    .more-defs-button
+      color: $label
+      @media (prefers-color-scheme: dark)
+        color: $label-dark
+
+
+.t3-categories
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+.gloss-container
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+.gloss
+  .highlighted
+    color: $key-color
+    @media (prefers-color-scheme: dark)
+      color: $key-color-dark
+
+
+.example-row-vals
+  border-left-color: $separator
+  @media (prefers-color-scheme: dark)
+    border-left-color: $separator-dark
+
+
+.more-info
+  .infl-row
+    &.is-heading
+      border-bottom-color: $separator
+      @media (prefers-color-scheme: dark)
+        border-bottom-color: $separator-dark
+
+
+  .infl-meta
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+.cog-val-container
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+.infl-val-container
+
+  .infl-val
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+    &.does-match
+      color: $label
+      @media (prefers-color-scheme: dark)
+        color: $label-dark
+
+
+  .infl-val-eng
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+  .infl-tr
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+    &.does-match
+      color: $label
+      @media (prefers-color-scheme: dark)
+        color: $label-dark
+
+
+.atwateh-boxes
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+.more-sounds-button-container
+  background-color: $secondary-background
+  border-color: $separator
+  @media (prefers-color-scheme: dark)
+    background-color: $background-dark
+    border-color: $separator-dark
+
+
+  .more-sounds-button
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+
+.play-sound-container
+  .play-sound
+    background-color: $secondary-background
+    border-color: $separator
+    color: $label
+    @media (prefers-color-scheme: dark)
+      background-color: $background-dark
+      border-color: $separator-dark
+      color: $label-dark
+
+
+    &.waiting
+      border-color: color.adjust($separator, $lightness: 5%)
+      color: color.adjust($label, $lightness: 50%)
+      @media (prefers-color-scheme: dark)
+        border-color: color.adjust($separator-dark, $lightness: -5%)
+        color: color.mix($label-dark, $background-dark, 40%)
+
+
+    &.playing-sound
+      border-color: $secondary-label
+      @media (prefers-color-scheme: dark)
+        border-color: $secondary-label-dark
+
+
+  .accent-name-container
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+.ipa
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+  &.playing-sound
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+
+.ipa-info
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+.tag-highlight
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+.tr-backlink-container
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+#wiktionary-datadump
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark

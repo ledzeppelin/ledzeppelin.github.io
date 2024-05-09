@@ -1,0 +1,238 @@
+// sass-lint:disable no-ids
+@use 'sass:color'
+
+@use '../../shared_sass/constants' as *
+@use '../../shared_sass/colors' as *
+@use '../../shared_sass/mixins' as * // to import fonts
+
+@use 'blur-img' as *
+@use 'glow-symbol' as *
+@use 'oscillate-title' as *
+@use 'perspectivize-lyric' as *
+@use 'rotate-numeral' as *
+
+// sass-lint:disable no-vendor-prefixes
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@100..900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;1,400&display=swap')
+
+@mixin text-size($size, $weight: 400)
+  font-family: 'Ubuntu', sans-serif
+  font-weight: $weight
+
+  line-height: 1.3
+
+  @if $size == 'xs'
+    font-size: 12px
+  @else if $size == 's'
+    font-size: 14px
+  @else if $size == 'm'
+    font-size: 16px
+  @else if $size == 'l'
+    font-size: 22px
+  @else if $size == 'xl'
+    font-size: 28px
+  @else
+    @error 'Unknown size #{$size}.'
+
+$max-width: 600px
+$x-margin: 20px
+$right: 8%
+
+$z-song-title: 1
+$z-silhouette: 2
+$z-section-container: 2 // needs to be greater than $z-song-title
+$z-img-caption: 3
+$z-symbol: 3 // needs to be greater than $z-silhouette
+
+body
+  background-color: black
+  color: $label-dark
+  margin: 0 auto 100px
+  max-width: $max-width
+
+#img-container
+  position: relative
+
+#pier,
+#silhouette
+  display: block
+  height: 100%
+  width: 100%
+
+#pier
+  @include blur-img-max
+
+#silhouette
+  left: 0
+  pointer-events: none
+  position: absolute
+  top: 0
+  z-index: $z-silhouette
+
+#my-name,
+.birth-year,
+#symbol,
+#song-title
+  line-height: 1.15
+
+#my-name
+  @include my-name-max
+
+  $stroke-width: 2px
+  $size: 110px
+  -webkit-text-stroke-width: $stroke-width
+  color: transparent
+  font-family: 'Noto Sans Syriac Eastern'
+  font-size: $size
+  font-weight: 900
+  position: absolute
+  right: $right
+  top: 6%
+
+
+  @media screen and (width <= $max-width)
+    font-size: vw($size, $max-width)
+
+  @media screen and (width <= $mobile-viewport-width-max)
+    -webkit-text-stroke-width: vw($stroke-width + 2px)
+
+
+.birth-year
+  $size: 80px
+  -webkit-text-stroke-width: 2px
+  color: transparent
+  font-family: 'Noto Sans Syriac Eastern'
+  font-size: $size
+  font-weight: 800
+  position: absolute
+  right: $right
+
+  @media screen and (width <= $max-width)
+    font-size: vw($size, $max-width)
+
+
+#birth-year-1
+  @include birth-year-1-max
+  -webkit-text-stroke-color: rgba(white, 1)
+  bottom: 59%
+  z-index: 1
+
+#birth-year-2
+  @include birth-year-2-max
+
+
+#symbol
+  @include glow-max
+
+  $size: 50px
+  bottom: 28%
+  color: black
+  font-family: 'Noto Sans Syriac'
+  font-size: $size
+  font-weight: 500
+  left: 34%
+  position: absolute
+  transform: rotate(-8deg)
+  z-index: $z-symbol
+
+  @media screen and (width <= $max-width)
+    font-size: vw($size, $max-width)
+
+
+#song-title
+  @include song-title-min
+
+  $size: 36px
+  bottom: 23%
+  color: white
+  font-family: 'Noto Sans Syriac Eastern'
+  font-size: $size
+  position: absolute
+  right: $right
+  transform-origin: right
+  z-index: $z-song-title
+
+  @media screen and (width <= $max-width)
+    font-size: vw($size, $max-width)
+
+
+#img-caption
+  @include text-size('xs', 400)
+  bottom: 0
+  color: white
+  left: 0
+  margin: 8px $x-margin
+  position: absolute
+  text-shadow: black 1px 1px 3px
+  z-index: $z-img-caption
+
+.section-container
+  background-color: black
+  margin: 32px $x-margin
+  position: relative
+
+.section-container-1
+  margin-top: 0
+  padding-top: 32px // we do this to make sure song title doesn't creep over
+  z-index: $z-section-container
+
+.section-title
+  @include text-size('xl', 300)
+  color: #777
+  padding-bottom: 4px
+
+.section-body
+  @include text-size('s')
+  color: $label-dark
+
+ul
+  margin: 4px 0
+
+  li
+    @include text-size('s')
+
+    .tr
+      font-style: italic
+
+a
+  color: $link-dark
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+
+  &:visited
+    color: $visited-link-dark
+
+  &:active
+    color: $active-link-dark
+
+$dur: 2s
+@function staggered-animation($animation-name)
+  $num-steps: 6
+  $offset: .1 // the larger, the sooner it reaches end compared to oscillation
+  $delay: -1 * $offset * $dur
+  @return $animation-name $dur steps($num-steps, end) $delay infinite
+
+@media screen and (prefers-reduced-motion: no-preference)
+  #pier
+    animation: staggered-animation(blur-img)
+
+  #my-name
+    animation: oscillate-title $dur ease-in-out infinite, staggered-animation(my-name-stroke)
+
+  #symbol
+    animation: staggered-animation(glow-symbol)
+
+  #birth-year-1
+    animation: staggered-animation(rotate-birth-year-1)
+
+  #birth-year-2
+    animation: staggered-animation(rotate-birth-year-2)
+
+  #song-title
+    animation: staggered-animation(perspectivize-lyric)
+
+
+

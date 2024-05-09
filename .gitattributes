@@ -1,0 +1,3 @@
+_photoshop/me.psd filter=lfs diff=lfs merge=lfs -text
+social_media_cards.psd filter=lfs diff=lfs merge=lfs -text
+favicon.psd filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,506 @@
+@use 'sass:color'
+@use 'sass:list'
+// sass-lint:disable no-ids
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable no-mergeable-selectors
+// sass-lint:disable no-vendor-prefixes
+
+@use 'dark-mode' as *
+
+@use '../../shared_sass/mixins' as *
+@use '../../shared_sass/mixins_bible' as *
+@use '../../shared_sass/styles' as *
+@use '../../shared_sass/symbols' as *
+@use '../../shared_sass/searchapp_mixin' as *
+
+$key-color: deeppink
+$max-width: 582px
+$side-padding: 16px
+$searchbar-inset-x: 20px
+$close-x: $searchbar-inset-x - $side-padding
+$button-padding: 12px
+
+@include search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x)
+
+#search-results
+  padding: 8px $side-padding + $searchbar-inset-x 16px
+
+#tag-search-results
+  @include eng-text('s')
+  border-bottom-style: solid
+  border-bottom-width: 1px
+  margin: 16px $side-padding + $searchbar-inset-x
+  padding: 0 0 16px
+
+  ul
+    padding-left: 20px
+
+  li
+    list-style-type: none
+
+  .l1-tag,
+  .l2-tag,
+  .l3-tag:not(.l-inline-tag)
+    // this selects all block element tags except .l0-tag
+    margin-top: 9px
+
+    &:not(.always-show)
+      display: none
+
+  .inline-tags
+    display: inline
+    padding: 0
+
+    & > li
+      display: inline
+
+  .expandable
+    list-style-type: disclosure-closed
+
+    &.expanded
+      list-style-type: disclosure-open
+
+    > a
+      &:hover // overriding from _styles.sass
+        text-decoration: none
+
+      @media (hover: hover) and (pointer: fine) // use underline on desktop
+        &:hover
+          text-decoration: underline
+
+
+  .highlighted
+    font-weight: 700
+
+  .exact-search-match
+    font-weight: 700
+    pointer-events: none
+
+.search-result
+  display: flex // so we can set order
+  flex-direction: column
+  margin-bottom: 16px
+  padding-bottom: 8px
+  position: relative
+
+$table-y-spacing: 32px
+$v-word-spacing: 40px
+
+
+.wiktionary-link-container
+  border-bottom-style: solid
+  border-bottom-width: 1px
+  margin-top: $table-y-spacing - $v-word-spacing
+  padding-bottom: 4px
+  text-align: right
+
+  span
+    @include eng-text('xs')
+
+  a
+    @include syc-text('xs')
+
+    &.indent-word
+      // otherwise slidetoggle on mobile safari for words starting wth ܓ cuts off atuta
+      // background-color: rgba(red, .1)
+      margin-right: 5px
+
+    &.indent-word-more
+      margin-right: 8px
+
+
+$half-icon-size: 12px
+
+@mixin button-container
+  $br: 1px
+  border-radius: $half-icon-size + $br
+  cursor: pointer
+  height: 2 * ($half-icon-size + $br)
+  padding: 0
+  width: 3 * $half-icon-size + 2 * $br
+
+
+button
+  touch-action: manipulation // disable double tap: https://stackoverflow.com/a/53236027
+
+
+.more-vocalized
+  @include button-container
+  border-style: solid
+  border-width: 1px
+  position: absolute
+  right: 0
+  top: 0
+
+
+.more-vocalized-icon
+  font-size: $half-icon-size * 2
+  transition: transform 200ms
+
+  &.expanded
+    transform: rotate(180deg)
+
+.aii-v-word-container
+  padding-bottom: $v-word-spacing
+
+  &:not(.always-show)
+    display: none
+    order: -1 // more pronounced slidedown of other vocalized
+
+.aii-v-word
+  @include aii-text('l')
+  margin-right: 42px
+  // safeguard for ܨܲܚܨܹܐ
+  padding-bottom: 6px
+  text-align: left
+  // background-color: lightblue
+
+  .aii-v-atuta-box
+    border-radius: 6px
+    border-style: solid
+    border-width: 2px
+    margin-right: 2px
+    padding: 0 5px
+
+    &:not(.highlighted)
+      @include aii-text('l', 300)
+
+    &::before
+      content: '\200C'
+
+
+.aii-v-word-tr-container
+  align-items: center
+  display: flex
+
+  .aii-v-word-tr
+    @include eng-text('m', $is-translit: true)
+
+    .highlighted
+      font-weight: 500
+
+.aii-v-meta-container
+  @include eng-text('s')
+  // margin-bottom: 16px
+  margin-top: 6px
+
+
+.jsonline
+  padding-top: 12px
+
+.pos
+  @include eng-text('s')
+  align-items: center
+  display: flex
+  gap: 6px
+  margin-bottom: 6px
+  min-height: $half-icon-size * 2 // ex. "khdha"  has mix of pos which can/can't expand, this ensures consistent height
+
+
+  & > *
+    align-self: flex-end
+
+  .more-defs-button-container
+    @include button-container
+    $border-thickness: 1px
+    flex-shrink: 0
+    margin-left: auto
+
+
+    &.not-verb-conj-button
+      border-style: solid
+      border-width: $border-thickness
+
+    &.verb-conj-button
+      background-clip: padding-box, border-box
+      background-origin: padding-box, border-box
+      border: 2px solid transparent
+
+      .more-defs-button
+        margin-top: -1px
+
+
+    .more-defs-button
+      font-size: $half-icon-size * 2
+      transition: transform 200ms
+
+      &.expanded
+        transform: rotate(180deg)
+
+
+.senses
+  margin: 0
+  padding-left: 34px
+
+  &.only-one-gloss
+    list-style-type: none
+
+// https://chriskirknielsen.com/blog/inline-lists-with-conditional-separators/
+.t3-categories
+  display: inline
+  padding: 0
+
+.t3-categories > li
+  display: inline
+
+  &::before
+    content: '\00a0⸱ '
+
+
+.show-linkages
+  // this entire block exists so that when we tap on mobile, underline doesn't stay
+  &:hover // overriding from _styles.sass
+    text-decoration: none
+
+  @media (hover: hover) and (pointer: fine) // use underline on desktop
+    &:hover
+      text-decoration: underline
+
+
+// $display-toggle: auto
+$display-toggle: none
+
+.gloss-container
+  @include eng-text('s')
+
+  &:not(.always-show)
+    display: $display-toggle
+
+.gloss
+  @include eng-text('s', $using-aii: true)
+
+  .highlighted
+    font-weight: 500
+
+
+.t3-linkages-and-examples
+  display: $display-toggle
+
+  &> .example-row
+    display: flex
+    justify-content: flex-end
+    padding: 8px 0
+
+    .example-row-vals
+      border-left-style: solid
+      border-left-width: 3px
+      padding: 8px 0
+      padding-left: 12px
+
+
+.more-info // all t2 tables like head templates and inflections
+  display: $display-toggle
+
+  &.has-heading
+    padding-top: $table-y-spacing
+
+
+.infl-row
+  align-items: baseline
+  display: flex
+  gap: 8px
+  padding: 2px 0
+
+  &.is-heading
+    border-bottom-style: solid
+    border-bottom-width: 1px
+    margin-bottom: 4px // for conjugations like "azen"
+
+
+  .infl-meta
+    @include eng-text('s', 400)
+
+  .infl-vals
+    margin-left: auto
+
+
+// 3 tables for vis verb conj
+//   no heading
+//     1. root's derived terms
+//   has heading
+//     2. root entry table
+//     3. verb conj table
+
+.more-info > .rows-y-padding
+  margin: 8px 0
+  // background-color: rgba(green, .1)
+
+
+.headered-rows > .rows-y-padding
+  margin: 12px 0
+
+  &:first-child
+    margin-top: 0
+    // background-color: rgba(red, .1)
+
+  &:last-child
+    margin-bottom: 0
+    // background-color: rgba(blue, .1)
+
+.cog-val-container
+  @include eng-text('s')
+  // background-color: rgba(red, .1)
+  // padding should help match height of infl-val-container
+  padding-bottom: 7px
+  padding-top: 4px
+  text-align: right
+
+.infl-val-container
+  align-items: baseline
+  column-gap: 4px
+  direction: rtl
+  display: flex
+  flex-flow: row wrap
+
+  // background-color: rgba(red, .1)
+
+  text-align: right
+  // padding-bottom: 80px
+
+  .infl-val
+    @include aii-text('s')
+
+    &.does-match
+      @include aii-text('s', 500)
+
+  .infl-val-eng
+    @include eng-text('s')
+
+  .infl-tr
+    @include eng-text('s', $is-translit: true)
+    direction: ltr // ex. for question mark orientation - "dakhee-wet ?"
+
+    &.does-match
+      @include eng-text('s', 500, $is-translit: true)
+
+  .infl-val-anchor
+    @include aii-text('s')
+
+
+.atwateh-boxes
+  @include aii-text('s')
+  margin: 8px 0
+
+.atuta-box
+  @include aii-text('s')
+  border-radius: 4px
+  border-style: solid
+  border-width: 2px
+  margin: 0 1px
+  // need y-padding for diacritics
+  padding: 2px 4px
+
+  &.break-ligatures
+    &::before
+      content: '\200C'
+
+    &::after
+      content: '\200C'
+
+.atuta-box-is-first
+  margin-right: 0
+
+.sound-containers
+  .sound-container
+    padding-top: 12px
+
+    &:not(.always-show)
+      display: none
+
+.more-sounds-button-container
+  @include button-container
+  border-style: solid
+  border-width: 1px
+  flex-shrink: 0
+  margin-right: 8px
+
+  .more-sounds-button
+    font-size: $half-icon-size * 2
+    transition: transform 200ms
+
+    &.expanded
+      transform: rotate(180deg)
+
+
+$sound-button-padding: 6px
+$sound-accent-offset: 8px
+
+.play-sound-container
+  align-items: center
+  display: flex
+
+  .play-sound
+    border-radius: $half-icon-size + $sound-button-padding
+    border-style: solid
+    border-width: 1px
+    cursor: pointer
+    font-size: $half-icon-size * 2
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
+    padding: $sound-button-padding
+    transition: border 200ms, color 200ms, font-variation-settings 200ms
+
+    &.playing-sound
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+
+  .accent-name-container
+    @include eng-text('s')
+    margin-left: $sound-accent-offset
+
+
+.sound-meta-container
+  display: none
+  $sound-meta-offset: 2 * $half-icon-size + 2 * $sound-button-padding + $sound-accent-offset
+  margin-bottom: 12px
+  margin-left: $sound-meta-offset
+
+.ipa
+  @include eng-text('m')
+  margin-left: 8px
+  overflow-wrap: anywhere // break long words "holy spirit"
+  // slight flicker on iPhone for chrome for words like [t͡ʃæl.vɑː],
+  // more pronounced when line-height is 1.5
+  transition: color 200ms
+
+
+.ipa-info
+  @include eng-text('xs')
+  margin-left: 46px
+
+  &:not(.always-show)
+    display: none
+
+.tag-highlight
+  font-weight: 700
+
+.tr-backlink-container
+  font-style: normal
+  margin-top: -2px
+  // padding-bottom: 6px
+
+
+#wiktionary-datadump
+  @include eng-text('xs')
+  margin-top: 0
+  padding-left: $side-padding + $searchbar-inset-x
+  padding-right: $side-padding + $searchbar-inset-x
+  text-align: justify
+
+.example-text
+  @include aii-text('s')
+  text-align: right
+
+
+.example-tr
+  @include eng-text('s', $is-translit: true)
+  // padding-bottom: 2px
+
+.example-english
+  @include eng-text('s')
+
+.tier1-tag,
+.tier2-tag,
+.tier3-tag,
+.show-linkages,
+.l-inline-tag
+  white-space: nowrap
+

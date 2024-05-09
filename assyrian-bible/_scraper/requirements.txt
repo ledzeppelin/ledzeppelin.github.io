@@ -1,2 +1,2 @@
-Scrapy==2.6.3
+Scrapy==2.11.1
 yattag==1.15.2
