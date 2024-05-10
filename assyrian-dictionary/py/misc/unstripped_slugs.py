@@ -9,7 +9,7 @@ from conjugate_verbs import strip_markers
 
 
 def unstripped_slugs():
-    with open('./js/json/aii.jsonl', encoding="utf-8") as f:
+    with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
 
     regex = strip_markers()

@@ -7,7 +7,7 @@ from conjugate_verbs import root_venn
 
 
 def verb_roots():
-    with open('./js/json/aii.jsonl', encoding="utf-8") as f:
+    with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
 
     counter_match = 0

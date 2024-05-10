@@ -1,3 +1,7 @@
+// const LOCAL_DEVELOPMENT = true;
+const LOCAL_DEVELOPMENT = false; // for cleaner urls in prod
+const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
+
 function createTagSearchFragment(dictTags, depth = 0) {
   const frag = $(document.createDocumentFragment());
   // nested list based on guidlines: https://stackoverflow.com/a/5899394
@@ -22,7 +26,7 @@ function createTagSearchFragment(dictTags, depth = 0) {
         $('<li/>', { class: `l${depth}-tag` }).append(
           $('<a/>', {
             text: item.name,
-            href: `./index.html?search=${item.tag}`,
+            href: `./${INDEX_HTML}?search=${item.tag}`,
           }),
           createTagSearchInlineFragment(item, depth + 1),
         ),
@@ -42,7 +46,7 @@ function createTagSearchInlineFragment(item, depth) {
         $('<li/>', { class: `l${depth}-tag l-inline-tag` }).append(
           $('<a/>', {
             text: inlineChild.name,
-            href: `./index.html?search=${inlineChild.tag}`,
+            href: `./${INDEX_HTML}?search=${inlineChild.tag}`,
           }),
         ),
         idx < item.children.length - 1 ? ', ' : '',
@@ -197,7 +201,7 @@ function createTier1TagsInnerFrag(aiiV) {
       $('<a/>', {
         class: 'tier1-tag',
         text: 'common word',
-        href: './index.html?search=special:Common Words',
+        href: `./${INDEX_HTML}?search=special:Common Words`,
       }),
       ' ',
     );
@@ -264,7 +268,7 @@ function createIpaFrag(accent, ipa, ipaHash, accentCount) {
           $('<a/>', {
             class: 'accent-name tier1-tag tier1-tag-ipa',
             text: accent,
-            href: `./index.html?search=ipa:${accent}`,
+            href: `./${INDEX_HTML}?search=ipa:${accent}`,
           }),
           frag,
         ),
@@ -272,6 +276,14 @@ function createIpaFrag(accent, ipa, ipaHash, accentCount) {
 
     ),
   );
+}
+
+function createPOSFrag(pos) {
+  return $('<a/>', {
+    class: 'tier2-tag',
+    text: pos,
+    href: `./${INDEX_HTML}?search=pos:${pos}`,
+  });
 }
 
 function createRootLettersFrag(key, obj) {
@@ -282,7 +294,7 @@ function createRootLettersFrag(key, obj) {
       $('<a/>', {
         class: 'tier2-tag',
         text: `${obj[key]}-letters`,
-        href: `./index.html?search=root:${obj[key]}-letters`,
+        href: `./${INDEX_HTML}?search=root:${obj[key]}-letters`,
       }),
       ')',
     );
@@ -298,13 +310,13 @@ function createVisVerbFrag(key, obj, tierTag) {
       $('<a/>', {
         class: tierTag,
         text: obj[key].stem,
-        href: `./index.html?search=stem:${obj[key].stem}`,
+        href: `./${INDEX_HTML}?search=stem:${obj[key].stem}`,
       }),
       ', ',
       $('<a/>', {
         class: tierTag,
         text: `${obj[key].pattern} pattern`,
-        href: `./index.html?search=pattern:${obj[key].pattern}`,
+        href: `./${INDEX_HTML}?search=pattern:${obj[key].pattern}`,
       }),
       ')',
     );
@@ -323,7 +335,7 @@ function createEtymologyFrag(etyKey, obj, tierTag) {
         $('<a/>', {
           class: tierTag,
           text: et,
-          href: `./index.html?search=from:${et}`,
+          href: `./${INDEX_HTML}?search=from:${et}`,
         }),
       );
 
@@ -406,7 +418,7 @@ function createTableRowsFrag(table) {
           valFrag = $('<a/>', {
             class: 'infl-val-anchor',
             text: aii.value,
-            href: `./index.html?search=${aii.value}`,
+            href: `./${INDEX_HTML}?search=${aii.value}`,
           });
         } else {
           valFrag = $('<span/>', { class: 'infl-val', text: aii.value });
@@ -535,7 +547,7 @@ function createTier3CategoriesFrag(sense) {
           $('<a/>', {
             class: 'tier3-tag',
             text: tier3Category,
-            href: `./index.html?search=category:${tier3Category}`,
+            href: `./${INDEX_HTML}?search=category:${tier3Category}`,
           }),
         ),
       );

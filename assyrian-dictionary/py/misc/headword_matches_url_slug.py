@@ -2,7 +2,7 @@ import json
 from collections import defaultdict
 
 def datadump_to_dict():
-    with open('./js/json/aii.jsonl', encoding="utf-8") as f:
+    with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
 
     aii_dict = defaultdict(lambda: defaultdict(list))

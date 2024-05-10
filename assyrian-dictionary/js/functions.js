@@ -39,12 +39,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
         const jsonlineFragment = $('<div/>', { class: 'jsonline' }).append(
           $('<div/>', { class: 'pos' }).append(
             $('<div/>', { class: 'pos-meta' }).append(
-              $('<a/>', {
-                class: 'tier2-tag',
-                text: jsonline.pos,
-                href: `./index.html?search=pos:${jsonline.pos}`,
-              }),
-
+              createPOSFrag(jsonline.pos),
               isRoot ? createRootLettersFrag('root_num_letters', jsonline) : '',
               createVisVerbFrag('tier2_vis_verb', jsonline, 'tier2-tag'),
               flattenT1AndPos && ('is_common_word' in aiiV) ? ', ' : '',

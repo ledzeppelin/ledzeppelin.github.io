@@ -1,8 +1,9 @@
 
 # TODO
-- consec atwateh in root should be same color (ex. for G-2i pattern where 2nd and 3rd are same char implies 3rd is dropped)
 - sort numeral search
 - create number table
+
+- consec atwateh in root should be same color (ex. for G-2i pattern where 2nd and 3rd are same char implies 3rd is dropped)
 - personal pronoun table
 - ܚܵܬܹܐ ligatured taw is not showing in root boxes, also taw is is not ligatured ever in safari on macbook
 

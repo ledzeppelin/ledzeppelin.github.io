@@ -243,5 +243,5 @@ class DiffInfo:
                             type_counter[val] += 1
         return counter, type_counter
 
-diffInfo = DiffInfo('aii.prev.jsonl', 'aii.jsonl')
+diffInfo = DiffInfo('_aii.prev.jsonl', '_aii.jsonl')
 diffInfo.print_diffs()

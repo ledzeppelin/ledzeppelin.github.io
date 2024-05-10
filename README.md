@@ -33,8 +33,8 @@ Download the fonts
 then double click the variable font to install
 
 
-* Export the pngs from favicon.psd using favicon sizes from https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
-* Export the jpgs from social_media_cards.psd with the highest quality (since they will be transcoded anyway) without any cropping of dimensions - they're already designed to handle cropping from 1280x720 (1200 x 675) to 1200 x 630 per dimensions: https://simplified.com/blog/design/open-graph-image-everything-you-need-to-know/ and also iMessage 1024 x 512
+* Export the pngs from _favicon.psd using favicon sizes from https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/
+* Export the jpgs from _social_media_cards.psd with the highest quality (since they will be transcoded anyway) without any cropping of dimensions - they're already designed to handle cropping from 1280x720 (1200 x 675) to 1200 x 630 per dimensions: https://simplified.com/blog/design/open-graph-image-everything-you-need-to-know/ and also iMessage 1024 x 512
 
 ### SublimeLinter packages used
 

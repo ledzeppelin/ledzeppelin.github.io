@@ -23,7 +23,7 @@ def get_hash(f_path, mode='md5'):
 
 def datadump_to_dict():
     prev_file, cur_file, new_file  = [
-        f'./js/json/{file}' for file in ['aii.prev.jsonl', 'aii.jsonl', 'aii.new.jsonl']
+        f'./js/json/{file}' for file in ['_aii.prev.jsonl', '_aii.jsonl', 'aii.new.jsonl']
     ]
 
     url = "https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/kaikki.org-dictionary-AssyrianNeoAramaic.json"

@@ -4,7 +4,7 @@ import json
 from collections import defaultdict
 # see https://en.wiktionary.org/wiki/%DC%92-#Particle
 def canonical_spellings():
-    with open('./js/json/aii.jsonl', encoding="utf-8") as f:
+    with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
 
     aii_dict = defaultdict(lambda: defaultdict(list))

@@ -4,7 +4,7 @@ from urllib.parse import quote
 import webbrowser
 
 def new_slugs():
-    prev_file, cur_file = './js/json/aii.prev.jsonl', './js/json/aii.jsonl'
+    prev_file, cur_file = './js/json/_aii.prev.jsonl', './js/json/_aii.jsonl'
 
     with open(cur_file, encoding="utf-8") as f:
         data = [json.loads(line) for line in f]

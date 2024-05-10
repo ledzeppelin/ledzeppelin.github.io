@@ -13,7 +13,7 @@ common-words:
 	cd lua && lua common-words-to-json.lua > ../js/json/common-words.json
 
 scaffold:
-	cat js/json/aii.jsonl | jq > js/json/jq.aii.jsonl
+	cat js/json/_aii.jsonl | jq > js/json/jq.aii.jsonl
 
 dict:
 	python3 py/dict_to_json.py > js/json/aii-dict-no-tr.json
