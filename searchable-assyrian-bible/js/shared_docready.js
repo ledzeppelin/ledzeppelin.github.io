@@ -192,7 +192,11 @@ $(document).ready(() => {
 
       const url = new URL(window.location);
       url.searchParams.set('search', searchStr);
-      window.history.replaceState(null, '', url.toString());
+      // https://stackoverflow.com/a/14269897
+      // we use don't want to percent encode colon since it affects human-readability of url
+      // percent encoded colon '%3A' can only occur in query string parameter's value
+      // therefore we can replace all without breaking url.origin or url.pathname
+      window.history.replaceState(null, '', url.toString().replaceAll('%3A', ':'));
     }
   });
 
@@ -209,6 +213,9 @@ $(document).ready(() => {
   const url = new URL(window.location);
   const params = new URLSearchParams(document.location.search);
   if (params.has('search')) {
+    // this will decode qs param and it ultimately gets encoded again
+    // when calling window.history.replaceState - we want this so spaces
+    // are normalized from "hello world" to "hello+world" instad of "hello%20world"
     const searchParam = params.get('search');
     if (searchParam.length) {
       // console.log('hide it');
