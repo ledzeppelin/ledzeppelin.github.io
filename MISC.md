@@ -24,6 +24,7 @@ if we set <html lang="en"> chrome on iPhone suggests translating to diff lang fo
 
 per https://syriaca.org/documentation/isostandards.html, "syr" is for a macrolanguage syriac (presumably includes aii, tru and syc) and "syc" is for microlanguage (classical syriac)
 
-### create new proj
-
-`npm init` then `npm init @eslint/config`
+### enable js linting on a per-webapp basis
+* run `mkdir js && cd js && npm init` inside the root of the webapp
+* run `npx install-peerdeps --dev eslint-config-airbnb` (inside `js` dir) per https://www.npmjs.com/package/eslint-config-airbnb
+* `cp ../../assyrian-dictionary/js/.eslintrc.js .`

@@ -15,7 +15,7 @@ DEFAULT_VAL = '-'
 infl_schema = {
     'aii-infl-noun':{
         'heading': 'Possessive Determiner',
-        'heading_2': ['(one)', '(two or more)'],
+        'heading_2': ['one', 'two or more'],
         'omit': {
             'sg.emph.', 'pl.emph.', 'sg.cstr.', 'pl.cstr.', 'pl.abs.', 'sg.abs.'
         },

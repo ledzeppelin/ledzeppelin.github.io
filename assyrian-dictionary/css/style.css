@@ -75,6 +75,15 @@
   }
 }
 
+#numbers-table .more-info {
+  border-bottom-color: rgba(91, 91, 96, 0.29);
+}
+@media (prefers-color-scheme: dark) {
+  #numbers-table .more-info {
+    border-bottom-color: rgba(104, 104, 111, 0.6);
+  }
+}
+
 .wiktionary-link-container {
   border-bottom-color: rgba(91, 91, 96, 0.29);
 }
@@ -329,21 +338,11 @@
   }
 }
 .play-sound-container .play-sound.waiting {
-  border-color: rgba(103, 103, 109, 0.29);
   color: #9999a0;
 }
 @media (prefers-color-scheme: dark) {
   .play-sound-container .play-sound.waiting {
-    border-color: rgba(92, 92, 98, 0.6);
     color: #69696f;
-  }
-}
-.play-sound-container .play-sound.playing-sound {
-  border-color: rgb(134, 134, 137);
-}
-@media (prefers-color-scheme: dark) {
-  .play-sound-container .play-sound.playing-sound {
-    border-color: rgb(149, 149, 157);
   }
 }
 .play-sound-container .accent-name-container {
@@ -668,6 +667,15 @@ kbd {
   padding: 8px 36px 16px;
 }
 
+#numbers-table {
+  margin: 0 36px 16px;
+}
+#numbers-table .more-info {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding-top: 0;
+}
+
 #tag-search-results {
   font-weight: 400;
   font-family: Roboto, sans-serif;
@@ -851,7 +859,7 @@ button {
   display: flex;
   gap: 6px;
   margin-bottom: 6px;
-  min-height: 24px;
+  min-height: 26px;
 }
 .pos > * {
   align-self: flex-end;
@@ -902,7 +910,7 @@ button {
   display: inline;
 }
 .t3-categories > li::before {
-  content: " ⸱ ";
+  content: " | ";
 }
 
 .show-linkages:hover {
@@ -949,6 +957,7 @@ button {
 
 .more-info {
   display: none;
+  padding-top: 8px;
 }
 .more-info.has-heading {
   padding-top: 32px;
@@ -961,6 +970,7 @@ button {
   padding: 2px 0;
 }
 .infl-row.is-heading {
+  align-items: end;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   margin-bottom: 4px;
@@ -1118,7 +1128,7 @@ button {
   transition: border 200ms, color 200ms, font-variation-settings 200ms;
 }
 .play-sound-container .play-sound.playing-sound {
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  font-variation-settings: "FILL" 1, "wght" 600, "GRAD" 0, "opsz" 24;
 }
 .play-sound-container .accent-name-container {
   font-weight: 400;
@@ -1197,7 +1207,8 @@ button {
 .tier2-tag,
 .tier3-tag,
 .show-linkages,
-.l-inline-tag {
+.l-inline-tag,
+.in-numbers-table {
   white-space: nowrap;
 }
 

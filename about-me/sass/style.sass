@@ -14,7 +14,7 @@
 // sass-lint:disable no-vendor-prefixes
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@100..900&display=swap')
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;1,400&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,400&display=swap')
 
 @mixin text-size($size, $weight: 400)
   font-family: 'Ubuntu', sans-serif
@@ -41,21 +41,42 @@ $right: 8%
 
 $z-song-title: 1
 $z-silhouette: 2
-$z-section-container: 2 // needs to be greater than $z-song-title
+$z-headshot-container: 2 // needs to be greater than $z-song-title
 $z-img-caption: 3
 $z-symbol: 3 // needs to be greater than $z-silhouette
 
 body
   background-color: black
+  // background-color: #555
   color: $label-dark
   margin: 0 auto 100px
   max-width: $max-width
 
-#img-container
+#mau-chart-container
+  // https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note
+  height: 350px
+  margin: 0 $x-margin
+  @media screen and (width <= $max-width)
+    height: vw(350px, $max-width)
+
+
   position: relative
 
+#img-container,
+#headshot-container
+  position: relative
+
+#headshot-container
+  z-index: $z-headshot-container
+
+  #headshot
+    @media screen and (width > $max-width)
+      border-radius: 16px
+
+
 #pier,
-#silhouette
+#silhouette,
+#headshot
   display: block
   height: 100%
   width: 100%
@@ -141,41 +162,59 @@ body
 
 
 #song-title
-  @include song-title-min
+  @include song-title-max
 
   $size: 36px
+  $p-size-px: 330px
+  $p-size-vw: vw($p-size-px, $max-width)
+
   bottom: 23%
   color: white
   font-family: 'Noto Sans Syriac Eastern'
   font-size: $size
+  font-weight: 300
   position: absolute
   right: $right
+  transform: perspective($p-size-px) rotateY(20deg)
   transform-origin: right
   z-index: $z-song-title
 
   @media screen and (width <= $max-width)
     font-size: vw($size, $max-width)
+    transform: perspective($p-size-vw) rotateY(20deg)
 
+
+#img-caption,
+#headshot-caption
+  left: 0
+  position: absolute
+
+$space: 16px
 
 #img-caption
   @include text-size('xs', 400)
   bottom: 0
   color: white
-  left: 0
-  margin: 8px $x-margin
-  position: absolute
+  margin: 0 0 calc($space / 2) $space
   text-shadow: black 1px 1px 3px
   z-index: $z-img-caption
 
+
+#headshot-caption
+  @include text-size('xs', 500)
+  color: black
+  margin: calc($space / 2) 0 0 $space
+  text-shadow: rgba(white, .6) 0 0 2px
+  top: 0
+
 .section-container
-  background-color: black
   margin: 32px $x-margin
   position: relative
 
-.section-container-1
-  margin-top: 0
-  padding-top: 32px // we do this to make sure song title doesn't creep over
-  z-index: $z-section-container
+.section-container-short
+  margin: 32px $x-margin 24px
+  position: relative
+
 
 .section-title
   @include text-size('xl', 300)
@@ -194,6 +233,18 @@ ul
 
     .tr
       font-style: italic
+
+.ul-inline
+  display: inline
+  padding: 0
+
+  & > li
+    display: inline
+
+    &::before
+      content: '\00a0⸱ '
+
+
 
 a
   color: $link-dark

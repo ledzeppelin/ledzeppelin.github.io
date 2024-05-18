@@ -1,24 +1,30 @@
-all: deps common-words scaffold schema-check dict isolates-check
-deploy: deps common-words download scaffold schema-check dict-with-audio isolates-check
+all: deps common-words aii-number-list scaffold schema-check dict isolates-check
+deploy: deps common-words aii-number-list download scaffold schema-check dict-with-audio isolates-check
 some: scaffold schema-check dict isolates-check
 
 deps:
 	brew install lua
 	brew install jq
 	brew install brotli
+	brew install luarocks
+	luarocks install dkjson
 	cd js && npm install
 	pip3 install -r requirements.txt
 
 common-words:
 	cd lua && lua common-words-to-json.lua > ../js/json/common-words.json
 
+aii-number-list:
+	cd lua && lua aii-number-list-to-json.lua > ../js/json/aii-number-list.json
+
 scaffold:
 	cat js/json/_aii.jsonl | jq > js/json/jq.aii.jsonl
 
 dict:
-	python3 py/dict_to_json.py > js/json/aii-dict-no-tr.json
+	python3 py/dict_to_json.py
 	cd js && node cli/add-props-to-dictionary.js > ./consts/aii-dict.js
 
+	cd js && node cli/numbers-table-json-to-obj.js > ./consts/aii-numbers-table.js
 
 	cd js && uglifyjs consts/aii-dict.js --output consts/aii-dict.min.js
 	cd js && gzip -k -f consts/aii-dict.js && gzip -k -f consts/aii-dict.min.js

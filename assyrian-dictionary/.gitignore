@@ -1,12 +1,13 @@
 js/json/jq.aii.jsonl
 js/json/aii.new.jsonl
+js/json/aii-number-list.json
 js/json/aii-dict-no-tr.json
+js/json/aii-numbers-table-no-tr.json
 js/json/indexed-tags.json
-
 
 js/consts/aii-dict.js
 js/consts/aii-dict.js.gz
 js/consts/aii-dict.js.l4.br
 js/consts/aii-dict.min.js.gz
 js/consts/aii-dict.min.js.l4.br
-js/consts/aii-dict.js2
+js/consts/aii-dict.prev.js

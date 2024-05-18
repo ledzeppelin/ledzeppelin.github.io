@@ -43,6 +43,7 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 @include atuta-box-colors($apple-colors, $apple-colors-dark)
 
 
+
 #tag-search-results
   border-bottom-color: $separator
   color: $secondary-label
@@ -55,6 +56,13 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
     color: $label
     @media (prefers-color-scheme: dark)
       color: $label-dark
+
+
+#numbers-table
+  .more-info
+    border-bottom-color: $separator
+    @media (prefers-color-scheme: dark)
+      border-bottom-color: $separator-dark
 
 
 .wiktionary-link-container
@@ -271,17 +279,9 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 
     &.waiting
-      border-color: color.adjust($separator, $lightness: 5%)
       color: color.adjust($label, $lightness: 50%)
       @media (prefers-color-scheme: dark)
-        border-color: color.adjust($separator-dark, $lightness: -5%)
         color: color.mix($label-dark, $background-dark, 40%)
-
-
-    &.playing-sound
-      border-color: $secondary-label
-      @media (prefers-color-scheme: dark)
-        border-color: $secondary-label-dark
 
 
   .accent-name-container

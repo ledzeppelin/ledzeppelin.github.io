@@ -21,7 +21,7 @@ def get_hash(f_path, mode='md5'):
     digest = h.hexdigest()
     return digest
 
-def datadump_to_dict():
+def download_datadump():
     prev_file, cur_file, new_file  = [
         f'./js/json/{file}' for file in ['_aii.prev.jsonl', '_aii.jsonl', 'aii.new.jsonl']
     ]
@@ -41,4 +41,4 @@ def datadump_to_dict():
         file_to_rem = Path(new_file)
         file_to_rem.unlink()
 
-datadump_to_dict()
+download_datadump()

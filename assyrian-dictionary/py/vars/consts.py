@@ -163,3 +163,20 @@ derivation_templates = {
   'slbor',
   'uder',
 }
+
+other_forms_from_ety_templates = {
+  'af': 'affix',
+  'affix': 'affix',
+  'back-form': 'back formation',
+  'blend': 'blend',
+  'clipping': 'clipping',
+  'cog': 'cognate',
+  'com': 'compound',
+  'compound': 'compound',
+  'contraction': 'contraction',
+  'doublet': 'doublet',
+  'm': 'also',
+  'l': 'also',
+  'surf': 'apparent etymology',
+  'univerbation': 'univerbation',
+}

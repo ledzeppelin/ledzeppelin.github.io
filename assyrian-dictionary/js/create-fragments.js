@@ -1,5 +1,6 @@
 // const LOCAL_DEVELOPMENT = true;
 const LOCAL_DEVELOPMENT = false; // for cleaner urls in prod
+
 const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
 
 function createTagSearchFragment(dictTags, depth = 0) {
@@ -194,34 +195,93 @@ function createWiktionaryFrag(aiiNotV) {
   );
 }
 
-function createTier1TagsInnerFrag(aiiV) {
+function createCommonWordFrag() {
   const frag = $(document.createDocumentFragment());
-  if ('is_common_word' in aiiV) {
-    frag.append(
-      $('<a/>', {
-        class: 'tier1-tag',
-        text: 'common word',
-        href: `./${INDEX_HTML}?search=special:Common Words`,
-      }),
-      ' ',
-    );
-  }
+  frag.append(
+    $('<a/>', {
+      class: 'tier1-tag',
+      text: 'common word',
+      href: `./${INDEX_HTML}?search=special:Common Words`,
+    }),
+    ' ',
+  );
+  return frag;
+}
+
+function createInNumbersTableFrag() {
+  const frag = $(document.createDocumentFragment());
 
   frag.append(
-    createEtymologyFrag('tier1_etymology', aiiV, 'tier1-tag', 'tier1-tag-etymology'),
+    ' in ',
+    $('<a/>', {
+      class: 'in-numbers-table',
+      text: 'numbers table',
+      href: `./${INDEX_HTML}?search=table:Numbers Table`,
+    }),
+    ' ',
   );
 
   return frag;
 }
 
-function createTier1TagsFrag(aiiV) {
-  const innerFrag = createTier1TagsInnerFrag(aiiV);
+function createT1IntoPOSFrag(aiiV, singletonJsonline) {
+  const frag = $(document.createDocumentFragment());
 
-  if (innerFrag.children('.tier1-tag').length !== 0) {
-    return $('<div/>', { class: 'aii-v-meta-container' }).append(innerFrag);
+  if (singletonJsonline) {
+    if ('is_common_word' in aiiV) {
+      frag.append(
+        ', ',
+        createCommonWordFrag(),
+      );
+    }
+
+    if ('in_numbers_table' in aiiV) {
+      frag.append(
+        createInNumbersTableFrag(),
+      );
+    }
+
+    if ('tier1_etymology' in aiiV) {
+      frag.append(
+        createEtymologyFrag('tier1_etymology', aiiV, 'tier1-tag', 'tier1-tag-etymology'),
+      );
+    }
   }
 
-  return innerFrag;
+  return frag;
+}
+
+function createTier1TagsFrag(aiiV, singletonJsonline) {
+  const frag = $(document.createDocumentFragment());
+  let notEmpty = false;
+  if (!singletonJsonline) {
+    if ('is_common_word' in aiiV) {
+      notEmpty = true;
+      frag.append(
+        createCommonWordFrag(),
+      );
+    }
+
+    if ('in_numbers_table' in aiiV) {
+      notEmpty = true;
+      frag.append(
+        createInNumbersTableFrag(),
+      );
+    }
+
+    if ('tier1_etymology' in aiiV) {
+      notEmpty = true;
+      frag.append(
+        createEtymologyFrag('tier1_etymology', aiiV, 'tier1-tag', 'tier1-tag-etymology'),
+      );
+    }
+  }
+
+  if (notEmpty) {
+    return $('<div/>', { class: 'aii-v-meta-container' }).append(frag);
+  }
+
+  return frag;
 }
 
 function createIpaContainerFrag(aiiV) {
@@ -326,27 +386,27 @@ function createVisVerbFrag(key, obj, tierTag) {
 
 function createEtymologyFrag(etyKey, obj, tierTag) {
   const frag = $(document.createDocumentFragment());
-  if (etyKey in obj) {
-    frag.append(
-      ' from ',
-    );
-    obj[etyKey].forEach((et, i) => {
-      frag.append(
-        $('<a/>', {
-          class: tierTag,
-          text: et,
-          href: `./${INDEX_HTML}?search=from:${et}`,
-        }),
-      );
 
-      const secondToLast = i === obj[etyKey].length - 2;
-      if (secondToLast) {
-        frag.append(' and ');
-      } else if (i < obj[etyKey].length - 1) {
-        frag.append(', ');
-      }
-    });
-  }
+  frag.append(
+    ' from ',
+  );
+  obj[etyKey].forEach((et, i) => {
+    frag.append(
+      $('<a/>', {
+        class: tierTag,
+        text: et,
+        href: `./${INDEX_HTML}?search=from:${et}`,
+      }),
+    );
+
+    const secondToLast = i === obj[etyKey].length - 2;
+    if (secondToLast) {
+      frag.append(' and ');
+    } else if (i < obj[etyKey].length - 1) {
+      frag.append(', ');
+    }
+  });
+
   return frag;
 }
 
@@ -423,12 +483,13 @@ function createTableRowsFrag(table) {
         } else {
           valFrag = $('<span/>', { class: 'infl-val', text: aii.value });
         }
-        const tr = aiiTranslit(aii.value).phonetic;
-        const tr2 = row.meta === 'root' ? tr.split(' ').join('-') : tr;
+
+        const tr = aiiTranslitWrapper(aii.value, AiiUtils.validLetters, aiiTranslit);
+        // const tr = aiiTranslit(aii.value).phonetic;
         rowValue.append(
           valFrag,
           ' ',
-          $('<span/>', { class: `infl-tr${doesMatch}`, text: tr2 }),
+          $('<span/>', { class: `infl-tr${doesMatch}`, text: tr }),
         );
 
         rowValues.append(

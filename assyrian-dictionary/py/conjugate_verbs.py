@@ -97,8 +97,6 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
     if template_name in deleted_verb_templates:
         return
         # raise Exception(template_name)
-    attempt_visualization = template_name not in ("aii-conj", "aii-conj-verb")
-
 
     TEMPLATE_PREFIX = 'aii-conj-verb/'
     template = copy.deepcopy(infl_schema[TEMPLATE_PREFIX]['template'])
@@ -112,7 +110,7 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
     omit = infl_schema[TEMPLATE_PREFIX]['omit'].union(infl_schema[TEMPLATE_PREFIX]['omit_dangling'])
 
 
-    idx = 1 if attempt_visualization else 0
+    idx = 1 if template_name not in verb_template_omit else 0
     for arg, aii in item['inflection_templates'][idx]['args'].items():
         if arg in omit:
             pass
@@ -140,7 +138,7 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
         )
 
     # TODO: raise exception if DEFAULT_VAL has not been replaced
-    if attempt_visualization:
+    if template_name not in verb_template_omit:
         template_name = verb_template_aliases.get(template_name, template_name)
         pattern = template_name.removeprefix(TEMPLATE_PREFIX)
         if pattern[0] not in ('G', 'C', 'D'): # won't run since we're getting prefix from conj_schema
@@ -154,24 +152,59 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
         obj['tier2_tags'].append(f'stem:{stem_name}')
         obj['tier2_tags'].append(f'pattern:{pattern}')
 
-        set_visualized_root(tenses, obj, aii_v, vocalized_cache, root)
+        set_singleton_vis_root_table(tenses, obj, aii_v, vocalized_cache, root)
+    else:
+        set_singleton_not_vis_root_table(item, obj, aii_v, vocalized_cache)
+
 
     obj['conj']['tenses'] += tenses
 
 
-def set_visualized_root(tenses, obj, aii_v, vocalized_cache, root):
+
+def annotated_row(meta, aii_values, aii_v, vocalized_cache):
+    row = defaultdict(list)
+    row['meta'] = meta
+
+    for aii_value in aii_values:
+        val_obj = {'value': aii_value}
+        if aii_value in vocalized_cache:
+            val_obj['anchor'] = True
+        if aii_value == aii_v:
+            val_obj['matches_aii_v'] = True
+
+        row['values'].append(val_obj)
+
+    return row
+
+def get_singleton_root_table_headers():
+    root_tense = {
+      "heading": "Morpheme",
+      'rows': [],
+    }
+    meta_name = 'root of verb'
+    return root_tense, meta_name
+
+def set_singleton_vis_root_table(tenses, obj, aii_v, vocalized_cache, root):
+    root_tense, meta_name = get_singleton_root_table_headers()
+
     for tense in tenses:
         for row in tense['rows']:
             for value in row['values']:
                 if 'template_str' in value:
-                    row = annotated_root_row(aii_v, vocalized_cache, root)
-                    obj['conj']['tenses'] = [
-                        {
-                          "heading": "Part of Speech",
-                          'rows': [row],
-                        }
-                    ]
+                    vis_conj_row = annotated_root_row(aii_v, vocalized_cache, root, meta_name)
+                    root_tense['rows'].append(vis_conj_row)
+                    obj['conj']['tenses'] = [root_tense]
                     return
+
+def set_singleton_not_vis_root_table(item, obj, aii_v, vocalized_cache):
+    if 'etymology_templates' in item:
+        root_tense, meta_name = get_singleton_root_table_headers()
+        for ety in item['etymology_templates']:
+            if ety['name'] == 'aii-root':
+                no_vis_conj_row = annotated_row(meta_name, [ety['args']['1']], aii_v, vocalized_cache)
+                root_tense['rows'].append(no_vis_conj_row)
+                obj['conj']['tenses'] = [root_tense]
+                return
 
 def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root):
     if len(verb_args) != len(verb_args_x_root):
@@ -224,9 +257,10 @@ def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root):
 #     return res
 
 
-def annotated_root_row(aii_v, vocalized_cache, root):
+def annotated_root_row(aii_v, vocalized_cache, root, meta):
     row = {
-        'meta': 'root',
+        'meta': meta,
+        # 'meta': 'root of verb',
     }
     root_str = ' '.join(root)
 

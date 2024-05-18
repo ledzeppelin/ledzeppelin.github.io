@@ -25,6 +25,15 @@ $button-padding: 12px
 #search-results
   padding: 8px $side-padding + $searchbar-inset-x 16px
 
+#numbers-table
+  margin: 0 $side-padding + $searchbar-inset-x 16px
+
+  .more-info
+    border-bottom-style: solid
+    border-bottom-width: 1px
+    padding-top: 0
+
+
 #tag-search-results
   @include eng-text('s')
   border-bottom-style: solid
@@ -194,7 +203,7 @@ button
   display: flex
   gap: 6px
   margin-bottom: 6px
-  min-height: $half-icon-size * 2 // ex. "khdha"  has mix of pos which can/can't expand, this ensures consistent height
+  min-height: $half-icon-size * 2 + 2px // ex. "khdha"  has mix of pos which can/can't expand, this ensures consistent height
 
 
   & > *
@@ -244,8 +253,7 @@ button
   display: inline
 
   &::before
-    content: '\00a0⸱ '
-
+    content: ' |\00a0'
 
 .show-linkages
   // this entire block exists so that when we tap on mobile, underline doesn't stay
@@ -290,6 +298,7 @@ $display-toggle: none
 
 .more-info // all t2 tables like head templates and inflections
   display: $display-toggle
+  padding-top: 8px // for head template tables and root derived terms
 
   &.has-heading
     padding-top: $table-y-spacing
@@ -302,6 +311,7 @@ $display-toggle: none
   padding: 2px 0
 
   &.is-heading
+    align-items: end
     border-bottom-style: solid
     border-bottom-width: 1px
     margin-bottom: 4px // for conjugations like "azen"
@@ -322,6 +332,7 @@ $display-toggle: none
 //     3. verb conj table
 
 .more-info > .rows-y-padding
+  // this matches vis conjugations in root's derived terms
   margin: 8px 0
   // background-color: rgba(green, .1)
 
@@ -440,7 +451,8 @@ $sound-accent-offset: 8px
     transition: border 200ms, color 200ms, font-variation-settings 200ms
 
     &.playing-sound
-      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+      // border-width: 3px
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24
 
   .accent-name-container
     @include eng-text('s')
@@ -501,6 +513,7 @@ $sound-accent-offset: 8px
 .tier2-tag,
 .tier3-tag,
 .show-linkages,
-.l-inline-tag
+.l-inline-tag,
+.in-numbers-table
   white-space: nowrap
 

@@ -43,6 +43,7 @@ https://stackoverflow.com/a/65036296 -->
 
 <!-- order of these imports doesn't matter since they don't have dependencies -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
 
 
 
@@ -55,7 +56,7 @@ https://stackoverflow.com/a/65036296 -->
 
 <!-- ######################################################################## -->
 
-
+<script type="text/javascript" src="about-me/js/docready.js"></script>
 
 
 
@@ -65,6 +66,7 @@ https://stackoverflow.com/a/65036296 -->
 </head>
 <body>
 
+
 <div id='img-container'>
   <img id='pier' src="./about-me/images/pier.jpg">
   <img id='silhouette' src="./about-me/images/silhouette.png">
@@ -73,21 +75,19 @@ https://stackoverflow.com/a/65036296 -->
   <div id='birth-year-2' class="birth-year">ܐ݇ܨ̈ܦܚ</div>
   <div id="symbol">ܞ</div>
   <div id='song-title'>ܚܵܫܬܵܐ ܠܟܵܠܝܼܦ̮ܘܿܪܢܝܼܵܐ</div>
-  <div id='img-caption'>me<br/>3:01 am<br/>phone camera<br/>self-taken with the help of a tripod</div>
+  <div id='img-caption'>me<br/>3:01 am<br/>iphone 12 pro<br/>self-taken with a tripod</div>
 </div>
 
+<div id='headshot-container'>
+  <img id='headshot' src="./about-me/images/headshot-2.jpg">
+  <div id='headshot-caption'>self-taken also<br/>iphone 15 pro<br/>2:37 pm</div>
+</div>
 
-<div class="section-container section-container-1">
+<div class="section-container">
   <div class="section-title">about me</div>
+  <!-- <div class="section-body">i'm a software engineer at meta reality labs in the bay area</div> -->
   <div class="section-body">i'm a bay area software engineer about to start a new job at meta reality labs</div>
 </div>
-
-<!-- <div class="section-container">
-  <div class="section-title">about y'all</div>
-  <div class="section-body">global usage statistics coming soon!</div>
-</div> -->
-
-
 
 <div class="section-container">
   <div class="section-title">my projects (<a href="https://github.com/ledzeppelin/ledzeppelin.github.io">github repo</a>)</div>
@@ -103,11 +103,31 @@ https://stackoverflow.com/a/65036296 -->
       <a href="./searchable-assyrian-bible/">searchable assyrian bible</a>
     </li>
     <li>
-      <a href="./assyrian-dictionary/">assyrian-english dictionary</a>
+      <a href="./assyrian-dictionary/">assyrian-english dictionary</a> - accounts for bulk of traffic to sharrukin.io
     </li>
   </ul>
-
 </div>
+
+<div class="section-container">
+  <div class="section-title">about y'all</div>
+  <div class="section-body">global usage statistics coming early july '24</div>
+</div>
+
+<!-- <div class="section-container-short">
+  <div class="section-title">monthly active users</div>
+  <div class="section-body">for all traffic to sharrukin.io</div>
+</div> -->
+
+<div id="mau-chart-container" style='display:none'>
+  <canvas id="mau-chart"></canvas>
+</div>
+
+<!-- <div class="section-container">
+  <div class="section-title">analytics pdfs</div>
+  <div class="section-body">breakdown of traffic by country, device, (age), (retention?), and more</div>
+  <ul id='analytics-pdfs'></ul>
+</div>
+ -->
 
 <div class="section-container">
   <div class="section-title">helpful resources</div>
@@ -132,7 +152,7 @@ https://stackoverflow.com/a/65036296 -->
       </ul>
     </li>
 
-    <li>classical syriac <span class="tr">(lishana atiqa)</span>
+    <li>classical syriac <span class="tr">(lishana ateeqa)</span>
       <ul>
         <li>
           <a href="https://r12a.github.io/scripts/syrc/syr.html">orthography</a>

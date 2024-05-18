@@ -1,6 +1,11 @@
 $(document).ready(() => {
   const SPEED_MS = 200;
 
+  // disable since we require interaction to trigger playback
+  // otherwise iphone safari has issue with playing first ipa, scrolling down,
+  // collapsing audio of dynamic content and tapping play (it requires two taps)
+  Howler.autoUnlock = false;
+
   $('#tag-search-results').on('click', '.expandable > a', (e) => {
     $(e.currentTarget).parent().toggleClass('expanded');
     $(e.currentTarget).next().children(':not(.always-show)').slideToggle(SPEED_MS);
@@ -49,6 +54,7 @@ $(document).ready(() => {
 
     const sound = new Howl({
       src: [$(e.currentTarget).data('filename')],
+      html5: true,
       onplay: () => {
         $(e.currentTarget).removeClass('waiting').addClass('playing-sound');
         $(e.currentTarget).next().children('.ipa').addClass('playing-sound');

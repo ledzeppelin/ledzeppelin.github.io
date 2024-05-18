@@ -25,8 +25,8 @@ function loadResults(searchQuery, PAGINATE_AMT) {
     result.item.aii_v_s.forEach((aiiV) => {
       const jsonlinesFragment = $('<div/>', { class: 'jsonlines' });
 
-      const anyT1 = ('is_common_word' in aiiV || 'tier1_etymology' in aiiV);
-      const flattenT1AndPos = (aiiV.jsonlines.length === 1) && anyT1;
+      const singletonJsonline = aiiV.jsonlines.length === 1;
+      // const singletonJsonline = false;
 
       aiiV.jsonlines.forEach((jsonline) => {
         const sensesFragment = $('<ol/>', { class: 'senses' });
@@ -42,9 +42,8 @@ function loadResults(searchQuery, PAGINATE_AMT) {
               createPOSFrag(jsonline.pos),
               isRoot ? createRootLettersFrag('root_num_letters', jsonline) : '',
               createVisVerbFrag('tier2_vis_verb', jsonline, 'tier2-tag'),
-              flattenT1AndPos && ('is_common_word' in aiiV) ? ', ' : '',
-              flattenT1AndPos ? createTier1TagsInnerFrag(aiiV) : '',
-              createEtymologyFrag('tier2_etymology', jsonline, 'tier2-tag'),
+              createT1IntoPOSFrag(aiiV, singletonJsonline),
+              'tier2_etymology' in jsonline ? createEtymologyFrag('tier2_etymology', jsonline, 'tier2-tag') : '',
             ),
           ),
           sensesFragment,
@@ -62,7 +61,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
             $('<div/>', { class: 'aii-v-word-tr', text: aiiV.aii_v_tr }),
           ),
           createIpaContainerFrag(aiiV),
-          flattenT1AndPos ? '' : createTier1TagsFrag(aiiV),
+          createTier1TagsFrag(aiiV, singletonJsonline),
           jsonlinesFragment,
         ),
       );
@@ -221,8 +220,4 @@ function highlightUnvocalizedAiiText(aiiVEle, aiiVText, query, isVocalized) {
   const re = isVocalized ? wordRegexAiiV(query) : wordRegexAiiNotV(query);
   const abc = regexHighlight(aiiVText, re, 'highlighted');
   aiiVEle.html(abc);
-
-  // const paddedAii = padAiiV(aiiVText, re);
-  // const paddedTr = aiiTranslit(paddedAii).phonetic;
-  // aiiVEle.next().html(highlightPaddedTr(paddedTr));
 }

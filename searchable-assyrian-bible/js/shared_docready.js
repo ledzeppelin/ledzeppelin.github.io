@@ -44,16 +44,7 @@ $(document).ready(() => {
     }
   });
 
-  // function minVocalized(aiiVs) {
-  //   return aiiVs.reduce((prev, curr) => {
-  //     if (prev.aii_v_tr < curr.aii_v_tr) {
-  //       return prev;
-  //     }
-  //     return curr;
-  //   }).aii_v_tr;
-  // }
-
-  function minVocalized(searchStr, aiiVs) {
+  function minVocalizedTR(searchStr, aiiVs) {
     // we want to sort by those transliterations which will be shown, otherwise
     // 'from:Sumerian' would have 'gareh' as the first since its sorting by 'aghra' (not shown)
 
@@ -94,6 +85,7 @@ $(document).ready(() => {
 
     if (IS_DICTIONARY) {
       tagSearchClearHighlightedMatches();
+      $('#numbers-table').children().hide();
     }
 
     if (searchStr.length === 0) {
@@ -133,8 +125,15 @@ $(document).ready(() => {
         if (IS_DICTIONARY) {
           // console.time('tag');
           tagExactSearchResults = fuseTagsExact.search(`="${searchStr}"`);
-          const searchingCommonWords = searchStr === 'special:Common Words';
-          if (searchingCommonWords) {
+
+          if (searchStr === 'table:Numbers Table') {
+            searchQuery = {
+              results: [],
+            };
+
+            tagSearchHighlightExactMatch(searchStr);
+            $('#numbers-table').children().show();
+          } else if (searchStr === 'special:Common Words') {
             const compareFn = (a, b) => (
               a.item.min_common_word_idx < b.item.min_common_word_idx ? -1 : 1
             );
@@ -144,12 +143,20 @@ $(document).ready(() => {
               results: tagExactSearchResults.sort(compareFn),
               searchingCommonWords: true,
             };
+          } else if (searchStr === 'pos:numeral') {
+            const compareFn = (a, b) => (
+              a.item.min_numeral_idx < b.item.min_numeral_idx ? -1 : 1
+            );
+
+            tagSearchHighlightExactMatch(searchStr);
+            searchQuery = {
+              results: tagExactSearchResults.sort(compareFn),
+              searchingCommonWords: true,
+            };
           } else if (tagExactSearchResults.length) {
-            // console.log(tagExactSearchResults);
             const compareFn = (a, b) => (
               // eslint-disable-next-line max-len
-              minVocalized(searchStr, a.item.aii_v_s) < minVocalized(searchStr, b.item.aii_v_s) ? -1 : 1
-              // a.item.aii_v_s[0].aii_v_tr < b.item.aii_v_s[0].aii_v_tr ? -1 : 0
+              minVocalizedTR(searchStr, a.item.aii_v_s) < minVocalizedTR(searchStr, b.item.aii_v_s) ? -1 : 1
             );
 
             tagSearchHighlightExactMatch(searchStr);
@@ -159,9 +166,11 @@ $(document).ready(() => {
           } else {
             // console.time('tag search');
             // todo: prefix, then includes for fuse
+
             const tagSearchResults = fuseTags.search(`'"${searchStr}"`);
 
             tagSearchHighlightMatches(tagSearchResults);
+
             searchQuery = {
               results: runExtendedSearchQuery(searchStr, fuseEng),
             };
@@ -194,6 +203,7 @@ $(document).ready(() => {
       url.searchParams.set('search', searchStr);
       // https://stackoverflow.com/a/14269897
       // we use don't want to percent encode colon since it affects human-readability of url
+      //
       // percent encoded colon '%3A' can only occur in query string parameter's value
       // therefore we can replace all without breaking url.origin or url.pathname
       window.history.replaceState(null, '', url.toString().replaceAll('%3A', ':'));
@@ -207,6 +217,7 @@ $(document).ready(() => {
 
   if (IS_DICTIONARY) {
     $('#tag-search-results').html(createTagSearchFragment(aiiDictionaryTags));
+    $('#numbers-table').html(createTableFrag(aiiNumbersTable));
   }
 
   // trigger input on loading if query string param is set

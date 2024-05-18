@@ -45,17 +45,17 @@ def ipa_to_mp3(ipa, hash_str):
         # number of parallel connections. Here we are using contextlib.closing to
         # ensure the close method of the stream object will be called automatically
         # at the end of the with statement's scope.
-            with closing(response["AudioStream"]) as stream:
-               output = os.path.join('./audio', f"{hash_str}.mp3")
+        with closing(response["AudioStream"]) as stream:
+            output = os.path.join('./audio', f"{hash_str}.mp3")
 
-               try:
+            try:
                 # Open a file for writing the output as a binary stream
-                    with open(output, "wb") as file:
-                       file.write(stream.read())
-               except IOError as error:
-                  # Could not write to file, exit gracefully
-                  print(error)
-                  sys.exit(-1)
+                with open(output, "wb") as file:
+                    file.write(stream.read())
+            except IOError as error:
+                # Could not write to file, exit gracefully
+                print(error)
+                sys.exit(-1)
 
     else:
         # The response didn't contain audio data, exit gracefully

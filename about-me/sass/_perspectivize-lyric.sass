@@ -2,19 +2,15 @@
   $step: 1px
   $ts: ()
   @for $i from 1 through $incr
-    $ts: append($ts, 0 $step * $i 0 rgba(white, .12 * (1 - (calc(1/$incr) * $i))), comma)
+    $ts: append($ts, 0 $step * $i 0 rgba(white, .15 * (1 - (calc(1/$incr) * $i))), comma)
   @return $ts
 
 
 @mixin song-title-max
-  font-weight: 400
-  text-shadow: curtain-shadow(105)
-  transform: perspective(290px) rotateY(20deg)
+  text-shadow: curtain-shadow(115)
 
 @mixin song-title-min
-  font-weight: 200
-  text-shadow: curtain-shadow(65)
-  transform: perspective(1000px) rotateY(20deg)
+  text-shadow: curtain-shadow(25)
 
 
 @keyframes perspectivize-lyric

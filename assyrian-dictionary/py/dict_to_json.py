@@ -78,11 +78,25 @@ def unvocalized_contains_root(aii_v_s):
                 return True
     return False
 
-def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache):
+def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache, numbers_table):
     # structure dictionary in a format that can be indexed by fusejs and on a per vocalized
     # 1. add ipas
     # 2. check if common word
-    # 3. collapse etymologies if possible
+    # 3. check if in numbers table
+    # 4. collapse etymologies if possible
+
+    numbers_table_set = set()
+    cardinal_numbers = []
+    for row in numbers_table['rows']:
+        for i, value in enumerate(row['values']):
+            numbers_table_set.add(value['value'])
+            if i == 0:
+                cardinal_numbers.append(value['value'])
+
+    deduped_cardinal_numbers = list(dict.fromkeys(cardinal_numbers))
+    if deduped_cardinal_numbers != cardinal_numbers:
+        raise Exception(cardinal_numbers)
+
 
     with open('./js/json/common-words.json', encoding="utf-8") as user_file:
         parsed_json = json.load(user_file)
@@ -122,6 +136,7 @@ def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache):
                 inner_obj['ipas'] = sounds[aii_not_v][aii_v]
                 for accent, _, _ in sounds[aii_not_v][aii_v]:
                     inner_obj['tier1_tags'].append(f"ipa:{accent}")
+
             try:
                 idx = deduped_common_words.index(aii_v)
                 obj['min_common_word_idx'] = min(obj['min_common_word_idx'], idx)
@@ -129,6 +144,18 @@ def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache):
                 inner_obj['tier1_tags'].append('special:Common Words')
             except ValueError:
                 pass
+
+            aii_v_contains_numeral = any(line['pos'] == 'numeral' for line in jsonlines)
+            if aii_v_contains_numeral:
+                try:
+                    idx = deduped_cardinal_numbers.index(aii_v)
+                    obj['min_numeral_idx'] = min(obj['min_numeral_idx'], idx)
+                except ValueError:
+                    # we don't expect more than 1000 numerals or people would scroll 1000 entries
+                    obj['min_numeral_idx'] = 1000
+
+            if aii_v in numbers_table_set:
+                inner_obj['in_numbers_table'] = True
 
             collapse_etymologies(inner_obj, jsonlines)
             obj['aii_v_s'].append(inner_obj)
@@ -194,8 +221,13 @@ def validate_t3_tags(sense):
 
 
 # print(json.dumps(foo))
-aii_dict1, aii_collapsed_sounds1, visual_conj_cache_ = datadump_to_dict()
+aii_dict1, aii_collapsed_sounds1, visual_conj_cache_, numbers_table_ = datadump_to_dict()
 
-foo = aii_dict_to_fuse(aii_dict1, aii_collapsed_sounds1, visual_conj_cache_)
+foo = aii_dict_to_fuse(aii_dict1, aii_collapsed_sounds1, visual_conj_cache_, numbers_table_)
 validate_tag_order(foo)
-print(json.dumps(foo, ensure_ascii=False))
+
+with open("js/json/aii-dict-no-tr.json", "w") as file:
+    file.write(json.dumps(foo, ensure_ascii=False))
+
+with open("js/json/aii-numbers-table-no-tr.json", "w") as file:
+    file.write(json.dumps(numbers_table_, ensure_ascii=False))

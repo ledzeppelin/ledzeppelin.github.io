@@ -93,6 +93,10 @@ class DiffInfo:
                 for et in item['etymology_templates']:
                     ety_counter[et['name']] += 1
                     etys.add(et['name'])
+
+        # sorted_dict = dict(sorted(ety_counter.items(), key=lambda item: item[1], reverse=True))
+        # raise Exception(sorted_dict)
+
         return ety_counter
 
     def head_template_counters(self, filename):

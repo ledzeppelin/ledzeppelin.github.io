@@ -18,7 +18,7 @@ const keys2D = [
 const [fuseEng, fuseAiiVocalized, fuseAiiUnvocalized] = createFuseInstances(keys2D, aiiDictionary);
 
 const optionsTagged = {
-  isCaseSensitive: true, // otherwise "reduce" in minVocalized() fails since array is empty
+  isCaseSensitive: true, // otherwise "reduce" in minVocalizedTR() fails since array is empty
   includeScore: true,
   keys: [
     'aii_v_s.tier1_tags',

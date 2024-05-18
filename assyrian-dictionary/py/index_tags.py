@@ -20,7 +20,7 @@ def tag_counts():
                                 counter[tier3_tag] += 1
 
     # {('ipa:standard', 3585), ('ipa:Urmian', 751), ('pos:adjective', 496), ...}
-    # counter['table:Numbers Table'] = 100
+    counter['table:Numbers Table'] = 100
     return counter
 
 def tag_counts_grouped(tag_counter):
@@ -119,7 +119,6 @@ def parse_indices(tag_counter):
     # omit = {'category', 'from', 'ipa'}
     omit = set()
     l1 = {'special', 'table'}
-    l1 = {'special'}
     l2_full_names = {
         'ipa': 'Pronunciations',
         'category': 'Categories',
