@@ -20,7 +20,7 @@ def ipa_to_mp3(ipa, hash_str):
         speed = 'slow'
         phoneme_slow = f"\
             <speak> \
-                <prosody volume='loud' rate='{speed}'> \
+                <prosody volume='x-loud' rate='{speed}'> \
                     <phoneme alphabet='ipa' ph='{ipa}'></phoneme> \
                 </prosody> \
             </speak>"

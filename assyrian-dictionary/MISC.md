@@ -1,6 +1,7 @@
-# TODOS
-
 # after uptaking dictionary
+   * update assyrian word count in index.html via `raise Exception(len(vocalized_cache))`
+   * export pdf and add number of people using sharrukin.io to graph
+
    * check if DEFAULT_VAL has been replaced
    * once a year check the following for updates
       * aii-number-list.lua

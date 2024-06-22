@@ -49,7 +49,7 @@ ht_schema = {
             "head2",
             "m", "m2",
             "f", "f2",
-            "pl", "pl2", "pl3","pl4", "pl5"
+            "pl", "pl2", "pl3", "pl4", "pl5", "pl6"
         },
         'genders': {
             "2", "g", "g2"
@@ -62,7 +62,7 @@ ht_schema = {
     },
     "aii-numeral": {
         'omit': { "1" },
-        'forms': {"cstr", "f", "head2", "m", "pl"},
+        'forms': {"cstr", "f", "head2", "m", "pl", "pl2"},
         'genders': {"2", "g"},
     },
     "aii-particle": {
@@ -191,6 +191,7 @@ forms_abbrev = {
         "pl3": 'plural (2nd alternate)',
         "pl4": 'plural (3rd alternate)',
         "pl5": 'plural (4th alternate)',
+        "pl6": 'plural (5th alternate)',
 
         "cstr": 'construct',
     }
