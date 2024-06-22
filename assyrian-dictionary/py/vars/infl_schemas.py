@@ -1,5 +1,4 @@
-infl_schema_omit = {
-    "aii-conj-verb/hawe": 1,
+infl_schema_not_parameterized = {
     "aii-conj-verb/zi": 1,
     "aii-infl-prep/bi": 1,
     "aii-infl-prep/il": 1,
@@ -7,6 +6,17 @@ infl_schema_omit = {
     "aii-infl-prep/layt": 1,
 }
 
+verb_template_not_visualized = {
+    'aii-conj',
+    'aii-conj-verb',
+    'aii-conj-verb/hawe',
+}
+
+# templates do not inherit from another template
+base_verb_templates = {
+    'aii-conj',
+    'aii-conj-verb',
+}
 
 
 DEFAULT_VAL = ' '
@@ -127,6 +137,7 @@ infl_schema = {
 
     'aii-conj-verb/':{
         'heading': 'Subject Pronoun',
+        'omit': set(),
         'omit_dangling': set(),
         'template': {
             'Past Tense': {
@@ -198,11 +209,107 @@ infl_schema = {
 
         }
     },
-}
+    'aii-conj-verb/hawe':{
+        'heading': 'Subject Pronoun',
+        'omit': set(),
+        'omit_dangling': set(),
+        'template': {
+            'Past Tense': {
+                'I': {
+                    'past-1st-s': DEFAULT_VAL,
+                },
+                'we': {
+                    'past-1st-p': DEFAULT_VAL,
+                },
+                'you (to a man)': {
+                    'past-2nd-sm': DEFAULT_VAL,
+                },
+                'you (to a woman)': {
+                    'past-2nd-sf': DEFAULT_VAL,
+                },
+                'you (to a group)': {
+                    'past-2nd-p': DEFAULT_VAL,
+                },
+                'he': {
+                    'past-3rd-sm': DEFAULT_VAL,
+                },
+                'she': {
+                    'past-3rd-sf': DEFAULT_VAL,
+                },
+                'they': {
+                    'past-3rd-p': DEFAULT_VAL,
+                },
+            },
+            'Present Tense': {
+                'I (man)': {
+                    'pres-1st-sm': DEFAULT_VAL,
+                },
+                'I (woman)': {
+                    'pres-1st-sf': DEFAULT_VAL,
+                },
+                'we': {
+                    'pres-1st-p': DEFAULT_VAL,
+                },
+                'you (to a man)': {
+                    'pres-2nd-sm': DEFAULT_VAL,
+                },
+                'you (to a woman)': {
+                    'pres-2nd-sf': DEFAULT_VAL,
+                },
+                'you (to a group)': {
+                    'pres-2nd-p': DEFAULT_VAL,
+                },
+                'he': {
+                    'pres-3rd-sm': DEFAULT_VAL,
+                },
+                'she': {
+                    'pres-3rd-sf': DEFAULT_VAL,
+                },
+                'they': {
+                    'pres-3rd-p': DEFAULT_VAL,
+                },
+            },
+            'Future Tense': {
+                'I (man)': {
+                    'fut-1st-sm': DEFAULT_VAL,
+                },
+                'I (woman)': {
+                    'fut-1st-sf': DEFAULT_VAL,
+                },
+                'we': {
+                    'fut-1st-p': DEFAULT_VAL,
+                },
+                'you (to a man)': {
+                    'fut-2nd-sm': DEFAULT_VAL,
+                },
+                'you (to a woman)': {
+                    'fut-2nd-sf': DEFAULT_VAL,
+                },
+                'you (to a group)': {
+                    'fut-2nd-p': DEFAULT_VAL,
+                },
+                'he': {
+                    'fut-3rd-sm': DEFAULT_VAL,
+                },
+                'she': {
+                    'fut-3rd-sf': DEFAULT_VAL,
+                },
+                'they': {
+                    'fut-3rd-p': DEFAULT_VAL,
+                },
+            },
+            'Imperative Mood': {
+                'you (to a man)': {
+                    'imp-2nd-sm': DEFAULT_VAL,
+                },
+                'you (to a woman)': {
+                    'imp-2nd-sf': DEFAULT_VAL,
+                },
+                'you (to a group)': {
+                    'imp-2nd-p': DEFAULT_VAL,
+                },
+            },
 
-infl_schema['aii-conj-verb/']['omit'] = {
-    f'{key}tr'
-    for tense, pronouns in infl_schema['aii-conj-verb/']['template'].items()
-    for pronoun, conj in pronouns.items()
-    for key, val in conj.items()
+        }
+    },
 }

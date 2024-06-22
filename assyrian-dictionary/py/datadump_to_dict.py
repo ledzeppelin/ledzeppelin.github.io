@@ -7,7 +7,7 @@ import re
 import copy
 from vars import consts
 from vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
-from vars.infl_schemas import infl_schema_omit, infl_schema
+from vars.infl_schemas import infl_schema_not_parameterized, infl_schema
 from ipa_to_mp3 import ipa_to_mp3
 from conjugate_verbs import set_verb_conj, annotated_row
 
@@ -66,7 +66,7 @@ def set_infl(item, obj, aii_v, vocalized_cache, visual_conj_cache):
         return
 
     name = item['inflection_templates'][0]['name']
-    if name in infl_schema_omit:
+    if name in infl_schema_not_parameterized:
         return
 
     if name.startswith('aii-conj'):
@@ -155,8 +155,12 @@ def set_linkage_table(parent, obj, aii_v, vocalized_cache):
                     )
                     already_there.add(word_linkage)
 
-def fix_urmian(name):
-    return 'Urmian' if name == 'Urmia' else name
+def fix_ipa_name(name):
+    if name == 'Urmia':
+        return 'Urmian'
+    if name == 'standard':
+        return 'Standard'
+    return name
 
 def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
     ipas = []
@@ -169,9 +173,9 @@ def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
                 hash_str = hashlib.shake_128(enc_str).hexdigest(16)
                 # .title() is mainly for uppercasing "standard"
                 if 'tags' in sound:
-                    ipas.append((fix_urmian(sound['tags'][0]), sound['ipa'], hash_str))
+                    ipas.append((fix_ipa_name(sound['tags'][0]), sound['ipa'], hash_str))
                 else:
-                    ipas.append((fix_urmian(sound['note']), sound['ipa'], hash_str))
+                    ipas.append((fix_ipa_name(sound['note']), sound['ipa'], hash_str))
 
     if ipas:
         aii_sounds[aii_not_v][aii_v].append(ipas)
@@ -309,7 +313,7 @@ def add_etymology(obj, item, aii_v, vocalized_cache):
                 add_other_forms_from_ety_templates(ety, obj, item, aii_v, vocalized_cache, alias)
             elif ety['name'] == 'aii-root' and \
                 (obj['pos'] != 'verb' or \
-                (obj['pos'] == 'verb' and infl_template_name in infl_schema_omit)):
+                (obj['pos'] == 'verb' and infl_template_name in infl_schema_not_parameterized)):
 
                 if obj['pos'] == 'root':
                     raise Exception('root shouldnt contain aii-root')
@@ -403,6 +407,8 @@ def datadump_to_dict():
     vocalized_cache = set()
     for item in data:
         vocalized_cache.add(generate_aii_v(item, item['word']))
+
+    # raise Exception(len(vocalized_cache))
 
     visual_conj_cache = {}
 

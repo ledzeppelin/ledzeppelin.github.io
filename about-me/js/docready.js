@@ -10,7 +10,7 @@ $(document).ready(() => {
         $('<li/>').append(
           $('<a/>', {
             text: monthsAbbr[i],
-            href: `./pdfs/${year}/${monthsAbbr[i]}.pdf`,
+            href: `./about-me/analytics_pdfs/${year}/${monthsAbbr[i]}.pdf`,
           }),
         ),
       );
@@ -27,8 +27,8 @@ $(document).ready(() => {
   function createPDFYearsFrag() {
     const frag = $(document.createDocumentFragment());
     frag.append(
-      createPDFYearFrag(2025, 0, 11),
-      createPDFYearFrag(2024, 4, 11),
+      // createPDFYearFrag(2025, 0, 11),
+      createPDFYearFrag(2024, 3, 4),
     );
     return frag;
   }
@@ -56,14 +56,15 @@ $(document).ready(() => {
 
   const datapoints = [
     [128, "Apr '24"],
-    [1000, "May '24"],
-    [2000, "Jun '24"],
-    [4000, "Jul '24"],
-    [8000, "Aug '24"],
-    [8000, "Sep '24"],
-    [8000, "Oct '24"],
-    [8000, "Nov '24"],
-    [8000, "Dec '24"],
+    [1700, ""],
+    [2200, "May '24"],
+    // [2000, "Jun '24"],
+    // [4000, "Jul '24"],
+    // [8000, "Aug '24"],
+    // [8000, "Sep '24"],
+    // [8000, "Oct '24"],
+    // [8000, "Nov '24"],
+    // [8000, "Dec '24"],
   ];
 
   // Instructions to cut over from month to year

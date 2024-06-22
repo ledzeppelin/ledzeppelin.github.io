@@ -3,9 +3,8 @@ sys.path.append('py')
 from collections import Counter
 from vars import ht_schemas
 from vars import verb_templates
+from vars import infl_schemas
 from vars import consts
-
-# deleted_verb_templates, verb_template_omit, conj_schema
 
 for key, val in ht_schemas.ht_schema.items():
     one = val['omit'] & val['forms']
@@ -19,7 +18,7 @@ for key, val in ht_schemas.ht_schema.items():
 
 template_names = []
 template_names +=  list(verb_templates.deleted_verb_templates)
-template_names +=  list(verb_templates.verb_template_omit)
+template_names +=  list(infl_schemas.verb_template_not_visualized)
 template_names +=  list(verb_templates.verb_template_aliases.keys())
 template_names +=  list(verb_templates.conj_schema.keys())
 
