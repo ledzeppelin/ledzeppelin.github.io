@@ -26,7 +26,7 @@ def download_datadump():
         f'./js/json/{file}' for file in ['_aii.prev.jsonl', '_aii.jsonl', 'aii.new.jsonl']
     ]
 
-    url = "https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/kaikki.org-dictionary-AssyrianNeoAramaic.json"
+    url = "https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/kaikki.org-dictionary-AssyrianNeoAramaic.jsonl"
     download(url, new_file)
 
     cur_hash, new_hash = [

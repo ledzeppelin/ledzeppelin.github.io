@@ -80,6 +80,7 @@ button
 .aii-verse,
 .aii-tr,
 .eng-verse,
+.translation-caption,
 #aramaic-history
   color: $label
   @media (prefers-color-scheme: dark)
@@ -150,6 +151,10 @@ li
   margin-top: -2px
   padding-bottom: 6px
 
+
+.translation-caption
+  @include eng-text('xs')
+  padding-top: 2px
 
 .eng-verse
   @include eng-text('m')

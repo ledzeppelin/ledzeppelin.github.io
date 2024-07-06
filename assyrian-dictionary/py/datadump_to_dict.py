@@ -284,9 +284,9 @@ def add_other_forms_from_ety_templates(ety, obj, item, aii_v, vocalized_cache, a
                     return
                     # raise Exception(f'only aii allowed for {aii_v}')
         aii_affixes = [ety['args']['2']]
-        if '5' in ety['args']:
+        if '6' in ety['args']:
             raise Exception(f'{aii_v} too many affixes')
-        for affix_num in ['3', '4']:
+        for affix_num in ['3', '4', '5']:
             if affix_num in ety['args']:
                 aii_affixes.append(ety['args'][affix_num])
         annotate_row_if_not_there2(alias, aii_affixes, aii_v, vocalized_cache, obj)

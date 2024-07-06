@@ -3,7 +3,7 @@ import re
 import itertools
 import copy
 from vars.verb_templates import deleted_verb_templates, conj_schema, verb_template_aliases
-from vars.infl_schemas import infl_schema, verb_template_not_visualized, base_verb_templates
+from vars.infl_schemas import infl_schema, verb_template_not_visualized
 
 def strip_markers():
     # this is a port of /shared_js/aii-utils.js
@@ -113,7 +113,7 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
 
     omit = infl_schema[TEMPLATE_PREFIX]['omit'].union(infl_schema[TEMPLATE_PREFIX]['omit_dangling'])
 
-    nth_ancestor = 0 if template_name in base_verb_templates else 1
+    nth_ancestor = 0 if template_name in verb_template_not_visualized else 1
     for arg, aii in item['inflection_templates'][nth_ancestor]['args'].items():
         if arg in omit:
             pass

@@ -26,7 +26,8 @@ $button-padding: 12px
 
 .aii-verse,
 .aii-tr,
-.eng-verse
+.eng-verse,
+.translation-caption
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
@@ -76,6 +77,9 @@ $button-padding: 12px
   margin-top: -2px
   padding-bottom: 6px
 
+.translation-caption
+  @include eng-text('xs')
+  padding-top: 2px
 
 .eng-verse
   @include eng-text('m')

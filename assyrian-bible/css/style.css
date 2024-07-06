@@ -188,6 +188,7 @@ button {
 .aii-verse,
 .aii-tr,
 .eng-verse,
+.translation-caption,
 #aramaic-history {
   color: rgb(28, 28, 30);
 }
@@ -199,6 +200,7 @@ button {
   .aii-verse,
   .aii-tr,
   .eng-verse,
+  .translation-caption,
   #aramaic-history {
     color: rgb(221, 221, 232);
   }
@@ -289,6 +291,13 @@ li:first-child {
   font-style: normal;
   margin-top: -2px;
   padding-bottom: 6px;
+}
+
+.translation-caption {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  padding-top: 2px;
 }
 
 .eng-verse {

@@ -6,18 +6,12 @@ infl_schema_not_parameterized = {
     "aii-infl-prep/layt": 1,
 }
 
+# these templates do not inherit from another template
 verb_template_not_visualized = {
     'aii-conj',
     'aii-conj-verb',
     'aii-conj-verb/hawe',
 }
-
-# templates do not inherit from another template
-base_verb_templates = {
-    'aii-conj',
-    'aii-conj-verb',
-}
-
 
 DEFAULT_VAL = ' '
 DEFAULT_VAL = '-'
@@ -267,6 +261,35 @@ infl_schema = {
                 },
                 'they': {
                     'pres-3rd-p': DEFAULT_VAL,
+                },
+            },
+            'Copula': {
+                'I (man)': {
+                    'cop-1st-sm': DEFAULT_VAL,
+                },
+                'I (woman)': {
+                    'cop-1st-sf': DEFAULT_VAL,
+                },
+                'we': {
+                    'cop-1st-p': DEFAULT_VAL,
+                },
+                'you (to a man)': {
+                    'cop-2nd-sm': DEFAULT_VAL,
+                },
+                'you (to a woman)': {
+                    'cop-2nd-sf': DEFAULT_VAL,
+                },
+                'you (to a group)': {
+                    'cop-2nd-p': DEFAULT_VAL,
+                },
+                'he': {
+                    'cop-3rd-sm': DEFAULT_VAL,
+                },
+                'she': {
+                    'cop-3rd-sf': DEFAULT_VAL,
+                },
+                'they': {
+                    'cop-3rd-p': DEFAULT_VAL,
                 },
             },
             'Future Tense': {
