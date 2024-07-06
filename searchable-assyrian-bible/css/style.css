@@ -265,13 +265,15 @@ kbd {
 
 .aii-verse,
 .aii-tr,
-.eng-verse {
+.eng-verse,
+.translation-caption {
   color: rgb(28, 28, 30);
 }
 @media (prefers-color-scheme: dark) {
   .aii-verse,
   .aii-tr,
-  .eng-verse {
+  .eng-verse,
+  .translation-caption {
     color: rgb(221, 221, 232);
   }
 }
@@ -338,6 +340,13 @@ kbd {
   font-style: normal;
   margin-top: -2px;
   padding-bottom: 6px;
+}
+
+.translation-caption {
+  font-weight: 400;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  padding-top: 2px;
 }
 
 .eng-verse {

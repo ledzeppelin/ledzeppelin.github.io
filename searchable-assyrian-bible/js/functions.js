@@ -1,5 +1,6 @@
 function loadResults(searchQuery, PAGINATE_AMT) {
   let isFirstResult = searchQuery.i === 0;
+  let attemptCaption = searchQuery.i === 0;
 
   searchQuery.results.slice(searchQuery.i, searchQuery.i + PAGINATE_AMT).forEach((result) => {
     // console.log(result.refIndex);
@@ -76,6 +77,16 @@ function loadResults(searchQuery, PAGINATE_AMT) {
     } else {
       engFragment.append(
         engHighlightedFragment,
+      );
+    }
+    if (attemptCaption && result.item.eng !== null) {
+      attemptCaption = false;
+
+      engFragment.wrapInner('<div>').append(
+        $('<div/>', {
+          class: 'translation-caption',
+          text: '^ not a word-for-word english translation of the assyrian bible',
+        }),
       );
     }
 

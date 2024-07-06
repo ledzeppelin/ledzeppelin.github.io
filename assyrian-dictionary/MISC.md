@@ -1,5 +1,6 @@
 # after uptaking dictionary
-   * update assyrian word count in index.html via `raise Exception(len(vocalized_cache))`
+   * update assyrian word count in index.html via `raise Exception(len(vocalized_cache))` and date (ex. January 1st) in index.html
+   * regenerate new audio
    * export pdf and add number of people using sharrukin.io to graph
 
    * check if DEFAULT_VAL has been replaced

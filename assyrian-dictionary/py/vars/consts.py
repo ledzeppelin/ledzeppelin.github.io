@@ -121,6 +121,7 @@ language_codes = {
   'udi': 'Udi',
   'uga': 'Ugaritic',
   'ur': 'Urdu',
+  'vi': 'Vietnamese',
   'xcl': 'Old Armenian',
   'xeb': 'Eblaite',
   'xno': 'Anglo-Norman',

@@ -133,6 +133,7 @@ $(document).ready(() => {
     type: 'line',
     data: data,
     options: {
+      animation: false,
       responsive: true,
       // required to resize per
       // per https://www.chartjs.org/docs/latest/configuration/responsive.html#important-note

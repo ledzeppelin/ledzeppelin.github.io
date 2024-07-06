@@ -449,6 +449,9 @@ function aiiTranslit(aiiText) {
   re = new RegExp(`([${consonantsMinusGlides}${vowels}wy])(?:[ ]+)ì`, 'g'); // hyphen delimited "to be" suffix
   phoneticText = phoneticText.replaceAll(re, '$1-');
 
+  // adding this for standalone copular "to be" haweh
+  phoneticText = phoneticText.replaceAll('ì', '-');
+
   // No need to check if word starts with 'w-' for this replacement since the
   // only time we add hyphens is if the word starts with waw in the first place
   phoneticText = phoneticText
