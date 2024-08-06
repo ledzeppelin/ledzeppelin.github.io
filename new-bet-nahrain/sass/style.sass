@@ -1,0 +1,277 @@
+// sass-lint:disable no-ids
+// sass-lint:disable no-vendor-prefixes
+@use 'sass:list'
+@use 'sass:color'
+
+@use '../../shared_sass/constants/symbols' as *
+@use '../../shared_sass/constants/colors' as *
+@use '../../shared_sass/constants/constants' as *
+
+@use '../../shared_sass/mixins/mixins' as *
+@use '../../shared_sass/mixins/dark-mode-mixins' as *
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap')
+
+$max-width: 520px
+$indent: 16px
+$round-edge: 16px
+$img-offset: 8px
+
+$orchid-purple: rgb(95, 28, 181)
+$orchid-purple-bg: color.adjust($orchid-purple, $lightness: -20%)
+$apple-green-dark-1: rgb(49, 222, 75)
+$green-link: color.adjust($apple-green-dark-1, $lightness: -5%)
+$orange-link: color.adjust($active-link-dark, $lightness: 12%)
+
+$anim-dur: .15s
+
+$img-cap-rad: 8px
+
+$dark: #000
+$light: #fff
+
+$btn-size-px: 40px
+$pad-btn-size-px: $btn-size-px + 10px
+$player-padding: 12px
+$player-bottom: 16px
+$player-offset: $pad-btn-size-px + 2 * $player-padding + 2 * $player-bottom
+
+
+body
+  background-color: $orchid-purple-bg
+  color: $label-dark
+  margin: 0 auto $player-offset
+
+@include anchors($green-link, $green-link, $orange-link, $orange-link, $active-link-dark, $active-link-dark)
+
+#title
+  @include syrc-header($label-dark)
+
+#subtitle
+  @include subtitle($label-dark)
+
+#created-by-container
+  @include created-by($label-dark, $label-dark)
+
+#backlink-promotion-container
+  @include backlink-promotion($label-dark, $label-dark)
+
+@include backlinks
+
+#app-container
+  margin: 0 auto
+  max-width: $max-width
+  padding: 0 $indent
+
+p
+  @include eng-text('s')
+  padding: 0 $indent
+
+
+#about-dad-title
+  @include eng-text('s')
+  padding: 0 $indent
+
+
+.image-container
+  display: flex
+  gap: 2 * $img-offset
+  margin: 6px 0 8px
+  position: relative
+
+
+.side-by-side
+  height: auto
+  width: calc(50% - $img-offset)
+
+.image-1-caption,
+.image-2-caption
+  -webkit-backdrop-filter: blur(24px)
+  backdrop-filter: blur(24px)
+  bottom: 0
+  padding: 8px
+  position: absolute
+
+.image-1-caption
+  @include eng-text('s')
+  border-bottom-left-radius: $round-edge
+  border-top-right-radius: $img-cap-rad
+  color: white
+  left: 0
+  text-shadow: black 1px 1px 1px
+
+.image-2-caption
+  @include eng-text('s', 500)
+  border-bottom-right-radius: $round-edge
+  border-top-left-radius: $img-cap-rad
+  color: black
+  right: 0
+  text-align: right
+  text-shadow: rgba(white, .6) 0 0 2px
+
+
+.image-1
+  border-bottom-left-radius: $round-edge
+  border-top-left-radius: $round-edge
+
+
+.image-2
+  border-bottom-right-radius: $round-edge
+  border-top-right-radius: $round-edge
+
+#about-dad-items
+  @include eng-text('s')
+  margin: 0
+  padding: 0 $indent
+
+#poem-body
+  ul
+    list-style-type: none
+
+
+.section-title
+  padding: 40px $indent 8px
+
+  & > div
+    text-align: left
+
+.section-lines
+  background-color: $orchid-purple
+  border-radius: $round-edge
+  margin: 0
+  padding: 0
+
+
+.section-line
+  padding: 12px $indent
+
+  .aii,
+  .aii-tr,
+  .eng
+    color: mix($orchid-purple, white, 25%)
+    pointer-events: none // otherwise "tap to search" shows up on android devices
+    text-align: right
+    transition: color $anim-dur ease-in-out, font-weight $anim-dur ease-in-out
+
+  &.recite-past-pres
+    .aii,
+    .aii-tr,
+    .eng
+      color: white
+
+    .aii
+      font-weight: 550
+
+    .aii-tr,
+    .eng
+      font-weight: 650
+
+  &:first-child
+    padding: 16px $indent 12px
+
+  // https://stackoverflow.com/a/64553121
+  // we only run this on desktop since hover on mobile lingers after tapping
+  @media (hover: hover) and (pointer: fine)
+    &:hover
+      background-color: color.adjust($orchid-purple, $lightness: 10%)
+      cursor: pointer
+
+    &:first-child
+      border-top-left-radius: $round-edge
+      border-top-right-radius: $round-edge
+
+    &:last-child
+      border-bottom-left-radius: $round-edge
+      border-bottom-right-radius: $round-edge
+
+
+.tr-backlink-container
+  margin-top: -3px
+  text-align: left
+
+.aii
+  @include aii-text('m', 400)
+  text-align: right
+
+.aii-tr,
+.eng
+  font-family: 'Open Sans', sans-serif
+  font-optical-sizing: auto
+  font-size: 14px
+  font-variation-settings: 'wdth' 100
+  font-weight: 500
+  line-height: 1.4
+  text-align: right
+
+
+.aii-tr
+  font-style: italic
+
+.eng
+  font-style: normal
+
+
+
+////////////
+// player //
+////////////
+
+#player-container
+  -webkit-backdrop-filter: blur(24px) // sass-lint:disable-line no-vendor-prefixes
+  backdrop-filter: blur(24px)
+  background-color: rgba($dark, .45)
+  border-bottom-left-radius: $btn-size-px
+  border-bottom-right-radius: $btn-size-px
+  border-top-left-radius: $btn-size-px
+  border-top-right-radius: $btn-size-px
+  bottom: $player-bottom
+  color: rgba($light, .7)
+  padding: $player-padding 12px $player-padding 24px
+
+.player-container-position
+  box-sizing: border-box
+  left: 50%
+  max-width: $max-width - 2 * $indent
+  position: fixed
+  transform: translateX(calc(-50%))
+  width: calc(100% - 64px)
+
+.player-container-layout
+  align-items: center // controls in row are vertically aligned in the center
+  display: flex
+
+.left-column
+  flex: 1
+
+#author-caption
+  @include eng-text('m', 500)
+
+#scan-poem-container
+  @include eng-text('xs', 400)
+
+#scan-poem-time
+  @include eng-text('xs', 700)
+
+#scan-poem-caption
+  &::before
+    content: ' · click '
+    @media screen and (width <= $mobile-viewport-width-max)
+      content: ' · tap '
+
+
+.right-column
+  flex: none
+
+#play-pause-button
+  background-color: rgba($light, .25)
+  border: 0
+  border-radius: $btn-size-px
+  color: $light
+  cursor: pointer
+  font-size: $btn-size-px
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 40
+  height: $pad-btn-size-px
+  padding: 0
+  width: $pad-btn-size-px
+  // transition: border 200ms, color 200ms, font-variation-settings 200ms
+

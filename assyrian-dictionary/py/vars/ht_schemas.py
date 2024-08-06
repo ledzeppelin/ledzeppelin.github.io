@@ -6,6 +6,13 @@ ht_schema_omit = {
     "head": {},
 }
 
+# when resolving issues from uptaking new dictionary
+# 1. add missing value to either 'forms' or 'genders' set
+#    ex. "2", "g", "g2" go to genders
+#    but others go to forms
+# 2. if needed, add abbreviation to gender_abbrev or forms_abbrev
+#    ex. check if ht name is default or not, then add
+
 ht_schema = {
     "aii-adjective": {
         'omit': { "1", "head", "tr" },
@@ -47,6 +54,7 @@ ht_schema = {
         },
         'forms': {
             "head2",
+            "head3",
             "m", "m2",
             "f", "f2",
             "pl", "pl2", "pl3", "pl4", "pl5", "pl6"
@@ -93,7 +101,7 @@ ht_schema = {
     "aii-pronoun": {
         'omit': { "1", "head", "tr" },
         'forms': {"f", "head2", "pl", "ms", "fs", "m", "mpl", "fpl", "s"},
-        'genders': {"g", "g2"},
+        'genders': {"2", "g", "g2"},
     },
     "aii-proper noun": {
         'omit': { "1", "tr", "tr2" },

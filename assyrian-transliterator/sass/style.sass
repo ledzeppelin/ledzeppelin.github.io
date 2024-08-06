@@ -1,16 +1,20 @@
-@use 'sass:color'
-@use 'sass:list'
 // sass-lint:disable no-ids
 // sass-lint:disable force-pseudo-nesting
 // sass-lint:disable no-mergeable-selectors
 // sass-lint:disable no-vendor-prefixes
 
-@use '../../shared_sass/colors' as *
-@use '../../shared_sass/mixins' as *
-@use '../../shared_sass/styles' as *
-@use '../../shared_sass/symbols' as *
+@use 'sass:color'
+@use 'sass:list'
 
-$key-color: #fd7b13
+@use 'constants' as *
+
+@use '../../shared_sass/constants/colors' as *
+@use '../../shared_sass/constants/symbols' as *
+
+@use '../../shared_sass/mixins/mixins' as *
+
+@use 'dark-mode' as *
+
 $side-padding: 16px
 
 $symbol-width: 24px
@@ -18,13 +22,9 @@ $symbol-padding: calc($symbol-width/2)
 $symbol-width-with-padding: $symbol-width + 2 * $symbol-padding
 
 $max-width: 768px
-$lightness-adjust: -8%
 $border-radius: 16px
 
 body
-  background-color: $secondary-background
-  @media (prefers-color-scheme: dark)
-    background-color: $secondary-background-dark
   margin: 0 auto 50px
   max-width: $max-width
 
@@ -34,6 +34,8 @@ body
 #subtitle
   @include subtitle($key-color)
 
+@include backlinks
+
 #syrc-status-container
   display: flex
   padding: 6px $side-padding
@@ -41,9 +43,6 @@ body
 
 #rand-sentence-ref,
 #syrc-error-msg
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
   flex: 1 1 auto
 
   &:empty::after
@@ -64,21 +63,8 @@ body
 #tru-typo-caption
   padding: calc($side-padding/2) $side-padding
 
-#syrc,
-#rand-sentence-caption,
-#syrc-btn-group,
-#latin-btn-group,
-#latin
-  background-color: $background
-  @media (prefers-color-scheme: dark)
-    background-color: $background-dark
-
-
 #rand-sentence-caption
   @include eng-text('s', 400)
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
   padding: 0 $side-padding 6px
 
 
@@ -99,40 +85,16 @@ body
 
 #syrc-btn-group
   align-items: flex-end // so dialect dropdown doesn't take whole height and also expands to next row on mobile
-  border-bottom: 1px solid $separator
-  @media (prefers-color-scheme: dark)
-    border-bottom: 1px solid $separator-dark
+  border-bottom-style: solid
+  border-bottom-width: 1px
   flex-direction: row
   padding: 0 $side-padding $side-padding
 
   button
     background-color: $key-color
-    color: $background
-    @media (prefers-color-scheme: dark)
-      color: $background-dark
-
     padding: 6px 10px
 
-    // https://stackoverflow.com/a/64553121
-    // we only run this on desktop since hover on mobile lingers after tapping
-    @media (hover: hover) and (pointer: fine)
-      &:hover
-        background-color: color.adjust($key-color, $lightness: $lightness-adjust)
-        @media (prefers-color-scheme: dark)
-          background-color: color.adjust($key-color, $lightness: -$lightness-adjust)
-
-
-
-    &:active
-      background-color: color.adjust($key-color, $lightness: $lightness-adjust * 1.55)
-      @media (prefers-color-scheme: dark)
-        background-color: color.adjust($key-color, $lightness: -$lightness-adjust * 1.55)
-
-
     &:disabled
-      background-color: rgba($key-color, .65)
-      @media (prefers-color-scheme: dark)
-        background-color: rgba($key-color, .4)
       pointer-events: none
 
 
@@ -141,32 +103,10 @@ body
   padding: $side-padding
 
   button
-    background-color: $secondary-background
-    color: $label
-    @media (prefers-color-scheme: dark)
-      background-color: $secondary-background-dark
-      color: $label-dark
     padding: 10px 16px
 
-    &:hover
-      background-color: color.adjust($secondary-background, $lightness: $lightness-adjust * .75)
-      @media (prefers-color-scheme: dark)
-        background-color: color.adjust($secondary-background-dark, $lightness: -$lightness-adjust * .75)
-
-
-    &:active
-      background-color: color.adjust($secondary-background, $lightness: $lightness-adjust * 1.25)
-      @media (prefers-color-scheme: dark)
-        background-color: color.adjust($secondary-background-dark, $lightness: -$lightness-adjust * 1.25)
-
-
     &.active
-      background-color: $background-dark
-      color: $background
       cursor: default
-      @media (prefers-color-scheme: dark)
-        background-color: $secondary-background
-        color: $background-dark
 
 
 // https://getcssscan.com/css-buttons-examples
@@ -188,9 +128,6 @@ $min-height: 110px
 
 #syrc,
 #latin
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
   resize: none
 
   &:focus
@@ -207,13 +144,13 @@ $border-width: 2px
 #syrc
   border: 0
   border-radius: 0
-  @media screen and (width > $max-width)
-    border-top-left-radius: $border-radius
-    border-top-right-radius: $border-radius
   box-sizing: border-box // combined with 100% width so textare doesn't stretch outside parent container
   padding: $side-padding $side-padding $side-padding $symbol-width-with-padding
   vertical-align: top // removes extra space under textarea in some browsers, per https://stackoverflow.com/a/7144960
   width: 100%
+  @media screen and (width > $max-width)
+    border-top-left-radius: $border-radius
+    border-top-right-radius: $border-radius
 
 
 .syrc-text
@@ -239,9 +176,6 @@ $border-width: 2px
 
 
   &:empty:not(:focus)::before
-    color: $label
-    @media (prefers-color-scheme: dark)
-      color: $label-dark
     content: attr(data-placeholder)
     font-style: normal
 
@@ -285,23 +219,6 @@ $border-width: 2px
 .typo-small-circle::after
   padding-right: 4px
 
-@mixin color-typos($color)
-  background-color: rgba($color, .05)
-  @media (prefers-color-scheme: dark)
-    background-color: rgba($color, .2)
-  border: 2px dotted rgba($color, .7)
-
-
-.bottom-mark
-  @include color-typos($key-color)
-
-.top-mark
-  // dodgerblue
-  @include color-typos(#1e90ff)
-
-  // deeppink
-.other-mark
-  @include color-typos(#ff1493)
 
 #aii-typo-caption,
 #tru-typo-caption
@@ -313,18 +230,11 @@ $border-width: 2px
 #tru-top-mark-caption,
 #tru-other-mark-caption
   @include eng-text('s')
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-
 
 #aii-orthography,
 #tru-orthography
   @include eng-text('s')
-  color: $label
   display: none
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
   padding: calc($side-padding/2) $side-padding
 
 
@@ -340,9 +250,6 @@ $border-width: 2px
   -webkit-tap-highlight-color: transparent // prevent flicker when tapping on phone
   background-color: transparent
   border: 0
-  color: $secondary-label
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
   cursor: pointer
   display: none
   font-size: $symbol-width

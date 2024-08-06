@@ -1,33 +1,31 @@
-@use 'sass:list'
 // sass-lint:disable no-ids
 // sass-lint:disable no-vendor-prefixes
 
-@use '../../shared_sass/colors' as *
-@use '../../shared_sass/mixins' as *
-@use '../../shared_sass/mixins_bible' as *
-@use '../../shared_sass/styles' as *
-@use '../../shared_sass/symbols' as *
-@use '../../shared_sass/constants' as *
+@use 'sass:list'
+
+@use '../../shared_sass/constants/symbols' as *
+@use '../../shared_sass/constants/constants' as *
+
+@use '../../shared_sass/mixins/mixins' as *
+@use '../../shared_sass/mixins/mixins_bible' as *
+
+@use 'dark-mode' as *
 
 $key-color: dodgerblue // sass-lint:disable-line no-color-keywords
 $max-width: 768px
 $side-padding: 16px
 
 body
-  background-color: $background
-  @media (prefers-color-scheme: dark)
-    background-color: $background-dark
   margin: 0 auto
   max-width: $max-width
 
-// ------
-// header
-// ------
 #title
   @include syrc-header($key-color)
 
 #subtitle
   @include subtitle($key-color)
+
+@include backlinks
 
 #reading-level-container
   margin-bottom: 4px // we need some spacing for iOS so the bottom blue outline doesn't get cut off
@@ -39,19 +37,16 @@ body
   -webkit-backdrop-filter: blur(10px) // sass-lint:disable-line no-vendor-prefixes
   align-items: center // controls in row are vertically aligned in the center
   backdrop-filter: blur(10px)
-  background-color: rgba($background, .65)
-  @media (prefers-color-scheme: dark)
-    background-color: rgba($background-dark, .65)
-
   display: flex
   justify-content: space-evenly
-  @media screen and (width <= $mobile-viewport-width-max)
-    justify-content: space-between
   padding: 12px $side-padding
   // when resizing width of browser, there may be a fractional pixel gap above this container due to variable
   // #title and #subtitle elements above, see: https://samhermes.com/posts/closing-gap-above-sticky-elements/
   position: sticky
   top: 0
+  @media screen and (width <= $mobile-viewport-width-max)
+    justify-content: space-between
+
 
 select
   @include eng-text('m')
@@ -73,20 +68,6 @@ button
 // --------------
 // bible contents
 // --------------
-.aii-book-name,
-.header,
-.header-2,
-.reference,
-.aii-verse,
-.aii-tr,
-.eng-verse,
-.translation-caption,
-#aramaic-history
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-
-
 #bible
   margin-left: $side-padding
   margin-right: $side-padding
@@ -148,13 +129,13 @@ li
 
 .tr-backlink-container
   font-style: normal
-  margin-top: -2px
+  margin-top: -6px
   padding-bottom: 6px
 
 
 .translation-caption
   @include eng-text('xs')
-  padding-top: 2px
+  margin-top: -2px
 
 .eng-verse
   @include eng-text('m')
@@ -172,14 +153,6 @@ li
 
     &::after
       content: ')'
-
-
-.highlighted
-  // we don't alpha since transparency causes overlapping highlights between next lines due to line-height
-  // background-color: rgba(80, 151, 255, .18) // color from google search highlighting
-  background-color: rgb(226, 237, 255) // sRGB digital color meter from dark mode google search highlight
-  @media (prefers-color-scheme: dark)
-    background-color: rgba(42, 66, 107) // sRGB digital color meter from dark mode google search highlight
 
 
 #copyright-container

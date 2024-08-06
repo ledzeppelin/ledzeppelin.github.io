@@ -1,6 +1,9 @@
 @use 'sass:color'
-@use 'colors' as *
+
+@use '../constants/colors' as *
+
 @use 'mixins' as *
+@use 'dark-mode-mixins' as *
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap')
 
@@ -12,6 +15,58 @@
     background-color: $secondary-background
     @media (prefers-color-scheme: dark)
       background-color: $background-dark
+
+  @include anchors($link, $link-dark, $visited-link, $visited-link-dark, $active-link, $active-link-dark)
+
+  #clear-text
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+  #autofocus-tip-container
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
+
+
+  kbd
+    // style from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/kbd
+    background-color: $secondary-background
+    border-color: $separator
+    box-shadow: 0 1px 1px $separator
+    color: $label
+    @media (prefers-color-scheme: dark)
+      $border-color-dark: color.adjust($secondary-label-dark, $lightness: -10%)
+      background-color: $background-dark
+      border-color: $border-color-dark
+      box-shadow: 0 1px 1px $border-color-dark
+      color: $label-dark
+
+
+  #searchbar
+    background-color: $background
+    border-color: $separator
+    color: $label
+    @media (prefers-color-scheme: dark)
+      background-color: $secondary-background-dark
+      border-color: $secondary-background-dark
+      color: $label-dark
+
+
+    &::placeholder
+      color: $secondary-label
+      @media (prefers-color-scheme: dark)
+        color: $secondary-label-dark
+
+
+    &:focus
+      border: 1px solid $link
+      @media (prefers-color-scheme: dark)
+        border: 1px solid $link-dark
+
+
+  body
     margin: 0 auto 50px
 
   #title
@@ -19,6 +74,14 @@
 
   #subtitle
     @include subtitle($key-color)
+
+  #created-by-container
+    @include created-by($label, $label-dark)
+
+  #backlink-promotion-container
+    @include backlink-promotion($label, $label-dark)
+
+  @include backlinks
 
   #app-container
     margin: 0 auto
@@ -34,10 +97,6 @@
     // background-color: rgba(255, 0, 0, .1)
     background-color: transparent
     border: 0
-    color: $secondary-label
-    @media (prefers-color-scheme: dark)
-      color: $secondary-label-dark
-
     cursor: pointer
     display: none
     font-size: $button-width
@@ -53,9 +112,6 @@
       right: auto
 
   #autofocus-tip-container
-    color: $secondary-label
-    @media (prefers-color-scheme: dark)
-      color: $secondary-label-dark
     font-family: 'Roboto Mono', monospace
     // font-family: 'Roboto', monospace
     font-size: 11px
@@ -72,39 +128,19 @@
 
   kbd
     // style from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/kbd
-    background-color: $secondary-background
-    border: 1px solid $separator
     border-radius: 3px
-    box-shadow: 0 1px 1px $separator
-    color: $label
-    @media (prefers-color-scheme: dark)
-      $border-color-dark: color.adjust($secondary-label-dark, $lightness: -10%)
-      background-color: $background-dark
-      border: 1px solid $border-color-dark
-      box-shadow: 0 1px 1px $border-color-dark
-      color: $label-dark
+    border-style: solid
+    border-width: 1px
     font-weight: 700
     padding: 2px 4px
-
-  #searchbar
-    color: $label
-    @media (prefers-color-scheme: dark)
-      color: $label-dark
-
 
   #searchbar
     // -webkit-appearance: none // removes top shadow (tested on SE 2nd gen iOS 14.5)
     $text-indent: 4px // need extra padding for letters like ܓ
     @include aii-text('xs')
-    // height: 100px
-
-    background-color: $background
-    border: 1px solid $separator
-    @media (prefers-color-scheme: dark)
-      background-color: $secondary-background-dark
-      border: 1px solid $secondary-background-dark
-
     border-radius: 24px
+    border-style: solid
+    border-width: 1px
     box-sizing: border-box // size of input won't increase due to padding
     direction: ltr // since we're using aii
     display: block
@@ -121,18 +157,6 @@
     padding-right: $searchbar-inset-x + $button-width + 2px
     padding-top: 6px
     width: 100%
-
-    &::placeholder
-      color: $secondary-label
-      @media (prefers-color-scheme: dark)
-        color: $secondary-label-dark
-
-
-    &:focus
-      border: 1px solid $link
-      @media (prefers-color-scheme: dark)
-        border: 1px solid $link-dark
-
 
     &.aii-search-text
       direction: rtl

@@ -1,5 +1,7 @@
 import json
 from collections import defaultdict
+from vars.verb_templates import conj_stems_and_patterns
+from conjugate_verbs import find_stem_of_pattern
 
 def tag_counts():
     with open('./js/json/aii-dict-no-tr.json', encoding="utf-8") as f:
@@ -14,17 +16,18 @@ def tag_counts():
             for jsonline in item['jsonlines']:
                 for tier2_tag in jsonline['tier2_tags']:
                     counter[tier2_tag] += 1
-                    for sense in jsonline['senses']:
-                        if 'tier3_tags' in sense:
-                            for tier3_tag in sense['tier3_tags']:
-                                counter[tier3_tag] += 1
+                for sense in jsonline['senses']:
+                    if 'tier3_tags' in sense:
+                        for tier3_tag in sense['tier3_tags']:
+                            counter[tier3_tag] += 1
 
     # {('ipa:standard', 3585), ('ipa:Urmian', 751), ('pos:adjective', 496), ...}
     counter['table:Numbers Table'] = 100
+    # raise Exception(counter)
     return counter
 
 def tag_counts_grouped(tag_counter):
-    MIN_OCCURENCES = 3
+    MIN_OCCURENCES = 4
     # MIN_OCCURENCES = 1
     exempt_from_min_occurrences = {'root:2-letters'}
     results = defaultdict(list)
@@ -44,6 +47,7 @@ def generate_verb_stem_list(stem_tag_names, pattern_tag_names):
     ]
 
 def generate_stems_list(stem_tag_names, pattern_tag_names):
+    # raise Exception(stem_tag_names, pattern_tag_names)
     res = []
     for stem_tag_name in sorted(stem_tag_names,key=str.casefold):
         res.append({
@@ -58,10 +62,13 @@ def generate_stems_list(stem_tag_names, pattern_tag_names):
 
     return res
 
+
 def generate_patterns_list(pattern_tag_names, stem_tag_name):
+    # raise Exception(pattern_tag_names, stem_tag_name)
     res = []
     for pattern_tag_name in sorted(pattern_tag_names,key=str.casefold):
-        if stem_tag_name[0] == pattern_tag_name[0]:
+        # raise Exception(stem_tag_name)
+        if stem_tag_name == find_stem_of_pattern(conj_stems_and_patterns, pattern_tag_name):
             res.append({
                 'name': f'{pattern_tag_name} pattern',
                 'tag': f"pattern:{pattern_tag_name}",

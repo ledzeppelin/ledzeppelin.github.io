@@ -1,0 +1,165 @@
+// sass-lint:disable no-ids
+// sass-lint:disable force-pseudo-nesting
+
+@use 'sass:color'
+
+@use 'constants' as *
+
+@use '../../shared_sass/constants/colors' as *
+
+@use '../../shared_sass/mixins/dark-mode-mixins' as *
+
+
+body
+  background-color: $secondary-background
+  @media (prefers-color-scheme: dark)
+    background-color: $secondary-background-dark
+
+@include anchors($link, $link-dark, $visited-link, $visited-link-dark, $active-link, $active-link-dark)
+
+#created-by-container
+  @include created-by($label, $label-dark)
+
+#backlink-promotion-container
+  @include backlink-promotion($label, $label-dark)
+
+#rand-sentence-ref,
+#syrc-error-msg
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+#syrc,
+#rand-sentence-caption,
+#syrc-btn-group,
+#latin-btn-group,
+#latin
+  background-color: $background
+  @media (prefers-color-scheme: dark)
+    background-color: $background-dark
+
+
+#rand-sentence-caption
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+#syrc-btn-group
+  border-color: $separator
+  @media (prefers-color-scheme: dark)
+    border-color: $separator-dark
+
+
+  button
+    color: $background
+    @media (prefers-color-scheme: dark)
+      color: $background-dark
+
+    // https://stackoverflow.com/a/64553121
+    // we only run this on desktop since hover on mobile lingers after tapping
+    @media (hover: hover) and (pointer: fine)
+      &:hover
+        background-color: color.adjust($key-color, $lightness: $lightness-adjust)
+        @media (prefers-color-scheme: dark)
+          background-color: color.adjust($key-color, $lightness: -$lightness-adjust)
+
+
+
+    &:active
+      background-color: color.adjust($key-color, $lightness: $lightness-adjust * 1.55)
+      @media (prefers-color-scheme: dark)
+        background-color: color.adjust($key-color, $lightness: -$lightness-adjust * 1.55)
+
+
+    &:disabled
+      background-color: rgba($key-color, .65)
+      @media (prefers-color-scheme: dark)
+        background-color: rgba($key-color, .4)
+
+
+#latin-btn-group
+  button
+    background-color: $secondary-background
+    color: $label
+    @media (prefers-color-scheme: dark)
+      background-color: $secondary-background-dark
+      color: $label-dark
+
+
+    &:hover
+      background-color: color.adjust($secondary-background, $lightness: $lightness-adjust * .75)
+      @media (prefers-color-scheme: dark)
+        background-color: color.adjust($secondary-background-dark, $lightness: -$lightness-adjust * .75)
+
+
+    &:active
+      background-color: color.adjust($secondary-background, $lightness: $lightness-adjust * 1.25)
+      @media (prefers-color-scheme: dark)
+        background-color: color.adjust($secondary-background-dark, $lightness: -$lightness-adjust * 1.25)
+
+
+    &.active
+      background-color: $background-dark
+      color: $background
+      @media (prefers-color-scheme: dark)
+        background-color: $secondary-background
+        color: $background-dark
+
+
+#syrc,
+#latin
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+#latin
+  &:empty:not(:focus)::before
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+@mixin color-typos($color)
+  background-color: rgba($color, .05)
+  border: 2px dotted rgba($color, .7)
+  @media (prefers-color-scheme: dark)
+    background-color: rgba($color, .2)
+    border: 2px dotted rgba($color, .6)
+
+
+
+.bottom-mark
+  @include color-typos($key-color)
+
+.top-mark
+  // dodgerblue
+  @include color-typos(#1e90ff)
+
+  // deeppink
+.other-mark
+  @include color-typos(#ff1493)
+
+#aii-bottom-mark-caption,
+#aii-top-mark-caption,
+#aii-other-mark-caption,
+#tru-top-mark-caption,
+#tru-other-mark-caption
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+#aii-orthography,
+#tru-orthography
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+#clear-text,
+#copy-text
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark

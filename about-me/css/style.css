@@ -4,11 +4,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;1,400&display=swap");
-@font-face {
-  font-family: "Noto Sans Syriac Western";
-  font-weight: 100 900;
-  src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
-}
 @keyframes blur-img {
   0% {
     filter: blur(1px) grayscale(0) saturate(110%) contrast(110%) brightness(1.2);
@@ -277,6 +272,11 @@
     color: #888;
   }
 }
+@font-face {
+  font-family: "Noto Sans Syriac Western";
+  font-weight: 100 900;
+  src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
+}
 body {
   background-color: black;
   color: rgb(221, 221, 232);
@@ -433,7 +433,7 @@ body {
 #img-caption {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.4;
   font-size: 12px;
   bottom: 0;
   color: white;
@@ -445,7 +445,7 @@ body {
 #headshot-caption {
   font-family: "Ubuntu", sans-serif;
   font-weight: 500;
-  line-height: 1.3;
+  line-height: 1.4;
   font-size: 12px;
   color: black;
   margin: 8px 0 0 16px;
@@ -466,7 +466,7 @@ body {
 .section-title {
   font-family: "Ubuntu", sans-serif;
   font-weight: 300;
-  line-height: 1.3;
+  line-height: 1.4;
   font-size: 28px;
   color: #777;
   padding-bottom: 4px;
@@ -475,18 +475,18 @@ body {
 .section-body {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.4;
   font-size: 14px;
   color: rgb(221, 221, 232);
 }
 
 ul {
-  margin: 4px 0;
+  margin: 2px 0;
 }
 ul li {
   font-family: "Ubuntu", sans-serif;
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.4;
   font-size: 14px;
 }
 ul li .tr {
@@ -508,14 +508,29 @@ a {
   color: rgb(133, 177, 255);
   text-decoration: none;
 }
+@media (prefers-color-scheme: dark) {
+  a {
+    color: rgb(133, 177, 255);
+  }
+}
 a:hover {
   text-decoration: underline;
 }
 a:visited {
   color: rgb(186, 159, 239);
 }
+@media (prefers-color-scheme: dark) {
+  a:visited {
+    color: rgb(186, 159, 239);
+  }
+}
 a:active {
   color: rgb(188, 90, 0);
+}
+@media (prefers-color-scheme: dark) {
+  a:active {
+    color: rgb(188, 90, 0);
+  }
 }
 
 @media screen and (prefers-reduced-motion: no-preference) {

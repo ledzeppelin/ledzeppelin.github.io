@@ -1,0 +1,29 @@
+// sass-lint:disable no-ids
+
+@use 'sass:color'
+
+@use 'constants' as *
+
+@use '../../shared_sass/constants/colors' as *
+
+
+#bible-promotion-container,
+.aii-verse,
+.aii-tr,
+.eng-verse,
+.translation-caption
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+.highlighted
+  color: $key-color
+  @media (prefers-color-scheme: dark)
+    color: color.adjust($key-color, $lightness: 10%)
+
+
+.highlighted2
+  text-decoration: underline $key-color 2px
+  @media (prefers-color-scheme: dark)
+    text-decoration: underline color.adjust($key-color, $lightness: 10%) 2px

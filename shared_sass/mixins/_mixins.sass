@@ -1,4 +1,4 @@
-@use 'constants' as *
+@use '../constants/constants' as *
 
 // sass-lint:disable no-vendor-prefixes
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap')
@@ -53,6 +53,18 @@
   @media screen and (max-width: $mobile-viewport-width-max)
     font-weight: 400
 
+@mixin backlinks
+  .webapp-backlink-meta
+    @include eng-text('xs', 400)
+
+  .webapp-backlink-href
+    @include eng-text('xs', 400)
+    text-decoration: underline
+
+  .creator-backlink-href
+    @include aii-text('xs', 400)
+    text-decoration: underline
+
 
 @mixin aii-text($size, $weight: 400)
   direction: rtl
@@ -87,6 +99,7 @@
 
 @mixin eng-text($size, $weight: 400, $is-translit: false, $using-aii: false)
   font-weight: $weight
+  line-height: 1.4
 
   @if $using-aii == true
     // Generic font family can be placed after Eastern font since Eastern font is

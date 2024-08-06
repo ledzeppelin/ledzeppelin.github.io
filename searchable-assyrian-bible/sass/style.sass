@@ -1,37 +1,31 @@
+// sass-lint:disable no-ids
 @use 'sass:color'
 @use 'sass:list'
-// sass-lint:disable no-ids
-// sass-lint:disable force-pseudo-nesting
-// sass-lint:disable no-mergeable-selectors
-// sass-lint:disable no-vendor-prefixes
 
-@use '../../shared_sass/colors' as *
-@use '../../shared_sass/mixins' as *
-@use '../../shared_sass/mixins_bible' as *
-@use '../../shared_sass/styles' as *
-@use '../../shared_sass/symbols' as *
-@use '../../shared_sass/searchapp_mixin' as *
+@use 'constants' as *
 
-$key-color: rgb(240, 0, 0)
+@use '../../shared_sass/constants/colors' as *
+@use '../../shared_sass/constants/symbols' as *
+
+@use '../../shared_sass/mixins/mixins' as *
+@use '../../shared_sass/mixins/mixins_bible' as *
+@use '../../shared_sass/mixins/searchapp_mixin' as *
+
+@use 'dark-mode' as *
+
 $max-width: 600px
 $side-padding: 16px
 $searchbar-inset-x: 20px
 $close-x: 0
 $button-padding: 12px
 
+#bible-promotion-container
+  text-align: right
+
 @include search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x)
 
 #search-results
   padding: 16px $side-padding
-
-.aii-verse,
-.aii-tr,
-.eng-verse,
-.translation-caption
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-
 
 .search-result
   padding-top: $side-padding
@@ -44,21 +38,8 @@ $button-padding: 12px
   text-align: right
 
 .highlighted
-  color: $key-color
-  @media (prefers-color-scheme: dark)
-    color: color.adjust($key-color, $lightness: 10%)
   font-weight: 500
   // font-weight: 400
-
-
-.highlighted2
-  text-decoration: underline
-  text-decoration-color: $key-color
-  @media (prefers-color-scheme: dark)
-    text-decoration-color: color.adjust($key-color, $lightness: 10%)
-  text-decoration-thickness: 2px
-
-
 
 .aii-verse,
 .aii-tr,
@@ -74,12 +55,12 @@ $button-padding: 12px
 
 .tr-backlink-container
   font-style: normal
-  margin-top: -2px
+  margin-top: -6px
   padding-bottom: 6px
 
 .translation-caption
   @include eng-text('xs')
-  padding-top: 2px
+  margin-top: -2px
 
 .eng-verse
   @include eng-text('m')

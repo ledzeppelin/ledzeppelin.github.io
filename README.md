@@ -7,6 +7,8 @@ Webapp subdirectories each have an index.html file that can be viewed in the bro
 * http://localhost:8000/searchable-assyrian-bible/
 * http://localhost:8000/assyrian-dictionary/
 * http://localhost:8000/
+* http://localhost:8000/new-bet-nahrain/
+* http://localhost:8000/assyrian-bible-study/
 
 
 ### Development

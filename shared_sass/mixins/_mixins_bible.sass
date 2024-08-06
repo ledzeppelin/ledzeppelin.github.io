@@ -1,4 +1,4 @@
-@use 'colors' as *
+@use '../constants/colors' as *
 @use 'mixins' as *
 
 @mixin copyright-container($side-padding)
@@ -7,12 +7,10 @@
   .copyright
     @include eng-text('xs')
     color: $secondary-label
+    margin-bottom: 6px
     @media (prefers-color-scheme: dark)
       color: $secondary-label-dark
 
-    margin-bottom: 3px
-    text-align: justify
-    text-justify: inter-word
 
     .emphasis-bible
       font-style: italic

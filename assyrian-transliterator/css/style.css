@@ -1,13 +1,22 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @font-face {
   font-family: "Noto Sans Syriac Western";
   font-weight: 100 900;
   src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
 }
+body {
+  background-color: rgb(242, 242, 247);
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(54, 54, 57);
+  }
+}
+
 a {
   color: rgb(51, 102, 204);
   text-decoration: none;
@@ -50,37 +59,231 @@ a:active {
   }
 }
 
-.webapp-backlink-meta {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
+#backlink-promotion-container {
+  color: rgb(28, 28, 30);
+  margin-bottom: 30px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  #backlink-promotion-container {
+    color: rgb(221, 221, 232);
+  }
 }
 
-.webapp-backlink-href {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  text-decoration: underline;
+#rand-sentence-ref,
+#syrc-error-msg {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #rand-sentence-ref,
+  #syrc-error-msg {
+    color: rgb(221, 221, 232);
+  }
 }
 
-.creator-backlink-href {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 400;
-  line-height: 1.4;
-  font-size: 16.8px;
-  text-decoration: underline;
+#syrc,
+#rand-sentence-caption,
+#syrc-btn-group,
+#latin-btn-group,
+#latin {
+  background-color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  #syrc,
+  #rand-sentence-caption,
+  #syrc-btn-group,
+  #latin-btn-group,
+  #latin {
+    background-color: rgb(28, 28, 30);
+  }
+}
+
+#rand-sentence-caption {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #rand-sentence-caption {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#syrc-btn-group {
+  border-color: rgba(91, 91, 96, 0.29);
+}
+@media (prefers-color-scheme: dark) {
+  #syrc-btn-group {
+    border-color: rgba(104, 104, 111, 0.6);
+  }
+}
+#syrc-btn-group button {
+  color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  #syrc-btn-group button {
+    color: rgb(28, 28, 30);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  #syrc-btn-group button:hover {
+    background-color: #e56702;
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-color-scheme: dark) {
+  #syrc-btn-group button:hover {
+    background-color: #fd923b;
+  }
+}
+#syrc-btn-group button:active {
+  background-color: #cf5d02;
+}
+@media (prefers-color-scheme: dark) {
+  #syrc-btn-group button:active {
+    background-color: #fe9e52;
+  }
+}
+#syrc-btn-group button:disabled {
+  background-color: rgba(253, 123, 19, 0.65);
+}
+@media (prefers-color-scheme: dark) {
+  #syrc-btn-group button:disabled {
+    background-color: rgba(253, 123, 19, 0.4);
+  }
+}
+
+#latin-btn-group button {
+  background-color: rgb(242, 242, 247);
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #latin-btn-group button {
+    background-color: rgb(54, 54, 57);
+    color: rgb(221, 221, 232);
+  }
+}
+#latin-btn-group button:hover {
+  background-color: #dfdfeb;
+}
+@media (prefers-color-scheme: dark) {
+  #latin-btn-group button:hover {
+    background-color: #454549;
+  }
+}
+#latin-btn-group button:active {
+  background-color: #d2d2e4;
+}
+@media (prefers-color-scheme: dark) {
+  #latin-btn-group button:active {
+    background-color: #4f4f53;
+  }
+}
+#latin-btn-group button.active {
+  background-color: rgb(28, 28, 30);
+  color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  #latin-btn-group button.active {
+    background-color: rgb(242, 242, 247);
+    color: rgb(28, 28, 30);
+  }
+}
+
+#syrc,
+#latin {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #syrc,
+  #latin {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#latin:empty:not(:focus)::before {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #latin:empty:not(:focus)::before {
+    color: rgb(221, 221, 232);
+  }
+}
+
+.bottom-mark {
+  background-color: rgba(253, 123, 19, 0.05);
+  border: 2px dotted rgba(253, 123, 19, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  .bottom-mark {
+    background-color: rgba(253, 123, 19, 0.2);
+    border: 2px dotted rgba(253, 123, 19, 0.6);
+  }
+}
+
+.top-mark {
+  background-color: rgba(30, 144, 255, 0.05);
+  border: 2px dotted rgba(30, 144, 255, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  .top-mark {
+    background-color: rgba(30, 144, 255, 0.2);
+    border: 2px dotted rgba(30, 144, 255, 0.6);
+  }
+}
+
+.other-mark {
+  background-color: rgba(255, 20, 147, 0.05);
+  border: 2px dotted rgba(255, 20, 147, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  .other-mark {
+    background-color: rgba(255, 20, 147, 0.2);
+    border: 2px dotted rgba(255, 20, 147, 0.6);
+  }
+}
+
+#aii-bottom-mark-caption,
+#aii-top-mark-caption,
+#aii-other-mark-caption,
+#tru-top-mark-caption,
+#tru-other-mark-caption {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #aii-bottom-mark-caption,
+  #aii-top-mark-caption,
+  #aii-other-mark-caption,
+  #tru-top-mark-caption,
+  #tru-other-mark-caption {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#aii-orthography,
+#tru-orthography {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #aii-orthography,
+  #tru-orthography {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#clear-text,
+#copy-text {
+  color: rgb(134, 134, 137);
+}
+@media (prefers-color-scheme: dark) {
+  #clear-text,
+  #copy-text {
+    color: rgb(149, 149, 157);
+  }
 }
 
 body {
-  background-color: rgb(242, 242, 247);
   margin: 0 auto 50px;
   max-width: 768px;
-}
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: rgb(54, 54, 57);
-  }
 }
 
 #title {
@@ -128,6 +331,30 @@ body {
   }
 }
 
+.webapp-backlink-meta {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+}
+
+.webapp-backlink-href {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.creator-backlink-href {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  text-decoration: underline;
+}
+
 #syrc-status-container {
   display: flex;
   padding: 6px 16px;
@@ -135,14 +362,7 @@ body {
 
 #rand-sentence-ref,
 #syrc-error-msg {
-  color: rgb(28, 28, 30);
   flex: 1 1 auto;
-}
-@media (prefers-color-scheme: dark) {
-  #rand-sentence-ref,
-  #syrc-error-msg {
-    color: rgb(221, 221, 232);
-  }
 }
 #rand-sentence-ref:empty::after,
 #syrc-error-msg:empty::after {
@@ -151,6 +371,7 @@ body {
 
 #rand-sentence-ref {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
   text-align: left;
@@ -158,6 +379,7 @@ body {
 
 #syrc-error-msg {
   font-weight: 500;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
   text-align: right;
@@ -168,34 +390,12 @@ body {
   padding: 8px 16px;
 }
 
-#syrc,
-#rand-sentence-caption,
-#syrc-btn-group,
-#latin-btn-group,
-#latin {
-  background-color: #fff;
-}
-@media (prefers-color-scheme: dark) {
-  #syrc,
-  #rand-sentence-caption,
-  #syrc-btn-group,
-  #latin-btn-group,
-  #latin {
-    background-color: rgb(28, 28, 30);
-  }
-}
-
 #rand-sentence-caption {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 14px;
-  color: rgb(28, 28, 30);
   padding: 0 16px 6px;
-}
-@media (prefers-color-scheme: dark) {
-  #rand-sentence-caption {
-    color: rgb(221, 221, 232);
-  }
 }
 
 .btn-group {
@@ -224,51 +424,17 @@ body {
 
 #syrc-btn-group {
   align-items: flex-end;
-  border-bottom: 1px solid rgba(91, 91, 96, 0.29);
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
   flex-direction: row;
   padding: 0 16px 16px;
 }
-@media (prefers-color-scheme: dark) {
-  #syrc-btn-group {
-    border-bottom: 1px solid rgba(104, 104, 111, 0.6);
-  }
-}
 #syrc-btn-group button {
   background-color: #fd7b13;
-  color: #fff;
   padding: 6px 10px;
 }
-@media (prefers-color-scheme: dark) {
-  #syrc-btn-group button {
-    color: rgb(28, 28, 30);
-  }
-}
-@media (hover: hover) and (pointer: fine) {
-  #syrc-btn-group button:hover {
-    background-color: #e56702;
-  }
-}
-@media (hover: hover) and (pointer: fine) and (prefers-color-scheme: dark) {
-  #syrc-btn-group button:hover {
-    background-color: #fd923b;
-  }
-}
-#syrc-btn-group button:active {
-  background-color: #cf5d02;
-}
-@media (prefers-color-scheme: dark) {
-  #syrc-btn-group button:active {
-    background-color: #fe9e52;
-  }
-}
 #syrc-btn-group button:disabled {
-  background-color: rgba(253, 123, 19, 0.65);
   pointer-events: none;
-}
-@media (prefers-color-scheme: dark) {
-  #syrc-btn-group button:disabled {
-    background-color: rgba(253, 123, 19, 0.4);
-  }
 }
 
 #latin-btn-group {
@@ -276,46 +442,15 @@ body {
   padding: 16px;
 }
 #latin-btn-group button {
-  background-color: rgb(242, 242, 247);
-  color: rgb(28, 28, 30);
   padding: 10px 16px;
 }
-@media (prefers-color-scheme: dark) {
-  #latin-btn-group button {
-    background-color: rgb(54, 54, 57);
-    color: rgb(221, 221, 232);
-  }
-}
-#latin-btn-group button:hover {
-  background-color: #dfdfeb;
-}
-@media (prefers-color-scheme: dark) {
-  #latin-btn-group button:hover {
-    background-color: #454549;
-  }
-}
-#latin-btn-group button:active {
-  background-color: #d2d2e4;
-}
-@media (prefers-color-scheme: dark) {
-  #latin-btn-group button:active {
-    background-color: #4f4f53;
-  }
-}
 #latin-btn-group button.active {
-  background-color: rgb(28, 28, 30);
-  color: #fff;
   cursor: default;
-}
-@media (prefers-color-scheme: dark) {
-  #latin-btn-group button.active {
-    background-color: rgb(242, 242, 247);
-    color: rgb(28, 28, 30);
-  }
 }
 
 .btn {
   font-weight: 500;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   -webkit-tap-highlight-color: transparent;
@@ -330,14 +465,7 @@ body {
 
 #syrc,
 #latin {
-  color: rgb(28, 28, 30);
   resize: none;
-}
-@media (prefers-color-scheme: dark) {
-  #syrc,
-  #latin {
-    color: rgb(221, 221, 232);
-  }
 }
 #syrc:focus,
 #latin:focus {
@@ -385,6 +513,7 @@ body {
 
 #syrc-dialect {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   margin-left: auto;
@@ -392,6 +521,7 @@ body {
 
 #latin {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-style: italic;
   font-size: 22px;
@@ -401,14 +531,8 @@ body {
   white-space: pre-wrap;
 }
 #latin:empty:not(:focus)::before {
-  color: rgb(28, 28, 30);
   content: attr(data-placeholder);
   font-style: normal;
-}
-@media (prefers-color-scheme: dark) {
-  #latin:empty:not(:focus)::before {
-    color: rgb(221, 221, 232);
-  }
 }
 @media screen and (width > 768px) {
   #latin {
@@ -455,36 +579,6 @@ body {
   padding-right: 4px;
 }
 
-.bottom-mark {
-  background-color: rgba(253, 123, 19, 0.05);
-  border: 2px dotted rgba(253, 123, 19, 0.7);
-}
-@media (prefers-color-scheme: dark) {
-  .bottom-mark {
-    background-color: rgba(253, 123, 19, 0.2);
-  }
-}
-
-.top-mark {
-  background-color: rgba(30, 144, 255, 0.05);
-  border: 2px dotted rgba(30, 144, 255, 0.7);
-}
-@media (prefers-color-scheme: dark) {
-  .top-mark {
-    background-color: rgba(30, 144, 255, 0.2);
-  }
-}
-
-.other-mark {
-  background-color: rgba(255, 20, 147, 0.05);
-  border: 2px dotted rgba(255, 20, 147, 0.7);
-}
-@media (prefers-color-scheme: dark) {
-  .other-mark {
-    background-color: rgba(255, 20, 147, 0.2);
-  }
-}
-
 #aii-typo-caption,
 #tru-typo-caption {
   display: none;
@@ -496,34 +590,19 @@ body {
 #tru-top-mark-caption,
 #tru-other-mark-caption {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 14px;
-  color: rgb(28, 28, 30);
-}
-@media (prefers-color-scheme: dark) {
-  #aii-bottom-mark-caption,
-  #aii-top-mark-caption,
-  #aii-other-mark-caption,
-  #tru-top-mark-caption,
-  #tru-other-mark-caption {
-    color: rgb(221, 221, 232);
-  }
 }
 
 #aii-orthography,
 #tru-orthography {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 14px;
-  color: rgb(28, 28, 30);
   display: none;
   padding: 8px 16px;
-}
-@media (prefers-color-scheme: dark) {
-  #aii-orthography,
-  #tru-orthography {
-    color: rgb(221, 221, 232);
-  }
 }
 
 #syrc-container,
@@ -536,18 +615,11 @@ body {
   -webkit-tap-highlight-color: transparent;
   background-color: transparent;
   border: 0;
-  color: rgb(134, 134, 137);
   cursor: pointer;
   display: none;
   font-size: 24px;
   padding: 12px;
   position: absolute;
-}
-@media (prefers-color-scheme: dark) {
-  #clear-text,
-  #copy-text {
-    color: rgb(149, 149, 157);
-  }
 }
 
 #clear-text {

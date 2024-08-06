@@ -1,19 +1,21 @@
-@use 'sass:color'
-@use 'sass:list'
 // sass-lint:disable no-ids
 // sass-lint:disable force-pseudo-nesting
 // sass-lint:disable no-mergeable-selectors
 // sass-lint:disable no-vendor-prefixes
 
+@use 'sass:color'
+@use 'sass:list'
+
+@use 'constants' as *
+
+@use '../../shared_sass/constants/symbols' as *
+
+@use '../../shared_sass/mixins/mixins' as *
+@use '../../shared_sass/mixins/searchapp_mixin' as *
+
 @use 'dark-mode' as *
 
-@use '../../shared_sass/mixins' as *
-@use '../../shared_sass/mixins_bible' as *
-@use '../../shared_sass/styles' as *
-@use '../../shared_sass/symbols' as *
-@use '../../shared_sass/searchapp_mixin' as *
 
-$key-color: deeppink
 $max-width: 582px
 $side-padding: 16px
 $searchbar-inset-x: 20px
@@ -486,8 +488,7 @@ $sound-accent-offset: 8px
 
 .tr-backlink-container
   font-style: normal
-  margin-top: -2px
-  // padding-bottom: 6px
+  margin-top: -4px
 
 
 #wiktionary-datadump
@@ -501,14 +502,11 @@ $sound-accent-offset: 8px
   @include aii-text('s')
   text-align: right
 
-
 .example-tr
   @include eng-text('s', $is-translit: true)
-  // padding-bottom: 2px
 
 .example-english
   @include eng-text('s')
-  padding-top: 2px
 
 .tier1-tag,
 .tier2-tag,

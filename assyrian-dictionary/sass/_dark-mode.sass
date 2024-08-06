@@ -1,8 +1,12 @@
-@use 'sass:color'
-@use '../../shared_sass/colors' as *
 // sass-lint:disable no-ids
 
-$key-color: deeppink
+@use 'sass:color'
+
+@use 'constants' as *
+
+@use '../../shared_sass/constants/colors' as *
+
+
 $key-color-dark: color.adjust($key-color, $lightness: 10%)
 
 // https://developer.apple.com/design/human-interface-guidelines/color

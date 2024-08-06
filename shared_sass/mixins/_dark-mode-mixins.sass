@@ -1,0 +1,36 @@
+@mixin created-by($label, $label-dark)
+  color: $label
+  margin-bottom: 30px
+  padding-left: 16px // should parameterize side-padding as a global
+  padding-right: 16px // should parameterize side-padding as a global
+  text-align: center
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+@mixin backlink-promotion($label, $label-dark)
+  @include created-by($label, $label-dark)
+  // display: none
+
+
+@mixin anchors($l, $l-dark, $v, $v-dark, $a, $a-dark)
+  a
+    color: $l
+    text-decoration: none
+    @media (prefers-color-scheme: dark)
+      color: $l-dark
+
+
+    &:hover
+      text-decoration: underline
+
+    &:visited
+      color: $v
+      @media (prefers-color-scheme: dark)
+        color: $v-dark
+
+
+    &:active
+      color: $a
+      @media (prefers-color-scheme: dark)
+        color: $a-dark
