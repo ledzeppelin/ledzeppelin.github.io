@@ -1,13 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap");
 @font-face {
   font-family: "Noto Sans Syriac Western";
   font-weight: 100 900;
   src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
 }
+#bible-promotion-container,
+.aii-verse,
+.aii-tr,
+.eng-verse,
+.translation-caption {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #bible-promotion-container,
+  .aii-verse,
+  .aii-tr,
+  .eng-verse,
+  .translation-caption {
+    color: rgb(221, 221, 232);
+  }
+}
+
+.highlighted {
+  color: rgb(240, 0, 0);
+}
+@media (prefers-color-scheme: dark) {
+  .highlighted {
+    color: #ff2424;
+  }
+}
+
+.highlighted2 {
+  text-decoration: underline rgb(240, 0, 0) 2px;
+}
+@media (prefers-color-scheme: dark) {
+  .highlighted2 {
+    text-decoration: underline #ff2424 2px;
+  }
+}
+
+#bible-promotion-container {
+  text-align: right;
+}
+
+body {
+  background-color: rgb(242, 242, 247);
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(28, 28, 30);
+  }
+}
+
 a {
   color: rgb(51, 102, 204);
   text-decoration: none;
@@ -37,49 +85,70 @@ a:active {
   }
 }
 
-#created-by-container {
-  color: rgb(28, 28, 30);
-  margin-bottom: 30px;
-  padding-left: 16px;
-  padding-right: 16px;
-  text-align: center;
+#clear-text {
+  color: rgb(134, 134, 137);
 }
 @media (prefers-color-scheme: dark) {
-  #created-by-container {
+  #clear-text {
+    color: rgb(149, 149, 157);
+  }
+}
+
+#autofocus-tip-container {
+  color: rgb(134, 134, 137);
+}
+@media (prefers-color-scheme: dark) {
+  #autofocus-tip-container {
+    color: rgb(149, 149, 157);
+  }
+}
+
+kbd {
+  background-color: rgb(242, 242, 247);
+  border-color: rgba(91, 91, 96, 0.29);
+  box-shadow: 0 1px 1px rgba(91, 91, 96, 0.29);
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  kbd {
+    background-color: rgb(28, 28, 30);
+    border-color: #7b7b85;
+    box-shadow: 0 1px 1px #7b7b85;
     color: rgb(221, 221, 232);
   }
 }
 
-.webapp-backlink-meta {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
+#searchbar {
+  background-color: #fff;
+  border-color: rgba(91, 91, 96, 0.29);
+  color: rgb(28, 28, 30);
 }
-
-.webapp-backlink-href {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  text-decoration: underline;
+@media (prefers-color-scheme: dark) {
+  #searchbar {
+    background-color: rgb(54, 54, 57);
+    border-color: rgb(54, 54, 57);
+    color: rgb(221, 221, 232);
+  }
 }
-
-.creator-backlink-href {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 400;
-  line-height: 1.4;
-  font-size: 16.8px;
-  text-decoration: underline;
+#searchbar::placeholder {
+  color: rgb(134, 134, 137);
+}
+@media (prefers-color-scheme: dark) {
+  #searchbar::placeholder {
+    color: rgb(149, 149, 157);
+  }
+}
+#searchbar:focus {
+  border: 1px solid rgb(51, 102, 204);
+}
+@media (prefers-color-scheme: dark) {
+  #searchbar:focus {
+    border: 1px solid rgb(133, 177, 255);
+  }
 }
 
 body {
-  background-color: rgb(242, 242, 247);
   margin: 0 auto 50px;
-}
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: rgb(28, 28, 30);
-  }
 }
 
 #title {
@@ -127,6 +196,56 @@ body {
   }
 }
 
+#created-by-container {
+  color: rgb(28, 28, 30);
+  margin-bottom: 30px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  #created-by-container {
+    color: rgb(221, 221, 232);
+  }
+}
+
+#backlink-promotion-container {
+  color: rgb(28, 28, 30);
+  margin-bottom: 30px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  #backlink-promotion-container {
+    color: rgb(221, 221, 232);
+  }
+}
+
+.webapp-backlink-meta {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+}
+
+.webapp-backlink-href {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.creator-backlink-href {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  text-decoration: underline;
+}
+
 #app-container {
   margin: 0 auto;
   max-width: 600px;
@@ -141,7 +260,6 @@ body {
   -webkit-tap-highlight-color: transparent;
   background-color: transparent;
   border: 0;
-  color: rgb(134, 134, 137);
   cursor: pointer;
   display: none;
   font-size: 24px;
@@ -151,11 +269,6 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
-@media (prefers-color-scheme: dark) {
-  #clear-text {
-    color: rgb(149, 149, 157);
-  }
-}
 #clear-text.clear-aii-text {
   left: 0;
   padding: 12px 12px 12px 12px;
@@ -163,7 +276,6 @@ body {
 }
 
 #autofocus-tip-container {
-  color: rgb(134, 134, 137);
   font-family: "Roboto Mono", monospace;
   font-size: 11px;
   pointer-events: none;
@@ -172,11 +284,6 @@ body {
   top: 50%;
   transform: translateY(-50%);
 }
-@media (prefers-color-scheme: dark) {
-  #autofocus-tip-container {
-    color: rgb(149, 149, 157);
-  }
-}
 @media screen and (width <= 1011px) {
   #autofocus-tip-container {
     display: none !important;
@@ -184,30 +291,11 @@ body {
 }
 
 kbd {
-  background-color: rgb(242, 242, 247);
-  border: 1px solid rgba(91, 91, 96, 0.29);
   border-radius: 3px;
-  box-shadow: 0 1px 1px rgba(91, 91, 96, 0.29);
-  color: rgb(28, 28, 30);
+  border-style: solid;
+  border-width: 1px;
   font-weight: 700;
   padding: 2px 4px;
-}
-@media (prefers-color-scheme: dark) {
-  kbd {
-    background-color: rgb(28, 28, 30);
-    border: 1px solid #7b7b85;
-    box-shadow: 0 1px 1px #7b7b85;
-    color: rgb(221, 221, 232);
-  }
-}
-
-#searchbar {
-  color: rgb(28, 28, 30);
-}
-@media (prefers-color-scheme: dark) {
-  #searchbar {
-    color: rgb(221, 221, 232);
-  }
 }
 
 #searchbar {
@@ -216,9 +304,9 @@ kbd {
   font-weight: 400;
   line-height: 1.4;
   font-size: 16.8px;
-  background-color: #fff;
-  border: 1px solid rgba(91, 91, 96, 0.29);
   border-radius: 24px;
+  border-style: solid;
+  border-width: 1px;
   box-sizing: border-box;
   direction: ltr;
   display: block;
@@ -230,28 +318,6 @@ kbd {
   padding-top: 6px;
   width: 100%;
 }
-@media (prefers-color-scheme: dark) {
-  #searchbar {
-    background-color: rgb(54, 54, 57);
-    border: 1px solid rgb(54, 54, 57);
-  }
-}
-#searchbar::placeholder {
-  color: rgb(134, 134, 137);
-}
-@media (prefers-color-scheme: dark) {
-  #searchbar::placeholder {
-    color: rgb(149, 149, 157);
-  }
-}
-#searchbar:focus {
-  border: 1px solid rgb(51, 102, 204);
-}
-@media (prefers-color-scheme: dark) {
-  #searchbar:focus {
-    border: 1px solid rgb(133, 177, 255);
-  }
-}
 #searchbar.aii-search-text {
   direction: rtl;
   padding-left: 46px;
@@ -261,21 +327,6 @@ kbd {
 
 #search-results {
   padding: 16px 16px;
-}
-
-.aii-verse,
-.aii-tr,
-.eng-verse,
-.translation-caption {
-  color: rgb(28, 28, 30);
-}
-@media (prefers-color-scheme: dark) {
-  .aii-verse,
-  .aii-tr,
-  .eng-verse,
-  .translation-caption {
-    color: rgb(221, 221, 232);
-  }
 }
 
 .search-result {
@@ -294,24 +345,7 @@ kbd {
 }
 
 .highlighted {
-  color: rgb(240, 0, 0);
   font-weight: 500;
-}
-@media (prefers-color-scheme: dark) {
-  .highlighted {
-    color: #ff2424;
-  }
-}
-
-.highlighted2 {
-  text-decoration: underline;
-  text-decoration-color: rgb(240, 0, 0);
-  text-decoration-thickness: 2px;
-}
-@media (prefers-color-scheme: dark) {
-  .highlighted2 {
-    text-decoration-color: #ff2424;
-  }
 }
 
 .aii-verse,
@@ -331,6 +365,7 @@ kbd {
 
 .aii-tr {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-style: italic;
   font-size: 16px;
@@ -338,24 +373,27 @@ kbd {
 
 .tr-backlink-container {
   font-style: normal;
-  margin-top: -2px;
+  margin-top: -6px;
   padding-bottom: 6px;
 }
 
 .translation-caption {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
-  padding-top: 2px;
+  margin-top: -2px;
 }
 
 .eng-verse {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 16px;
 }
 .eng-verse.missing-verse {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
 }
@@ -368,12 +406,11 @@ kbd {
 }
 #copyright-container .copyright {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
   color: rgb(134, 134, 137);
-  margin-bottom: 3px;
-  text-align: justify;
-  text-justify: inter-word;
+  margin-bottom: 6px;
 }
 @media (prefers-color-scheme: dark) {
   #copyright-container .copyright {

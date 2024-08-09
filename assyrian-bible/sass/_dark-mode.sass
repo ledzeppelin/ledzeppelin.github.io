@@ -1,0 +1,47 @@
+@use 'sass:color'
+
+@use '../../shared_sass/constants/colors' as *
+
+@use '../../shared_sass/mixins/dark-mode-mixins' as *
+
+// sass-lint:disable no-ids
+
+body
+  background-color: $background
+  @media (prefers-color-scheme: dark)
+    background-color: $background-dark
+
+@include anchors($link, $link-dark, $visited-link, $visited-link-dark, $active-link, $active-link-dark)
+
+#created-by-container
+  @include created-by($label, $label-dark)
+
+#backlink-promotion-container
+  @include backlink-promotion($label, $label-dark)
+
+#bible-controls-container
+  background-color: rgba($background, .65)
+  @media (prefers-color-scheme: dark)
+    background-color: rgba($background-dark, .65)
+
+
+.aii-book-name,
+.header,
+.header-2,
+.reference,
+.aii-verse,
+.aii-tr,
+.eng-verse,
+.translation-caption,
+#aramaic-history
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+.highlighted
+  // we don't alpha since transparency causes overlapping highlights between next lines due to line-height
+  // background-color: rgba(80, 151, 255, .18) // color from google search highlighting
+  background-color: rgb(226, 237, 255) // sRGB digital color meter from dark mode google search highlight
+  @media (prefers-color-scheme: dark)
+    background-color: rgba(42, 66, 107) // sRGB digital color meter from dark mode google search highlight

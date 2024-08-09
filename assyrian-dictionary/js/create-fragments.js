@@ -114,7 +114,8 @@ function tagSearchHighlightMatches(results) {
   // if there's any matches, we always expect aiiDictionaryTags.length == 1
   if (results.length === 1) {
     // number of rows shown is minShowCount + (max depth - 1)
-    let minShowCount = 8; // to test, change to 1 and query "pattern", then 2 and query "pattern"
+    // we use 10 since searching "stem" will show all the stems
+    let minShowCount = 10; // to test, change to 1 and query "pattern", then 2 and query "pattern"
 
     const result = results[0];
     // console.log(result);

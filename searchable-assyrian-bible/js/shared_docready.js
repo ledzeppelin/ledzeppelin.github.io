@@ -107,7 +107,7 @@ $(document).ready(() => {
           const normalizedSearchStr = searchStr.normalize('NFC');
           searchQuery = {
             results: runExtendedSearchQuery(normalizedSearchStr, fuseAiiVocalized, true),
-            aii_v_query: searchStr,
+            aii_v_query: normalizedSearchStr,
           };
         } else {
           // console.log('unvocalized search');

@@ -2,7 +2,8 @@ from collections import defaultdict
 import re
 import itertools
 import copy
-from vars.verb_templates import deleted_verb_templates, conj_schema, verb_template_aliases
+from vars.verb_templates import deleted_verb_templates, conj_schema, verb_template_aliases, \
+    conj_stems_and_patterns
 from vars.infl_schemas import infl_schema, verb_template_not_visualized
 
 def strip_markers():
@@ -147,10 +148,8 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
         # TODO: raise exception if DEFAULT_VAL has not been replaced
         template_name = verb_template_aliases.get(template_name, template_name)
         pattern = template_name.removeprefix('aii-conj-verb/')
-        if pattern[0] not in ('G', 'C', 'D'): # won't run since we're getting prefix from conj_schema
-            raise Exception(f'{pattern[0]} stem not found')
+        stem_name = find_stem_of_pattern(conj_stems_and_patterns, pattern)
 
-        stem_name = f"{pattern[0]}-stem"
         obj['tier2_vis_verb'] = {
             'stem': stem_name,
             'pattern': pattern,
@@ -163,6 +162,11 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
 
     obj['conj']['tenses'] += tenses
 
+def find_stem_of_pattern(_conj_stems_and_patterns, conj_pattern):
+    for stem, conj_patterns in _conj_stems_and_patterns.items():
+        if conj_pattern in conj_patterns:
+            return f'{stem}-stem'
+    raise ValueError(f"{conj_pattern} not found")
 
 
 def annotated_row(meta, aii_values, aii_v, vocalized_cache):

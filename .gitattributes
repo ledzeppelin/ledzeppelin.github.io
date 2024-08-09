@@ -1,3 +1,5 @@
 _favicon.psd filter=lfs diff=lfs merge=lfs -text
 _social_media_cards.psd filter=lfs diff=lfs merge=lfs -text
 photoshop/me.psd filter=lfs diff=lfs merge=lfs -text
+photoshop/dad_as_baby.psd filter=lfs diff=lfs merge=lfs -text
+photoshop/dad_outside.psd filter=lfs diff=lfs merge=lfs -text

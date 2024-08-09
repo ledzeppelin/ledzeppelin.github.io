@@ -76,7 +76,7 @@ $(document).ready(() => {
     typeWriter(randVerse);
 
     $('#rand-sentence-ref').empty().append(
-      $('<span/>', { class: 'webapp-backlink-meta', text: 'sentence from ✝️ ' }),
+      $('<span/>', { class: 'webapp-backlink-meta', text: 'sentence from 🔵 ' }),
       $('<a/>', { class: 'webapp-backlink-href', text: `Mark ${chapter}, Assyrian Bible`, href: `../assyrian-bible/?book=MRK&chapter=${chapter}` }),
     );
   });

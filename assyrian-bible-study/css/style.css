@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap");
+.frameset-border {
+  background-color: rgb(208, 208, 208);
+  border-bottom: 1px solid #000;
+  border-top: 1px solid rgb(170, 170, 170);
+  height: 4px;
+}
+
+#header a,
+#pages a {
+  color: rgb(133, 177, 255);
+  text-decoration: none;
+}
+@media (prefers-color-scheme: dark) {
+  #header a,
+  #pages a {
+    color: rgb(133, 177, 255);
+  }
+}
+#header a:hover,
+#pages a:hover {
+  text-decoration: underline;
+}
+#header a:visited,
+#pages a:visited {
+  color: rgb(186, 159, 239);
+}
+@media (prefers-color-scheme: dark) {
+  #header a:visited,
+  #pages a:visited {
+    color: rgb(186, 159, 239);
+  }
+}
+#header a:active,
+#pages a:active {
+  color: rgb(188, 90, 0);
+}
+@media (prefers-color-scheme: dark) {
+  #header a:active,
+  #pages a:active {
+    color: rgb(188, 90, 0);
+  }
+}
+
+.paragraph-container,
+.bordered-table,
+#footer {
+  margin: 0 auto;
+}
+
+#header,
+#pages,
+#footer {
+  padding: 32px 16px;
+}
+
+#header {
+  background-color: black;
+  color: white;
+}
+
+#aim-icon {
+  height: 100%;
+  vertical-align: text-top;
+  width: 18px;
+}
+
+.no-break {
+  display: inline-block;
+}
+
+.header-banner-container {
+  align-items: center;
+  display: flex;
+  height: 100px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+@media screen and (width < 660px) {
+  .header-banner-container {
+    height: auto;
+  }
+}
+.header-banner-container.next-img {
+  margin-top: 64px;
+}
+.header-banner-container .header-banner {
+  height: auto;
+  max-width: 100%;
+  width: 660px;
+}
+
+.pages-banner-container {
+  align-items: center;
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+@media screen and (width < 660px) {
+  .pages-banner-container {
+    height: auto;
+  }
+}
+.pages-banner-container.next-img {
+  margin-top: 64px;
+}
+.pages-banner-container .pages-banner {
+  height: auto;
+  max-width: 100%;
+  width: 365px;
+}
+
+.blueable {
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#pages {
+  background-color: rgb(158, 6, 6);
+  color: white;
+}
+
+.paragraph-container {
+  background-color: black;
+  border: 1px solid white;
+  max-width: 660px;
+  padding: 2px;
+}
+
+p {
+  font-family: "Comic Neue", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  background-color: black;
+  border: 1px solid white;
+  margin: 0;
+  padding: 8px;
+}
+
+.bordered-table {
+  font-family: "Comic Neue", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  background-color: black;
+  border: 1px solid white;
+  max-width: 660px;
+  width: 100%;
+}
+.bordered-table th,
+.bordered-table td {
+  border: 1px solid white;
+  padding: 4px 8px;
+}
+.bordered-table td {
+  text-align: center;
+}
+
+#footer {
+  font-family: "Comic Neue", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  background-color: white;
+  color: #000;
+  max-width: 660px;
+}
+
+/*# sourceMappingURL=style.css.map */

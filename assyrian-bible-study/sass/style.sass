@@ -1,0 +1,127 @@
+// sass-lint:disable no-ids
+// sass-lint:disable no-vendor-prefixes
+// sass-lint:disable no-color-keywords
+// sass-lint:disable no-color-literals
+
+@use 'sass:list'
+@use 'sass:color'
+
+@use '../../shared_sass/constants/colors' as *
+@use '../../shared_sass/mixins/dark-mode-mixins' as *
+
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap')
+
+$max-width: 660px
+
+.frameset-border
+  background-color: rgb(208, 208, 208)
+  border-bottom: 1px solid #000
+  border-top: 1px solid rgb(170, 170, 170)
+  height: 4px
+
+#header,
+#pages
+  @include anchors($link-dark, $link-dark, $visited-link-dark, $visited-link-dark, $active-link-dark, $active-link-dark)
+
+
+.paragraph-container,
+.bordered-table,
+#footer
+  margin: 0 auto
+
+#header,
+#pages,
+#footer
+  padding: 32px 16px
+
+#header
+  background-color: black
+  // background-color: green
+  color: white
+
+
+#aim-icon
+  height: 100%
+  vertical-align: text-top
+  width: 18px
+
+.no-break
+  display: inline-block
+
+
+@mixin comic($size: 17px)
+  // font-style: normal
+  font-family: 'Comic Neue', sans-serif
+  font-size: $size
+  font-weight: 700
+  line-height: 1.4
+
+@mixin set-banner($image-width, $image-height, $prefix-name)
+  .#{$prefix-name}-banner-container
+    align-items: center
+    display: flex
+    height: $image-height
+    justify-content: center
+    margin-bottom: 8px
+
+    @media screen and (width < $max-width)
+      height: auto
+
+
+    &.next-img
+      margin-top: 64px
+
+
+    .#{$prefix-name}\-banner
+      height: auto
+      max-width: 100%
+      width: $image-width
+
+@include set-banner(660px, 100px, 'header')
+@include set-banner(365px, 80px, 'pages')
+
+.blueable
+  cursor: pointer
+  touch-action: manipulation
+
+
+#pages
+  background-color: rgb(158, 6, 6)
+  color: white
+
+$width: 1px
+
+.paragraph-container
+  background-color: black
+  border: $width solid white
+  max-width: $max-width
+  padding: 2px
+
+p
+  @include comic
+  background-color: black
+  border: $width solid white
+  margin: 0
+  padding: 8px
+
+.bordered-table
+  @include comic
+  background-color: black
+  border: $width solid white
+  max-width: $max-width
+  width: 100%
+
+  th,
+  td
+    border: $width solid white
+    padding: 4px 8px
+
+  td
+    text-align: center
+
+#footer
+  @include comic(14px)
+  background-color: white
+  color: #000
+  max-width: $max-width
+

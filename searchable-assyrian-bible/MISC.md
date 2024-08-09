@@ -5,8 +5,6 @@ ful
 ܩܲܕ݇ܡܘܼܟ݂.
 ܩܕܡܘܟ.
 
-### todo
-test og:url, if not applicable, remove it
 
 ### wont do
 - scroll event can't find when there's not enough content - safeguard against widescreen monitors w/ vertial orientation by having a while loop to continue to load more until backofflimit is reached https://stackoverflow.com/a/11779989

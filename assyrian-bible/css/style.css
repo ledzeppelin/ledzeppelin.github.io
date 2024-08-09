@@ -1,12 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @font-face {
   font-family: "Noto Sans Syriac Western";
   font-weight: 100 900;
   src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
 }
+body {
+  background-color: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(28, 28, 30);
+  }
+}
+
 a {
   color: rgb(51, 102, 204);
   text-decoration: none;
@@ -49,37 +58,65 @@ a:active {
   }
 }
 
-.webapp-backlink-meta {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
+#backlink-promotion-container {
+  color: rgb(28, 28, 30);
+  margin-bottom: 30px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: center;
+}
+@media (prefers-color-scheme: dark) {
+  #backlink-promotion-container {
+    color: rgb(221, 221, 232);
+  }
 }
 
-.webapp-backlink-href {
-  font-weight: 400;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  text-decoration: underline;
+#bible-controls-container {
+  background-color: rgba(255, 255, 255, 0.65);
+}
+@media (prefers-color-scheme: dark) {
+  #bible-controls-container {
+    background-color: rgba(28, 28, 30, 0.65);
+  }
 }
 
-.creator-backlink-href {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 400;
-  line-height: 1.4;
-  font-size: 16.8px;
-  text-decoration: underline;
+.aii-book-name,
+.header,
+.header-2,
+.reference,
+.aii-verse,
+.aii-tr,
+.eng-verse,
+.translation-caption,
+#aramaic-history {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  .aii-book-name,
+  .header,
+  .header-2,
+  .reference,
+  .aii-verse,
+  .aii-tr,
+  .eng-verse,
+  .translation-caption,
+  #aramaic-history {
+    color: rgb(221, 221, 232);
+  }
+}
+
+.highlighted {
+  background-color: rgb(226, 237, 255);
+}
+@media (prefers-color-scheme: dark) {
+  .highlighted {
+    background-color: rgb(42, 66, 107);
+  }
 }
 
 body {
-  background-color: #fff;
   margin: 0 auto;
   max-width: 768px;
-}
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: rgb(28, 28, 30);
-  }
 }
 
 #title {
@@ -127,6 +164,30 @@ body {
   }
 }
 
+.webapp-backlink-meta {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+}
+
+.webapp-backlink-href {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.creator-backlink-href {
+  direction: rtl;
+  font-family: "Noto Sans Syriac Eastern";
+  font-weight: 400;
+  line-height: 1.4;
+  font-size: 16.8px;
+  text-decoration: underline;
+}
+
 #reading-level-container {
   margin-bottom: 4px;
   padding-left: 16px;
@@ -138,17 +199,11 @@ body {
   -webkit-backdrop-filter: blur(10px);
   align-items: center;
   backdrop-filter: blur(10px);
-  background-color: rgba(255, 255, 255, 0.65);
   display: flex;
   justify-content: space-evenly;
   padding: 12px 16px;
   position: sticky;
   top: 0;
-}
-@media (prefers-color-scheme: dark) {
-  #bible-controls-container {
-    background-color: rgba(28, 28, 30, 0.65);
-  }
 }
 @media screen and (width <= 480px) {
   #bible-controls-container {
@@ -158,6 +213,7 @@ body {
 
 select {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 16px;
   font-family: sans-serif;
@@ -178,31 +234,6 @@ button {
   #next-chapter {
     font-size: 16px;
     font-variation-settings: "wght" 700, "OPSZ" 20;
-  }
-}
-
-.aii-book-name,
-.header,
-.header-2,
-.reference,
-.aii-verse,
-.aii-tr,
-.eng-verse,
-.translation-caption,
-#aramaic-history {
-  color: rgb(28, 28, 30);
-}
-@media (prefers-color-scheme: dark) {
-  .aii-book-name,
-  .header,
-  .header-2,
-  .reference,
-  .aii-verse,
-  .aii-tr,
-  .eng-verse,
-  .translation-caption,
-  #aramaic-history {
-    color: rgb(221, 221, 232);
   }
 }
 
@@ -282,6 +313,7 @@ li:first-child {
 
 .aii-tr {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-style: italic;
   font-size: 16px;
@@ -289,19 +321,21 @@ li:first-child {
 
 .tr-backlink-container {
   font-style: normal;
-  margin-top: -2px;
+  margin-top: -6px;
   padding-bottom: 6px;
 }
 
 .translation-caption {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
-  padding-top: 2px;
+  margin-top: -2px;
 }
 
 .eng-verse {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 16px;
 }
@@ -311,6 +345,7 @@ li:first-child {
 }
 .eng-verse .missing-verse {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
 }
@@ -321,26 +356,16 @@ li:first-child {
   content: ")";
 }
 
-.highlighted {
-  background-color: rgb(226, 237, 255);
-}
-@media (prefers-color-scheme: dark) {
-  .highlighted {
-    background-color: rgb(42, 66, 107);
-  }
-}
-
 #copyright-container {
   margin: 24px 16px;
 }
 #copyright-container .copyright {
   font-weight: 400;
+  line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
   color: rgb(134, 134, 137);
-  margin-bottom: 3px;
-  text-align: justify;
-  text-justify: inter-word;
+  margin-bottom: 6px;
 }
 @media (prefers-color-scheme: dark) {
   #copyright-container .copyright {
