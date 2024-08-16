@@ -77,7 +77,7 @@ $(document).ready(() => {
 
     $('#rand-sentence-ref').empty().append(
       $('<span/>', { class: 'webapp-backlink-meta', text: 'sentence from 🔵 ' }),
-      $('<a/>', { class: 'webapp-backlink-href', text: `Mark ${chapter}, Assyrian Bible`, href: `../assyrian-bible/?book=MRK&chapter=${chapter}` }),
+      $('<a/>', { class: 'webapp-backlink-href', text: `mark ${chapter}, assyrian bible`, href: `../assyrian-bible/?book=MRK&chapter=${chapter}` }),
     );
   });
 

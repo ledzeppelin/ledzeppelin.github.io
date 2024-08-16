@@ -469,6 +469,8 @@ $sound-accent-offset: 8px
 
 .ipa
   @include eng-text('m')
+  // otherwise letters of ipa [mɡarɡɪm] for 'mgargim' don't appear aligned to baseline on windows
+  font-family: sans-serif
   margin-left: 8px
   overflow-wrap: anywhere // break long words "holy spirit"
   // slight flicker on iPhone for chrome for words like [t͡ʃæl.vɑː],

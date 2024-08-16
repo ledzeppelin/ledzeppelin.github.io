@@ -31,8 +31,9 @@ def tag_counts_grouped(tag_counter):
     # MIN_OCCURENCES = 1
     exempt_from_min_occurrences = {'root:2-letters'}
     results = defaultdict(list)
+    # raise Exception(tag_counter.items())
     for tag, count in tag_counter.items():
-        if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences:
+        if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences or tag.startswith('pattern:') or tag.startswith('stem:'):
             tag_type, tag_name = tag.split(':', 1)
             results[tag_type].append(tag_name)
     # {'ipa': ['standard', 'Urmian', 'Nineveh Plains']}
