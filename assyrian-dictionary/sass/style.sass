@@ -36,6 +36,16 @@ $button-padding: 12px
     padding-top: 0
 
 
+#tagged-results-meta
+  @include eng-text('s')
+  display: none
+  margin: 16px $side-padding + $searchbar-inset-x
+  padding: 0
+
+  #matched-tag
+    font-weight: 700
+
+
 #tag-search-results
   @include eng-text('s')
   border-bottom-style: solid
@@ -72,6 +82,16 @@ $button-padding: 12px
       list-style-type: disclosure-open
 
     > a
+      // after calling .unwrap() we have
+      // <a href="#" onclick="return false;">
+      // "Part"
+      // "s of Speech"
+      // </a>
+      // and UI on iPhone safari positions 'Parts of Speech' below ::marker
+      //
+      // using inline-block allows us to remove whitespace which affects html elements
+      display: inline-block
+
       &:hover // overriding from _styles.sass
         text-decoration: none
 
@@ -154,6 +174,10 @@ button
 .aii-v-word-container
   padding-bottom: $v-word-spacing
 
+  .highlighted,
+  .exact-aii-search-match
+    font-weight: 600
+
   &:not(.always-show)
     display: none
     order: -1 // more pronounced slidedown of other vocalized
@@ -164,7 +188,10 @@ button
   // safeguard for ܨܲܚܨܹܐ
   padding-bottom: 6px
   text-align: left
-  // background-color: lightblue
+
+  a
+    text-decoration-skip-ink: none
+    text-decoration-thickness: 1px
 
   .aii-v-atuta-box
     border-radius: 6px
@@ -172,9 +199,6 @@ button
     border-width: 2px
     margin-right: 2px
     padding: 0 5px
-
-    &:not(.highlighted)
-      @include aii-text('l', 300)
 
     &::before
       content: '\200C'
@@ -420,19 +444,36 @@ $display-toggle: none
     &:not(.always-show)
       display: none
 
-.more-sounds-button-container
-  @include button-container
+
+$sound-button-padding: 6px
+
+.more-sounds-button
+  $br-width: 1px
+  $button-width: 3 * $half-icon-size + 2px
+
+  border-radius: $half-icon-size + $sound-button-padding
   border-style: solid
-  border-width: 1px
+  border-width: $br-width
+
+  cursor: pointer
   flex-shrink: 0
+  font-size: $half-icon-size * 2
+  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
+  height: $button-width
   margin-right: 8px
+  padding: 0
+  width: $button-width
 
-  .more-sounds-button
-    font-size: $half-icon-size * 2
-    transition: transform 200ms
+  &::before
+    content: 'select_to_speak'
 
-    &.expanded
-      transform: rotate(180deg)
+
+  &.expanded
+    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+    transform: rotate(90deg)
+
+    &::before
+      content: 'collapse_content'
 
 
 $sound-button-padding: 6px
@@ -515,6 +556,7 @@ $sound-accent-offset: 8px
 .tier3-tag,
 .show-linkages,
 .l-inline-tag,
-.in-numbers-table
+.in-numbers-table,
+#matched-tag
   white-space: nowrap
 

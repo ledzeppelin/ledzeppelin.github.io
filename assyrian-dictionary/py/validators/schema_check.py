@@ -17,9 +17,6 @@ for key, val in ht_schemas.ht_schema.items():
 
 
 template_names = []
-template_names +=  list(verb_templates.deleted_verb_templates)
-template_names +=  list(infl_schemas.verb_template_not_visualized)
-template_names +=  list(verb_templates.verb_template_aliases.keys())
 template_names +=  list(verb_templates.conj_schema.keys())
 
 for item, count in Counter(template_names).items():

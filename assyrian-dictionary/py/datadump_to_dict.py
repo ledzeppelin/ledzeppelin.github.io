@@ -7,7 +7,7 @@ import re
 import copy
 from vars import consts
 from vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
-from vars.infl_schemas import infl_schema_not_parameterized, infl_schema
+from vars.infl_schemas import infl_templates_ignored, infl_schema
 from ipa_to_mp3 import ipa_to_mp3
 from conjugate_verbs import set_verb_conj, annotated_row
 
@@ -65,42 +65,48 @@ def set_infl(item, obj, aii_v, vocalized_cache, visual_conj_cache):
     if 'inflection_templates' not in item:
         return
 
-    name = item['inflection_templates'][0]['name']
-    if name in infl_schema_not_parameterized:
+    template_name = item['inflection_templates'][0]['name']
+    if template_name in infl_templates_ignored:
         return
+    html_template_name = item['inflection_templates'][-1]['name']
 
-    if name.startswith('aii-conj'):
-        set_verb_conj(item, obj, name, aii_v, vocalized_cache, visual_conj_cache)
+    if html_template_name in {'aii-conj-verb', 'aii-conj-hawe'}:
+        set_verb_conj(item, obj, html_template_name, template_name, aii_v, vocalized_cache, visual_conj_cache)
+    elif html_template_name in {'aii-infl-noun', 'aii-infl-noun-unc', 'aii-infl-prep'}:
+        set_noun_infl(item, obj, html_template_name, aii_v, vocalized_cache)
     else:
-        set_noun_infl(item, obj, name, aii_v, vocalized_cache)
+        raise Exception(f'html_template_name: {html_template_name} not found')
 
 
-def set_noun_infl(item, obj, name, aii_v, vocalized_cache):
+def set_noun_infl(item, obj, template_name, aii_v, vocalized_cache):
     # for noun/preposition
-    template = copy.deepcopy(infl_schema[name]['template'])
-    omit = infl_schema[name]['omit'].union(infl_schema[name]['omit_dangling'])
+    template = copy.deepcopy(infl_schema[template_name]['template'])
+    omit = infl_schema[template_name]['omit']
     unique_keys = {key:pron for pron, val in template.items() for key in val}
 
-    for arg, aii in item['inflection_templates'][0]['args'].items():
+    for arg, aii in item['inflection_templates'][-1]['args'].items():
         if arg in omit:
             pass
         elif arg in unique_keys:
-            pron = unique_keys[arg]
+            pron = unique_keys.pop(arg)
             template[pron][arg] = aii
         else:
             raise Exception(f'missing {arg} for word {item["word"]}')
+
+    if unique_keys:
+        raise Exception(unique_keys)
 
     rows = []
     for key, val in template.items():
         rows.append( annotated_row(key, list(val.values()), aii_v, vocalized_cache))
 
     obj['table'] = {
-        "heading": infl_schema[name]['heading'],
+        "heading": infl_schema[template_name]['heading'],
         "rows": rows
     }
 
-    if 'heading_2' in infl_schema[name]:
-        obj['table']['heading_2'] = infl_schema[name]['heading_2']
+    if 'heading_2' in infl_schema[template_name]:
+        obj['table']['heading_2'] = infl_schema[template_name]['heading_2']
 
 
 def set_head_template(item, obj, aii_v, vocalized_cache):
@@ -155,13 +161,6 @@ def set_linkage_table(parent, obj, aii_v, vocalized_cache):
                     )
                     already_there.add(word_linkage)
 
-def fix_ipa_name(name):
-    if name == 'Urmia':
-        return 'Urmian'
-    if name == 'standard':
-        return 'Standard'
-    return name
-
 def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
     ipas = []
     if 'sounds' in item:
@@ -173,9 +172,10 @@ def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
                 hash_str = hashlib.shake_128(enc_str).hexdigest(16)
                 # .title() is mainly for uppercasing "standard"
                 if 'tags' in sound:
-                    ipas.append((fix_ipa_name(sound['tags'][0]), sound['ipa'], hash_str))
+                    ipas.append((sound['tags'][0], sound['ipa'], hash_str))
                 else:
-                    ipas.append((fix_ipa_name(sound['note']), sound['ipa'], hash_str))
+                    for note in sound['note'].split(', '):
+                        ipas.append((note, sound['ipa'], hash_str))
 
     if ipas:
         aii_sounds[aii_not_v][aii_v].append(ipas)
@@ -186,19 +186,29 @@ def collapse_sounds(aii_sounds):
 
     for aii_not_v, aii_vs in aii_sounds.items():
         for aii_v, jsonlines_ipas in aii_vs.items():
+            # finds ipas common to all jsonlines on a per aii_v basis
             collapsed = set.intersection(*[set(list_) for list_ in jsonlines_ipas])
             if collapsed:
-                # custom sort priority
-                collapsed_list = sorted(collapsed)
-                collapsed_list.sort(key=lambda words: (words[0] != 'standard', words[0]))
-                # sorted(words, key=lambda word: (word != 'apple', word))
-                aii_collapsed_sounds[aii_not_v][aii_v] = collapsed_list
+                unique_ipas = defaultdict(list)
+                for accent, ipa, checksum in collapsed:
+                    unique_ipas[(ipa, checksum)].append(accent)
+
+                unique_ipas_lst = [(sorted(v), k[0], k[1]) for k, v in unique_ipas.items()]
+                unique_ipas_lst.sort()
+
+                # if aii_v == 'ܚܘܼܘܹܐ':
+                #     raise Exception(unique_ipas)
+
+
+                aii_collapsed_sounds[aii_not_v][aii_v] = unique_ipas_lst
 
                 if os.getenv('AII_DICT_GENERATE_AUDIO'):
-                    for _, ipa, ipa_hash in collapsed_list:
+                    for _, ipa, ipa_hash in unique_ipas_lst:
                         ipa_to_mp3(ipa, ipa_hash)
 
     return aii_collapsed_sounds
+
+
 
 def set_cognate(obj, item, ety):
     # https://en.wiktionary.org/wiki/Template:cog
@@ -313,7 +323,7 @@ def add_etymology(obj, item, aii_v, vocalized_cache):
                 add_other_forms_from_ety_templates(ety, obj, item, aii_v, vocalized_cache, alias)
             elif ety['name'] == 'aii-root' and \
                 (obj['pos'] != 'verb' or \
-                (obj['pos'] == 'verb' and infl_template_name in infl_schema_not_parameterized)):
+                (obj['pos'] == 'verb' and infl_template_name in infl_templates_ignored)):
 
                 if obj['pos'] == 'root':
                     raise Exception('root shouldnt contain aii-root')
@@ -404,6 +414,12 @@ def datadump_to_dict():
     aii_dict = defaultdict(lambda: defaultdict(list))
     aii_sounds = defaultdict(lambda: defaultdict(list))
 
+    # TODO
+    BLACKLIST = {
+        'Conjugation of ܡܙܲܗܸܪ',
+        'Conjugation of ܙܵܗܹܪ',
+    }
+
     vocalized_cache = set()
     for item in data:
         vocalized_cache.add(generate_aii_v(item, item['word']))
@@ -415,6 +431,9 @@ def datadump_to_dict():
     for item in data:
         aii_not_v = item['word']
         aii_v = generate_aii_v(item, aii_not_v)
+
+        if aii_v in BLACKLIST:
+            continue
 
         obj = defaultdict(lambda: defaultdict(list))
         obj['pos'] = consts.pos_abbrev[item['pos']]

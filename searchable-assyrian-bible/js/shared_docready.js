@@ -1,4 +1,5 @@
 $(document).ready(() => {
+  const DICT_CANONICAL_URL = 'https://www.sharrukin.io/assyrian-dictionary/';
   let searchQuery;
   function shouldLoadMore() {
     const lastRes = $('#search-results').children().last();
@@ -86,6 +87,7 @@ $(document).ready(() => {
     if (IS_DICTIONARY) {
       tagSearchClearHighlightedMatches();
       $('#numbers-table').children().hide();
+      $('#tagged-results-meta').hide();
     }
 
     if (searchStr.length === 0) {
@@ -94,7 +96,7 @@ $(document).ready(() => {
       $('#clear-text').hide();
       $('#search-results').empty();
       searchQuery = null; // not needed but helps readability
-      window.history.replaceState({}, document.title, window.location.pathname);
+      window.history.replaceState(null, document.title, window.location.pathname);
     } else {
       $('#clear-text').show();
 
@@ -121,66 +123,16 @@ $(document).ready(() => {
         $('#searchbar').removeClass('aii-search-text');
         $('#clear-text').removeClass('clear-aii-text');
         // handles english query for both dictionary and searchable bible
-        let tagExactSearchResults = [];
+
         if (IS_DICTIONARY) {
-          // console.time('tag');
-          tagExactSearchResults = fuseTagsExact.search(`="${searchStr}"`);
-
-          if (searchStr === 'table:Numbers Table') {
-            searchQuery = {
-              results: [],
-            };
-
-            tagSearchHighlightExactMatch(searchStr);
-            $('#numbers-table').children().show();
-          } else if (searchStr === 'special:Common Words') {
-            const compareFn = (a, b) => (
-              a.item.min_common_word_idx < b.item.min_common_word_idx ? -1 : 1
-            );
-
-            tagSearchHighlightExactMatch(searchStr);
-            searchQuery = {
-              results: tagExactSearchResults.sort(compareFn),
-              searchingCommonWords: true,
-            };
-          } else if (searchStr === 'pos:numeral') {
-            const compareFn = (a, b) => (
-              a.item.min_numeral_idx < b.item.min_numeral_idx ? -1 : 1
-            );
-
-            tagSearchHighlightExactMatch(searchStr);
-            searchQuery = {
-              results: tagExactSearchResults.sort(compareFn),
-              searchingCommonWords: true,
-            };
-          } else if (tagExactSearchResults.length) {
-            const compareFn = (a, b) => (
-              // eslint-disable-next-line max-len
-              minVocalizedTR(searchStr, a.item.aii_v_s) < minVocalizedTR(searchStr, b.item.aii_v_s) ? -1 : 1
-            );
-
-            tagSearchHighlightExactMatch(searchStr);
-            searchQuery = {
-              results: tagExactSearchResults.sort(compareFn),
-            };
-          } else {
-            // console.time('tag search');
-            // todo: prefix, then includes for fuse
-
-            const tagSearchResults = fuseTags.search(`'"${searchStr}"`);
-
-            tagSearchHighlightMatches(tagSearchResults);
-
-            searchQuery = {
-              results: runExtendedSearchQuery(searchStr, fuseEng),
-            };
-          }
-        } else {
-          searchQuery = {
-            // eslint-disable-next-line max-len
-            results: runExtendedSearchQuery(searchStr, fuseEng),
-          };
+          const tagSearchResults = fuseTags.search(`'"${searchStr}"`);
+          tagSearchHighlightMatches(tagSearchResults);
         }
+
+        searchQuery = {
+          // eslint-disable-next-line max-len
+          results: runExtendedSearchQuery(searchStr, fuseEng),
+        };
       }
 
       searchQuery.i = 0;
@@ -201,6 +153,8 @@ $(document).ready(() => {
 
       const url = new URL(window.location);
       url.searchParams.set('search', searchStr);
+      url.searchParams.delete('tag-search');
+      url.searchParams.delete('aii-exact-search');
       // https://stackoverflow.com/a/14269897
       // we use don't want to percent encode colon since it affects human-readability of url
       //
@@ -223,19 +177,104 @@ $(document).ready(() => {
   // trigger input on loading if query string param is set
   const url = new URL(window.location);
   const params = new URLSearchParams(document.location.search);
-  if (params.has('search')) {
+
+  if (IS_DICTIONARY && params.has('tag-search')) {
+    const tagSearchParam = params.get('tag-search');
+    if (tagSearchParam.length) {
+      let tagExactSearchResults = [];
+      let shouldLoadTagExactSearchResults = false;
+      // console.time('tag');
+      tagExactSearchResults = fuseTagsExact.search(`="${tagSearchParam}"`);
+
+      if (tagSearchParam === 'table:Numbers Table') {
+        searchQuery = {
+          results: [],
+        };
+
+        tagSearchHighlightExactMatch(tagSearchParam);
+        $('#numbers-table').children().show();
+      } else if (tagSearchParam === 'special:Common Words') {
+        const compareFn = (a, b) => (
+          a.item.min_common_word_idx < b.item.min_common_word_idx ? -1 : 1
+        );
+
+        tagSearchHighlightExactMatch(tagSearchParam);
+        searchQuery = {
+          results: tagExactSearchResults.sort(compareFn),
+          searchingCommonWords: true,
+        };
+        shouldLoadTagExactSearchResults = true;
+      } else if (tagSearchParam === 'pos:numeral') {
+        const compareFn = (a, b) => (
+          a.item.min_numeral_idx < b.item.min_numeral_idx ? -1 : 1
+        );
+
+        tagSearchHighlightExactMatch(tagSearchParam);
+        searchQuery = {
+          results: tagExactSearchResults.sort(compareFn),
+          searchingCommonWords: true,
+        };
+        shouldLoadTagExactSearchResults = true;
+      } else if (tagExactSearchResults.length) {
+        const compareFn = (a, b) => (
+          // eslint-disable-next-line max-len
+          minVocalizedTR(tagSearchParam, a.item.aii_v_s) < minVocalizedTR(tagSearchParam, b.item.aii_v_s) ? -1 : 1
+        );
+
+        tagSearchHighlightExactMatch(tagSearchParam);
+        searchQuery = {
+          results: tagExactSearchResults.sort(compareFn),
+        };
+        shouldLoadTagExactSearchResults = true;
+      }
+
+      if (shouldLoadTagExactSearchResults) {
+        const matchNotTopTag = $('#tag-search-results').find('.exact-search-match').length === 0;
+        if (matchNotTopTag) {
+          const matchedTagName = tagSearchParam.split(/:(.+)/)[1];
+          $('#matched-tag').text(matchedTagName);
+          $('#tagged-results-meta').show();
+        }
+        searchQuery.i = 0;
+        loadResults(searchQuery, 1);
+        while (shouldLoadMore()) {
+          loadResults(searchQuery, 1);
+        }
+        // otherwise tag-search=special:Common%20Words instead of tag-search=special:Common+Words
+        url.searchParams.set('tag-search', tagSearchParam);
+        window.history.replaceState(null, '', url.toString().replaceAll('%3A', ':'));
+        $('#canonical-link').attr('href', `${DICT_CANONICAL_URL}?tag-search=${tagSearchParam}`);
+      }
+    } else {
+      window.history.replaceState(null, document.title, window.location.pathname);
+    }
+  } else if (IS_DICTIONARY && params.has('aii-exact-search')) {
+    const aiiExactSearchParam = params.get('aii-exact-search');
+    if (aiiExactSearchParam.length) {
+      searchQuery = {
+        results: fuseAiiVocalized.search(`="${aiiExactSearchParam}"`),
+        aii_v_query: aiiExactSearchParam,
+        i: 0,
+      };
+      loadResults(searchQuery, 1, true);
+      // not ?aii-exact-search=ܫܠܵܡܵܐ%20ܥܲܠܵܘܟ݂ܘܿܢ but ?aii-exact-search=ܫܠܵܡܵܐ+ܥܲܠܵܘܟ݂ܘܿܢ
+      url.searchParams.set('aii-exact-search', aiiExactSearchParam);
+      window.history.replaceState(null, '', url.toString().replaceAll('%3A', ':'));
+      $('#canonical-link').attr('href', `${DICT_CANONICAL_URL}?aii-exact-search=${aiiExactSearchParam}`);
+    } else {
+      window.history.replaceState(null, document.title, window.location.pathname);
+    }
+  } else if (params.has('search')) {
     // this will decode qs param and it ultimately gets encoded again
     // when calling window.history.replaceState - we want this so spaces
-    // are normalized from "hello world" to "hello+world" instad of "hello%20world"
+    // are normalized from "hello world" to "hello+world" instead of "hello%20world"
     const searchParam = params.get('search');
     if (searchParam.length) {
       // console.log('hide it');
       $('#autofocus-tip-container').hide();
       $('#searchbar').val(searchParam).trigger('input');
     } else {
-      url.searchParams.delete('search');
-      // window.history.replaceState(null, '', url.toString());
-      window.history.replaceState({}, document.title, window.location.pathname);
+      window.history.replaceState(null, document.title, window.location.pathname);
     }
   }
 });

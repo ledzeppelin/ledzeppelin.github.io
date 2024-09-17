@@ -79,6 +79,7 @@ language_codes = {
   'lhs': 'Mlahsö',
   'lsd': 'Lishana Deni',
   'ltc': 'Middle Chinese',
+  'mid': 'Mandaic',
   'ml': 'Malayalam',
   'ML.': 'Medieval Latin',
   'ms': 'Malay Jepang',

@@ -32,6 +32,9 @@ function aiiTranslit(aiiText) {
   const COMBINING_DOT_BELOW = '\u{0323}';
   const COMBINING_DOT_ABOVE = '\u{0307}';
 
+  const GLOTTAL_STOP = 'ʾ';
+  const PHARYNGEAL = 'ʿ';
+
   // constants for transliterated snippets which are used in later substitutions
   const TR_THIRD_PERSON_FEM_SUFFIX = 'oh';
   const TR_WAW_PLUS_RVASA = 'u';
@@ -50,7 +53,7 @@ function aiiTranslit(aiiText) {
     ܙ: 'z',
     ܫ: 'š',
     ܚ: 'ḥ',
-    ܥ: 'ʿ',
+    ܥ: PHARYNGEAL,
     ܗ: 'h',
     ܡ: 'm',
     ܢ: 'n',
@@ -115,8 +118,8 @@ function aiiTranslit(aiiText) {
     // ì: 'zzz',
     ī: 'ee',
     ā: 'a',
-    ʿ: "'",
-    ʾ: "'",
+    [PHARYNGEAL]: "'",
+    [GLOTTAL_STOP]: "'",
     č: 'ch',
   };
   const phoneticReplacementsKeysCapture = `([${Object.keys(phoneticReplacements).join('')}])`;
@@ -177,7 +180,6 @@ function aiiTranslit(aiiText) {
     ['#ܝܢܵܐ#', '#ìnā#'], ['#ܝܗ݇ܘܵܐ#', '#ìwā#'],
     ['#ܝܗ݇ܘܵܬ݇#', '#ìwā#'], ['#ܝܗ݇ܘܵܘ#', '#ìwā#'],
     // "to be" with inital khwasa, ī
-    // https://en.wiktionary.org/wiki/Template:aii-conj-verb/hawe
     ['ܝܼܘܸܢ#', 'īwen#'], ['ܝܼܘܵܢ', 'īwān'],
     ['ܝܼܘܸܬ#', 'īwet#'], ['ܝܼܘܵܬܝ#', 'īwāt#'],
     ['ܝܼܠܹܗ#', 'īlēh#'], ['ܝܼܠܵܗ̇#', 'īlāh#'],
@@ -331,7 +333,7 @@ function aiiTranslit(aiiText) {
   re = new RegExp(ttKeysCapture, 'g');
   text = text.replaceAll(re, (match) => tt[match]);
 
-  text = text.replaceAll(`#${ALAPH}#`, '#ʾ#');
+  text = text.replaceAll(`#${ALAPH}#`, `#${GLOTTAL_STOP}#`);
 
   re = new RegExp(`${consonantsCapture}${mhagjanaCapture}${COMBINING_MACRON_BELOW}${consonantsCapture}`, 'g');
   text = text.replaceAll(re, '$1e$2$3');
@@ -381,7 +383,7 @@ function aiiTranslit(aiiText) {
   text = text.replaceAll(`${ZQAPHA}${ALAPH}#`, 'ā#');
   text = text.replaceAll(`${ALAPH}#`, 'ā#');
   text = text.replaceAll(`#${ALAPH}`, '#');
-  text = text.replaceAll(ALAPH, 'ʾ');
+  text = text.replaceAll(ALAPH, GLOTTAL_STOP);
 
   re = new RegExp(`#${WAW}${consonantsAndVowelsCapture}`, 'g');
   text = text.replaceAll(re, '#w-$1');
@@ -389,7 +391,7 @@ function aiiTranslit(aiiText) {
   re = new RegExp(ttNextKeysCapture, 'g');
   text = text.replaceAll(re, (match) => ttNext[match]);
 
-  re = new RegExp(`([ēīā])ʾ${consonantsCapture}`, 'g');
+  re = new RegExp(`([ēīā])${GLOTTAL_STOP}${consonantsCapture}`, 'g');
   text = text.replaceAll(re, '$1$2');
 
   re = new RegExp(`([${vowelsW}])([${vowels}])`, 'g');
@@ -407,10 +409,11 @@ function aiiTranslit(aiiText) {
   text = text.replaceAll(re, 'u$1');
 
   // remove consecutive duplicate characters
-  text = text.replaceAll(/([ʿʾāšyḥhčžj])\1+/g, '$1');
+  re = new RegExp(`([${PHARYNGEAL}${GLOTTAL_STOP}āšyḥhčžj])\\1+`, 'g');
+  text = text.replace(re, '$1');
   text = text.replaceAll(/([ḥčḡš])h/g, '$1');
 
-  text = text.replaceAll('-ʾ', '-');
+  text = text.replaceAll(`-${GLOTTAL_STOP}`, '-');
 
   let phoneticText = text; // maintain word boundaries
   text = text.replaceAll('#', '');
@@ -424,10 +427,17 @@ function aiiTranslit(aiiText) {
   // ///////////////////////
   // adding phonetic support
   // ///////////////////////
-  phoneticText = phoneticText.replaceAll('-ʿ', '-'); // bwdl prefixing ܥ ring
-  phoneticText = phoneticText.replaceAll(/#ʿ([^#])/g, '#$1'); // starting with ܥ E
-  phoneticText = phoneticText.replaceAll(/([^#])ʿ#/g, '$1#'); // ending in ܥ E
-  phoneticText = phoneticText.replaceAll(/ē([ʿʾ])/g, 'eh$1');
+  phoneticText = phoneticText.replaceAll(`-${PHARYNGEAL}`, '-'); // bwdl prefixing ܥ ring
+
+  re = new RegExp(`#${PHARYNGEAL}([^#])`, 'g');
+  phoneticText = phoneticText.replaceAll(re, '#$1'); // starting with ܥ E
+
+  re = new RegExp(`([^#])${PHARYNGEAL}#`, 'g');
+  phoneticText = phoneticText.replaceAll(re, '$1#'); // ending in ܥ E
+
+  re = new RegExp(`ē([${PHARYNGEAL}${GLOTTAL_STOP}])`, 'g');
+  phoneticText = phoneticText.replaceAll(re, 'eh$1');
+
   phoneticText = phoneticText.replaceAll(/ē#/g, 'eh#');
   phoneticText = phoneticText.replaceAll(/uh#/g, 'oo#');
 

@@ -39,12 +39,24 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 @mixin atuta-box-colors($apple-colors, $apple-colors-dark)
   @for $i from 0 through 3
-    .atuta-box-#{$i}
+    .atuta-box-clr-#{$i}
       $color: nth($apple-colors, $i+1)
       $dark-color: nth($apple-colors-dark, $i+1)
       @include atuta-box-color($color, $dark-color)
 
 @include atuta-box-colors($apple-colors, $apple-colors-dark)
+
+
+#tagged-results-meta
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+  #matched-tag
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
 
 
 
@@ -82,11 +94,11 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 
 .more-vocalized
-  background-color: $background
+  background-color: $secondary-background
   border-color: $separator
   @media (prefers-color-scheme: dark)
-    background-color: $secondary-background-dark
-    border-color: $secondary-background-dark
+    background-color: $background-dark
+    border-color: $separator-dark
 
 
 .more-vocalized-icon
@@ -102,8 +114,12 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
     color: $label-dark
 
 
-  .highlighted
-    color: $key-color
+  a
+    .aii-v-atuta-box
+      border-color: $separator
+      @media (prefers-color-scheme: dark)
+        border-color: $separator-dark
+
 
 
 .aii-v-word-tr-container
@@ -257,18 +273,14 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
     color: $secondary-label-dark
 
 
-.more-sounds-button-container
+.more-sounds-button
   background-color: $secondary-background
   border-color: $separator
+  color: $label
   @media (prefers-color-scheme: dark)
     background-color: $background-dark
     border-color: $separator-dark
-
-
-  .more-sounds-button
-    color: $label
-    @media (prefers-color-scheme: dark)
-      color: $label-dark
+    color: $label-dark
 
 
 .play-sound-container

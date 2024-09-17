@@ -2,13 +2,13 @@
 
 Webapp subdirectories each have an index.html file that can be viewed in the browser.  To preview on mobile and support cross origin requests, install docker desktop and run `make up` for a dockerized webserver:
 
-* http://localhost:8000/assyrian-bible/
-* http://localhost:8000/assyrian-transliterator/
-* http://localhost:8000/searchable-assyrian-bible/
-* http://localhost:8000/assyrian-dictionary/
 * http://localhost:8000/
-* http://localhost:8000/new-bet-nahrain/
+* http://localhost:8000/assyrian-bible/
 * http://localhost:8000/assyrian-bible-study/
+* http://localhost:8000/assyrian-dictionary/
+* http://localhost:8000/assyrian-transliterator/
+* http://localhost:8000/new-bet-nahrain/
+* http://localhost:8000/searchable-assyrian-bible/
 
 
 ### Development

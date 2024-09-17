@@ -16,7 +16,7 @@ $(document).ready(() => {
     $(e.currentTarget).children('.more-vocalized-icon').toggleClass('expanded');
   });
 
-  $('#search-results').on('click', '.more-sounds-button-container', (e) => {
+  $('#search-results').on('click', '.more-sounds-button', (e) => {
     $(e.currentTarget).parent().next()
       .children('.sound-container:not(.always-show)')
       .slideToggle(SPEED_MS);
@@ -25,7 +25,7 @@ $(document).ready(() => {
       .children('.ipa-info:not(.always-show)')
       .slideToggle(SPEED_MS);
 
-    $(e.currentTarget).children('.more-sounds-button').toggleClass('expanded');
+    $(e.currentTarget).toggleClass('expanded');
   });
 
   $('#search-results').on('click', '.more-defs-button-container', (e) => {

@@ -9,55 +9,72 @@
   font-weight: 100 900;
   src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
 }
-.atuta-box-0 {
+.atuta-box-clr-0 {
   background-color: rgba(0, 64, 221, 0.06);
   border-color: rgba(0, 64, 221, 0.3);
   color: rgb(0, 64, 221);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-0 {
+  .atuta-box-clr-0 {
     background-color: rgba(64, 156, 255, 0.12);
     border-color: rgba(64, 156, 255, 0.3);
     color: rgb(64, 156, 255);
   }
 }
 
-.atuta-box-1 {
+.atuta-box-clr-1 {
   background-color: rgba(215, 0, 21, 0.06);
   border-color: rgba(215, 0, 21, 0.3);
   color: rgb(215, 0, 21);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-1 {
+  .atuta-box-clr-1 {
     background-color: rgba(255, 105, 97, 0.12);
     border-color: rgba(255, 105, 97, 0.3);
     color: rgb(255, 105, 97);
   }
 }
 
-.atuta-box-2 {
+.atuta-box-clr-2 {
   background-color: rgba(36, 138, 61, 0.06);
   border-color: rgba(36, 138, 61, 0.3);
   color: rgb(36, 138, 61);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-2 {
+  .atuta-box-clr-2 {
     background-color: rgba(44, 188, 69, 0.12);
     border-color: rgba(44, 188, 69, 0.3);
     color: #2cbc45;
   }
 }
 
-.atuta-box-3 {
+.atuta-box-clr-3 {
   background-color: rgba(173, 68, 171, 0.06);
   border-color: rgba(173, 68, 171, 0.3);
   color: rgb(173, 68, 171);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-3 {
+  .atuta-box-clr-3 {
     background-color: rgba(218, 143, 255, 0.12);
     border-color: rgba(218, 143, 255, 0.3);
     color: rgb(218, 143, 255);
+  }
+}
+
+#tagged-results-meta {
+  color: rgb(134, 134, 137);
+}
+@media (prefers-color-scheme: dark) {
+  #tagged-results-meta {
+    color: rgb(149, 149, 157);
+  }
+}
+#tagged-results-meta #matched-tag {
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #tagged-results-meta #matched-tag {
+    color: rgb(221, 221, 232);
   }
 }
 
@@ -107,13 +124,13 @@
 }
 
 .more-vocalized {
-  background-color: #fff;
+  background-color: rgb(242, 242, 247);
   border-color: rgba(91, 91, 96, 0.29);
 }
 @media (prefers-color-scheme: dark) {
   .more-vocalized {
-    background-color: rgb(54, 54, 57);
-    border-color: rgb(54, 54, 57);
+    background-color: rgb(28, 28, 30);
+    border-color: rgba(104, 104, 111, 0.6);
   }
 }
 
@@ -134,8 +151,13 @@
     color: rgb(221, 221, 232);
   }
 }
-.aii-v-word .highlighted {
-  color: deeppink;
+.aii-v-word a .aii-v-atuta-box {
+  border-color: rgba(91, 91, 96, 0.29);
+}
+@media (prefers-color-scheme: dark) {
+  .aii-v-word a .aii-v-atuta-box {
+    border-color: rgba(104, 104, 111, 0.6);
+  }
 }
 
 .aii-v-word-tr-container .aii-v-word-tr {
@@ -311,21 +333,15 @@
   }
 }
 
-.more-sounds-button-container {
+.more-sounds-button {
   background-color: rgb(242, 242, 247);
   border-color: rgba(91, 91, 96, 0.29);
-}
-@media (prefers-color-scheme: dark) {
-  .more-sounds-button-container {
-    background-color: rgb(28, 28, 30);
-    border-color: rgba(104, 104, 111, 0.6);
-  }
-}
-.more-sounds-button-container .more-sounds-button {
   color: rgb(28, 28, 30);
 }
 @media (prefers-color-scheme: dark) {
-  .more-sounds-button-container .more-sounds-button {
+  .more-sounds-button {
+    background-color: rgb(28, 28, 30);
+    border-color: rgba(104, 104, 111, 0.6);
     color: rgb(221, 221, 232);
   }
 }
@@ -703,6 +719,19 @@ kbd {
   padding-top: 0;
 }
 
+#tagged-results-meta {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  display: none;
+  margin: 16px 36px;
+  padding: 0;
+}
+#tagged-results-meta #matched-tag {
+  font-weight: 700;
+}
+
 #tag-search-results {
   font-weight: 400;
   line-height: 1.4;
@@ -741,6 +770,9 @@ kbd {
 }
 #tag-search-results .expandable.expanded {
   list-style-type: disclosure-open;
+}
+#tag-search-results .expandable > a {
+  display: inline-block;
 }
 #tag-search-results .expandable > a:hover {
   text-decoration: none;
@@ -822,6 +854,10 @@ button {
 .aii-v-word-container {
   padding-bottom: 40px;
 }
+.aii-v-word-container .highlighted,
+.aii-v-word-container .exact-aii-search-match {
+  font-weight: 600;
+}
 .aii-v-word-container:not(.always-show) {
   display: none;
   order: -1;
@@ -837,19 +873,16 @@ button {
   padding-bottom: 6px;
   text-align: left;
 }
+.aii-v-word a {
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: 1px;
+}
 .aii-v-word .aii-v-atuta-box {
   border-radius: 6px;
   border-style: solid;
   border-width: 2px;
   margin-right: 2px;
   padding: 0 5px;
-}
-.aii-v-word .aii-v-atuta-box:not(.highlighted) {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 300;
-  line-height: 1.4;
-  font-size: 30.8px;
 }
 .aii-v-word .aii-v-atuta-box::before {
   content: "‌";
@@ -1133,23 +1166,28 @@ button {
   display: none;
 }
 
-.more-sounds-button-container {
-  border-radius: 13px;
-  cursor: pointer;
-  height: 26px;
-  padding: 0;
-  width: 38px;
+.more-sounds-button {
+  border-radius: 18px;
   border-style: solid;
   border-width: 1px;
+  cursor: pointer;
   flex-shrink: 0;
-  margin-right: 8px;
-}
-.more-sounds-button-container .more-sounds-button {
   font-size: 24px;
-  transition: transform 200ms;
+  font-variation-settings: "FILL" 1, "wght" 300, "GRAD" 0, "opsz" 24;
+  height: 38px;
+  margin-right: 8px;
+  padding: 0;
+  width: 38px;
 }
-.more-sounds-button-container .more-sounds-button.expanded {
-  transform: rotate(180deg);
+.more-sounds-button::before {
+  content: "select_to_speak";
+}
+.more-sounds-button.expanded {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+  transform: rotate(90deg);
+}
+.more-sounds-button.expanded::before {
+  content: "collapse_content";
 }
 
 .play-sound-container {
@@ -1254,7 +1292,8 @@ button {
 .tier3-tag,
 .show-linkages,
 .l-inline-tag,
-.in-numbers-table {
+.in-numbers-table,
+#matched-tag {
   white-space: nowrap;
 }
 

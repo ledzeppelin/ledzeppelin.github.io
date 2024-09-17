@@ -33,7 +33,9 @@ def tag_counts_grouped(tag_counter):
     results = defaultdict(list)
     # raise Exception(tag_counter.items())
     for tag, count in tag_counter.items():
-        if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences or tag.startswith('pattern:') or tag.startswith('stem:'):
+        # if "Exception: empty pattern list", uncomment following line
+        # if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences or tag.startswith('pattern:') or tag.startswith('stem:'):
+        if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences:
             tag_type, tag_name = tag.split(':', 1)
             results[tag_type].append(tag_name)
     # {'ipa': ['standard', 'Urmian', 'Nineveh Plains']}
@@ -128,7 +130,7 @@ def parse_indices(tag_counter):
     omit = set()
     l1 = {'special', 'table'}
     l2_full_names = {
-        'ipa': 'Pronunciations',
+        'ipa': 'Audio Pronunciations',
         'category': 'Categories',
         'from': 'Etymologies',
         'pos': 'Parts of Speech',
