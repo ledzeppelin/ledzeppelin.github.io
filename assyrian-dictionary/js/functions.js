@@ -1,4 +1,4 @@
-function loadResults(searchQuery, PAGINATE_AMT) {
+function loadResults(searchQuery, PAGINATE_AMT, isAiiExactSearch = false) {
   // console.time('test');
   // console.log(searchQuery.results);
   const indexedAiiV = {
@@ -31,7 +31,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
       aiiV.jsonlines.forEach((jsonline) => {
         const sensesFragment = $('<ol/>', { class: 'senses' });
         const commonWordTagSearch = 'searchingCommonWords' in searchQuery;
-        const showAll = (isRoot || commonWordTagSearch) ? ' always-show' : '';
+        const showAll = (isRoot || commonWordTagSearch || isAiiExactSearch) ? ' always-show' : '';
         jsonline.senses.forEach((sense, j) => {
           sensesFragment.append(createGlossFrag(sense, showAll, j));
         });
@@ -77,8 +77,26 @@ function loadResults(searchQuery, PAGINATE_AMT) {
         // 3. english search
         // 4. tagged search
 
-        if (match.key in indexedAiiV) {
+        if (isAiiExactSearch) {
+          // this block only runs if there were any actual results from the exact search
+          const isSpacedRoot = isRoot && searchQuery.aii_v_query === result.item.aii_not_v[0];
+          if (isSpacedRoot) {
+            resultFragment.children('.aii-v-word-container').addClass('always-show');
+            const aiiVWords = resultFragment.find('.aii-v-word');
+            aiiVWords.each((_, ele) => {
+              $(ele).find('.aii-v-atuta-box').each((index, element) => {
+                $(element).addClass(`atuta-box-clr-${index}`);
+              });
+              $(ele).find('a').contents().unwrap();
+            });
+          } else if (match.key in indexedAiiV) {
+            const aiiVEle = resultFragment.find(indexedAiiV[match.key]).eq(match.refIndex);
+            highlightAiiExactSearchText(aiiVEle);
+            aiiVEle.parent().addClass('always-show');
+          }
+        } else if (match.key in indexedAiiV) {
           const aiiVEle = resultFragment.find(indexedAiiV[match.key]).eq(match.refIndex);
+          // eslint-disable-next-line max-len
           highlightUnvocalizedAiiText(aiiVEle, match.value, searchQuery.aii_v_query, true);
           aiiVEle.parent().addClass('always-show');
         } else if (match.key === 'aii_not_v') {
@@ -86,6 +104,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
           if (isRoot) {
             resultFragment.find('.aii-v-atuta-box').addClass('highlighted');
           } else {
+            // ex. ܒ-
             resultFragment.find('.aii-v-word').each((_, ele) => {
               // eslint-disable-next-line max-len
               highlightUnvocalizedAiiText($(ele), $(ele).text(), searchQuery.aii_not_v_query, false);
@@ -156,7 +175,7 @@ function showMore(resultFragment) {
       const buttonStyle = numVisualVerbConj > 0 ? 'verb-conj-button' : 'not-verb-conj-button';
       $(senses).siblings('.pos').append(
         $('<button/>', { class: `more-defs-button-container ${buttonStyle}` }).append(
-          $('<span/>', { class: 'material-symbols-rounded more-defs-button', text: 'expand_more' }),
+          $('<span/>', { class: 'material-symbols-rounded more-defs-button', text: 'keyboard_arrow_down' }),
         ),
       );
     }
@@ -176,9 +195,7 @@ function showMoreSounds(resultFragment, aiiNotV) {
 
     if ($(ele).children('.sound-container:not(.always-show)').length > 0) {
       $(ele).prev().prepend(
-        $('<button/>', { class: 'more-sounds-button-container' }).append(
-          $('<span/>', { class: 'material-symbols-rounded more-sounds-button', text: 'expand_more' }),
-        ),
+        $('<button/>', { class: 'material-symbols-rounded more-sounds-button' }),
       );
     }
     if ($(ele).children('.sound-container.always-show').length > 0) {
@@ -194,7 +211,7 @@ function showMoreVocalized(resultFragment) {
   if (shouldShowMore) {
     resultFragment.prepend(
       $('<button/>', { class: 'more-vocalized' }).append(
-        $('<span/>', { class: 'material-symbols-rounded more-vocalized-icon', text: 'expand_more' }),
+        $('<span/>', { class: 'material-symbols-rounded more-vocalized-icon', text: 'keyboard_double_arrow_down' }),
       ),
     );
   }
@@ -216,8 +233,16 @@ function setTrBacklink(searchQuery, i, resultFragment) {
 }
 
 // element, aiiV text, querystring, isVocalized
+function highlightAiiExactSearchText(aiiVEle) {
+  aiiVEle
+    .addClass('exact-aii-search-match')
+    .find('a').contents()
+    .unwrap();
+}
+
+// element, aiiV text, querystring, isVocalized
 function highlightUnvocalizedAiiText(aiiVEle, aiiVText, query, isVocalized) {
   const re = isVocalized ? wordRegexAiiV(query) : wordRegexAiiNotV(query);
   const abc = regexHighlight(aiiVText, re, 'highlighted');
-  aiiVEle.html(abc);
+  aiiVEle.children('a').html(abc);
 }

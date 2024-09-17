@@ -4,7 +4,6 @@
    * regenerate new audio
    * export pdf and add number of people using sharrukin.io to graph
 
-   * check if DEFAULT_VAL has been replaced
    * once a year check the following for updates
       * aii-number-list.lua
       * aii-numeral.lua
@@ -23,10 +22,29 @@
    * 'khda' (to ensure ipa and and etymologies are collated correctly)
    * z'or vs z'ora - etymology position in article affects availability of root z-'-r
 
+
+# todos
+
+- set canonical urls for dictionary
+- support lit ety
+
+- update translit for edgiest of edge cases
+- tr, html entities for newline
+
+- set bible a hrefs
+- set canonical for bible
+
+- dynamic conjugations
+- dynamic inflections
+
+
+
+
+
+
 # nice to haves
-- consec atwateh in root should be same color (ex. for G-2i pattern where 2nd and 3rd are same char implies 3rd is dropped)
+- consec atwateh in root should be same color (ex. for G-2i  where 2nd and 3rd are same char implies 3rd is dropped)
 - personal pronoun table
-- ܚܵܬܹܐ ligatured taw is not showing in root boxes, also taw is is not ligatured ever in safari on macbook
 
 
 # won't do
@@ -35,3 +53,4 @@
 - cursor for .exact-search-match is pointer (can't fix bc of anchor)
 - for conjugation tables, the atwateh boxes - on safari desktop the ligatures are always broken but they work in chrome, not possible to fix
 - When phone is idle and you come back to it, howl onplay event doesn't seem to fire https://github.com/goldfire/howler.js/issues/371 . less likely - this could be because the file is not able to be fetched.  Hard to reproduce since being idle for a while causes refresh.  Also can be tested by playing a sound in another tab like define:cat.  For this reason we use HTML5 Audio instead of Web Audio API
+

@@ -96,7 +96,7 @@ $(document).ready(() => {
   });
 
   $('#copy-text').click((e) => {
-    $(e.currentTarget).fadeOut(0).text('done').fadeIn(400, () => {
+    $(e.currentTarget).fadeOut(0).text('check').fadeIn(400, () => {
       setTimeout(() => {
         $(e.currentTarget).text('content_copy');
       }, 400);

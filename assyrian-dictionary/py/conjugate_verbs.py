@@ -2,9 +2,8 @@ from collections import defaultdict
 import re
 import itertools
 import copy
-from vars.verb_templates import deleted_verb_templates, conj_schema, verb_template_aliases, \
-    conj_stems_and_patterns
-from vars.infl_schemas import infl_schema, verb_template_not_visualized
+from vars.verb_templates import conj_schema, conj_stems_and_patterns
+from vars.infl_schemas import infl_schema
 
 def strip_markers():
     # this is a port of /shared_js/aii-utils.js
@@ -93,18 +92,8 @@ def root_venn(item):
     return None, None, None
 
 
-def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_cache):
-    if template_name in deleted_verb_templates:
-        return
-        # raise Exception(template_name)
-
-    if template_name == 'aii-conj-verb/hawe':
-        TEMPLATE_PREFIX = 'aii-conj-verb/hawe'
-    else:
-        TEMPLATE_PREFIX = 'aii-conj-verb/'
-
-
-    template = copy.deepcopy(infl_schema[TEMPLATE_PREFIX]['template'])
+def set_verb_conj(item, obj, html_template_name, template_name, aii_v, vocalized_cache, visual_conj_cache):
+    template = copy.deepcopy(infl_schema[html_template_name]['template'])
     unique_keys = {}
     for tense, pronouns in template.items():
         for pronoun, conj in pronouns.items():
@@ -112,17 +101,19 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
                 # {'past-3rd-sm' : ('He', 'past')}
                 unique_keys[key] = (pronoun, tense)
 
-    omit = infl_schema[TEMPLATE_PREFIX]['omit'].union(infl_schema[TEMPLATE_PREFIX]['omit_dangling'])
+    omit = infl_schema[html_template_name]['omit']
 
-    nth_ancestor = 0 if template_name in verb_template_not_visualized else 1
-    for arg, aii in item['inflection_templates'][nth_ancestor]['args'].items():
+    for arg, aii in item['inflection_templates'][-1]['args'].items():
         if arg in omit:
             pass
         elif arg in unique_keys:
-            pron, tense = unique_keys[arg]
+            pron, tense = unique_keys.pop(arg)
             template[tense][pron][arg] = aii
         else:
             raise Exception(f'missing {arg} for word {item["word"]}')
+
+    if unique_keys:
+        raise Exception(unique_keys)
 
     tenses = []
 
@@ -138,15 +129,13 @@ def set_verb_conj(item, obj, template_name, aii_v, vocalized_cache, visual_conj_
                 )
             )
         tenses.append(
-            {'heading': infl_schema[TEMPLATE_PREFIX]["heading"], 'heading_2': [tense], 'rows': rows}
+            {'heading': infl_schema[html_template_name]["heading"], 'heading_2': [tense], 'rows': rows}
         )
 
 
-    if template_name in verb_template_not_visualized:
+    if template_name == html_template_name:
         set_singleton_not_vis_root_table(item, obj, aii_v, vocalized_cache)
     else:
-        # TODO: raise exception if DEFAULT_VAL has not been replaced
-        template_name = verb_template_aliases.get(template_name, template_name)
         pattern = template_name.removeprefix('aii-conj-verb/')
         stem_name = find_stem_of_pattern(conj_stems_and_patterns, pattern)
 
@@ -301,11 +290,12 @@ def annotated_verb_row(meta, conj_obj, aii_v, vocalized_cache, template_name, ve
         if aii_value == aii_v:
             val_obj['matches_aii_v'] = True
 
-        all_t = (deleted_verb_templates, verb_template_not_visualized, verb_template_aliases.keys(), conj_schema.keys())
+        verb_template_not_visualized = {'aii-conj-verb', 'aii-conj-hawe'}
+
+        all_t = (verb_template_not_visualized, conj_schema.keys())
         if any(template_name in l for l in all_t) is False:
             raise Exception(f'template {template_name} not handled', all_t)
 
-        template_name = verb_template_aliases.get(template_name, template_name)
         if template_name in conj_schema and key in conj_schema[template_name]:
             if verb_args_x_root:
                 partial_template_str, atwateh = replace_template_str(

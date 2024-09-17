@@ -1,23 +1,10 @@
 # https://en.wiktionary.org/wiki/Category:Assyrian_Neo-Aramaic_verb_inflection-table_templates
 
-# deleted but still referenced
-deleted_verb_templates = {
-    'aii-conj-verb/B4i',
-}
-
-verb_template_aliases = {
-    'aii-conj-verb/A1': 'aii-conj-verb/G',
-    "aii-conj-verb/A1'" :'aii-conj-verb/G-3e',
-    'aii-conj-verb/A1a': 'aii-conj-verb/G-1i',
-    'aii-conj-verb/A3': 'aii-conj-verb/G-3i',
-    'aii-conj-verb/A4': 'aii-conj-verb/G-2i',
-    'aii-conj-verb/D1': 'aii-conj-verb/Gt',
-}
-
 conj_stems_and_patterns = {
     'C': {'C', 'C-1o', 'C-1o3i', 'C-3i', 'C-mi', 'C-mv'},
     'D': {'D', 'D-1o', 'D-3i', 'D-mv'},
-    'G': {'G', 'G-1i', 'G-1i3i', 'G-23r', 'G-2i', 'G-2s3i', 'G-3e', 'G-3i', 'Gt'},
+    'G': {'G', 'G-1i', 'G-1i3i', 'G-23r', 'G-2i', 'G-2s3i', 'G-3e', 'G-3i'},
+    'Gt': {'Gt'},
     'Q': {'Q', 'Q-w'},
     'S': {'S'},
     'Sh': {'Sh', 'Sh-w'},

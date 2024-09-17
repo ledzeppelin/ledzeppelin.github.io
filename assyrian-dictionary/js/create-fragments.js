@@ -3,6 +3,9 @@ const LOCAL_DEVELOPMENT = false; // for cleaner urls in prod
 
 const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
 
+const TAG_SEARCH_PARAM = 'tag-search';
+const AII_EXACT_SEARCH_PARAM = 'aii-exact-search';
+
 function createTagSearchFragment(dictTags, depth = 0) {
   const frag = $(document.createDocumentFragment());
   // nested list based on guidlines: https://stackoverflow.com/a/5899394
@@ -27,7 +30,7 @@ function createTagSearchFragment(dictTags, depth = 0) {
         $('<li/>', { class: `l${depth}-tag` }).append(
           $('<a/>', {
             text: item.name,
-            href: `./${INDEX_HTML}?search=${item.tag}`,
+            href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=${item.tag}`,
           }),
           createTagSearchInlineFragment(item, depth + 1),
         ),
@@ -47,7 +50,7 @@ function createTagSearchInlineFragment(item, depth) {
         $('<li/>', { class: `l${depth}-tag l-inline-tag` }).append(
           $('<a/>', {
             text: inlineChild.name,
-            href: `./${INDEX_HTML}?search=${inlineChild.tag}`,
+            href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=${inlineChild.tag}`,
           }),
         ),
         idx < item.children.length - 1 ? ', ' : '',
@@ -77,7 +80,6 @@ function tagSearchClearHighlightedMatches() {
 
   $('#tag-search-results').find('.exact-search-match').removeClass('exact-search-match');
   $('#tag-search-results').find('.highlighted').contents().unwrap();
-  // console.timeEnd('start');
 }
 
 function tagSearchHighlightExactMatch(queryString) {
@@ -115,7 +117,7 @@ function tagSearchHighlightMatches(results) {
   if (results.length === 1) {
     // number of rows shown is minShowCount + (max depth - 1)
     // we use 10 since searching "stem" will show all the stems
-    let minShowCount = 10; // to test, change to 1 and query "pattern", then 2 and query "pattern"
+    let minShowCount = 9; // to test, change to 1 and query "pattern", then 2 and query "pattern"
 
     const result = results[0];
     // console.log(result);
@@ -135,12 +137,7 @@ function tagSearchHighlightMatches(results) {
         const tagClass = `.l${depth}-tag`;
         const ele = $('#tag-search-results').find(tagClass).eq(match.refIndex);
 
-        if (!ele.hasClass('expandable')) {
-          // when matched string is the prefix of an expandable element
-          // UI on iPhone safari is quirky, ex. 'part' positions 'Parts of Speech' below ::marker
-          // so we only highlight non-expandable elements
-          ele.children('a').html(highlightEngIndices(match.value, match.indices));
-        }
+        ele.children('a').html(highlightEngIndices(match.value, match.indices));
 
         if (minShowCount > 0) {
           if (ele.hasClass('l-inline-tag')) {
@@ -163,17 +160,23 @@ function tagSearchHighlightMatches(results) {
 }
 
 function createAiiVFrag(aiiV, anyJsonlineRoot) {
+  const anchorFrag = $('<a/>', {
+    href: `./${INDEX_HTML}?${AII_EXACT_SEARCH_PARAM}=${aiiV}`,
+  });
+
   if (anyJsonlineRoot) {
-    const innerFrag = $(document.createDocumentFragment());
-    aiiV.split(' ').forEach((char, idx) => {
-      innerFrag.append(
-        $('<span/>', { class: `aii-v-atuta-box atuta-box-${idx}`, text: char }),
+    aiiV.split(' ').forEach((char) => {
+      anchorFrag.append(
+        $('<span/>', { class: 'aii-v-atuta-box', text: char }),
       );
     });
-
-    return $('<div/>', { class: 'aii-v-word' }).append(innerFrag);
+  } else {
+    anchorFrag.text(aiiV);
   }
-  return $('<div/>', { class: 'aii-v-word', text: aiiV });
+
+  return $('<div/>', { class: 'aii-v-word' }).append(
+    anchorFrag,
+  );
 }
 
 function createWiktionaryFrag(aiiNotV) {
@@ -202,7 +205,7 @@ function createCommonWordFrag() {
     $('<a/>', {
       class: 'tier1-tag',
       text: 'common word',
-      href: `./${INDEX_HTML}?search=special:Common Words`,
+      href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=special:Common Words`,
     }),
     ' ',
   );
@@ -217,7 +220,7 @@ function createInNumbersTableFrag() {
     $('<a/>', {
       class: 'in-numbers-table',
       text: 'numbers table',
-      href: `./${INDEX_HTML}?search=table:Numbers Table`,
+      href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=table:Numbers Table`,
     }),
     ' ',
   );
@@ -289,32 +292,43 @@ function createIpaContainerFrag(aiiV) {
   let frag = $(document.createDocumentFragment());
   if ('ipas' in aiiV) {
     frag = $('<div/>', { class: 'sound-containers' });
-    const accentCount = {};
-    aiiV.ipas.forEach(([accent, ipa, ipaHash]) => {
-      if (accent in accentCount) {
-        // console.log(accent, accentCount[accent]);
-        accentCount[accent] += 1;
-        frag.append(
-          createIpaFrag(accent, ipa, ipaHash, accentCount[accent]),
-        );
-      } else {
-        accentCount[accent] = 0;
-        frag.append(
-          createIpaFrag(accent, ipa, ipaHash, null),
-        );
-      }
+    const accentCounts = {};
+    aiiV.ipas.forEach(([accents, ipa, ipaHash]) => {
+      frag.append(
+        createSoundContainerFrag(accents, ipa, ipaHash, accentCounts),
+      );
     });
   }
   return frag;
 }
 
-function createIpaFrag(accent, ipa, ipaHash, accentCount) {
-  let frag = $(document.createDocumentFragment());
-  if (accentCount) {
-    const ord = accentCount === 1 ? '' : `${accentCount}${getOrdinal(accentCount)} `;
-    frag = ` ${ord}alternate`;
-  }
+function createIpaAccentNameContainers(accents, accentCounts) {
+  const frag = $(document.createDocumentFragment());
+  accents.forEach((accent) => {
+    let accentOrdinal = '';
+    if (accent in accentCounts) {
+      accentCounts[accent] += 1;
+      const cnt = accentCounts[accent];
+      const alt = 'alternate';
+      accentOrdinal = cnt === 1 ? ` ${alt}` : ` ${cnt}${getOrdinal(cnt)} ${alt}`;
+    } else {
+      accentCounts[accent] = 0;
+    }
+    frag.append(
+      $('<div/>', { class: 'accent-name-container' }).append(
+        $('<a/>', {
+          class: 'accent-name tier1-tag tier1-tag-ipa',
+          text: accent,
+          href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=ipa:${accent}`,
+        }),
+        accentOrdinal,
+      ),
+    );
+  });
+  return frag;
+}
 
+function createSoundContainerFrag(accents, ipa, ipaHash, accentCounts) {
   return $('<div/>', { class: 'sound-container' }).append(
     $('<div/>', { class: 'play-sound-container' }).append(
       // https://stackoverflow.com/a/62414510
@@ -325,16 +339,8 @@ function createIpaFrag(accent, ipa, ipaHash, accentCount) {
       }),
       $('<div/>').append(
         $('<div/>', { class: 'ipa', text: ipa }),
-        $('<div/>', { class: 'accent-name-container' }).append(
-          $('<a/>', {
-            class: 'accent-name tier1-tag tier1-tag-ipa',
-            text: accent,
-            href: `./${INDEX_HTML}?search=ipa:${accent}`,
-          }),
-          frag,
-        ),
+        createIpaAccentNameContainers(accents, accentCounts),
       ),
-
     ),
   );
 }
@@ -343,7 +349,7 @@ function createPOSFrag(pos) {
   return $('<a/>', {
     class: 'tier2-tag',
     text: pos,
-    href: `./${INDEX_HTML}?search=pos:${pos}`,
+    href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=pos:${pos}`,
   });
 }
 
@@ -355,7 +361,7 @@ function createRootLettersFrag(key, obj) {
       $('<a/>', {
         class: 'tier2-tag',
         text: `${obj[key]}-letters`,
-        href: `./${INDEX_HTML}?search=root:${obj[key]}-letters`,
+        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=root:${obj[key]}-letters`,
       }),
       ')',
     );
@@ -371,13 +377,13 @@ function createVisVerbFrag(key, obj, tierTag) {
       $('<a/>', {
         class: tierTag,
         text: obj[key].stem,
-        href: `./${INDEX_HTML}?search=stem:${obj[key].stem}`,
+        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=stem:${obj[key].stem}`,
       }),
       ', ',
       $('<a/>', {
         class: tierTag,
         text: `${obj[key].pattern} pattern`,
-        href: `./${INDEX_HTML}?search=pattern:${obj[key].pattern}`,
+        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=pattern:${obj[key].pattern}`,
       }),
       ')',
     );
@@ -396,7 +402,7 @@ function createEtymologyFrag(etyKey, obj, tierTag) {
       $('<a/>', {
         class: tierTag,
         text: et,
-        href: `./${INDEX_HTML}?search=from:${et}`,
+        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=from:${et}`,
       }),
     );
 
@@ -433,7 +439,7 @@ function regexAtwatehBoxes(templateStr, templateAtwateh, breakLigatures) {
     const brLig = breakLigatures ? ' break-ligatures' : '';
 
     fragment.append(
-      $('<span/>', { class: `atuta-box${brLig} atuta-box-${rootIdx} ${atutaFirstChar}`, text: rootLetterText }),
+      $('<span/>', { class: `atuta-box${brLig} atuta-box-clr-${rootIdx} ${atutaFirstChar}`, text: rootLetterText }),
     );
     i = strMatchIdx + match.length;
     atutaIdx += 1;
@@ -479,7 +485,7 @@ function createTableRowsFrag(table) {
           valFrag = $('<a/>', {
             class: 'infl-val-anchor',
             text: aii.value,
-            href: `./${INDEX_HTML}?search=${aii.value}`,
+            href: `./${INDEX_HTML}?${AII_EXACT_SEARCH_PARAM}=${aii.value}`,
           });
         } else {
           valFrag = $('<span/>', { class: 'infl-val', text: aii.value });
@@ -609,7 +615,7 @@ function createTier3CategoriesFrag(sense) {
           $('<a/>', {
             class: 'tier3-tag',
             text: tier3Category,
-            href: `./${INDEX_HTML}?search=category:${tier3Category}`,
+            href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=category:${tier3Category}`,
           }),
         ),
       );

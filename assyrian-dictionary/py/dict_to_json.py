@@ -134,8 +134,9 @@ def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache, numbers_table):
 
             if aii_not_v in sounds and aii_v in sounds[aii_not_v]:
                 inner_obj['ipas'] = sounds[aii_not_v][aii_v]
-                for accent, _, _ in sounds[aii_not_v][aii_v]:
-                    inner_obj['tier1_tags'].append(f"ipa:{accent}")
+                for accents, _, _ in sounds[aii_not_v][aii_v]:
+                    for accent in accents:
+                        inner_obj['tier1_tags'].append(f"ipa:{accent}")
 
             try:
                 idx = deduped_common_words.index(aii_v)
@@ -160,6 +161,8 @@ def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache, numbers_table):
             collapse_etymologies(inner_obj, jsonlines)
             obj['aii_v_s'].append(inner_obj)
 
+        # so searching for ܒ- will always show ܒ- before ܒܸ-
+        obj['aii_v_s'].sort(key=lambda x: x['aii_v'])
         fuse_data.append(obj)
     return fuse_data
 
@@ -179,7 +182,8 @@ def validate_t1_tags(aii_v):
         # ipa -> common words -> tier 1 etymology
         tier1 = []
         if 'ipas' in aii_v:
-            tier1 += [f'ipa:{ipa[0]}' for ipa in aii_v['ipas']]
+            tier1 += [f'ipa:{accent}' for ipa in aii_v['ipas'] for accent in ipa[0]]
+
         if 'is_common_word' in aii_v:
             tier1 += ['special:Common Words']
         if 'tier1_etymology' in aii_v:

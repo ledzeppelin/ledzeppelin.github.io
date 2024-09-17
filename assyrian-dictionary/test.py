@@ -1,9 +1,5 @@
-valid_stems = ('C', 'D', 'G', 'Q', 'S', 'Sh')
+notes = 'one two three'
+notes2 = 'one, two , three'
 
-valid_stems = tuple(sorted(valid_stems, key=len, reverse=True))
-
-print(valid_stems)
-
-
-foo = 'Good'
-print(foo[:2])
+for note in notes2.split(', '):
+    print(note)
