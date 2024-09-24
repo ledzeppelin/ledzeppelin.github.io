@@ -114,7 +114,7 @@ a:active {
 }
 @media (prefers-color-scheme: dark) {
   #syrc-btn-group {
-    border-color: rgba(104, 104, 111, 0.6);
+    border-color: rgba(119, 119, 127, 0.6);
   }
 }
 #syrc-btn-group button {
@@ -127,20 +127,20 @@ a:active {
 }
 @media (hover: hover) and (pointer: fine) {
   #syrc-btn-group button:hover {
-    background-color: #e56702;
+    background-color: rgb(229.2571428571, 102.9714285714, 1.9428571429);
   }
 }
 @media (hover: hover) and (pointer: fine) and (prefers-color-scheme: dark) {
   #syrc-btn-group button:hover {
-    background-color: #fd923b;
+    background-color: rgb(253.3428571429, 145.6285714286, 59.4571428571);
   }
 }
 #syrc-btn-group button:active {
-  background-color: #cf5d02;
+  background-color: rgb(207.0057142857, 92.9771428571, 1.7542857143);
 }
 @media (prefers-color-scheme: dark) {
   #syrc-btn-group button:active {
-    background-color: #fe9e52;
+    background-color: rgb(253.5314285714, 158.0742857143, 81.7085714286);
   }
 }
 #syrc-btn-group button:disabled {
@@ -163,19 +163,19 @@ a:active {
   }
 }
 #latin-btn-group button:hover {
-  background-color: #dfdfeb;
+  background-color: rgb(223.0571428571, 223.0571428571, 235.3428571429);
 }
 @media (prefers-color-scheme: dark) {
   #latin-btn-group button:hover {
-    background-color: #454549;
+    background-color: rgb(68.8864864865, 68.8864864865, 72.7135135135);
   }
 }
 #latin-btn-group button:active {
-  background-color: #d2d2e4;
+  background-color: rgb(210.4285714286, 210.4285714286, 227.5714285714);
 }
 @media (prefers-color-scheme: dark) {
   #latin-btn-group button:active {
-    background-color: #4f4f53;
+    background-color: rgb(78.8108108108, 78.8108108108, 83.1891891892);
   }
 }
 #latin-btn-group button.active {

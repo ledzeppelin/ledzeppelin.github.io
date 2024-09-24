@@ -24,7 +24,10 @@ scaffold:
 dict:
 	python3 py/dict_to_json.py
 
-	cp js/consts/aii-dict.js js/consts/aii-dict.prev.js
+	@if [ -f js/consts/aii-dict.js ]; then \
+		cp js/consts/aii-dict.js js/consts/aii-dict.prev.js; \
+	fi
+
 	cd js && node cli/add-props-to-dictionary.js > ./consts/aii-dict.js
 
 	cd js && node cli/numbers-table-json-to-obj.js > ./consts/aii-numbers-table.js

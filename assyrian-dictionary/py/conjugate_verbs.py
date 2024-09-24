@@ -203,7 +203,7 @@ def set_singleton_not_vis_root_table(item, obj, aii_v, vocalized_cache):
                 obj['conj']['tenses'] = [root_tense]
                 return
 
-def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root):
+def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root, aii_v):
     if len(verb_args) != len(verb_args_x_root):
         raise Exception('oh dear')
 
@@ -233,7 +233,7 @@ def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root):
     rem_matches = re.findall(capture_group, partial_template_str)
 
     if len(rem_matches) != len(chars):
-        raise Exception(template_str, aii_value, verb_args, verb_args_x_root, chars)
+        raise Exception(template_str, aii_value, verb_args, verb_args_x_root, chars, aii_v)
 
     return partial_template_str, chars
 
@@ -301,7 +301,8 @@ def annotated_verb_row(meta, conj_obj, aii_v, vocalized_cache, template_name, ve
                 partial_template_str, atwateh = replace_template_str(
                     conj_schema[template_name][key],
                     aii_value, verb_args,
-                    verb_args_x_root
+                    verb_args_x_root,
+                    aii_v
                 )
 
                 val_obj['template_str'] = partial_template_str

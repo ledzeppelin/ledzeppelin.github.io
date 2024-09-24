@@ -414,11 +414,7 @@ def datadump_to_dict():
     aii_dict = defaultdict(lambda: defaultdict(list))
     aii_sounds = defaultdict(lambda: defaultdict(list))
 
-    # TODO
-    BLACKLIST = {
-        'Conjugation of ܡܙܲܗܸܪ',
-        'Conjugation of ܙܵܗܹܪ',
-    }
+    BLACKLIST = {'ܒܵܠܹܐ', 'ܩܵܗܹܐ',}
 
     vocalized_cache = set()
     for item in data:

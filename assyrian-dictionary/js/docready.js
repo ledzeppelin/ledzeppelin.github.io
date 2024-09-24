@@ -40,13 +40,8 @@ $(document).ready(() => {
   });
 
   $('#search-results').on('click', '.show-linkages', (e) => {
-    if ($(e.currentTarget).text() === 'show more...') {
-      $(e.currentTarget).text('show less...');
-    } else {
-      $(e.currentTarget).text('show more...');
-    }
-
-    $(e.currentTarget).next().slideToggle(SPEED_MS);
+    $(e.currentTarget).siblings('.t3-linkages-and-examples').slideToggle(SPEED_MS);
+    $(e.currentTarget).toggleClass('expanded');
   });
 
   $('#search-results').on('click', '.play-sound', (e) => {

@@ -10,29 +10,29 @@
   src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
 }
 body {
-  background-color: #310e5d;
+  background-color: rgb(48.6363636364, 14.3349282297, 92.6650717703);
   color: rgb(221, 221, 232);
   margin: 0 auto 106px;
 }
 
 a {
-  color: #22d43d;
+  color: rgb(33.8974895397, 211.6025104603, 60.6046025105);
   text-decoration: none;
 }
 @media (prefers-color-scheme: dark) {
   a {
-    color: #22d43d;
+    color: rgb(33.8974895397, 211.6025104603, 60.6046025105);
   }
 }
 a:hover {
   text-decoration: underline;
 }
 a:visited {
-  color: #f97700;
+  color: rgb(249.2, 119.2978723404, 0);
 }
 @media (prefers-color-scheme: dark) {
   a:visited {
-    color: #f97700;
+    color: rgb(249.2, 119.2978723404, 0);
   }
 }
 a:active {
@@ -250,7 +250,7 @@ p {
 .section-line .aii,
 .section-line .aii-tr,
 .section-line .eng {
-  color: #d7c6ed;
+  color: rgb(215, 198.25, 236.5);
   pointer-events: none;
   text-align: right;
   transition: color 0.15s ease-in-out, font-weight 0.15s ease-in-out;
@@ -272,7 +272,7 @@ p {
 }
 @media (hover: hover) and (pointer: fine) {
   .section-line:hover {
-    background-color: #7726de;
+    background-color: rgb(118.6363636364, 38.4928229665, 221.5071770335);
     cursor: pointer;
   }
   .section-line:first-child {

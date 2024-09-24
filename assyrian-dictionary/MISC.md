@@ -22,14 +22,17 @@
    * 'khda' (to ensure ipa and and etymologies are collated correctly)
    * z'or vs z'ora - etymology position in article affects availability of root z-'-r
 
-
 # todos
-
-- set canonical urls for dictionary
+- cache audio make target
+- replace url declarations like window.location with window.location.href
 - support lit ety
-
-- update translit for edgiest of edge cases
+- test enumerated terms/examples
+- test deprecation of expand/collage widget
 - tr, html entities for newline
+
+- tr fix for ܡܲܫܡܸܥ mashmi
+- rule for virrawkhon vs vir lawkhon (aver)
+- after october dump, try to fix base words of econj, also check out rconj, aconj
 
 - set bible a hrefs
 - set canonical for bible

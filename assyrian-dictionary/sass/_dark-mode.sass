@@ -190,12 +190,6 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
         color: $label-dark
 
 
-.t3-categories
-  color: $secondary-label
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
-
-
 .gloss-container
   color: $label
   @media (prefers-color-scheme: dark)
@@ -209,10 +203,38 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
       color: $key-color-dark
 
 
+.show-linkages
+  background-color: $secondary-background
+  color: $label
+  outline-color: $separator
+  @media (prefers-color-scheme: dark)
+    background-color: $background-dark
+    color: $label-dark
+    outline-color: $separator-dark
+
+
+  &.expanded
+    $darken: color.adjust($secondary-background, $lightness: -9%)
+    background-color: $darken
+    outline-color: $darken
+    @media (prefers-color-scheme: dark)
+      $lighten: color.adjust($secondary-background-dark, $lightness: 10%)
+      background-color: $lighten
+      outline-color: $lighten
+
+
+.t3-categories
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
 .example-row-vals
   border-left-color: $separator
+  color: $secondary-label
   @media (prefers-color-scheme: dark)
     border-left-color: $separator-dark
+    color: $secondary-label-dark
 
 
 .more-info
@@ -223,10 +245,10 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
         border-bottom-color: $separator-dark
 
 
-  .infl-meta
-    color: $secondary-label
-    @media (prefers-color-scheme: dark)
-      color: $secondary-label-dark
+.infl-meta
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
 
 
 .cog-val-container

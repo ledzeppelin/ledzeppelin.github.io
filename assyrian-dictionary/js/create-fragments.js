@@ -6,6 +6,13 @@ const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
 const TAG_SEARCH_PARAM = 'tag-search';
 const AII_EXACT_SEARCH_PARAM = 'aii-exact-search';
 
+function paramsToString(key, value) {
+  const params = new URLSearchParams();
+  params.set(key, value);
+  // return params.toString();
+  return params.toString().replaceAll('%3A', ':');
+}
+
 function createTagSearchFragment(dictTags, depth = 0) {
   const frag = $(document.createDocumentFragment());
   // nested list based on guidlines: https://stackoverflow.com/a/5899394
@@ -30,7 +37,7 @@ function createTagSearchFragment(dictTags, depth = 0) {
         $('<li/>', { class: `l${depth}-tag` }).append(
           $('<a/>', {
             text: item.name,
-            href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=${item.tag}`,
+            href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, item.tag)}`,
           }),
           createTagSearchInlineFragment(item, depth + 1),
         ),
@@ -50,7 +57,7 @@ function createTagSearchInlineFragment(item, depth) {
         $('<li/>', { class: `l${depth}-tag l-inline-tag` }).append(
           $('<a/>', {
             text: inlineChild.name,
-            href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=${inlineChild.tag}`,
+            href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, inlineChild.tag)}`,
           }),
         ),
         idx < item.children.length - 1 ? ', ' : '',
@@ -82,10 +89,10 @@ function tagSearchClearHighlightedMatches() {
   $('#tag-search-results').find('.highlighted').contents().unwrap();
 }
 
-function tagSearchHighlightExactMatch(queryString) {
-  // console.log(queryString);
+function tagSearchHighlightExactMatch(tagSearchParam) {
+  const href = `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, tagSearchParam)}`;
 
-  $('#tag-search-results').find(`a[href$="${queryString}"]`).each((i, ele) => {
+  $('#tag-search-results').find(`a[href="${href}"]`).each((i, ele) => {
     $(ele).addClass('exact-search-match');
     const eleP = $(ele).parent();
 
@@ -117,7 +124,7 @@ function tagSearchHighlightMatches(results) {
   if (results.length === 1) {
     // number of rows shown is minShowCount + (max depth - 1)
     // we use 10 since searching "stem" will show all the stems
-    let minShowCount = 9; // to test, change to 1 and query "pattern", then 2 and query "pattern"
+    let minShowCount = 10; // to test, change to 1 and query "pattern", then 2 and query "pattern"
 
     const result = results[0];
     // console.log(result);
@@ -161,7 +168,7 @@ function tagSearchHighlightMatches(results) {
 
 function createAiiVFrag(aiiV, anyJsonlineRoot) {
   const anchorFrag = $('<a/>', {
-    href: `./${INDEX_HTML}?${AII_EXACT_SEARCH_PARAM}=${aiiV}`,
+    href: `./${INDEX_HTML}?${paramsToString(AII_EXACT_SEARCH_PARAM, aiiV)}`,
   });
 
   if (anyJsonlineRoot) {
@@ -205,7 +212,7 @@ function createCommonWordFrag() {
     $('<a/>', {
       class: 'tier1-tag',
       text: 'common word',
-      href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=special:Common Words`,
+      href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, 'special:Common Words')}`,
     }),
     ' ',
   );
@@ -214,13 +221,12 @@ function createCommonWordFrag() {
 
 function createInNumbersTableFrag() {
   const frag = $(document.createDocumentFragment());
-
   frag.append(
     ' in ',
     $('<a/>', {
       class: 'in-numbers-table',
       text: 'numbers table',
-      href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=table:Numbers Table`,
+      href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, 'table:Numbers Table')}`,
     }),
     ' ',
   );
@@ -314,12 +320,13 @@ function createIpaAccentNameContainers(accents, accentCounts) {
     } else {
       accentCounts[accent] = 0;
     }
+
     frag.append(
       $('<div/>', { class: 'accent-name-container' }).append(
         $('<a/>', {
           class: 'accent-name tier1-tag tier1-tag-ipa',
           text: accent,
-          href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=ipa:${accent}`,
+          href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, `ipa:${accent}`)}`,
         }),
         accentOrdinal,
       ),
@@ -349,7 +356,7 @@ function createPOSFrag(pos) {
   return $('<a/>', {
     class: 'tier2-tag',
     text: pos,
-    href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=pos:${pos}`,
+    href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, `pos:${pos}`)}`,
   });
 }
 
@@ -361,7 +368,7 @@ function createRootLettersFrag(key, obj) {
       $('<a/>', {
         class: 'tier2-tag',
         text: `${obj[key]}-letters`,
-        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=root:${obj[key]}-letters`,
+        href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, `root:${obj[key]}-letters`)}`,
       }),
       ')',
     );
@@ -377,13 +384,13 @@ function createVisVerbFrag(key, obj, tierTag) {
       $('<a/>', {
         class: tierTag,
         text: obj[key].stem,
-        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=stem:${obj[key].stem}`,
+        href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, `stem:${obj[key].stem}`)}`,
       }),
       ', ',
       $('<a/>', {
         class: tierTag,
         text: `${obj[key].pattern} pattern`,
-        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=pattern:${obj[key].pattern}`,
+        href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, `pattern:${obj[key].pattern}`)}`,
       }),
       ')',
     );
@@ -402,7 +409,7 @@ function createEtymologyFrag(etyKey, obj, tierTag) {
       $('<a/>', {
         class: tierTag,
         text: et,
-        href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=from:${et}`,
+        href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, `from:${et}`)}`,
       }),
     );
 
@@ -485,7 +492,7 @@ function createTableRowsFrag(table) {
           valFrag = $('<a/>', {
             class: 'infl-val-anchor',
             text: aii.value,
-            href: `./${INDEX_HTML}?${AII_EXACT_SEARCH_PARAM}=${aii.value}`,
+            href: `./${INDEX_HTML}?${paramsToString(AII_EXACT_SEARCH_PARAM, aii.value)}`,
           });
         } else {
           valFrag = $('<span/>', { class: 'infl-val', text: aii.value });
@@ -550,10 +557,12 @@ function createTableFrag(table) {
   return frag.append(tableRows);
 }
 
-function createGlossFrag(sense, showAll, j) {
-  return $('<li/>', { class: `gloss-container${showAll}`, val: j + 1 }).append(
+function createGlossFrag(sense, j) {
+  return $('<li/>', { class: 'gloss-container', val: j + 1 }).append(
     $('<span/>', { class: 'gloss', text: sense.gloss }),
+    createTermsAndExamplesButtonFrag(sense),
     createTier3CategoriesFrag(sense),
+    createTermsAndExamplesTableFrag(sense),
   );
 }
 
@@ -604,44 +613,53 @@ function createT3LinkagesAndExamplesFrag(sense) {
   return frag;
 }
 
+function createTermsAndExamplesTableFrag(sense) {
+  if ('examples' in sense || 'other_forms' in sense) {
+    return createT3LinkagesAndExamplesFrag(sense);
+  }
+  return $(document.createDocumentFragment());
+}
+
+function createTermsAndExamplesButtonFrag(sense) {
+  const frag = $(document.createDocumentFragment());
+  if ('examples' in sense || 'other_forms' in sense) {
+    let text;
+    if ('examples' in sense && 'other_forms' in sense) {
+      text = 'terms & examples';
+    } else if ('examples' in sense) {
+      text = 'examples';
+    } else {
+      text = 'terms';
+    }
+
+    frag.append(
+      $('<button/>', {
+        class: 'show-linkages',
+        text,
+      }),
+    );
+  }
+  return frag;
+}
+
 function createTier3CategoriesFrag(sense) {
   const frag = $(document.createDocumentFragment());
-  let anyListItems = false;
+
   if ('tier3_categories' in sense) {
-    anyListItems = true;
     sense.tier3_categories.forEach((tier3Category) => {
       frag.append(
         $('<li/>').append(
           $('<a/>', {
             class: 'tier3-tag',
             text: tier3Category,
-            href: `./${INDEX_HTML}?${TAG_SEARCH_PARAM}=category:${tier3Category}`,
+            href: `./${INDEX_HTML}?${paramsToString(TAG_SEARCH_PARAM, `category:${tier3Category}`)}`,
           }),
         ),
       );
     });
-  }
-
-  if ('examples' in sense || 'other_forms' in sense) {
-    anyListItems = true;
-    frag.append(
-      $('<li/>').append(
-        $('<a/>', {
-          class: 'show-linkages',
-          text: 'show more...',
-          // we set href (and invalidate it) otherwise
-          // click area of adjacent anchors interferes
-          href: '#',
-          onclick: 'return false;',
-        }),
-        createT3LinkagesAndExamplesFrag(sense),
-      ),
-    );
-  }
-
-  if (anyListItems) {
     return $('<ul/>', { class: 't3-categories', html: frag });
   }
+
   return frag;
 }
 
