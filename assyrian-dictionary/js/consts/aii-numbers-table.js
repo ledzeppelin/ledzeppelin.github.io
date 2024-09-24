@@ -322,7 +322,8 @@ const aiiNumbersTable = {
       "meta": "19",
       "values": [
         {
-          "value": "ܬܫܲܥܣܲܪ"
+          "value": "ܬܫܲܥܣܲܪ",
+          "anchor": true
         },
         {
           "value": "ܬܫܲܥܣܝܼܪܵܝܵܐ"

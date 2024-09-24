@@ -35,11 +35,11 @@
 }
 
 .highlighted2 {
-  text-decoration: underline rgb(240, 0, 0) 2px;
+  text-decoration-color: rgb(240, 0, 0) !important;
 }
 @media (prefers-color-scheme: dark) {
   .highlighted2 {
-    text-decoration: underline #ff2424 2px;
+    text-decoration-color: #ff2424 !important;
   }
 }
 
@@ -112,8 +112,8 @@ kbd {
 @media (prefers-color-scheme: dark) {
   kbd {
     background-color: rgb(28, 28, 30);
-    border-color: #7b7b85;
-    box-shadow: 0 1px 1px #7b7b85;
+    border-color: rgb(122.5, 122.5, 132.5);
+    box-shadow: 0 1px 1px rgb(122.5, 122.5, 132.5);
     color: rgb(221, 221, 232);
   }
 }
@@ -346,6 +346,11 @@ kbd {
 
 .highlighted {
   font-weight: 500;
+}
+
+.highlighted2 {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
 }
 
 .aii-verse,

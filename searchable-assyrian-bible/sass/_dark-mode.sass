@@ -24,6 +24,7 @@
 
 
 .highlighted2
-  text-decoration: underline $key-color 2px
+  // otherwise color doesn't show on chrome
+  text-decoration-color: $key-color !important
   @media (prefers-color-scheme: dark)
-    text-decoration: underline color.adjust($key-color, $lightness: 10%) 2px
+    text-decoration-color: color.adjust($key-color, $lightness: 10%) !important

@@ -29,7 +29,7 @@ def tag_counts():
 def tag_counts_grouped(tag_counter):
     MIN_OCCURENCES = 4
     # MIN_OCCURENCES = 1
-    exempt_from_min_occurrences = {'root:2-letters'}
+    exempt_from_min_occurrences = {'root:2-letters', 'root:4-letters'}
     results = defaultdict(list)
     # raise Exception(tag_counter.items())
     for tag, count in tag_counter.items():

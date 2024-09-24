@@ -1,5 +1,14 @@
 $(document).ready(() => {
-  const DICT_CANONICAL_URL = 'https://www.sharrukin.io/assyrian-dictionary/';
+  function paramsToString2(key, value) {
+    // https://stackoverflow.com/a/14269897
+    // we use don't want to percent encode colon since it affects human-readability of url
+    const params = new URLSearchParams();
+    params.set(key, value);
+    // return params.toString();
+    return params.toString().replaceAll('%3A', ':');
+  }
+
+  const DICT_CANONICAL_URL = 'https://www.sharrukin.io/assyrian-dictionary/'; // window.location.href
   let searchQuery;
   function shouldLoadMore() {
     const lastRes = $('#search-results').children().last();
@@ -149,18 +158,10 @@ $(document).ready(() => {
       } else {
         loadResults(searchQuery, INITIAL_AMT);
       }
-      // console.timeEnd('test2');
 
-      const url = new URL(window.location);
-      url.searchParams.set('search', searchStr);
-      url.searchParams.delete('tag-search');
-      url.searchParams.delete('aii-exact-search');
-      // https://stackoverflow.com/a/14269897
-      // we use don't want to percent encode colon since it affects human-readability of url
-      //
-      // percent encoded colon '%3A' can only occur in query string parameter's value
-      // therefore we can replace all without breaking url.origin or url.pathname
-      window.history.replaceState(null, '', url.toString().replaceAll('%3A', ':'));
+      const url = new URL(window.location.href);
+      url.search = paramsToString2('search', searchStr);
+      window.history.replaceState(null, '', url);
     }
   });
 
@@ -174,8 +175,8 @@ $(document).ready(() => {
     $('#numbers-table').html(createTableFrag(aiiNumbersTable));
   }
 
-  // trigger input on loading if query string param is set
-  const url = new URL(window.location);
+  // read query string params if set
+  const url = new URL(window.location.href);
   const params = new URLSearchParams(document.location.search);
 
   if (IS_DICTIONARY && params.has('tag-search')) {
@@ -240,10 +241,9 @@ $(document).ready(() => {
         while (shouldLoadMore()) {
           loadResults(searchQuery, 1);
         }
-        // otherwise tag-search=special:Common%20Words instead of tag-search=special:Common+Words
-        url.searchParams.set('tag-search', tagSearchParam);
-        window.history.replaceState(null, '', url.toString().replaceAll('%3A', ':'));
-        $('#canonical-link').attr('href', `${DICT_CANONICAL_URL}?tag-search=${tagSearchParam}`);
+
+        url.search = paramsToString2('tag-search', tagSearchParam);
+        window.history.replaceState(null, '', url);
       }
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
@@ -257,17 +257,14 @@ $(document).ready(() => {
         i: 0,
       };
       loadResults(searchQuery, 1, true);
-      // not ?aii-exact-search=ܫܠܵܡܵܐ%20ܥܲܠܵܘܟ݂ܘܿܢ but ?aii-exact-search=ܫܠܵܡܵܐ+ܥܲܠܵܘܟ݂ܘܿܢ
-      url.searchParams.set('aii-exact-search', aiiExactSearchParam);
-      window.history.replaceState(null, '', url.toString().replaceAll('%3A', ':'));
-      $('#canonical-link').attr('href', `${DICT_CANONICAL_URL}?aii-exact-search=${aiiExactSearchParam}`);
+      const search = paramsToString2('aii-exact-search', aiiExactSearchParam);
+      $('#canonical-link').attr('href', `${DICT_CANONICAL_URL}?${search}`);
+      url.search = search;
+      window.history.replaceState(null, '', url);
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
     }
   } else if (params.has('search')) {
-    // this will decode qs param and it ultimately gets encoded again
-    // when calling window.history.replaceState - we want this so spaces
-    // are normalized from "hello world" to "hello+world" instead of "hello%20world"
     const searchParam = params.get('search');
     if (searchParam.length) {
       // console.log('hide it');

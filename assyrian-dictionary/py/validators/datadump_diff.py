@@ -189,15 +189,12 @@ class DiffInfo:
         for item in data:
             if is_valid_aii_v(item) and 'sounds' in item:
                 for sound in item['sounds']:
-                    if 'tags' in sound and 'note' in sound:
-                        raise Exception(f'oh no {item["word"]} note in sound')
-                    if 'tags' in sound and len(sound['tags']) > 1:
-                        pass
-                        # raise Exception(f'oh no {item["word"]}')
-                    if 'tags' in sound:
-                        ipa_counter[sound['tags'][0]] += 1
-                    elif 'note' in sound:
-                        ipa_counter[sound['note']] += 1
+                    if 'tags' in sound or 'note' in sound:
+                        if 'tags' in sound:
+                            ipa_counter[sound['tags'][0]] += 1
+                        else:
+                            for note in sound['note'].split(', '):
+                                ipa_counter[note] += 1
         return ipa_counter
 
     def linkages_counter(self, filename):

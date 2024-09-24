@@ -30,10 +30,8 @@ function loadResults(searchQuery, PAGINATE_AMT, isAiiExactSearch = false) {
 
       aiiV.jsonlines.forEach((jsonline) => {
         const sensesFragment = $('<ol/>', { class: 'senses' });
-        const commonWordTagSearch = 'searchingCommonWords' in searchQuery;
-        const showAll = (isRoot || commonWordTagSearch || isAiiExactSearch) ? ' always-show' : '';
         jsonline.senses.forEach((sense, j) => {
-          sensesFragment.append(createGlossFrag(sense, showAll, j));
+          sensesFragment.append(createGlossFrag(sense, j));
         });
 
         const jsonlineFragment = $('<div/>', { class: 'jsonline' }).append(
@@ -82,6 +80,7 @@ function loadResults(searchQuery, PAGINATE_AMT, isAiiExactSearch = false) {
           const isSpacedRoot = isRoot && searchQuery.aii_v_query === result.item.aii_not_v[0];
           if (isSpacedRoot) {
             resultFragment.children('.aii-v-word-container').addClass('always-show');
+            resultFragment.find('.gloss-container').addClass('always-show');
             const aiiVWords = resultFragment.find('.aii-v-word');
             aiiVWords.each((_, ele) => {
               $(ele).find('.aii-v-atuta-box').each((index, element) => {
@@ -93,6 +92,7 @@ function loadResults(searchQuery, PAGINATE_AMT, isAiiExactSearch = false) {
             const aiiVEle = resultFragment.find(indexedAiiV[match.key]).eq(match.refIndex);
             highlightAiiExactSearchText(aiiVEle);
             aiiVEle.parent().addClass('always-show');
+            aiiVEle.parent().find('.gloss-container').addClass('always-show');
           }
         } else if (match.key in indexedAiiV) {
           const aiiVEle = resultFragment.find(indexedAiiV[match.key]).eq(match.refIndex);
