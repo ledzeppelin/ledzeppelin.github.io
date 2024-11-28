@@ -1,8 +1,10 @@
+@use 'sass:list'
+
 @function curtain-shadow($incr)
   $step: 1px
   $ts: ()
   @for $i from 1 through $incr
-    $ts: append($ts, 0 $step * $i 0 rgba(white, .15 * (1 - (calc(1/$incr) * $i))), comma)
+    $ts: list.append($ts, 0 $step * $i 0 rgba(white, .15 * (1 - (calc(1/$incr) * $i))), comma)
   @return $ts
 
 

@@ -6,14 +6,26 @@ $(document).ready(() => {
   // collapsing audio of dynamic content and tapping play (it requires two taps)
   Howler.autoUnlock = false;
 
-  $('#tag-search-results').on('click', '.expandable > a', (e) => {
-    $(e.currentTarget).parent().toggleClass('expanded');
-    $(e.currentTarget).next().children(':not(.always-show)').slideToggle(SPEED_MS);
+  $('#top-tags-menu').on('click', '.tag-menu-btn-l1', (e) => {
+    $(e.currentTarget).children('.expandable-btn-icon').toggleClass('expanded');
+    $(e.currentTarget).siblings('.top-tags-group:not(.always-show)').toggle();
   });
 
-  $('#search-results').on('click', '.more-vocalized', (e) => {
-    $(e.currentTarget).siblings('.aii-v-word-container:not(.always-show)').slideToggle(SPEED_MS);
-    $(e.currentTarget).children('.more-vocalized-icon').toggleClass('expanded');
+  $('#top-tags-menu').on('click', '.tag-menu-btn-l2', (e) => {
+    $(e.currentTarget).children('.expandable-btn-icon').toggleClass('expanded');
+    $(e.currentTarget).next('.top-tags-items').children('.always-show').last()
+      .toggleClass('hide-divider');
+
+    // we can't toggle() for display:inline-block when it's initially not shown
+    const $elements = $(e.currentTarget).next('.top-tags-items').children('.top-tag-li:not(.always-show)');
+    $elements.each((index, element) => {
+      const $element = $(element); // Use `element` instead of `this`
+      if ($element.css('display') === 'none') {
+        $element.css('display', 'inline-block');
+      } else {
+        $element.css('display', 'none');
+      }
+    });
   });
 
   $('#search-results').on('click', '.more-sounds-button', (e) => {
@@ -31,17 +43,18 @@ $(document).ready(() => {
   $('#search-results').on('click', '.more-defs-button-container', (e) => {
     $(e.currentTarget).children('.more-defs-button').toggleClass('expanded');
 
-    $(e.currentTarget).parent().siblings('.senses')
-      .children('.gloss-container:not(.always-show)')
-      .slideToggle(SPEED_MS);
-
-    $(e.currentTarget).parent().parent().find('.more-info:not(.always-show)')
+    $(e.currentTarget).parent().parent().find('.more-info.has-heading')
       .slideToggle(SPEED_MS);
   });
 
-  $('#search-results').on('click', '.show-linkages', (e) => {
-    $(e.currentTarget).siblings('.t3-linkages-and-examples').slideToggle(SPEED_MS);
-    $(e.currentTarget).toggleClass('expanded');
+  $('#search-results').on('click', '.show-other-forms-btn', (e) => {
+    $(e.currentTarget).next('.more-info').slideToggle(SPEED_MS);
+    $(e.currentTarget).children('.expandable-btn-icon').toggleClass('expanded');
+  });
+
+  $('#search-results').on('click', '.show-examples-btn, .show-gloss-terms-btn', (e) => {
+    $(e.currentTarget).next('.t3-linkages-and-examples').slideToggle(SPEED_MS);
+    $(e.currentTarget).children('.expandable-btn-icon').toggleClass('expanded');
   });
 
   $('#search-results').on('click', '.play-sound', (e) => {

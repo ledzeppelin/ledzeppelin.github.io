@@ -22,8 +22,9 @@ def verbs_missing_roots():
         if not root:
             print(f'https://en.wiktionary.org/wiki/{item['word']}#Assyrian_Neo-Aramaic')
 
+msg = 'aii-conj pages that are missing rootbox under etymology section'
 
-print('######################################################################')
-print('verbs w/ conjugation templates missing rootbox under etymology section')
-print('######################################################################')
+print('#' * len(msg))
+print(msg)
+print('#' * len(msg))
 verbs_missing_roots()

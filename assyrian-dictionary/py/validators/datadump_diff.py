@@ -151,10 +151,8 @@ class DiffInfo:
                 continue
 
             pos_template_name = item['inflection_templates'][0]['name']
-            # TODO
-            # replace if statement once there's been 2 cycles of uptakes so prev is in parity with new name "aii-conj-verb" instead of "aii-conj"
-            # if not item['inflection_templates'][-1]['name'] == 'aii-conj-verb':
-            if not pos_template_name.startswith('aii-conj'):
+
+            if not item['inflection_templates'][-1]['name'] == 'aii-conj-verb':
                 continue
             shallow[pos_template_name] += 1
 

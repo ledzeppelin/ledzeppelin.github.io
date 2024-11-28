@@ -28,6 +28,7 @@ function aiiTranslit(aiiText) {
   const QUSHSHAYA = '\u{0741}';
   const RUKKAKHA = '\u{0742}';
   const COMBINING_BREVE_BELOW = '\u{032E}';
+  const NON_VOWEL_DIACRITICS = `${COMBINING_TILDE_BELOW}${COMBINING_TILDE_ABOVE}${QUSHSHAYA}${RUKKAKHA}${COMBINING_BREVE_BELOW}${TALQANA_ABOVE}`;
 
   const COMBINING_DOT_BELOW = '\u{0323}';
   const COMBINING_DOT_ABOVE = '\u{0307}';
@@ -60,7 +61,8 @@ function aiiTranslit(aiiText) {
     ܪ: 'r',
     ܠ: 'l',
   };
-  const ttKeysCapture = `([${Object.keys(tt).join('')}])`;
+  const consonants = Object.keys(tt).join('');
+  const consonantsCapture = `([${consonants}])`;
   const ttValues = Object.values(tt).join('');
 
   const mhagjana = [...'ܗܠܡܢܥܪ'].map((char) => tt[char]).join('') + ALAPH + YUDH + WAW;
@@ -73,10 +75,6 @@ function aiiTranslit(aiiText) {
   const bdul = 'ܒܕܘܠ';
   const bdulCapture = `([${bdul}])`;
   const bdulCapture2 = `([${bdul}])([${bdul}])`;
-
-  // const alphabet = Object.keys(tt).join('') + YUDH + WAW + ALAPH;
-  // const alphabetCapture = `([${alphabet}])`;
-  // console.log(alphabet);
 
   const ttTransposePunc = {
     '“': '”',
@@ -118,7 +116,7 @@ function aiiTranslit(aiiText) {
     // ì: 'zzz',
     ī: 'ee',
     ā: 'a',
-    [PHARYNGEAL]: "'",
+    [PHARYNGEAL]: '`',
     [GLOTTAL_STOP]: "'",
     č: 'ch',
   };
@@ -127,11 +125,9 @@ function aiiTranslit(aiiText) {
   const glides = `${ALAPH}${YUDH}${WAW}`; // unvoweled, original values of matres lectionis (consonants representing vowels)
   const consonantsMinusGlides = `${ttValues}čjžfḇṯḏḵḡ`;
 
-  // console.log(consonantsMinusGlides);
-
-  const consonantsCapture = `([${glides}${consonantsMinusGlides}])`;
-  const consonantsNonCapture = `(?:[${glides}${consonantsMinusGlides}])`;
-  const consonantsCaptureMinusAlaph = `([${YUDH}${WAW}${consonantsMinusGlides}])`;
+  const lettersCapture = `([${glides}${consonantsMinusGlides}])`;
+  const lettersNonCapture = `(?:[${glides}${consonantsMinusGlides}])`;
+  const consonantsWawYudhCapture = `([${WAW}${YUDH}${consonantsMinusGlides}])`;
   const vowelsW = `${TR_WAW_PLUS_RVASA}o`;
   const vowelsY = 'eiēī';
   const vowels = `${vowelsW}${vowelsY}aā`;
@@ -210,55 +206,6 @@ function aiiTranslit(aiiText) {
     ['ܙܹܠ݇ܝ#', 'zē#'], ['ܬܵܐܝ#', 'tā#'],
   ];
 
-  // roots ending in ܪ follow a past tense conjugation pattern where in the following conjugations,
-  // yudh+kwasa, though not sandwiched between voweless atutas, should be <i>, not <ī>
-  //
-  // examples:
-  // https://en.wiktionary.org/wiki/%DC%A5%DC%92%DC%AA
-  // https://en.wiktionary.org/wiki/Template:aii-conj-verb/A2
-  // https://en.wiktionary.org/wiki/%DC%95%DC%9D%DC%AA
-  // https://en.wiktionary.org/wiki/Template:aii-conj-verb/A5
-  const rConj = [
-    `${ZQAPHA}ܟ${RUKKAKHA}${YUDH}`, // 2nd person, female
-    `${ZLAMA_ANGULAR}ܗ`, // 3rd person, male
-    `${ZQAPHA}ܗ${COMBINING_DOT_ABOVE}`, // 3rd person, female
-    `${PTHAHA}ܢ`, // 1st person, plural
-    `${ZQAPHA}${WAW}ܟ${RUKKAKHA}${WAW}${RWAHA}ܢ`, // 2nd person, plural
-  ];
-
-  // roots ending in alap should follow this past tense conjugation pattern
-  // ex. tee lawkhon instead of teh lawkhon
-  //
-  // examples:
-  // https://en.wiktionary.org/wiki/%DC%A1%DC%A0%DC%90#Conjugation
-  // https://en.wiktionary.org/wiki/%DC%9A%DC%9D%DC%90#Conjugation
-  // https://en.wiktionary.org/wiki/%DC%92%DC%AA%DC%90#Conjugation
-  // https://en.wiktionary.org/wiki/Template:aii-conj-verb/A3
-
-  const aConj = [
-    'ܠܝܼ',
-    'ܠܘܼܟ݂',
-    'ܠܵܟ݂ܝ',
-    'ܠܹܗ',
-    'ܠܵܗ̇',
-    'ܠܲܢ',
-    'ܠܵܘܟ݂ܘܿܢ',
-    'ܠܗܘܿܢ',
-  ];
-
-  // roots ending in E should follow this imperative tense conjugation pattern
-  // ex. shmee instead of shmeh
-  //
-  // examples:
-  // https://en.wiktionary.org/wiki/%DC%AB%DC%A1%DC%A5#Conjugation
-  // https://en.wiktionary.org/wiki/%DC%92%DC%A0%DC%A5#Conjugation
-
-  const eConj = [
-    'ܥ', // 2nd person male
-    'ܥܝ', // 2nd person female
-    `ܥܡܘ${HBASA}ܢ`, // 2nd person plural
-  ];
-
   let text = aiiText;
   text = text.normalize('NFC');
   text = text.replaceAll(' | ', '# | #');
@@ -277,11 +224,25 @@ function aiiTranslit(aiiText) {
     text = text.replaceAll(specialCase[0], specialCase[1]);
   });
 
-  re = new RegExp(`${ZLAMA_ANGULAR}(${eConj.join('|')})#`, 'g');
-  text = text.replaceAll(re, `${YUDH}${HBASA}$1#`);
+  // urmian pronunciation for g-stem imperatives where 3rd radical is ܥ
+  const eConj = [
+    'ܥ',
+    'ܥܝ',
+    `ܥܡܘ${HBASA}ܢ`,
+  ];
 
-  re = new RegExp(`(${ZLAMA_ANGULAR}${ALAPH})((# #)+(${aConj.join('|')}))`, 'g');
-  text = text.replaceAll(re, `${YUDH}${HBASA}$2`);
+  re = new RegExp(`([${consonants}${YUDH}][${NON_VOWEL_DIACRITICS}]?[${consonants}][${NON_VOWEL_DIACRITICS}]?)${ZLAMA_ANGULAR}(${eConj.join('|')})#`, 'g');
+  text = text.replaceAll(re, `$1${YUDH}${HBASA}$2#`);
+
+  // in urmian, verbs ending in ܪ follow a past tense contraction of mir leh -> mirreh, not meereh
+  // yudh+kwasa, though not sandwiched between voweless atwateh, should be <i>, not <ī>
+  const rConj = [
+    `${ZQAPHA}ܟ${RUKKAKHA}${YUDH}`, // 2nd person, female
+    `${ZLAMA_ANGULAR}ܗ`, // 3rd person, male
+    `${ZQAPHA}ܗ${COMBINING_DOT_ABOVE}`, // 3rd person, female
+    `${PTHAHA}ܢ`, // 1st person, plural
+    `${ZQAPHA}${WAW}ܟ${RUKKAKHA}${WAW}${RWAHA}ܢ`, // 2nd person, plural
+  ];
 
   re = new RegExp(`${YUDH}${HBASA}ܪ(${rConj.join('|')})#`, 'g');
   text = text.replaceAll(re, `${ZLAMA_HORIZONTAL}ܪ$1#`);
@@ -311,7 +272,7 @@ function aiiTranslit(aiiText) {
 
   // this covers b-, d-, w-, l- prefixing for words starting with an alaph
   // https://r12a.github.io/scripts/syrc/aii.html#standalone
-  // and ALL special_cases starting with initial_translit_char
+  // and ALL special_cases starting with initialTranslitChar
 
   const initialTranslitChar = 'aī'; // accounts for substituted special cases starting with vowel sound
   const initialCharCapture = `([${ALAPH}${initialTranslitChar}])`; // 'aī' accounts for substituted special cases
@@ -330,40 +291,45 @@ function aiiTranslit(aiiText) {
   re = new RegExp(ttTransposePuncKeysCapture, 'g');
   text = text.replaceAll(re, (match) => ttTransposePunc[match]);
 
-  re = new RegExp(ttKeysCapture, 'g');
+  re = new RegExp(consonantsCapture, 'g');
   text = text.replaceAll(re, (match) => tt[match]);
 
   text = text.replaceAll(`#${ALAPH}#`, `#${GLOTTAL_STOP}#`);
 
-  re = new RegExp(`${consonantsCapture}${mhagjanaCapture}${COMBINING_MACRON_BELOW}${consonantsCapture}`, 'g');
+  re = new RegExp(`${lettersCapture}${mhagjanaCapture}${COMBINING_MACRON_BELOW}${lettersCapture}`, 'g');
   text = text.replaceAll(re, '$1e$2$3');
 
-  re = new RegExp(`${consonantsCapture}${marhetanaCapture}${COMBINING_MACRON}${consonantsCapture}`, 'g');
+  re = new RegExp(`${lettersCapture}${marhetanaCapture}${COMBINING_MACRON}${lettersCapture}`, 'g');
   text = text.replaceAll(re, '$1$2e$3');
 
-  re = new RegExp(`${consonantsNonCapture}${TALQANA_ABOVE}`, 'g');
+  re = new RegExp(`${lettersNonCapture}${TALQANA_ABOVE}`, 'g');
   text = text.replaceAll(re, '');
 
   // doubling consonants
-  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${consonantsCapture}${diacriticVowelsCapture}`, 'g');
+  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${lettersCapture}${diacriticVowelsCapture}`, 'g');
   text = text.replaceAll(re, '$1$2$2$3');
-  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${consonantsCapture}${TR_WAW_PLUS_RVASA}${consonantsCapture}${diacriticVowelsCapture}`, 'g');
+  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${lettersCapture}${TR_WAW_PLUS_RVASA}${lettersCapture}${diacriticVowelsCapture}`, 'g');
   text = text.replaceAll(re, `$1$2$2${TR_WAW_PLUS_RVASA}$3$4`);
-  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${consonantsCapture}${TR_THIRD_PERSON_FEM_SUFFIX}`, 'g');
+  re = new RegExp(`([${ZLAMA_HORIZONTAL}${PTHAHA}])${lettersCapture}${TR_THIRD_PERSON_FEM_SUFFIX}`, 'g');
   text = text.replaceAll(re, `$1$2$2${TR_THIRD_PERSON_FEM_SUFFIX}`);
   //
 
   text = text.replaceAll(COMBINING_DOT_ABOVE, '');
 
-  // yudh+khwasa sandwiched between voweless atootas should sound like [ɪ], <i> not [i], <ī>
+  // yudh+khwasa sandwiched between voweless atwateh should sound like [ɪ], <i> not [i], <ī>
   // last capture group could match # word boundary
-  re = new RegExp(`${consonantsCaptureMinusAlaph}⚹${consonantsCapture}([^${diacriticVowels}])`, 'g');
+  re = new RegExp(`${consonantsWawYudhCapture}⚹${lettersCapture}([^${diacriticVowels}])`, 'g');
   text = text.replaceAll(re, '$1i$2$3');
   text = text.replaceAll('⚹', 'ī');
 
-  re = new RegExp(`${consonantsCapture}${ZLAMA_ANGULAR}${YUDH}${consonantsCapture}`, 'g');
+  re = new RegExp(`${lettersCapture}${ZLAMA_ANGULAR}${YUDH}${lettersCapture}`, 'g');
   text = text.replaceAll(re, '$1ē$2');
-  re = new RegExp(`${consonantsCapture}${YUDH}${consonantsCapture}`, 'g');
+
+  // bdwl for g-stems starting w/ yudh
+  re = new RegExp(`#${bdulCapture}${YUDH}${lettersCapture}`, 'g');
+  text = text.replaceAll(re, '#$1-$2');
+
+  re = new RegExp(`${lettersCapture}${YUDH}${lettersCapture}`, 'g');
   text = text.replaceAll(re, '$1i$2');
 
   re = new RegExp(`([${consonantsMinusGlides}])${YUDH}#`, 'g');
@@ -375,11 +341,15 @@ function aiiTranslit(aiiText) {
   text = text.replaceAll(`#${ALAPH}${ZLAMA_ANGULAR}${YUDH}`, '#ē');
   text = text.replaceAll(`#${ALAPH}${YUDH}`, '#ī');
 
-  re = new RegExp(`#${YUDH}${consonantsCapture}`, 'g');
+  re = new RegExp(`#${YUDH}${lettersCapture}`, 'g');
   text = text.replaceAll(re, '#$1');
 
   text = text.replaceAll(`${PTHAHA}${ALAPH}#`, 'a#');
   text = text.replaceAll(`${ZLAMA_ANGULAR}${ALAPH}#`, 'ē#');
+
+  re = new RegExp(`${ZLAMA_HORIZONTAL}${ALAPH}(?:${YUDH})?#`, 'g');
+  text = text.replaceAll(re, `i${GLOTTAL_STOP}#`);
+
   text = text.replaceAll(`${ZQAPHA}${ALAPH}#`, 'ā#');
   text = text.replaceAll(`${ALAPH}#`, 'ā#');
   text = text.replaceAll(`#${ALAPH}`, '#');
@@ -391,7 +361,7 @@ function aiiTranslit(aiiText) {
   re = new RegExp(ttNextKeysCapture, 'g');
   text = text.replaceAll(re, (match) => ttNext[match]);
 
-  re = new RegExp(`([ēīā])${GLOTTAL_STOP}${consonantsCapture}`, 'g');
+  re = new RegExp(`([ēīā])${GLOTTAL_STOP}${lettersCapture}`, 'g');
   text = text.replaceAll(re, '$1$2');
 
   re = new RegExp(`([${vowelsW}])([${vowels}])`, 'g');
@@ -418,25 +388,14 @@ function aiiTranslit(aiiText) {
   let phoneticText = text; // maintain word boundaries
   text = text.replaceAll('#', '');
 
-  // re = new RegExp(`([-${vowels} ])`, 'g');
-  // if (text.match(re) == null) {
-  //   text = '';
-  //   // return null;
-  // }
-
   // ///////////////////////
   // adding phonetic support
   // ///////////////////////
-  phoneticText = phoneticText.replaceAll(`-${PHARYNGEAL}`, '-'); // bwdl prefixing ܥ ring
-
-  re = new RegExp(`#${PHARYNGEAL}([^#])`, 'g');
-  phoneticText = phoneticText.replaceAll(re, '#$1'); // starting with ܥ E
-
-  re = new RegExp(`([^#])${PHARYNGEAL}#`, 'g');
-  phoneticText = phoneticText.replaceAll(re, '$1#'); // ending in ܥ E
-
   re = new RegExp(`ē([${PHARYNGEAL}${GLOTTAL_STOP}])`, 'g');
   phoneticText = phoneticText.replaceAll(re, 'eh$1');
+
+  re = new RegExp(`([${PHARYNGEAL}${GLOTTAL_STOP}])ā#`, 'g');
+  phoneticText = phoneticText.replaceAll(re, '$1ah#');
 
   phoneticText = phoneticText.replaceAll(/ē#/g, 'eh#');
   phoneticText = phoneticText.replaceAll(/uh#/g, 'oo#');
@@ -481,19 +440,3 @@ if (typeof module === 'object') {
     aiiTranslit,
   };
 }
-
-// function parseHrtimeToSeconds(hrtime) {
-//   const seconds = (hrtime[0] + (hrtime[1] / 1e9)).toFixed(3);
-//   return seconds;
-// }
-
-// function functionToBeMeasured() {
-//   const startTime = process.hrtime();
-//   const sentence = '';
-//   aiiTranslit(sentence);
-//   const elapsedSeconds = parseHrtimeToSeconds(process.hrtime(startTime));
-//   console.log(`It takes ${elapsedSeconds} seconds`);
-// }
-
-// functionToBeMeasured();
-

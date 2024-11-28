@@ -11,12 +11,10 @@ const aiiNumbersTable = {
       "meta": "0",
       "values": [
         {
-          "value": "ܨܝܼܦܵܪ",
-          "anchor": true
+          "value": "ܨܝܼܦܵܪ"
         },
         {
-          "value": "ܨܝܼܦܪܵܝܵܐ",
-          "anchor": true
+          "value": "ܨܝܼܦܪܵܝܵܐ"
         }
       ]
     },
@@ -24,20 +22,16 @@ const aiiNumbersTable = {
       "meta": "1",
       "values": [
         {
-          "value": "ܚܲܕ݇",
-          "anchor": true
+          "value": "ܚܲܕ݇"
         },
         {
-          "value": "ܩܲܕ݇ܡܵܝܵܐ",
-          "anchor": true
+          "value": "ܩܲܕ݇ܡܵܝܵܐ"
         },
         {
-          "value": "ܚܕܵܢܵܝܵܐ",
-          "anchor": true
+          "value": "ܚܕܵܢܵܝܵܐ"
         },
         {
-          "value": "ܫܲܠܡܵܐ",
-          "anchor": true
+          "value": "ܫܲܠܡܵܐ"
         }
       ]
     },
@@ -45,19 +39,16 @@ const aiiNumbersTable = {
       "meta": "2",
       "values": [
         {
-          "value": "ܬܪܹܝܢ",
-          "anchor": true
+          "value": "ܬܪܹܝܢ"
         },
         {
-          "value": "ܬܪܲܝܵܢܵܐ",
-          "anchor": true
+          "value": "ܬܪܲܝܵܢܵܐ"
         },
         {
           "value": "ܬܪܲܝܵܢܵܝܵܐ"
         },
         {
-          "value": "ܦܲܠܓܵܐ",
-          "anchor": true
+          "value": "ܦܲܠܓܵܐ"
         }
       ]
     },
@@ -65,8 +56,7 @@ const aiiNumbersTable = {
       "meta": "3",
       "values": [
         {
-          "value": "ܬܠܵܬ݂ܵܐ",
-          "anchor": true
+          "value": "ܬܠܵܬ݂ܵܐ"
         },
         {
           "value": "ܬܠܝܼܬ݂ܵܝܵܐ"
@@ -75,8 +65,7 @@ const aiiNumbersTable = {
           "value": "ܡܬܲܠܬ݂ܵܐ"
         },
         {
-          "value": "ܬܘܼܠܬ݂ܵܐ",
-          "anchor": true
+          "value": "ܬܘܼܠܬ݂ܵܐ"
         }
       ]
     },
@@ -84,20 +73,16 @@ const aiiNumbersTable = {
       "meta": "4",
       "values": [
         {
-          "value": "ܐܲܪܒܥܵܐ",
-          "anchor": true
+          "value": "ܐܲܪܒܥܵܐ"
         },
         {
-          "value": "ܪܒ݂ܝܼܥܵܝܵܐ",
-          "anchor": true
+          "value": "ܪܒ݂ܝܼܥܵܝܵܐ"
         },
         {
-          "value": "ܡܪܲܒܥܵܐ",
-          "anchor": true
+          "value": "ܡܪܲܒܥܵܐ"
         },
         {
-          "value": "ܪܘܼܒ݂ܥܵܐ",
-          "anchor": true
+          "value": "ܪܘܼܒ݂ܥܵܐ"
         }
       ]
     },
@@ -105,20 +90,16 @@ const aiiNumbersTable = {
       "meta": "5",
       "values": [
         {
-          "value": "ܚܲܡܫܵܐ",
-          "anchor": true
+          "value": "ܚܲܡܫܵܐ"
         },
         {
-          "value": "ܚܡܝܼܫܵܝܵܐ",
-          "anchor": true
+          "value": "ܚܡܝܼܫܵܝܵܐ"
         },
         {
-          "value": "ܡܚܲܡܫܵܐ",
-          "anchor": true
+          "value": "ܡܚܲܡܫܵܐ"
         },
         {
-          "value": "ܚܘܼܡܫܵܐ",
-          "anchor": true
+          "value": "ܚܘܼܡܫܵܐ"
         }
       ]
     },
@@ -126,8 +107,7 @@ const aiiNumbersTable = {
       "meta": "6",
       "values": [
         {
-          "value": "ܐܸܫܬܵܐ",
-          "anchor": true
+          "value": "ܐܸܫܬܵܐ"
         },
         {
           "value": "ܫܬܝܼܬ݂ܵܝܵܐ"
@@ -136,8 +116,7 @@ const aiiNumbersTable = {
           "value": "ܡܫܲܬܬ݂ܵܐ"
         },
         {
-          "value": "ܫܘܼܬܬ݂ܵܐ",
-          "anchor": true
+          "value": "ܫܘܼܬܬ݂ܵܐ"
         }
       ]
     },
@@ -145,19 +124,16 @@ const aiiNumbersTable = {
       "meta": "7",
       "values": [
         {
-          "value": "ܫܲܒ݂ܥܵܐ",
-          "anchor": true
+          "value": "ܫܲܒ݂ܥܵܐ"
         },
         {
-          "value": "ܫܒ݂ܝܼܥܵܝܵܐ",
-          "anchor": true
+          "value": "ܫܒ݂ܝܼܥܵܝܵܐ"
         },
         {
           "value": "ܡܫܲܒ݂ܥܵܐ"
         },
         {
-          "value": "ܫܘܼܒ݂ܥܵܐ",
-          "anchor": true
+          "value": "ܫܘܼܒ݂ܥܵܐ"
         }
       ]
     },
@@ -165,19 +141,16 @@ const aiiNumbersTable = {
       "meta": "8",
       "values": [
         {
-          "value": "ܬܡܵܢܝܵܐ",
-          "anchor": true
+          "value": "ܬܡܵܢܝܵܐ"
         },
         {
-          "value": "ܬܡܝܼܢܵܝܵܐ",
-          "anchor": true
+          "value": "ܬܡܝܼܢܵܝܵܐ"
         },
         {
           "value": "ܡܬܲܡܢܵܐ"
         },
         {
-          "value": "ܬܘܼܡܢܵܐ",
-          "anchor": true
+          "value": "ܬܘܼܡܢܵܐ"
         }
       ]
     },
@@ -185,19 +158,16 @@ const aiiNumbersTable = {
       "meta": "9",
       "values": [
         {
-          "value": "ܬܸܫܥܵܐ",
-          "anchor": true
+          "value": "ܬܸܫܥܵܐ"
         },
         {
-          "value": "ܬܫܝܼܥܵܝܵܐ",
-          "anchor": true
+          "value": "ܬܫܝܼܥܵܝܵܐ"
         },
         {
           "value": "ܡܬܲܫܥܵܐ"
         },
         {
-          "value": "ܬܘܼܫܥܵܐ",
-          "anchor": true
+          "value": "ܬܘܼܫܥܵܐ"
         }
       ]
     },
@@ -205,19 +175,16 @@ const aiiNumbersTable = {
       "meta": "10",
       "values": [
         {
-          "value": "ܥܸܣܪܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܵܐ"
         },
         {
-          "value": "ܥܣܝܼܪܵܝܵܐ",
-          "anchor": true
+          "value": "ܥܣܝܼܪܵܝܵܐ"
         },
         {
           "value": "ܡܥܲܣܪܵܐ"
         },
         {
-          "value": "ܥܘܼܣܪܵܐ",
-          "anchor": true
+          "value": "ܥܘܼܣܪܵܐ"
         }
       ]
     },
@@ -225,8 +192,7 @@ const aiiNumbersTable = {
       "meta": "11",
       "values": [
         {
-          "value": "ܚܕ݂ܲܥܣܲܪ",
-          "anchor": true
+          "value": "ܚܕ݂ܲܥܣܲܪ"
         },
         {
           "value": "ܚܕ݂ܲܥܣܝܼܪܵܝܵܐ"
@@ -237,12 +203,10 @@ const aiiNumbersTable = {
       "meta": "12",
       "values": [
         {
-          "value": "ܬܪܸܥܣܲܪ",
-          "anchor": true
+          "value": "ܬܪܸܥܣܲܪ"
         },
         {
-          "value": "ܬܪܸܥܣܝܼܪܵܝܵܐ",
-          "anchor": true
+          "value": "ܬܪܸܥܣܝܼܪܵܝܵܐ"
         }
       ]
     },
@@ -250,8 +214,7 @@ const aiiNumbersTable = {
       "meta": "13",
       "values": [
         {
-          "value": "ܬܸܠܬܲܥܣܲܪ",
-          "anchor": true
+          "value": "ܬܸܠܬܲܥܣܲܪ"
         },
         {
           "value": "ܬܸܠܬܲܥܣܝܼܪܵܝܵܐ"
@@ -262,8 +225,7 @@ const aiiNumbersTable = {
       "meta": "14",
       "values": [
         {
-          "value": "ܐܲܪܒܲܥܣܲܪ",
-          "anchor": true
+          "value": "ܐܲܪܒܲܥܣܲܪ"
         },
         {
           "value": "ܐܲܪܒܲܥܣܝܼܪܵܝܵܐ"
@@ -274,8 +236,7 @@ const aiiNumbersTable = {
       "meta": "15",
       "values": [
         {
-          "value": "ܚܲܡܫܲܥܣܲܪ",
-          "anchor": true
+          "value": "ܚܲܡܫܲܥܣܲܪ"
         },
         {
           "value": "ܚܲܡܫܲܥܣܝܼܪܵܝܵܐ"
@@ -286,8 +247,7 @@ const aiiNumbersTable = {
       "meta": "16",
       "values": [
         {
-          "value": "ܐܸܫܬܲܥܣܲܪ",
-          "anchor": true
+          "value": "ܐܸܫܬܲܥܣܲܪ"
         },
         {
           "value": "ܐܸܫܬܲܥܣܝܼܪܵܝܵܐ"
@@ -298,8 +258,7 @@ const aiiNumbersTable = {
       "meta": "17",
       "values": [
         {
-          "value": "ܫܒ݂ܲܥܣܲܪ",
-          "anchor": true
+          "value": "ܫܒ݂ܲܥܣܲܪ"
         },
         {
           "value": "ܫܒ݂ܲܥܣܝܼܪܵܝܵܐ"
@@ -310,8 +269,7 @@ const aiiNumbersTable = {
       "meta": "18",
       "values": [
         {
-          "value": "ܬܡܵܢܸܥܣܲܪ",
-          "anchor": true
+          "value": "ܬܡܵܢܸܥܣܲܪ"
         },
         {
           "value": "ܬܡܵܢܸܥܣܝܼܪܵܝܵܐ"
@@ -322,8 +280,7 @@ const aiiNumbersTable = {
       "meta": "19",
       "values": [
         {
-          "value": "ܬܫܲܥܣܲܪ",
-          "anchor": true
+          "value": "ܬܫܲܥܣܲܪ"
         },
         {
           "value": "ܬܫܲܥܣܝܼܪܵܝܵܐ"
@@ -334,12 +291,10 @@ const aiiNumbersTable = {
       "meta": "20",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ"
         },
         {
-          "value": "ܥܸܣܪܝܼܢܵܝܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢܵܝܵܐ"
         }
       ]
     },
@@ -347,8 +302,7 @@ const aiiNumbersTable = {
       "meta": "21",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܚܲܕ݇",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܚܲܕ݇"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܩܲܕ݇ܡܵܝܵܐ"
@@ -359,8 +313,7 @@ const aiiNumbersTable = {
       "meta": "22",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܬܪܹܝܢ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܬܪܹܝܢ"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܬܪܲܝܵܢܵܐ"
@@ -382,8 +335,7 @@ const aiiNumbersTable = {
       "meta": "24",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܐܲܪܒܥܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܐܲܪܒܥܵܐ"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܪܒ݂ܝܼܥܵܝܵܐ"
@@ -394,8 +346,7 @@ const aiiNumbersTable = {
       "meta": "25",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܚܲܡܫܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܚܲܡܫܵܐ"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܚܡܝܼܫܵܝܵܐ"
@@ -406,8 +357,7 @@ const aiiNumbersTable = {
       "meta": "26",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܐܸܫܬܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܐܸܫܬܵܐ"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܫܬܝܼܬ݂ܵܝܵܐ"
@@ -418,8 +368,7 @@ const aiiNumbersTable = {
       "meta": "27",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܫܲܒ݂ܥܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܫܲܒ݂ܥܵܐ"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܫܒ݂ܝܼܥܵܝܵܐ"
@@ -430,8 +379,7 @@ const aiiNumbersTable = {
       "meta": "28",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܬܡܵܢܝܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܬܡܵܢܝܵܐ"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܬܡܝܼܢܵܝܵܐ"
@@ -442,8 +390,7 @@ const aiiNumbersTable = {
       "meta": "29",
       "values": [
         {
-          "value": "ܥܸܣܪܝܼܢ ܘܬܸܫܥܵܐ",
-          "anchor": true
+          "value": "ܥܸܣܪܝܼܢ ܘܬܸܫܥܵܐ"
         },
         {
           "value": "ܥܸܣܪܝܼܢ ܘܬܫܝܼܥܵܝܵܐ"
@@ -454,12 +401,10 @@ const aiiNumbersTable = {
       "meta": "30",
       "values": [
         {
-          "value": "ܬܠܵܬ݂ܝܼܢ",
-          "anchor": true
+          "value": "ܬܠܵܬ݂ܝܼܢ"
         },
         {
-          "value": "ܬܠܵܬ݂ܝܼܢܵܝܵܐ",
-          "anchor": true
+          "value": "ܬܠܵܬ݂ܝܼܢܵܝܵܐ"
         }
       ]
     },
@@ -566,8 +511,7 @@ const aiiNumbersTable = {
       "meta": "40",
       "values": [
         {
-          "value": "ܐܲܪܒܥܝܼܢ",
-          "anchor": true
+          "value": "ܐܲܪܒܥܝܼܢ"
         },
         {
           "value": "ܐܲܪܒܥܝܼܢܵܝܵܐ"
@@ -677,8 +621,7 @@ const aiiNumbersTable = {
       "meta": "50",
       "values": [
         {
-          "value": "ܚܲܡܫܝܼܢ",
-          "anchor": true
+          "value": "ܚܲܡܫܝܼܢ"
         },
         {
           "value": "ܚܲܡܫܝܼܢܵܝܵܐ"
@@ -788,8 +731,7 @@ const aiiNumbersTable = {
       "meta": "60",
       "values": [
         {
-          "value": "ܐܸܫܬܝܼܢ",
-          "anchor": true
+          "value": "ܐܸܫܬܝܼܢ"
         },
         {
           "value": "ܐܸܫܬܝܼܢܵܝܵܐ"
@@ -899,8 +841,7 @@ const aiiNumbersTable = {
       "meta": "70",
       "values": [
         {
-          "value": "ܫܲܒ݂ܥܝܼܢ",
-          "anchor": true
+          "value": "ܫܲܒ݂ܥܝܼܢ"
         },
         {
           "value": "ܫܲܒ݂ܥܝܼܢܵܝܵܐ"
@@ -1120,8 +1061,7 @@ const aiiNumbersTable = {
       "meta": "90",
       "values": [
         {
-          "value": "ܬܸܫܥܝܼܢ",
-          "anchor": true
+          "value": "ܬܸܫܥܝܼܢ"
         },
         {
           "value": "ܬܸܫܥܝܼܢܵܝܵܐ"
@@ -1231,12 +1171,10 @@ const aiiNumbersTable = {
       "meta": "100",
       "values": [
         {
-          "value": "ܡܐܵܐ",
-          "anchor": true
+          "value": "ܡܐܵܐ"
         },
         {
-          "value": "ܡܐܵܝܵܐ",
-          "anchor": true
+          "value": "ܡܐܵܝܵܐ"
         }
       ]
     },
@@ -1244,8 +1182,7 @@ const aiiNumbersTable = {
       "meta": "200",
       "values": [
         {
-          "value": "ܬܪܲܝܡܐܵܐ",
-          "anchor": true
+          "value": "ܬܪܲܝܡܐܵܐ"
         },
         {
           "value": "ܬܪܲܝܡܐܵܝܵܐ"
@@ -1256,8 +1193,7 @@ const aiiNumbersTable = {
       "meta": "300",
       "values": [
         {
-          "value": "ܬܠܵܬ݂ܡܐܵܐ",
-          "anchor": true
+          "value": "ܬܠܵܬ݂ܡܐܵܐ"
         },
         {
           "value": "ܬܠܵܬ݂ܡܐܵܝܵܐ"
@@ -1268,8 +1204,7 @@ const aiiNumbersTable = {
       "meta": "400",
       "values": [
         {
-          "value": "ܐܲܪܒܲܥܡܐܵܐ",
-          "anchor": true
+          "value": "ܐܲܪܒܲܥܡܐܵܐ"
         },
         {
           "value": "ܐܲܪܒܲܥܡܐܵܝܵܐ"
@@ -1280,8 +1215,7 @@ const aiiNumbersTable = {
       "meta": "500",
       "values": [
         {
-          "value": "ܚܲܡܫܲܡܐܵܐ",
-          "anchor": true
+          "value": "ܚܲܡܫܲܡܐܵܐ"
         },
         {
           "value": "ܚܲܡܫܲܡܐܵܝܵܐ"
@@ -1292,8 +1226,7 @@ const aiiNumbersTable = {
       "meta": "600",
       "values": [
         {
-          "value": "ܐܸܫܬܲܡܐܵܐ",
-          "anchor": true
+          "value": "ܐܸܫܬܲܡܐܵܐ"
         },
         {
           "value": "ܐܸܫܬܲܥܡܐܵܝܵܐ"
@@ -1304,8 +1237,7 @@ const aiiNumbersTable = {
       "meta": "700",
       "values": [
         {
-          "value": "ܫܒ݂ܲܥܡܐܵܐ",
-          "anchor": true
+          "value": "ܫܒ݂ܲܥܡܐܵܐ"
         },
         {
           "value": "ܫܒ݂ܲܥܡܐܵܝܵܐ"
@@ -1316,8 +1248,7 @@ const aiiNumbersTable = {
       "meta": "800",
       "values": [
         {
-          "value": "ܬܡܵܢܸܡܐܵܐ",
-          "anchor": true
+          "value": "ܬܡܵܢܸܡܐܵܐ"
         },
         {
           "value": "ܬܡܵܢܸܡܐܵܝܵܐ"
@@ -1328,8 +1259,7 @@ const aiiNumbersTable = {
       "meta": "900",
       "values": [
         {
-          "value": "ܬܫܲܥܡܐܵܐ",
-          "anchor": true
+          "value": "ܬܫܲܥܡܐܵܐ"
         },
         {
           "value": "ܬܫܲܥܡܐܵܝܵܐ"
@@ -1340,12 +1270,10 @@ const aiiNumbersTable = {
       "meta": "1000",
       "values": [
         {
-          "value": "ܐܲܠܦܵܐ",
-          "anchor": true
+          "value": "ܐܲܠܦܵܐ"
         },
         {
-          "value": "ܐܲܠܦܵܝܵܐ",
-          "anchor": true
+          "value": "ܐܲܠܦܵܝܵܐ"
         }
       ]
     },
@@ -1353,8 +1281,7 @@ const aiiNumbersTable = {
       "meta": "1000000",
       "values": [
         {
-          "value": "ܡܸܠܝܘܿܢ",
-          "anchor": true
+          "value": "ܡܸܠܝܘܿܢ"
         },
         {
           "value": "ܡܸܠܝܘܿܢܵܝܵܐ"
@@ -1365,8 +1292,7 @@ const aiiNumbersTable = {
       "meta": "1000000000",
       "values": [
         {
-          "value": "ܡܸܠܝܵܪܕ݇",
-          "anchor": true
+          "value": "ܡܸܠܝܵܪܕ݇"
         },
         {
           "value": "ܡܸܠܝܵܪܕܵܝܵܐ"

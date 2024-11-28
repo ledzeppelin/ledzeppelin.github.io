@@ -21,11 +21,12 @@ $side-padding: 16px
 $searchbar-inset-x: 20px
 $close-x: $searchbar-inset-x - $side-padding
 $button-padding: 12px
+$half-icon-size: 12px
 
 @include search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x)
 
 #search-results
-  padding: 8px $side-padding + $searchbar-inset-x 16px
+  padding: 8px 0 16px
 
 #numbers-table
   margin: 0 $side-padding + $searchbar-inset-x 16px
@@ -39,79 +40,124 @@ $button-padding: 12px
 #tagged-results-meta
   @include eng-text('s')
   display: none
-  margin: 16px $side-padding + $searchbar-inset-x
+  margin: 12px $side-padding + $searchbar-inset-x
   padding: 0
 
   #matched-tag
-    font-weight: 700
+    font-weight: 500
 
 
-#tag-search-results
-  @include eng-text('s')
-  border-bottom-style: solid
-  border-bottom-width: 1px
-  margin: 16px $side-padding + $searchbar-inset-x
-  padding: 0 0 16px
+#top-tags-menu
+  margin: 12px $side-padding 0 $side-padding + $searchbar-inset-x
 
-  ul
-    padding-left: 20px
 
-  li
+$list-indent: 16px
+$list-y-margin: 8px
+$list-margin: $list-y-margin 0 $list-y-margin $list-indent
+
+.top-tags-group
+  @include eng-text('s', 400)
+  margin: $list-margin
+  padding: 0
+
+  & > li
     list-style-type: none
 
-  .l1-tag,
-  .l2-tag,
-  .l3-tag:not(.l-inline-tag)
-    // this selects all block element tags except .l0-tag
-    margin-top: 9px
+  &:not(.always-show)
+    display: none
+
+.top-tags-items
+  margin: $list-margin
+  padding: 0
+
+  & > li
+    // using inline-block allows us to remove whitespace which affects html elements
+    display: inline-block
+
+    &:not(:last-child)::after
+      content: ' |'
+      $space-px: 3px
+      margin-left: 3px
+      margin-right: 3px + $space-px
+
+    &.hide-divider::after
+      content: ''
 
     &:not(.always-show)
       display: none
 
-  .inline-tags
-    display: inline
-    padding: 0
 
-    & > li
-      display: inline
-
-  .expandable
-    list-style-type: disclosure-closed
-
-    &.expanded
-      list-style-type: disclosure-open
-
-    > a
-      // after calling .unwrap() we have
-      // <a href="#" onclick="return false;">
-      // "Part"
-      // "s of Speech"
-      // </a>
-      // and UI on iPhone safari positions 'Parts of Speech' below ::marker
-      //
-      // using inline-block allows us to remove whitespace which affects html elements
-      display: inline-block
-
-      &:hover // overriding from _styles.sass
-        text-decoration: none
-
-      @media (hover: hover) and (pointer: fine) // use underline on desktop
-        &:hover
-          text-decoration: underline
-
+.top-tag-anchor
+  &.exact-search-match
+    font-weight: 500
+    pointer-events: none
 
   .highlighted
     font-weight: 700
 
-  .exact-search-match
-    font-weight: 700
-    pointer-events: none
+.tag-menu-btn-l2
+  .expandable-btn-text
+    .highlighted
+      font-weight: 500
+
+
+.expandable-btn
+  align-items: center
+  background-color: transparent
+  border: 0
+  cursor: pointer
+  display: flex
+  margin: 0
+  padding: 0
+
+  .expandable-btn-text
+    @include eng-text('s', 400)
+
+  .expandable-btn-icon
+    font-size: $half-icon-size * 2
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
+
+    &.expanded
+      transform: rotate(90deg)
+
+.show-gloss-terms-btn,
+.show-examples-btn,
+.show-other-forms-btn
+  .expandable-btn-icon
+    transition: transform 200ms
+
+
+.free-text-search-result
+  border-radius: 12px
+  display: block
+  margin: 0 $side-padding $side-padding
+  overflow: hidden // Ensures ::after follows the border-radius
+  padding: 12px $searchbar-inset-x
+  position: relative
+  text-decoration: none
+
+  &.colorful-verb
+    &::after
+      bottom: 0
+      content: ''
+      height: 2px
+      left: 0
+      position: absolute
+      width: 100%
+
+  &:hover,
+  &:visited,
+  &:active
+    text-decoration: none
+
 
 .search-result
   display: flex // so we can set order
   flex-direction: column
   margin-bottom: 16px
   padding-bottom: 8px
+  padding-left: $side-padding + $searchbar-inset-x
+  padding-right: $side-padding + $searchbar-inset-x
   position: relative
 
 $table-y-spacing: 32px
@@ -139,61 +185,26 @@ $v-word-spacing: 40px
     &.indent-word-more
       margin-right: 8px
 
-
-$half-icon-size: 12px
-
-@mixin button-container
-  $br: 1px
-  border-radius: $half-icon-size + $br
-  cursor: pointer
-  height: 2 * ($half-icon-size + $br)
-  padding: 0
-  width: 3 * $half-icon-size + 2 * $br
-
-
 button
   touch-action: manipulation // disable double tap: https://stackoverflow.com/a/53236027
-
-
-.more-vocalized
-  @include button-container
-  border-style: solid
-  border-width: 1px
-  position: absolute
-  right: 0
-  top: 0
-
-
-.more-vocalized-icon
-  font-size: $half-icon-size * 2
-  transition: transform 200ms
-
-  &.expanded
-    transform: rotate(180deg)
 
 .aii-v-word-container
   padding-bottom: $v-word-spacing
 
-  .highlighted,
-  .exact-aii-search-match
-    font-weight: 600
-
-  &:not(.always-show)
-    display: none
-    order: -1 // more pronounced slidedown of other vocalized
+  &.show-first
+    order: -1
 
 .aii-v-word
   @include aii-text('l')
-  margin-right: 42px
   // safeguard for ܨܲܚܨܹܐ
   padding-bottom: 6px
   text-align: left
 
-  a
-    text-decoration-skip-ink: none
-    text-decoration-thickness: 1px
+  .highlighted,
+  &.exact-aii-search-match
+    font-weight: 500
 
-  .aii-v-atuta-box
+  .atuta-box-large
     border-radius: 6px
     border-style: solid
     border-width: 2px
@@ -223,6 +234,7 @@ button
 .jsonline
   padding-top: 12px
 
+
 .pos
   @include eng-text('s')
   align-items: center
@@ -236,15 +248,17 @@ button
     align-self: flex-end
 
   .more-defs-button-container
-    @include button-container
-    $border-thickness: 1px
+    border-radius: 19px
+    cursor: pointer
     flex-shrink: 0
+    height: 38px
     margin-left: auto
-
+    padding: 0
+    width: 38px
 
     &.not-verb-conj-button
       border-style: solid
-      border-width: $border-thickness
+      border-width: 1px
 
     &.verb-conj-button
       background-clip: padding-box, border-box
@@ -252,16 +266,22 @@ button
       border: 2px solid transparent
 
       .more-defs-button
-        margin-top: -1px
+        margin-top: 3px
 
 
     .more-defs-button
       font-size: $half-icon-size * 2
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
+      margin-top: 4px
       transition: transform 200ms
 
       &.expanded
         transform: rotate(180deg)
 
+
+.free-text-senses
+  margin-bottom: 0
+  margin-top: 8px
 
 .senses
   margin: 0
@@ -274,11 +294,15 @@ button
 // $display-toggle: auto
 $display-toggle: none
 
+
 .gloss-container
   @include eng-text('s')
 
-  &:not(.always-show)
-    display: $display-toggle
+.free-text-gloss
+  @include eng-text('s', $using-aii: true)
+
+  .highlighted
+    font-weight: 500
 
 .gloss
   @include eng-text('s', $using-aii: true)
@@ -286,16 +310,6 @@ $display-toggle: none
   .highlighted
     font-weight: 500
 
-.gloss:has(+ .show-linkages)
-  margin-right: 6px
-
-.show-linkages
-  border: 0
-  border-radius: 12px
-  cursor: pointer
-  outline-style: solid
-  outline-width: 1px
-  padding: 0 8px
 
 // https://chriskirknielsen.com/blog/inline-lists-with-conditional-separators/
 .t3-categories
@@ -330,11 +344,9 @@ $display-toggle: none
 
 .more-info // all t2 tables like head templates and inflections
   display: $display-toggle
-  padding-top: 8px // for head template tables and root derived terms
 
   &.has-heading
-    padding-top: $table-y-spacing
-
+    margin: 24px 0
 
 .infl-row
   align-items: baseline
@@ -424,7 +436,7 @@ $display-toggle: none
   @include aii-text('s')
   margin: 8px 0
 
-.atuta-box
+.atuta-box-small
   @include aii-text('s')
   border-radius: 4px
   border-style: solid
@@ -440,7 +452,7 @@ $display-toggle: none
     &::after
       content: '\200C'
 
-.atuta-box-is-first
+.atuta-box-small-is-first
   margin-right: 0
 
 .sound-containers
@@ -533,7 +545,7 @@ $sound-accent-offset: 8px
     display: none
 
 .tag-highlight
-  font-weight: 700
+  font-weight: 500
 
 .tr-backlink-container
   font-style: normal
@@ -560,9 +572,8 @@ $sound-accent-offset: 8px
 .tier1-tag,
 .tier2-tag,
 .tier3-tag,
-.show-linkages,
 .l-inline-tag,
 .in-numbers-table,
-#matched-tag
+.top-tag-anchor
   white-space: nowrap
 

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,collapse_content,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,select_to_speak,volume_up");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
@@ -102,6 +102,17 @@ a:active {
   .translation-caption,
   #aramaic-history {
     color: rgb(221, 221, 232);
+  }
+}
+
+.aii-verse .marker,
+.eng-verse .marker {
+  background-color: rgb(235.6857142857, 235.6857142857, 243.1142857143);
+}
+@media (prefers-color-scheme: dark) {
+  .aii-verse .marker,
+  .eng-verse .marker {
+    background-color: rgb(61.4432432432, 61.4432432432, 64.8567567568);
   }
 }
 
@@ -269,9 +280,6 @@ button {
   line-height: 1.4;
   font-size: 22.4px;
 }
-.reference .bible-backlink {
-  text-decoration: underline;
-}
 
 #search-bible-backlink-container {
   padding-bottom: 6px;
@@ -307,8 +315,10 @@ li:first-child {
   text-align: right;
 }
 .aii-verse .marker {
-  color: dodgerblue;
+  border-radius: 4px;
   font-weight: 600;
+  margin-left: 4px;
+  padding: 0 4px;
 }
 
 .aii-tr {
@@ -340,8 +350,10 @@ li:first-child {
   font-size: 16px;
 }
 .eng-verse .marker {
-  color: dodgerblue;
+  border-radius: 4px;
   font-weight: 700;
+  margin-right: 4px;
+  padding: 2px 4px;
 }
 .eng-verse .missing-verse {
   font-weight: 400;

@@ -100,6 +100,61 @@ function atLeastOneAiiVChar() {
 }
 atLeastOneAiiVChar();
 
+function paramsToString() {
+  const params1 = new URLSearchParams([['latin', 1], ['dialect', 2]]);
+  const params2 = new URLSearchParams([['latin', 1], ['dialect', 2], ['assyrian', 'ܐ']]);
+  const params3 = new URLSearchParams([['latin', 1], ['dialect', 2]]);
+
+  const examples = [
+    // dictionary
+    [
+      [['tag-search', 'from:Classical Syriac']],
+      null,
+      'tag-search=from:Classical+Syriac',
+    ],
+    [
+      [['search', 'a\'s']],
+      null,
+      'search=a%27s',
+    ],
+
+    // transliterator
+    [
+      [['assyrian', 'ܪܬܡܐ']],
+      null,
+      'assyrian=%DC%AA%DC%AC%DC%A1%DC%90',
+    ],
+    [
+      [['assyrian', 'ܪܬܡܐ']],
+      params1,
+      'latin=1&dialect=2&assyrian=%DC%AA%DC%AC%DC%A1%DC%90',
+    ],
+    [
+      [['assyrian', 'ܐ']],
+      params2,
+      'latin=1&dialect=2&assyrian=%DC%90',
+    ],
+    [
+      [['assyrian', 'ܒ']],
+      params2,
+      'latin=1&dialect=2&assyrian=%DC%92',
+    ],
+    [
+      [],
+      params3,
+      'latin=1&dialect=2',
+    ],
+  ];
+
+  examples.forEach((trio) => {
+    const [newKeyValues, currentSearchParams, expected] = trio;
+    const actual = AiiUtils.paramsToString(newKeyValues, currentSearchParams);
+    console.assert(actual === expected, '%o', { actual, expected });
+    if (actual !== expected) { anyErrors = true; }
+  });
+}
+paramsToString();
+
 if (anyErrors) {
   throw new Error('Fix utils errors');
 }

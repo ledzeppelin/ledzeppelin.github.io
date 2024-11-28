@@ -1,7 +1,5 @@
 infl_templates_ignored = {
     "aii-infl-bi", "aii-infl-il", "aii-infl-it", "aii-infl-layt", "aii-particle-infl-zi",
-    'aii-conj-verb/G-3e',
-    'aii-conj-verb/Penta',
 }
 
 infl_schema = {

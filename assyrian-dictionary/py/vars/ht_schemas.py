@@ -6,6 +6,9 @@ ht_schema_omit = {
     "head": {},
 }
 
+def adj_wrap(gram_category):
+    return f"describing {gram_category} nouns"
+
 # when resolving issues from uptaking new dictionary
 # 1. add missing value to either 'forms' or 'genders' set
 #    ex. "2", "g", "g2" go to genders
@@ -24,6 +27,7 @@ ht_schema = {
             "pl",
         },
         'genders': set(),
+        'default_gender': adj_wrap('masculine')
     },
     "aii-adverb": {
         'omit': {
@@ -82,6 +86,7 @@ ht_schema = {
         'omit': { "1", "head" },
         'forms': {"f", "pl"},
         'genders': set(),
+        'default_gender': adj_wrap('masculine'),
     },
     "aii-phrase": {
         'omit': { "1", "head", "tr" },
@@ -125,9 +130,9 @@ ht_schema = {
 gender_abbrev = {
     "aii-adjective": { },
     "aii-interj": {
-        "m-s": 'when subject is a masculine noun',
-        "f-s": 'when subject is a feminine noun',
-        "p": 'when subject is a plural noun',
+        "m-s": 'for masculine nouns',
+        "f-s": 'for feminine nouns',
+        "p": 'for plural nouns',
     },
     "aii-past participle": {},
     "aii-suffix": {
@@ -147,9 +152,6 @@ gender_abbrev = {
     }
 }
 
-def adj_wrap(gram_category):
-    return f"describing a {gram_category} noun"
-
 forms_abbrev = {
     "aii-adjective": {
         "f": adj_wrap('feminine'),
@@ -159,10 +161,10 @@ forms_abbrev = {
         "mpl": adj_wrap('plural masculine'),
     },
     "aii-interj": {
-        "fs": 'when subject is a feminine noun',
-        "f": 'when subject is a feminine noun',
-        "ms": 'when subject is a masculine noun',
-        "pl": 'when subject is a plural noun',
+        "fs": 'for feminine nouns',
+        "f": 'for feminine nouns',
+        "ms": 'for masculine nouns',
+        "pl": 'for plural nouns',
     },
     "aii-past participle": {
         "f": adj_wrap('feminine'),

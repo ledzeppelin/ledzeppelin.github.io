@@ -23,11 +23,17 @@ body
 #backlink-promotion-container
   @include backlink-promotion($label, $label-dark)
 
-#rand-sentence-ref,
-#syrc-error-msg
+#rand-sentence-ref
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
+
+
+#syrc-error-msg
+  color: color.adjust($key-color, $lightness: -5%)
+  @media (prefers-color-scheme: dark)
+    color: $key-color
+
 
 
 #syrc,
