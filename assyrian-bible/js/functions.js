@@ -5,7 +5,7 @@ function processQueryStringParams() {
   let startHighlight = null;
   let endHighlight = null;
 
-  const params = new URLSearchParams(document.location.search);
+  const params = new URLSearchParams(window.location.search);
   if (params.has('reading_level')) {
     const readingLevelTemp = parseInt(params.get('reading_level'), 10);
     if (readingLevelTemp === 2 || readingLevelTemp === 3) {
@@ -115,7 +115,7 @@ function setDisplayedVerses({
       let engVerse;
       if (readingLevel === 1) {
         const engLi = $('<li/>', { class: 'eng-verse' });
-        engLi.append($('<span/>', { class: 'marker', text: `${idx + 1} ` }));
+        engLi.append($('<span/>', { class: 'marker', text: idx + 1 }));
         if (verse[0] == null) {
           engLi.append(
             $('<span/>', { class: 'missing-verse highlightable', text: 'NLT Translation not available' }),
@@ -169,7 +169,7 @@ function setDisplayedVerses({
       // https://amiyasahu.github.io/create-nested-html-elements-in-jquery.html
       $(versesOL).append(
         $('<li/>', { class: 'aii-verse' }).append(
-          $('<span/>', { class: 'marker', text: `${aiiNumeral[idx + 1]} ` }),
+          $('<span/>', { class: 'marker', text: aiiNumeral[idx + 1] }),
           $('<span/>', { class: 'highlightable', text: verse[1] }),
         ),
         aiiLatinVerse,
@@ -193,18 +193,29 @@ function setDisplayedVerses({
   }
 
   // set query string after updating verses
-  const url = new URL(window.location);
-  // per https://stackoverflow.com/a/70591485
-  url.searchParams.set('book', bookShortName);
-  // console.log(typeof chapter);
-  url.searchParams.set('chapter', highlightVerses == null ? chapter : highlightVerses);
-  // set reading level
+  const url = new URL(window.location.href);
+  const searchParams = [
+    ['book', bookShortName],
+    ['chapter', highlightVerses == null ? chapter : highlightVerses],
+  ];
+
+  const canonicalSearchParams = [
+    ['book', bookShortName],
+    ['chapter', chapter],
+  ];
+
   if (readingLevel > 1) {
-    url.searchParams.set('reading_level', readingLevel);
-  } else if (url.searchParams.has('reading_level')) {
-    url.searchParams.delete('reading_level');
+    searchParams.push(['reading_level', readingLevel]);
   }
-  window.history.replaceState(null, '', url.toString());
+
+  const BIBLE_CANONICAL_URL = 'https://www.sharrukin.io/assyrian-bible/'; // window.location.href
+  $('#canonical-link').attr('href', `${BIBLE_CANONICAL_URL}?${AiiUtils.paramsToString(canonicalSearchParams)}`);
+
+  url.search = AiiUtils.paramsToString(searchParams);
+
+  if (window.location.search !== url.search) {
+    window.history.replaceState(null, '', url);
+  }
 }
 
 function scrollToStartOfBook() {

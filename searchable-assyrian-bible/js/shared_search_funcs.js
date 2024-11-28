@@ -29,7 +29,7 @@ function runExtendedSearchQuery(searchStr, fuse, isAii = false) {
   // console.time('q speed');
 
   const COMMA = isAii ? '،' : ',';
-  const CLOSE_PAREN = isAii ? ')' : ')'; // for some reason using ')' works for aii but not '('
+  const CLOSE_PAREN = ')'; // changest to ')' for aii
 
   // comma suffix has precedence over space, ie "water," over compound words like "water cooler"
   const queryStrings = [
@@ -38,7 +38,7 @@ function runExtendedSearchQuery(searchStr, fuse, isAii = false) {
     `^"${searchStr}${COMMA}"`, // would match "Eat,"
     `^"${searchStr} "`, // would match "Eat "
     `'" ${searchStr}${COMMA}"`, // would match  " eat,"
-    `'" ${searchStr}${CLOSE_PAREN}"`, // would match  " eat)", test " ground)"
+    `'" ${searchStr}${CLOSE_PAREN}"`, // would match  " eat)", " ground)"
     `'" ${searchStr} "`, // would match " eat "
     `" ${searchStr}"$`, // would match sentence ending in " eat"
     // matches word isolates

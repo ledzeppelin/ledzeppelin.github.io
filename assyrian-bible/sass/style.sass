@@ -88,9 +88,6 @@ $row-spacing: 28px
 .reference
   @include aii-text('m', 400)
 
-  .bible-backlink
-    text-decoration: underline
-
 #search-bible-backlink-container
   padding-bottom: 6px
   padding-top: 2px
@@ -121,8 +118,11 @@ li
     // https://developer.mozilla.org/en-US/docs/Web/CSS/@counter-style
     // https://caniuse.com/css-at-counter-style
     // we dont use ::marker because safari/webkit can't read display aii numerals rtl and we also dont want period after ar numerals
-    color: $key-color
+    border-radius: 4px
     font-weight: 600
+    margin-left: 4px
+    padding: 0 4px
+
 
 .aii-tr
   @include eng-text('m', $is-translit: true)
@@ -141,8 +141,10 @@ li
   @include eng-text('m')
 
   .marker
-    color: $key-color
+    border-radius: 4px
     font-weight: 700
+    margin-right: 4px
+    padding: 2px 4px
 
 
   .missing-verse

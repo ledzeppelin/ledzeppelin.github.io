@@ -47,7 +47,7 @@ def root_letters_in_verb_args(root_letters, verb_args):
     if len(root_letters) > 4:
         raise Exception('root has more than 4 letters')
 
-    if not (len(root_letters) in (2,3,4) and len(verb_args) in (2,3,4)):
+    if not (len(root_letters) in (2,3,4) and len(verb_args) in (1,2,3,4)):
         return None
 
     max_num_matches = min(len(root_letters), len(verb_args))
@@ -134,20 +134,23 @@ def set_verb_conj(item, obj, html_template_name, template_name, aii_v, vocalized
 
 
     if template_name == html_template_name:
-        set_singleton_not_vis_root_table(item, obj, aii_v, vocalized_cache)
+        stem_name = "Irregular-stem"
+        pattern = "Irregular"
     else:
         pattern = template_name.removeprefix('aii-conj-verb/')
         stem_name = find_stem_of_pattern(conj_stems_and_patterns, pattern)
 
-        obj['tier2_vis_verb'] = {
-            'stem': stem_name,
-            'pattern': pattern,
-        }
-        obj['tier2_tags'].append(f'stem:{stem_name}')
-        obj['tier2_tags'].append(f'pattern:{pattern}')
+    obj['tier2_vis_verb'] = {
+        'stem': stem_name,
+        'pattern': pattern,
+    }
+    obj['tier2_tags'].append(f'stem:{stem_name}')
+    obj['tier2_tags'].append(f'pattern:{pattern}')
 
-        set_singleton_vis_root_table(tenses, obj, aii_v, vocalized_cache, root)
-
+    if template_name == html_template_name:
+        set_singleton_not_vis_root_table(item, obj, aii_v)
+    else:
+        set_singleton_vis_root_table(tenses, obj, aii_v, root)
 
     obj['conj']['tenses'] += tenses
 
@@ -158,17 +161,12 @@ def find_stem_of_pattern(_conj_stems_and_patterns, conj_pattern):
     raise ValueError(f"{conj_pattern} not found")
 
 
-def annotated_row(meta, aii_values, aii_v, vocalized_cache):
+def annotated_row(meta, aii_values, aii_v):
     row = defaultdict(list)
     row['meta'] = meta
 
     for aii_value in aii_values:
         val_obj = {'value': aii_value}
-        if aii_value in vocalized_cache:
-            val_obj['anchor'] = True
-        if aii_value == aii_v:
-            val_obj['matches_aii_v'] = True
-
         row['values'].append(val_obj)
 
     return row
@@ -181,24 +179,24 @@ def get_singleton_root_table_headers():
     meta_name = 'root of verb'
     return root_tense, meta_name
 
-def set_singleton_vis_root_table(tenses, obj, aii_v, vocalized_cache, root):
+def set_singleton_vis_root_table(tenses, obj, aii_v, root):
     root_tense, meta_name = get_singleton_root_table_headers()
 
     for tense in tenses:
         for row in tense['rows']:
             for value in row['values']:
                 if 'template_str' in value:
-                    vis_conj_row = annotated_root_row(aii_v, vocalized_cache, root, meta_name)
+                    vis_conj_row = annotated_root_row(aii_v, root, meta_name)
                     root_tense['rows'].append(vis_conj_row)
                     obj['conj']['tenses'] = [root_tense]
                     return
 
-def set_singleton_not_vis_root_table(item, obj, aii_v, vocalized_cache):
+def set_singleton_not_vis_root_table(item, obj, aii_v):
     if 'etymology_templates' in item:
         root_tense, meta_name = get_singleton_root_table_headers()
         for ety in item['etymology_templates']:
             if ety['name'] == 'aii-root':
-                no_vis_conj_row = annotated_row(meta_name, [ety['args']['1']], aii_v, vocalized_cache)
+                no_vis_conj_row = annotated_row(meta_name, [ety['args']['1']], aii_v)
                 root_tense['rows'].append(no_vis_conj_row)
                 obj['conj']['tenses'] = [root_tense]
                 return
@@ -254,7 +252,7 @@ def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root, a
 #     return res
 
 
-def annotated_root_row(aii_v, vocalized_cache, root, meta):
+def annotated_root_row(aii_v, root, meta):
     row = {
         'meta': meta,
         # 'meta': 'root of verb',
@@ -262,11 +260,6 @@ def annotated_root_row(aii_v, vocalized_cache, root, meta):
     root_str = ' '.join(root)
 
     val_obj = {'value': root_str}
-    if root_str in vocalized_cache:
-        val_obj['anchor'] = True
-    if root_str == aii_v:
-        val_obj['matches_aii_v'] = True
-
     val_obj['template_str'] = ''.join([f'{{{{{{%s}}}}}}' % (i) for i in range(1,len(root)+1)])
     val_obj['template_atwateh'] = [[i, char] for i, char in enumerate(root)]
     val_obj['break_ligatures'] = True
@@ -285,11 +278,6 @@ def annotated_verb_row(meta, conj_obj, aii_v, vocalized_cache, template_name, ve
 
     for key, aii_value in conj_obj.items():
         val_obj = {'value': aii_value}
-        if aii_value in vocalized_cache:
-            val_obj['anchor'] = True
-        if aii_value == aii_v:
-            val_obj['matches_aii_v'] = True
-
         verb_template_not_visualized = {'aii-conj-verb', 'aii-conj-hawe'}
 
         all_t = (verb_template_not_visualized, conj_schema.keys())

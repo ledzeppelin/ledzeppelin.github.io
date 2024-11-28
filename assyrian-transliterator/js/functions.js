@@ -337,9 +337,10 @@ function typeWriter(txt) {
   // we don't update qs parameters with each character due to throttling on browsers like safari
   // https://github.com/47ng/next-usequerystate?tab=readme-ov-file#throttling-url-updates
 
-  const url = new URL(window.location);
-  url.searchParams.set('assyrian', txt);
-  window.history.replaceState(null, '', url.toString());
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+  url.search = AiiUtils.paramsToString([['assyrian', txt]], params);
+  window.history.replaceState(null, '', url);
 
   // hide typos while typing for words like ܡ̣ܢ
   $('#aii-typo-caption, #tru-typo-caption').css('visibility', 'hidden');
@@ -361,10 +362,6 @@ function typeWriter(txt) {
     // enable button again
     $('#roll-dice-aii,#roll-dice-tru').prop('disabled', false);
     $('#aii-typo-caption, #tru-typo-caption').css('visibility', 'visible');
-
-    // const url = new URL(window.location);
-    // url.searchParams.set('assyrian', txt);
-    // window.history.replaceState(null, '', url.toString());
   }, delay * txt.length);
 
   // disable error msg for first few chars to avoid it looking glitchy
@@ -376,9 +373,8 @@ function typeWriter(txt) {
 }
 
 function processQueryStringParams() {
-  const url = new URL(window.location);
-  const params = new URLSearchParams(document.location.search);
-  let updateParams = false;
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
 
   if (params.has('dialect')) {
     const dialect = parseInt(params.get('dialect'), 10);
@@ -393,8 +389,7 @@ function processQueryStringParams() {
         $('#tru-orthography').show();
       }
     } else {
-      updateParams = true;
-      url.searchParams.delete('dialect');
+      params.delete('dialect');
     }
   }
 
@@ -404,8 +399,7 @@ function processQueryStringParams() {
       $('#latin-btn-group .btn').removeClass('active');
       $('#latin-btn-group button:nth-child(1)').addClass('active');
     } else {
-      updateParams = true;
-      url.searchParams.delete('latin');
+      params.delete('latin');
     }
   }
 
@@ -417,13 +411,14 @@ function processQueryStringParams() {
       $('#syrc').val(assyrian);
       updateTransliteration(true);
     } else {
-      updateParams = true;
-      url.searchParams.delete('assyrian');
+      params.delete('assyrian');
     }
   }
-  if (updateParams) {
+
+  url.search = AiiUtils.paramsToString([], params);
+  if (window.location.search !== url.search) {
     // console.log('updating params');
-    window.history.replaceState(null, '', url.toString());
+    window.history.replaceState(null, '', url);
   }
 }
 

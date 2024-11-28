@@ -39,6 +39,16 @@ body
     color: $label-dark
 
 
+.aii-verse,
+.eng-verse
+  .marker
+    // background-color: $secondary-background
+    background-color: color.adjust($secondary-background, $lightness: -2%)
+    @media (prefers-color-scheme: dark)
+      // background-color: $secondary-background-dark
+      background-color: color.adjust($secondary-background-dark, $lightness: 3%)
+
+
 .highlighted
   // we don't alpha since transparency causes overlapping highlights between next lines due to line-height
   // background-color: rgba(80, 151, 255, .18) // color from google search highlighting

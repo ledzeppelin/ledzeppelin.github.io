@@ -54,6 +54,17 @@ class AiiUtils {
     const re = new RegExp(nonCaptureGroup, 'g');
     return aiiV.replaceAll(re, '');
   }
+
+  static paramsToString(newKeyValues, currentSearchParams = null) {
+    const searchParams = currentSearchParams === null ? new URLSearchParams() : currentSearchParams;
+    newKeyValues.forEach(([key, value]) => {
+      searchParams.set(key, value);
+    });
+
+    // https://stackoverflow.com/a/14269897
+    // Prevent percent encoding of colons for better human readability
+    return searchParams.toString().replaceAll('%3A', ':');
+  }
 }
 
 // this allows us to run code in a Node context and also browser-side js

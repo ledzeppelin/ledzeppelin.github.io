@@ -1,12 +1,14 @@
+@use 'sass:list'
+
 // inspired by https://codepen.io/aJukebox/pen/eYNgLoJ
 @mixin set-shadow($num-steps, $step-size, $alpha, $num-steps-2: 0, $step-size-2: 0, $alpha-2: 0)
   $all: ()
   @for $i from 1 through $num-steps
-    $all: append($all, 0 0 #{$i*$step-size}px rgba(#00fff2, $alpha), comma)
+    $all: list.append($all, 0 0 #{$i*$step-size}px rgba(#00fff2, $alpha), comma)
 
   @for $j from 1 through $num-steps-2
-    $all: append($all, 0 0 #{$j*$step-size-2}px rgba(#00fff2, $alpha-2), comma)
-    $all: append($all, 0 0 #{$j*$step-size-2}px rgba(#00fff2, $alpha-2), comma)
+    $all: list.append($all, 0 0 #{$j*$step-size-2}px rgba(#00fff2, $alpha-2), comma)
+    $all: list.append($all, 0 0 #{$j*$step-size-2}px rgba(#00fff2, $alpha-2), comma)
 
   text-shadow: $all
 

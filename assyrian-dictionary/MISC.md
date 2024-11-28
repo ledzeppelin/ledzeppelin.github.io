@@ -1,6 +1,5 @@
 # after uptaking dictionary
    * run `make datadump-diff`
-   * update assyrian word count in index.html via `raise Exception(len(vocalized_cache))` and date (ex. January 1st) in index.html
    * regenerate new audio
    * export pdf and add number of people using sharrukin.io to graph
 
@@ -22,33 +21,9 @@
    * 'khda' (to ensure ipa and and etymologies are collated correctly)
    * z'or vs z'ora - etymology position in article affects availability of root z-'-r
 
-# todos
-- cache audio make target
-- replace url declarations like window.location with window.location.href
-- support lit ety
-- test enumerated terms/examples
-- test deprecation of expand/collage widget
-- tr, html entities for newline
-
-- tr fix for ܡܲܫܡܸܥ mashmi
-- rule for virrawkhon vs vir lawkhon (aver)
-- after october dump, try to fix base words of econj, also check out rconj, aconj
-
-- set bible a hrefs
-- set canonical for bible
-
-- dynamic conjugations
-- dynamic inflections
-
-
-
-
-
-
 # nice to haves
 - consec atwateh in root should be same color (ex. for G-2i  where 2nd and 3rd are same char implies 3rd is dropped)
 - personal pronoun table
-
 
 # won't do
 - on mobile safari, infinite scroll is choppy if the velocity at the point of triggering the load is too fast (independent of whether last, 2nd to last, 10th to last, etc... being in viewport causes loadResults to be triggered) - doesn't seem like it can be fixed
@@ -56,4 +31,3 @@
 - cursor for .exact-search-match is pointer (can't fix bc of anchor)
 - for conjugation tables, the atwateh boxes - on safari desktop the ligatures are always broken but they work in chrome, not possible to fix
 - When phone is idle and you come back to it, howl onplay event doesn't seem to fire https://github.com/goldfire/howler.js/issues/371 . less likely - this could be because the file is not able to be fetched.  Hard to reproduce since being idle for a while causes refresh.  Also can be tested by playing a sound in another tab like define:cat.  For this reason we use HTML5 Audio instead of Web Audio API
-

@@ -33,10 +33,8 @@ const fuseTagsExact = new Fuse(aiiDictionary, optionsTagged);
 const optionsTags = {
   includeScore: true,
   keys: [
+    'name',
     'children.name',
-    'children.children.name',
-    'children.children.children.name',
-    'children.children.children.children.name',
   ],
   useExtendedSearch: true,
   includeMatches: true,

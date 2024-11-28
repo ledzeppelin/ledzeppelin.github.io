@@ -13,7 +13,11 @@ from botocore.exceptions import BotoCoreError, ClientError
 session = Session()
 polly = session.client("polly")
 
-def ipa_to_mp3(ipa, hash_str):
+def ipa_to_mp3(ipa, hash_str, use_cached_audio):
+    output = os.path.join('./audio', f"{hash_str}.mp3")
+    if use_cached_audio and os.path.exists(output):
+        return
+
     try:
         # Request speech synthesis
         # https://gist.github.com/sloanlance/b8562252583967e08f5c69775518b366
@@ -46,8 +50,6 @@ def ipa_to_mp3(ipa, hash_str):
         # ensure the close method of the stream object will be called automatically
         # at the end of the with statement's scope.
         with closing(response["AudioStream"]) as stream:
-            output = os.path.join('./audio', f"{hash_str}.mp3")
-
             try:
                 # Open a file for writing the output as a binary stream
                 with open(output, "wb") as file:

@@ -1,5 +1,5 @@
 all: deps bible
-bible: scrape-chapters process-verses mark-verses
+bible: scrape-chapters process-verses generate-sitemap mark-verses
 
 deps:
 	pip3 install -r _scraper/requirements.txt
@@ -12,6 +12,9 @@ scrape-chapters:
 process-verses:
 	cd js && node cli/parse-bible-verses.js > consts/bible.min.js
 # 	cd js && node parse-bible-verses.js | node_modules/uglify-js/bin/uglifyjs --output consts/bible.min.js
+
+generate-sitemap:
+	cd js && node cli/generate-sitemap.js
 
 mark-verses:
 	cd js && node cli/parse-mark-verses.js > ../../assyrian-transliterator/js/consts/aii-mark.js

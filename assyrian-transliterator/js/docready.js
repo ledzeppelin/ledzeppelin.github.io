@@ -3,15 +3,15 @@ $(document).ready(() => {
     $('#rand-sentence-ref').empty();
     updateTransliteration(true);
 
-    const url = new URL(window.location);
-    const params = new URLSearchParams(document.location.search);
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
     if (e.target.value.length) {
-      url.searchParams.set('assyrian', e.target.value);
-      window.history.replaceState(null, '', url.toString());
+      url.search = AiiUtils.paramsToString([['assyrian', e.target.value]], params);
+      window.history.replaceState(null, '', url);
     } else if (params.has('assyrian')) {
-      // can't think of a test case for checking whether param is set
-      url.searchParams.delete('assyrian');
-      window.history.replaceState(null, '', url.toString());
+      params.delete('assyrian');
+      url.search = AiiUtils.paramsToString([], params);
+      window.history.replaceState(null, '', url);
     }
   });
 
@@ -22,14 +22,15 @@ $(document).ready(() => {
       updateTransliteration();
     }
 
-    const url = new URL(window.location);
-    const params = new URLSearchParams(document.location.search);
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
     if ($(e.currentTarget).index() === 0) {
-      url.searchParams.set('latin', 1);
-      window.history.replaceState(null, '', url.toString());
+      url.search = AiiUtils.paramsToString([['latin', 1]], params);
+      window.history.replaceState(null, '', url);
     } else if (params.has('latin')) {
-      url.searchParams.delete('latin');
-      window.history.replaceState(null, '', url.toString());
+      params.delete('latin');
+      url.search = AiiUtils.paramsToString([], params);
+      window.history.replaceState(null, '', url);
     }
   });
 
@@ -37,15 +38,16 @@ $(document).ready(() => {
     // TODO: take into account autodetect and only call if dialect is implicitly changed
     updateTransliteration(true);
 
-    const url = new URL(window.location);
-    const params = new URLSearchParams(document.location.search);
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
     const dialect = parseInt($(e.currentTarget).val(), 10);
     if (dialect === 1 || dialect === 2) {
-      url.searchParams.set('dialect', dialect);
-      window.history.replaceState(null, '', url.toString());
+      url.search = AiiUtils.paramsToString([['dialect', dialect]], params);
+      window.history.replaceState(null, '', url);
     } else if (params.has('dialect')) {
-      url.searchParams.delete('dialect');
-      window.history.replaceState(null, '', url.toString());
+      params.delete('dialect');
+      url.search = AiiUtils.paramsToString([], params);
+      window.history.replaceState(null, '', url);
     }
   });
 
@@ -54,13 +56,11 @@ $(document).ready(() => {
     $('#syrc').val('');
     updateTransliteration(true);
 
-    const url = new URL(window.location);
-    const params = new URLSearchParams(document.location.search);
-    if (params.has('assyrian')) {
-      // can't think of a test case for which this conditional is needed
-      url.searchParams.delete('assyrian');
-      window.history.replaceState(null, '', url.toString());
-    }
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    params.delete('assyrian');
+    url.search = AiiUtils.paramsToString([], params);
+    window.history.replaceState(null, '', url);
   });
 
   $('#roll-dice-aii').click((e) => {

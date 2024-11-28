@@ -1,12 +1,10 @@
 all: deps common-words aii-number-list scaffold schema-check dict isolates-check
 deploy: deps common-words aii-number-list download scaffold schema-check dict-with-audio isolates-check
 some: scaffold schema-check dict isolates-check
+some2: scaffold schema-check dict isolates-check missing-roots validate-conj-patterns
 
 deps:
-	brew install lua
-	brew install jq
-	brew install brotli
-	brew install luarocks
+	brew install lua jq brotli luarocks
 # 	brew install colordiff
 	luarocks install dkjson
 	cd js && npm install
@@ -33,17 +31,31 @@ dict:
 	cd js && node cli/numbers-table-json-to-obj.js > ./consts/aii-numbers-table.js
 
 	cd js && uglifyjs consts/aii-dict.js --output consts/aii-dict.min.js
-	cd js && gzip -k -f consts/aii-dict.js && gzip -k -f consts/aii-dict.min.js
-	cd js && brotli -4 -f consts/aii-dict.js -o consts/aii-dict.js.l4.br && brotli -4 -f consts/aii-dict.min.js -o consts/aii-dict.min.js.l4.br
+	cd js && gzip -k -f consts/aii-dict.js consts/aii-dict.min.js
+	cd js && brotli -4 -f consts/aii-dict.js -o consts/aii-dict.js.l4.br
+	cd js && brotli -4 -f consts/aii-dict.min.js -o consts/aii-dict.min.js.l4.br
 
 	python3 py/index_tags.py > js/json/indexed-tags.json
+
+	@if [ -f js/consts/aii-dict-tags.js ]; then \
+		cp js/consts/aii-dict-tags.js js/consts/aii-dict-tags.prev.js; \
+	fi
 	cd js && node cli/create-tag-search-obj.js > ./consts/aii-dict-tags.js
+
+
 
 diff-dict:
 	colordiff js/consts/aii-dict.prev.js js/consts/aii-dict.js
 
+diff-tags:
+	colordiff js/consts/aii-dict-tags.prev.js js/consts/aii-dict-tags.js
+
 dict-with-audio: export AII_DICT_GENERATE_AUDIO=1
 dict-with-audio: dict
+
+dict-with-audio-cache: export AII_DICT_GENERATE_AUDIO=1
+dict-with-audio-cache: export USE_CACHED_AUDIO=1
+dict-with-audio-cache: dict
 
 download:
 	python3 py/download_datadump.py
@@ -56,3 +68,9 @@ schema-check:
 
 isolates-check:
 	python3 py/validators/isolates.py
+
+missing-roots:
+	python py/misc/wiktionary/verbs_with_templates_missing_roots.py
+
+validate-conj-patterns:
+	python py/dynamic_conj/validator.py

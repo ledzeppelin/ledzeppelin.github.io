@@ -1,6 +1,7 @@
 // sass-lint:disable no-ids
 
 @use 'sass:color'
+@use 'sass:list'
 
 @use 'constants' as *
 
@@ -25,6 +26,8 @@ $apple-green-dark: color.mix($apple-green-dark-1, $apple-green, 60%) // since Ac
 $apple-purple-dark: rgb(218, 143, 255)
 $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $apple-purple-dark)
 
+$apple-rgba-alpha: .75
+
 @mixin atuta-box-color($color, $dark-color)
   $border-a: .3
 
@@ -40,11 +43,10 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 @mixin atuta-box-colors($apple-colors, $apple-colors-dark)
   @for $i from 0 through 3
     .atuta-box-clr-#{$i}
-      $color: nth($apple-colors, $i+1)
-      $dark-color: nth($apple-colors-dark, $i+1)
+      $color: list.nth($apple-colors, $i + 1)
+      $dark-color: list.nth($apple-colors-dark, $i + 1)
       @include atuta-box-color($color, $dark-color)
 
-@include atuta-box-colors($apple-colors, $apple-colors-dark)
 
 
 #tagged-results-meta
@@ -53,25 +55,46 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
     color: $secondary-label-dark
 
 
-  #matched-tag
-    color: $label
-    @media (prefers-color-scheme: dark)
-      color: $label-dark
+#matched-tag
+  color: $key-color
+  @media (prefers-color-scheme: dark)
+    color: $key-color-dark
 
 
-
-#tag-search-results
-  border-bottom-color: $separator
+.tag-menu-btn-l1,
+.show-gloss-terms-btn,
+.show-examples-btn,
+.show-other-forms-btn
   color: $secondary-label
   @media (prefers-color-scheme: dark)
-    border-bottom-color: $separator-dark
     color: $secondary-label-dark
 
 
-  .exact-search-match
-    color: $label
+.tag-menu-btn-l2
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
+  .expandable-btn-text
+    .highlighted
+      color: $key-color
+      @media (prefers-color-scheme: dark)
+        color: $key-color-dark
+
+
+.top-tag-li
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
+.top-tag-anchor
+  &.exact-search-match
+    color: $key-color
     @media (prefers-color-scheme: dark)
-      color: $label-dark
+      color: $key-color-dark
+
 
 
 #numbers-table
@@ -79,6 +102,40 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
     border-bottom-color: $separator
     @media (prefers-color-scheme: dark)
       border-bottom-color: $separator-dark
+
+
+@mixin gradient-border($gap, $color1, $color2, $color3)
+  $color1: rgba($color1, $apple-rgba-alpha)
+  $color2: rgba($color2, $apple-rgba-alpha)
+  $color3: rgba($color3, $apple-rgba-alpha)
+
+  background: linear-gradient(to right, $color1 calc(33% - #{$gap}), transparent calc(33% - #{$gap}) calc(33% + #{$gap}), $color2 calc(33% + #{$gap}) calc(66% - #{$gap}), transparent calc(66% - #{$gap}) calc(66% + #{$gap}), $color3 calc(66% + #{$gap}))
+
+
+.free-text-search-result
+  background-color: color.mix($background, $secondary-background, 30%)
+  box-shadow: rgba(#000, .16) 0 6px 12px, rgba(0, 0, 0, .06) 0 0 0 1px
+  transition: background-color .1s ease, box-shadow .1s ease
+
+  @media (prefers-color-scheme: dark)
+    background-color: color.mix($secondary-background-dark, $background-dark, 50%)
+    box-shadow: black 0 4px 6px 2px, rgba(white, .35) 0 0 2px 1px
+
+  @media (hover: hover) and (pointer: fine) // use underline on desktop
+    &:hover
+      background-color: color.mix($background, $secondary-background, 50%)
+      box-shadow: rgba(#000, .28) 0 6px 21px, rgba(0, 0, 0, .06) 0 0 0 1px
+      @media (prefers-color-scheme: dark)
+        background-color: color.mix($secondary-background-dark, $background-dark, 95%)
+        box-shadow: black 0 4px 6px 2px, rgba(white, .45) 0 0 2px 1px
+
+
+
+  &.colorful-verb
+    &::after
+      @include gradient-border(2%, $apple-green, $apple-red, $apple-blue)
+      @media (prefers-color-scheme: dark)
+        @include gradient-border(2%, $apple-green-dark, $apple-red-dark, $apple-blue-dark)
 
 
 .wiktionary-link-container
@@ -93,34 +150,25 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
       color: $secondary-label-dark
 
 
-.more-vocalized
-  background-color: $secondary-background
-  border-color: $separator
-  @media (prefers-color-scheme: dark)
-    background-color: $background-dark
-    border-color: $separator-dark
-
-
-.more-vocalized-icon
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-
-
-
 .aii-v-word
   color: $label
   @media (prefers-color-scheme: dark)
     color: $label-dark
 
 
-  a
-    .aii-v-atuta-box
-      border-color: $separator
-      @media (prefers-color-scheme: dark)
-        border-color: $separator-dark
+  .highlighted,
+  &.exact-aii-search-match
+    color: $key-color
+    @media (prefers-color-scheme: dark)
+      color: $key-color-dark
 
 
+.atuta-box-large
+  border-color: $separator
+  @media (prefers-color-scheme: dark)
+    border-color: $separator-dark
+
+@include atuta-box-colors($apple-colors, $apple-colors-dark)
 
 .aii-v-word-tr-container
   .aii-v-word-tr
@@ -143,18 +191,17 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 @mixin verb-conj-border($bg, $blue, $red, $green)
   $clr-gap: 5deg
-  $clr-gap-2: $clr-gap * 2
 
-  $pre-0: $bg $clr-gap-2
+  $pre-0: $bg $clr-gap
 
-  $stop-1: rgba($blue, .75) $clr-gap-2 120deg - $clr-gap
+  $stop-1: rgba($blue, $apple-rgba-alpha) $clr-gap 120deg - $clr-gap
   $post-1: $bg 120deg - $clr-gap 120deg + $clr-gap
 
-  $stop-2: rgba($red, .75) 120deg + $clr-gap 240deg - $clr-gap
+  $stop-2: rgba($red, $apple-rgba-alpha) 120deg + $clr-gap 240deg - $clr-gap
   $post-2: $bg 240deg - $clr-gap 240deg + $clr-gap
 
-  $stop-3: rgba($green, .75) 240deg + $clr-gap 360deg - $clr-gap-2
-  $post-3: $bg 360deg - $clr-gap-2 - $clr-gap 360deg
+  $stop-3: rgba($green, $apple-rgba-alpha) 240deg + $clr-gap 360deg - $clr-gap
+  $post-3: $bg 360deg - $clr-gap - $clr-gap 360deg
 
   // approach from: https://stackoverflow.com/a/69574606
   $bg-gradient: linear-gradient($bg, $bg)
@@ -196,31 +243,23 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
     color: $label-dark
 
 
-.gloss
+.free-text-gloss
+  color: $label
+  @media (prefers-color-scheme: dark)
+    color: $label-dark
+
+
   .highlighted
     color: $key-color
     @media (prefers-color-scheme: dark)
       color: $key-color-dark
 
 
-.show-linkages
-  background-color: $secondary-background
-  color: $label
-  outline-color: $separator
-  @media (prefers-color-scheme: dark)
-    background-color: $background-dark
-    color: $label-dark
-    outline-color: $separator-dark
-
-
-  &.expanded
-    $darken: color.adjust($secondary-background, $lightness: -9%)
-    background-color: $darken
-    outline-color: $darken
+.gloss
+  .highlighted
+    color: $key-color
     @media (prefers-color-scheme: dark)
-      $lighten: color.adjust($secondary-background-dark, $lightness: 10%)
-      background-color: $lighten
-      outline-color: $lighten
+      color: $key-color-dark
 
 
 .t3-categories
@@ -347,9 +386,9 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 
 .tag-highlight
-  color: $label
+  color: $key-color
   @media (prefers-color-scheme: dark)
-    color: $label-dark
+    color: $key-color-dark
 
 
 .tr-backlink-container

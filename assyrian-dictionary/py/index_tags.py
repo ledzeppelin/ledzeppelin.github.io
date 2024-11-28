@@ -22,14 +22,14 @@ def tag_counts():
                             counter[tier3_tag] += 1
 
     # {('ipa:standard', 3585), ('ipa:Urmian', 751), ('pos:adjective', 496), ...}
-    counter['table:Numbers Table'] = 100
+    counter['special:numbers table'] = 100
     # raise Exception(counter)
     return counter
 
 def tag_counts_grouped(tag_counter):
     MIN_OCCURENCES = 4
     # MIN_OCCURENCES = 1
-    exempt_from_min_occurrences = {'root:2-letters', 'root:4-letters'}
+    exempt_from_min_occurrences = {'root:2-letter-root', 'root:4-letter-root'}
     results = defaultdict(list)
     # raise Exception(tag_counter.items())
     for tag, count in tag_counter.items():
@@ -44,7 +44,7 @@ def tag_counts_grouped(tag_counter):
 def generate_verb_stem_list(stem_tag_names, pattern_tag_names):
     return [
         {
-            'name': 'verb stem',
+            'name': 'Verb Conjugations',
             'children': generate_stems_list(stem_tag_names, pattern_tag_names)
         }
     ]
@@ -56,9 +56,8 @@ def generate_stems_list(stem_tag_names, pattern_tag_names):
         res.append({
             'name': stem_tag_name,
             'tag': f"stem:{stem_tag_name}",
-            'children': generate_patterns_list(pattern_tag_names, stem_tag_name),
-            'are_children_inline': True,
         })
+        res += generate_patterns_list(pattern_tag_names, stem_tag_name)
 
     if not res:
         raise Exception('empty stem list')
@@ -85,72 +84,62 @@ def generate_patterns_list(pattern_tag_names, stem_tag_name):
 def generate_root_letters_list(root_letters_tag_names):
     res = []
     for root_letters_tag_name in sorted(root_letters_tag_names,key=str.casefold):
+        tag = f"root:{root_letters_tag_name}"
         res.append({
             'name': root_letters_tag_name,
-            'tag': f"root:{root_letters_tag_name}",
+            'tag': tag,
+            'sort_key': tag,
         })
 
     return res
 
 
-def append_l2(tag_type, tag_names, verb_stem_list, root_letters_list, l2_full_name, fuse_results):
+def append_l2(tag_type, tag_names, root_letters_list, l2_full_name, fuse_results):
     children = []
     for tag_name in tag_names:
         child = {
             'name': tag_name,
             'tag': f"{tag_type}:{tag_name}",
         }
-        if tag_type == 'pos' and tag_name == 'root':
-            child['children'] = root_letters_list
-            child['are_children_inline'] = True
 
         children.append(child)
+        if tag_type == 'pos' and tag_name == 'root':
+            children += root_letters_list
 
-    if tag_type == 'pos':
-        children += verb_stem_list
 
     fuse_results.append({
         'name': l2_full_name,
         'children': sorted(
             children,
-            key=lambda d: d['name']
+            key=lambda d: d.get('sort_key', d['name'])
         )
-    })
-
-def append_l1(tag_type, tag_names, fuse_results):
-    if len(tag_names) != 1:
-        raise Exception(tag_names)
-    fuse_results.append({
-        'name': tag_names[0],
-        'tag': f"{tag_type}:{tag_names[0]}",
     })
 
 def parse_indices(tag_counter):
     # omit = {'category', 'from', 'ipa'}
     omit = set()
-    l1 = {'special', 'table'}
     l2_full_names = {
         'ipa': 'Audio Pronunciations',
         'category': 'Categories',
         'from': 'Etymologies',
         'pos': 'Parts of Speech',
+        'special': 'Language Basics',
     }
 
     grouped_tags = tag_counts_grouped(tag_counter)
     verb_stem_list = generate_verb_stem_list(grouped_tags['stem'], grouped_tags['pattern'])
+    # raise Exception(verb_stem_list)
     root_letters_list = generate_root_letters_list(grouped_tags['root'])
 
     for tag_type_to_rem in ['pattern', 'stem', 'root']:
         grouped_tags.pop(tag_type_to_rem)
 
-    fuse_results = []
+    fuse_results = verb_stem_list
     for tag_type, tag_names in grouped_tags.items():
         if tag_type in omit:
             pass
-        elif tag_type in l1:
-            append_l1(tag_type, tag_names, fuse_results)
         elif tag_type in l2_full_names:
-            append_l2(tag_type, tag_names, verb_stem_list, root_letters_list, l2_full_names[tag_type], fuse_results)
+            append_l2(tag_type, tag_names, root_letters_list, l2_full_names[tag_type], fuse_results)
         else:
             raise Exception(f'{tag_type} not found')
 
@@ -159,10 +148,7 @@ def parse_indices(tag_counter):
         key=lambda d: d['name']
     )
 
-    return [{
-        'name': 'Top Tags',
-        'children': sorted_fuse_results
-    }]
+    return sorted_fuse_results
 
 # print(tag_counts())
 

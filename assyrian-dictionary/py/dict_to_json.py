@@ -37,9 +37,7 @@ def add_more_visualized_derived_terms(jsonline, visual_conj_cache, vis_pres_3rd_
         not_already_there = vis_pres_3rd_sm[aii_v_root] - already_there
         for aii_v in sorted(list(not_already_there)):
             del visual_conj_cache[aii_v]['derived_from_root']
-            del visual_conj_cache[aii_v]['matches_aii_v']
 
-            # raise Exception(visual_conj_cache[aii_v])
             jsonline['other_forms']['rows'].insert(
                 0,
                 {
@@ -142,7 +140,7 @@ def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache, numbers_table):
                 idx = deduped_common_words.index(aii_v)
                 obj['min_common_word_idx'] = min(obj['min_common_word_idx'], idx)
                 inner_obj['is_common_word'] = True
-                inner_obj['tier1_tags'].append('special:Common Words')
+                inner_obj['tier1_tags'].append('special:common word')
             except ValueError:
                 pass
 
@@ -185,7 +183,7 @@ def validate_t1_tags(aii_v):
             tier1 += [f'ipa:{accent}' for ipa in aii_v['ipas'] for accent in ipa[0]]
 
         if 'is_common_word' in aii_v:
-            tier1 += ['special:Common Words']
+            tier1 += ['special:common word']
         if 'tier1_etymology' in aii_v:
             tier1 += [f'from:{ety}' for ety in aii_v['tier1_etymology']]
 
@@ -197,8 +195,8 @@ def validate_t2_tags(jsonline):
         # per functions.js the DOM elements with .tier2-tag should appear in this order:
         # pos -> root num letters -> stem -> pattern -> tier 2 etymology
         tier2 = [f'pos:{jsonline['pos']}']
-        if 'root_num_letters' in jsonline:
-            tier2.append(f'root:{jsonline['root_num_letters']}-letters')
+        if 'root_tag_val' in jsonline:
+            tier2.append(f'root:{jsonline['root_tag_val']}')
         if 'tier2_vis_verb' in jsonline:
             vis = jsonline['tier2_vis_verb']
             tier2 += [f'stem:{vis['stem']}', f'pattern:{vis['pattern']}']
