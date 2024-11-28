@@ -1,5 +1,5 @@
-const LOCAL_DEVELOPMENT = true;
-// const LOCAL_DEVELOPMENT = false; // for cleaner urls in prod
+// const LOCAL_DEVELOPMENT = true;
+const LOCAL_DEVELOPMENT = false; // for cleaner urls in prod
 
 const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
 
