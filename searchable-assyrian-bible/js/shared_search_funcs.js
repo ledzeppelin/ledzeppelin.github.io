@@ -29,7 +29,7 @@ function runExtendedSearchQuery(searchStr, fuse, isAii = false) {
   // console.time('q speed');
 
   const COMMA = isAii ? '،' : ',';
-  const CLOSE_PAREN = ')'; // changest to ')' for aii
+  const CLOSE_PAREN = ')'; // changes to ')' for aii
 
   // comma suffix has precedence over space, ie "water," over compound words like "water cooler"
   const queryStrings = [

@@ -13,10 +13,22 @@ function createFreeTextResultFrag(aiiV) {
   });
 }
 
-function createTopTagsMenuButton(buttonClassName, buttonText) {
+function createTopTagsMenuButton(buttonClassName, buttonText, useTriRootChevron = false) {
+  const chevronFrag = $(document.createDocumentFragment());
+  if (useTriRootChevron) {
+    chevronFrag.append(
+      $('<span/>', { class: 'expandable-btn-icon expandable-btn-icon-green material-symbols-rounded', text: 'keyboard_arrow_right' }),
+      $('<span/>', { class: 'expandable-btn-icon expandable-btn-icon-red material-symbols-rounded', text: 'keyboard_arrow_right' }),
+      $('<span/>', { class: 'expandable-btn-icon expandable-btn-icon-blue material-symbols-rounded', text: 'keyboard_arrow_right' }),
+    );
+  } else {
+    chevronFrag.append(
+      $('<span/>', { class: 'expandable-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right' }),
+    );
+  }
   return $('<button/>', { class: `expandable-btn ${buttonClassName}` }).append(
     $('<span/>', { class: 'expandable-btn-text', text: buttonText }),
-    $('<span/>', { class: 'expandable-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right' }),
+    chevronFrag,
   );
 }
 
@@ -334,14 +346,18 @@ function createVisVerbFrag(key, obj, tierTag) {
         text: obj[key].stem,
         href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `stem:${obj[key].stem}`]])}`,
       }),
-      ', ',
-      $('<a/>', {
-        class: tierTag,
-        text: `${obj[key].pattern} pattern`,
-        href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `pattern:${obj[key].pattern}`]])}`,
-      }),
-      ')',
     );
+    if ('pattern' in obj[key]) {
+      frag.append(
+        ', ',
+        $('<a/>', {
+          class: tierTag,
+          text: obj[key].pattern,
+          href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `pattern:${obj[key].pattern}`]])}`,
+        }),
+      );
+    }
+    frag.append(')');
   }
   return frag;
 }
@@ -525,9 +541,16 @@ function createOtherFormsFrag(jsonline, aiiV) {
   return $(document.createDocumentFragment());
 }
 
+function colorfulRelatedTerms(jsonline) {
+  return (
+    // eslint-disable-next-line max-len
+    jsonline?.other_forms?.rows?.some((row) => row?.values?.some((value) => value?.template_str)) || false
+  );
+}
+
 function createOtherFormsButtonFrag(jsonline) {
   if ('other_forms' in jsonline) {
-    return createTopTagsMenuButton('show-other-forms-btn', 'related terms');
+    return createTopTagsMenuButton('show-other-forms-btn', 'related terms', colorfulRelatedTerms(jsonline));
   }
   return $(document.createDocumentFragment());
 }

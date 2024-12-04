@@ -10,21 +10,23 @@
 
 $key-color-dark: color.adjust($key-color, $lightness: 10%)
 
-// https://developer.apple.com/design/human-interface-guidelines/color
-// Accessible (Light)
+// https://developer.apple.com/design/human-interface-guidelines/color#iOS-iPadOS-system-colors
+// iOS, iPadOS system colors - Accessible (Light)
 $apple-blue: rgb(0, 64, 221)
 $apple-red: rgb(215, 0, 21)
 $apple-green: rgb(36, 138, 61)
 $apple-purple: rgb(173, 68, 171)
-$apple-colors: ($apple-blue, $apple-red, $apple-green, $apple-purple)
+$apple-yellow: rgb(178, 80, 0)
+$apple-colors: ($apple-blue, $apple-red, $apple-green, $apple-purple, $apple-yellow)
 
-// Accessible (Dark)
+// iOS, iPadOS system colors - Accessible (Dark)
 $apple-blue-dark: rgb(64, 156, 255)
 $apple-red-dark: rgb(255, 105, 97)
 $apple-green-dark-1: rgb(49, 222, 75)
 $apple-green-dark: color.mix($apple-green-dark-1, $apple-green, 60%) // since Accessible (Dark) is too bright
 $apple-purple-dark: rgb(218, 143, 255)
-$apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $apple-purple-dark)
+$apple-yellow-dark: rgb(255, 212, 38)
+$apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $apple-purple-dark, $apple-yellow-dark)
 
 $apple-rgba-alpha: .75
 
@@ -41,7 +43,7 @@ $apple-rgba-alpha: .75
     color: $dark-color
 
 @mixin atuta-box-colors($apple-colors, $apple-colors-dark)
-  @for $i from 0 through 3
+  @for $i from 0 through 4
     .atuta-box-clr-#{$i}
       $color: list.nth($apple-colors, $i + 1)
       $dark-color: list.nth($apple-colors-dark, $i + 1)
@@ -68,6 +70,30 @@ $apple-rgba-alpha: .75
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
+
+
+.expandable-btn-icon-green
+  color: rgba($apple-green, $apple-rgba-alpha)
+  @media (prefers-color-scheme: dark)
+    color: rgba($apple-green-dark, $apple-rgba-alpha)
+
+
+.expandable-btn-icon-red
+  color: rgba($apple-red, $apple-rgba-alpha)
+  @media (prefers-color-scheme: dark)
+    color: rgba($apple-red-dark, $apple-rgba-alpha)
+
+
+.expandable-btn-icon-blue
+  color: rgba($apple-blue, $apple-rgba-alpha)
+  @media (prefers-color-scheme: dark)
+    color: rgba($apple-blue-dark, $apple-rgba-alpha)
+
+
+  &.expanded
+    color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      color: $secondary-label-dark
 
 
 .tag-menu-btn-l2

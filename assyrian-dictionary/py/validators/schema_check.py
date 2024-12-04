@@ -3,7 +3,6 @@ sys.path.append('py')
 from collections import Counter
 from vars import ht_schemas
 from vars import verb_templates
-from vars import infl_schemas
 from vars import consts
 
 for key, val in ht_schemas.ht_schema.items():

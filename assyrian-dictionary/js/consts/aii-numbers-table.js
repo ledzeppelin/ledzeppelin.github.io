@@ -62,7 +62,7 @@ const aiiNumbersTable = {
           "value": "ܬܠܝܼܬ݂ܵܝܵܐ"
         },
         {
-          "value": "ܡܬܲܠܬ݂ܵܐ"
+          "value": "ܡܬܘܼܠܬ݂ܵܐ"
         },
         {
           "value": "ܬܘܼܠܬ݂ܵܐ"
@@ -79,7 +79,7 @@ const aiiNumbersTable = {
           "value": "ܪܒ݂ܝܼܥܵܝܵܐ"
         },
         {
-          "value": "ܡܪܲܒܥܵܐ"
+          "value": "ܡܪܘܼܒܥܵܐ"
         },
         {
           "value": "ܪܘܼܒ݂ܥܵܐ"
@@ -96,7 +96,7 @@ const aiiNumbersTable = {
           "value": "ܚܡܝܼܫܵܝܵܐ"
         },
         {
-          "value": "ܡܚܲܡܫܵܐ"
+          "value": "ܡܚܘܼܡܫܵܐ"
         },
         {
           "value": "ܚܘܼܡܫܵܐ"
@@ -113,7 +113,7 @@ const aiiNumbersTable = {
           "value": "ܫܬܝܼܬ݂ܵܝܵܐ"
         },
         {
-          "value": "ܡܫܲܬܬ݂ܵܐ"
+          "value": "ܡܫܘܼܬܬ݂ܵܐ"
         },
         {
           "value": "ܫܘܼܬܬ݂ܵܐ"
@@ -130,7 +130,7 @@ const aiiNumbersTable = {
           "value": "ܫܒ݂ܝܼܥܵܝܵܐ"
         },
         {
-          "value": "ܡܫܲܒ݂ܥܵܐ"
+          "value": "ܡܫܘܼܒܥܵܐ"
         },
         {
           "value": "ܫܘܼܒ݂ܥܵܐ"
@@ -147,7 +147,7 @@ const aiiNumbersTable = {
           "value": "ܬܡܝܼܢܵܝܵܐ"
         },
         {
-          "value": "ܡܬܲܡܢܵܐ"
+          "value": "ܡܬܘܼܡܢܵܐ"
         },
         {
           "value": "ܬܘܼܡܢܵܐ"
@@ -164,7 +164,7 @@ const aiiNumbersTable = {
           "value": "ܬܫܝܼܥܵܝܵܐ"
         },
         {
-          "value": "ܡܬܲܫܥܵܐ"
+          "value": "ܡܬܘܼܫܥܵܐ"
         },
         {
           "value": "ܬܘܼܫܥܵܐ"
@@ -181,7 +181,7 @@ const aiiNumbersTable = {
           "value": "ܥܣܝܼܪܵܝܵܐ"
         },
         {
-          "value": "ܡܥܲܣܪܵܐ"
+          "value": "ܡܥܘܼܣܪܵܐ"
         },
         {
           "value": "ܥܘܼܣܪܵܐ"

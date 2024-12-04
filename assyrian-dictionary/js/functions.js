@@ -119,9 +119,9 @@ function loadResults(searchQuery, PAGINATE_AMT) {
             ),
             createInflFrag(jsonline, aiiV.aii_v),
             createConjFrag(jsonline, aiiV.aii_v),
-            sensesFragment,
             createOtherFormsButtonFrag(jsonline),
             createOtherFormsFrag(jsonline, aiiV.aii_v),
+            sensesFragment,
           );
           jsonlinesFragment.append(jsonlineFragment);
         });

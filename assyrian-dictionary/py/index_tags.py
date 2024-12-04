@@ -29,12 +29,10 @@ def tag_counts():
 def tag_counts_grouped(tag_counter):
     MIN_OCCURENCES = 4
     # MIN_OCCURENCES = 1
-    exempt_from_min_occurrences = {'root:2-letter-root', 'root:4-letter-root'}
+    exempt_from_min_occurrences = {'root:2-letter-root', 'root:4-letter-root', 'root:5-letter-root'}
     results = defaultdict(list)
     # raise Exception(tag_counter.items())
     for tag, count in tag_counter.items():
-        # if "Exception: empty pattern list", uncomment following line
-        # if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences or tag.startswith('pattern:') or tag.startswith('stem:'):
         if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences:
             tag_type, tag_name = tag.split(':', 1)
             results[tag_type].append(tag_name)
@@ -52,7 +50,7 @@ def generate_verb_stem_list(stem_tag_names, pattern_tag_names):
 def generate_stems_list(stem_tag_names, pattern_tag_names):
     # raise Exception(stem_tag_names, pattern_tag_names)
     res = []
-    for stem_tag_name in sorted(stem_tag_names,key=str.casefold):
+    for stem_tag_name in stem_tag_names:
         res.append({
             'name': stem_tag_name,
             'tag': f"stem:{stem_tag_name}",
@@ -66,24 +64,22 @@ def generate_stems_list(stem_tag_names, pattern_tag_names):
 
 
 def generate_patterns_list(pattern_tag_names, stem_tag_name):
-    # raise Exception(pattern_tag_names, stem_tag_name)
     res = []
-    for pattern_tag_name in sorted(pattern_tag_names,key=str.casefold):
-        # raise Exception(stem_tag_name)
+    for pattern_tag_name in pattern_tag_names:
         if stem_tag_name == find_stem_of_pattern(conj_stems_and_patterns, pattern_tag_name):
             res.append({
-                'name': f'{pattern_tag_name} pattern',
+                'name': pattern_tag_name,
                 'tag': f"pattern:{pattern_tag_name}",
             })
 
-    if not res:
+    if not res and stem_tag_name != 'Irregular':
         raise Exception('empty pattern list')
 
     return res
 
 def generate_root_letters_list(root_letters_tag_names):
     res = []
-    for root_letters_tag_name in sorted(root_letters_tag_names,key=str.casefold):
+    for root_letters_tag_name in root_letters_tag_names:
         tag = f"root:{root_letters_tag_name}"
         res.append({
             'name': root_letters_tag_name,
@@ -109,11 +105,18 @@ def append_l2(tag_type, tag_names, root_letters_list, l2_full_name, fuse_results
 
     fuse_results.append({
         'name': l2_full_name,
-        'children': sorted(
-            children,
-            key=lambda d: d.get('sort_key', d['name'])
-        )
+        'children': children
     })
+
+def sort_dictionary_tags(fuse_results):
+    for l1 in fuse_results:
+        if 'children' in l1:
+            l1['children'] = sorted(
+                l1['children'],
+                key=lambda child: child.get('sort_key', child['name'])
+            )
+
+    return sorted(fuse_results, key=lambda l1: l1['name'])
 
 def parse_indices(tag_counter):
     # omit = {'category', 'from', 'ipa'}
@@ -127,6 +130,7 @@ def parse_indices(tag_counter):
     }
 
     grouped_tags = tag_counts_grouped(tag_counter)
+    # raise Exception(grouped_tags['pattern'])
     verb_stem_list = generate_verb_stem_list(grouped_tags['stem'], grouped_tags['pattern'])
     # raise Exception(verb_stem_list)
     root_letters_list = generate_root_letters_list(grouped_tags['root'])
@@ -143,12 +147,7 @@ def parse_indices(tag_counter):
         else:
             raise Exception(f'{tag_type} not found')
 
-    sorted_fuse_results = sorted(
-        fuse_results,
-        key=lambda d: d['name']
-    )
-
-    return sorted_fuse_results
+    return sort_dictionary_tags(fuse_results)
 
 # print(tag_counts())
 

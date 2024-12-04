@@ -1,5 +1,5 @@
 let searchQuery = null;
-const PAGINATE_AMT = 10;
+const PAGINATE_AMT = 1;
 const IS_DICTIONARY = true;
 
 // console.time('test');

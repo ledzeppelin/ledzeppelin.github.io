@@ -152,7 +152,7 @@ class DiffInfo:
 
             pos_template_name = item['inflection_templates'][0]['name']
 
-            if not item['inflection_templates'][-1]['name'] == 'aii-conj-verb':
+            if not item['inflection_templates'][-1]['name'] == 'aii-conj':
                 continue
             shallow[pos_template_name] += 1
 

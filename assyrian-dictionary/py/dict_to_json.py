@@ -199,7 +199,9 @@ def validate_t2_tags(jsonline):
             tier2.append(f'root:{jsonline['root_tag_val']}')
         if 'tier2_vis_verb' in jsonline:
             vis = jsonline['tier2_vis_verb']
-            tier2 += [f'stem:{vis['stem']}', f'pattern:{vis['pattern']}']
+            tier2.append(f'stem:{vis['stem']}')
+            if 'pattern' in vis:
+                tier2.append(f'pattern:{vis['pattern']}')
         if 'tier2_etymology' in jsonline:
             tier2 += [f'from:{ety}' for ety in jsonline['tier2_etymology']]
 
