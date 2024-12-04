@@ -20,9 +20,33 @@
    * pos:phrase (long sentences when toggled/expanded)
    * 'khda' (to ensure ipa and and etymologies are collated correctly)
    * z'or vs z'ora - etymology position in article affects availability of root z-'-r
+   * gloss for "ace" has tag “card games” tagged twice
+
+# todos
+- uncomment #canonical-link for tag search
+- canonical for typing in the search box?
+- br for t3 categories
+- tr search should show all glosses
+- aii search
+- tag search UI
+- see if it looks better to lowercase all clickable links
+- check hide/show on numbers table and spacing between elements
+- try line-height of > 1.4 (1.6?) for android accessibility
+
+- check if new bible template is working as expected https://en.wiktionary.org/w/index.php?title=%DC%9A%DC%9D%DC%98%DC%AC%DC%90&diff=prev&oldid=82399768
+- remove old validators which no longer work or are no longer used
+- validate G-weak-1i, G-weak-2i, G-weak-3i
+
+- dynamic conjugations
+- dynamic inflections
+- dynamic sentence generation
+- radical visualization
+   ܡܲܚܬܹܐ is a good example for why this is a needed feature... it will communicate roots aren't a concrete thing and instead a concept to better group together words
+   right now the UI confusingly suggests that weak-3i means the 3rd letter of the root is weak, when instead it's the 3rd radical of the verb
+
 
 # nice to haves
-- consec atwateh in root should be same color (ex. for G-2i  where 2nd and 3rd are same char implies 3rd is dropped)
+- consec atwateh in root should be same color (ex. for G-2i  where 2nd and 3rd are same char implies 3rd is dropped), not really possible since G-weak-3i and G-weak-2i have geminates, ex ܥܵܐܹܠ and ܪܵܒ݂ܹܐ 
 - personal pronoun table
 
 # won't do

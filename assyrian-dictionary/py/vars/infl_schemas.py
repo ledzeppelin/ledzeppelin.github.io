@@ -1,8 +1,8 @@
-infl_templates_ignored = {
-    "aii-infl-bi", "aii-infl-il", "aii-infl-it", "aii-infl-layt", "aii-particle-infl-zi",
-}
+from vars.ht_schemas import adj_wrap
 
-infl_schema = {
+omitted_infl_schema = {'aii-particle-infl-zi'}
+
+noun_infl_schema = {
     'aii-infl-noun':{
         'heading': 'Possessive Determiner',
         'heading_2': ['one', 'two or more'],
@@ -77,7 +77,6 @@ infl_schema = {
             },
         }
     },
-
     'aii-infl-prep':{
         'heading': 'Object Pronoun',
         'omit': {
@@ -110,11 +109,87 @@ infl_schema = {
             },
         }
     },
+    'aii-infl-prep-numeral':{
+        'heading': 'Object Pronoun',
+        'omit': {
+            "base", '1',
+        },
+        'template': {
+            'us': {
+                '1p': None,
+            },
+            'you (to a group)': {
+                '2p': None,
+            },
+            'them': {
+                '3p': None,
+            },
+        }
+    },
+    'aii-infl-prep-variant':{
+        'heading': 'Object Pronoun',
+        'heading_2': ['base form', 'variant form'],
+        'omit': {
+            "heading", "base", 'variant',
+        },
+        'template': {
+            'me': {
+                'base-1s': None,
+                'variant-1s': None,
+            },
+            'us': {
+                'base-1p': None,
+                'variant-1p': None,
+            },
+            'you (to a man)': {
+                'base-2m': None,
+                'variant-2m': None,
+            },
+            'you (to a woman)': {
+                'base-2f': None,
+                'variant-2f': None,
+            },
+            'you (to a group)': {
+                'base-2p': None,
+                'variant-2p': None,
+            },
+            'him': {
+                'base-3m': None,
+                'variant-3m': None,
+            },
+            'her': {
+                'base-3f': None,
+                'variant-3f': None,
+            },
+            'them': {
+                'base-3p': None,
+                'variant-3p': None,
+            },
+        }
+    },
+}
 
+verb_infl_schema = {
     'aii-conj-verb':{
         'heading': 'Subject Pronoun',
         'omit': set(),
         'template': {
+            'Present Participle': {
+                " ": {
+                    'prp': None,
+                },
+            },
+            'Past Participle': {
+                "masculine": {
+                    'pp-sm': None,
+                },
+                "feminine": {
+                    'pp-sf': None,
+                },
+                "plural": {
+                    'pp-p': None,
+                },
+            },
             'Past Tense': {
                 'I': {
                     'past-1st-s': None,
@@ -181,10 +256,65 @@ infl_schema = {
                     'imp-2nd-p': None,
                 },
             },
-
+            'Passive Past Tense': {
+                'I (man)': {
+                    'passive-past-1st-sm': None,
+                },
+                'I (woman)': {
+                    'passive-past-1st-sf': None,
+                },
+                'we': {
+                    'passive-past-1st-p': None,
+                },
+                'you (to a man)': {
+                    'passive-past-2nd-sm': None,
+                },
+                'you (to a woman)': {
+                    'passive-past-2nd-sf': None,
+                },
+                'you (to a group)': {
+                    'passive-past-2nd-p': None,
+                },
+                'he': {
+                    'passive-past-3rd-sm': None,
+                },
+                'she': {
+                    'passive-past-3rd-sf': None,
+                },
+                'they': {
+                    'passive-past-3rd-p': None,
+                },
+            },
+            'Verbal Noun': {
+                ' ': {
+                    'vn': None,
+                },
+            },
+            'Agent Noun': {
+                'singular masculine': {
+                    'an-sm': None,
+                },
+                'singular feminine': {
+                    'an-sf': None,
+                },
+                'plural masculine': {
+                    'an-pm': None,
+                },
+                'plural feminine': {
+                    'an-pf': None,
+                },
+            },
+            'Instance Noun': {
+                'singular': {
+                    'in-s': None,
+                },
+                'plural': {
+                    'in-p': None,
+                },
+            },
         }
     },
-    'aii-conj-hawe':{
+    'aii-conj-haweh':{
         'heading': 'Subject Pronoun',
         'omit': set(),
         'template': {

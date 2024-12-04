@@ -7,7 +7,7 @@ import re
 import copy
 from vars import consts
 from vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
-from vars.infl_schemas import infl_templates_ignored, infl_schema
+from vars.infl_schemas import noun_infl_schema, omitted_infl_schema
 from ipa_to_mp3 import ipa_to_mp3
 from conjugate_verbs import set_verb_conj, annotated_row
 
@@ -74,23 +74,22 @@ def set_infl(item, obj, aii_v, vocalized_cache, visual_conj_cache):
     if 'inflection_templates' not in item:
         return
 
-    template_name = item['inflection_templates'][0]['name']
-    if template_name in infl_templates_ignored:
-        return
     html_template_name = item['inflection_templates'][-1]['name']
 
-    if html_template_name in {'aii-conj-verb', 'aii-conj-hawe'}:
-        set_verb_conj(item, obj, html_template_name, template_name, aii_v, vocalized_cache, visual_conj_cache)
-    elif html_template_name in {'aii-infl-noun', 'aii-infl-noun-unc', 'aii-infl-prep'}:
+    if html_template_name == 'aii-conj':
+        set_verb_conj(item, obj, aii_v, vocalized_cache, visual_conj_cache)
+    elif html_template_name in noun_infl_schema:
         set_noun_infl(item, obj, html_template_name, aii_v)
+    elif html_template_name in omitted_infl_schema:
+        pass
     else:
         raise Exception(f'html_template_name: {html_template_name} not found')
 
 
 def set_noun_infl(item, obj, template_name, aii_v):
     # for noun/preposition
-    template = copy.deepcopy(infl_schema[template_name]['template'])
-    omit = infl_schema[template_name]['omit']
+    template = copy.deepcopy(noun_infl_schema[template_name]['template'])
+    omit = noun_infl_schema[template_name]['omit']
     unique_keys = {key:pron for pron, val in template.items() for key in val}
 
     for arg, aii in item['inflection_templates'][-1]['args'].items():
@@ -110,12 +109,12 @@ def set_noun_infl(item, obj, template_name, aii_v):
         rows.append( annotated_row(key, list(val.values()), aii_v))
 
     obj['table'] = {
-        "heading": infl_schema[template_name]['heading'],
+        "heading": noun_infl_schema[template_name]['heading'],
         "rows": rows
     }
 
-    if 'heading_2' in infl_schema[template_name]:
-        obj['table']['heading_2'] = infl_schema[template_name]['heading_2']
+    if 'heading_2' in noun_infl_schema[template_name]:
+        obj['table']['heading_2'] = noun_infl_schema[template_name]['heading_2']
 
 
 def set_head_template(item, obj, aii_v):
@@ -262,7 +261,7 @@ def already_there_set(obj):
                     already_there.add(value['value'])
     return already_there
 
-def annotate_row_if_not_there(meta, aii_values, aii_v, obj):
+def annotate_row_if_not_there(meta, aii_values, aii_v, obj, prepend=False):
     already_there = already_there_set(obj)
 
     # if any value of values is there, we just omit all values
@@ -272,9 +271,15 @@ def annotate_row_if_not_there(meta, aii_values, aii_v, obj):
             return
 
     if aii_values:
-        obj['other_forms']['rows'].append(
-            annotated_row(meta, aii_values, aii_v)
-        )
+        if prepend:
+            obj['other_forms']['rows'].insert(
+                0,
+                annotated_row(meta, aii_values, aii_v)
+            )
+        else:
+            obj['other_forms']['rows'].append(
+                annotated_row(meta, aii_values, aii_v)
+            )
 
 
 def annotate_row_if_not_there2(meta, aii_values, aii_v, obj):
@@ -338,13 +343,10 @@ def add_etymology(obj, item, aii_v):
             elif ety['name'] in consts.other_forms_from_ety_templates:
                 alias = consts.other_forms_from_ety_templates[ety['name']]
                 add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias)
-            elif ety['name'] == 'aii-root' and \
-                (obj['pos'] != 'verb' or \
-                (obj['pos'] == 'verb' and infl_template_name in infl_templates_ignored)):
-
+            elif ety['name'] == 'aii-root':
                 if obj['pos'] == 'root':
                     raise Exception('root shouldnt contain aii-root')
-                annotate_row_if_not_there('root', [ety['args']['1']], aii_v, obj)
+                annotate_row_if_not_there('root', [ety['args']['1']], aii_v, obj, True)
 
         if etymology:
             # remove dupes, maintain order
@@ -428,8 +430,12 @@ def datadump_to_dict():
     aii_dict = defaultdict(lambda: defaultdict(list))
     aii_sounds = defaultdict(lambda: defaultdict(list))
 
-    BLACKLIST = {'ܒܵܠܹܐ', 'ܩܵܗܹܐ',}
-
+    BLACKLIST = {
+        'ܡܦܪܲܣܚܲܙܹܐ',
+        'ܡܚܘܛܡܠܠ',
+        #####
+        'ܐܵܙܹܠ',
+    }
 
     vocalized_cache = {generate_aii_v(item, item['word']) for item in data}
     cnt_str = f"{len(vocalized_cache)} Assyrian words"
@@ -450,7 +456,7 @@ def datadump_to_dict():
         obj['tier2_tags'] = [f"pos:{consts.pos_abbrev[item['pos']]}"]
         if item['pos'] == 'root':
             num_chars = len(aii_v.split())
-            if num_chars not in (2, 3, 4):
+            if num_chars not in (2, 3, 4, 5):
                 raise Exception(f'{aii_v} is not 2, 3, 4 letters')
 
             root_tag_val = f'{num_chars}-letter-root'

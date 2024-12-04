@@ -1,4 +1,4 @@
--- From Dec 11th, 2023
+-- From Oct 17, 2024
 -- https://en.wiktionary.org/w/index.php?title=Module:number_list/data/aii&oldid=77194575
 -- 
 -- in Lua 5.2, unpack was moved to table.unpack
@@ -33,7 +33,7 @@ numbers[3] = {
 	cardinal = "ܬܠܵܬ݂ܵܐ",
 	ordinal = {"ܬܠܝܼܬ݂ܵܝܵܐ"},
 	fractional = {"ܬܘܼܠܬ݂ܵܐ"},
-	multiplier = {"ܡܬܲܠܬ݂ܵܐ"}
+	multiplier = {"ܡܬܘܼܠܬ݂ܵܐ"}
 }
 
 numbers[4] = {
@@ -41,7 +41,7 @@ numbers[4] = {
 	cardinal = "ܐܲܪܒܥܵܐ",
 	ordinal = {"ܪܒ݂ܝܼܥܵܝܵܐ"},
 	fractional = {"ܪܘܼܒ݂ܥܵܐ"},
-	multiplier = {"ܡܪܲܒܥܵܐ"}
+	multiplier = {"ܡܪܘܼܒܥܵܐ"}
 }
 
 numbers[5] = {
@@ -49,7 +49,7 @@ numbers[5] = {
 	cardinal = "ܚܲܡܫܵܐ",
 	ordinal = {"ܚܡܝܼܫܵܝܵܐ"},
 	fractional = {"ܚܘܼܡܫܵܐ"},
-	multiplier = {"ܡܚܲܡܫܵܐ"}
+	multiplier = {"ܡܚܘܼܡܫܵܐ"}
 }
 
 numbers[6] = {
@@ -57,7 +57,7 @@ numbers[6] = {
 	cardinal = "ܐܸܫܬܵܐ",
 	ordinal = {"ܫܬܝܼܬ݂ܵܝܵܐ"},
 	fractional = {"ܫܘܼܬܬ݂ܵܐ"},
-	multiplier = {"ܡܫܲܬܬ݂ܵܐ"}
+	multiplier = {"ܡܫܘܼܬܬ݂ܵܐ"}
 }
 
 numbers[7] = {
@@ -65,7 +65,7 @@ numbers[7] = {
 	cardinal = "ܫܲܒ݂ܥܵܐ",
 	ordinal = {"ܫܒ݂ܝܼܥܵܝܵܐ"},
 	fractional = {"ܫܘܼܒ݂ܥܵܐ"},
-	multiplier = {"ܡܫܲܒ݂ܥܵܐ"}
+	multiplier = {"ܡܫܘܼܒܥܵܐ"}
 }
 
 numbers[8] = {
@@ -73,7 +73,7 @@ numbers[8] = {
 	cardinal = "ܬܡܵܢܝܵܐ",
 	ordinal = {"ܬܡܝܼܢܵܝܵܐ"},
 	fractional = {"ܬܘܼܡܢܵܐ"},
-	multiplier = {"ܡܬܲܡܢܵܐ"}
+	multiplier = {"ܡܬܘܼܡܢܵܐ"}
 }
 
 numbers[9] = {
@@ -81,7 +81,7 @@ numbers[9] = {
 	cardinal = "ܬܸܫܥܵܐ",
 	ordinal = {"ܬܫܝܼܥܵܝܵܐ"},
 	fractional = {"ܬܘܼܫܥܵܐ"},
-	multiplier = {"ܡܬܲܫܥܵܐ"}
+	multiplier = {"ܡܬܘܼܫܥܵܐ"}
 }
 
 numbers[10] = {
@@ -89,7 +89,7 @@ numbers[10] = {
 	cardinal = "ܥܸܣܪܵܐ",
 	ordinal = {"ܥܣܝܼܪܵܝܵܐ"},
 	fractional = {"ܥܘܼܣܪܵܐ"},
-	multiplier = {"ܡܥܲܣܪܵܐ"}
+	multiplier = {"ܡܥܘܼܣܪܵܐ"}
 }
 
 numbers[11] = {

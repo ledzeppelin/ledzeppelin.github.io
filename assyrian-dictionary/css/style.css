@@ -42,6 +42,41 @@
   }
 }
 
+.expandable-btn-icon-green {
+  color: rgba(36, 138, 61, 0.75);
+}
+@media (prefers-color-scheme: dark) {
+  .expandable-btn-icon-green {
+    color: rgba(43.8, 188.4, 69.4, 0.75);
+  }
+}
+
+.expandable-btn-icon-red {
+  color: rgba(215, 0, 21, 0.75);
+}
+@media (prefers-color-scheme: dark) {
+  .expandable-btn-icon-red {
+    color: rgba(255, 105, 97, 0.75);
+  }
+}
+
+.expandable-btn-icon-blue {
+  color: rgba(0, 64, 221, 0.75);
+}
+@media (prefers-color-scheme: dark) {
+  .expandable-btn-icon-blue {
+    color: rgba(64, 156, 255, 0.75);
+  }
+}
+.expandable-btn-icon-blue.expanded {
+  color: rgb(134, 134, 137);
+}
+@media (prefers-color-scheme: dark) {
+  .expandable-btn-icon-blue.expanded {
+    color: rgb(149, 149, 157);
+  }
+}
+
 .tag-menu-btn-l2 {
   color: rgb(28, 28, 30);
 }
@@ -210,6 +245,19 @@
     background-color: rgba(218, 143, 255, 0.12);
     border-color: rgba(218, 143, 255, 0.3);
     color: rgb(218, 143, 255);
+  }
+}
+
+.atuta-box-clr-4 {
+  background-color: rgba(178, 80, 0, 0.06);
+  border-color: rgba(178, 80, 0, 0.3);
+  color: rgb(178, 80, 0);
+}
+@media (prefers-color-scheme: dark) {
+  .atuta-box-clr-4 {
+    background-color: rgba(255, 212, 38, 0.12);
+    border-color: rgba(255, 212, 38, 0.3);
+    color: rgb(255, 212, 38);
   }
 }
 
@@ -874,8 +922,25 @@ kbd {
   font-size: 24px;
   font-variation-settings: "FILL" 1, "wght" 300, "GRAD" 0, "opsz" 24;
 }
+.expandable-btn .expandable-btn-icon.expandable-btn-icon-green, .expandable-btn .expandable-btn-icon.expandable-btn-icon-red, .expandable-btn .expandable-btn-icon.expandable-btn-icon-blue {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+.expandable-btn .expandable-btn-icon.expandable-btn-icon-red {
+  margin-left: -17px;
+}
+.expandable-btn .expandable-btn-icon.expandable-btn-icon-blue {
+  margin-left: -17px;
+}
 .expandable-btn .expandable-btn-icon.expanded {
   transform: rotate(90deg);
+}
+.expandable-btn .expandable-btn-icon.expanded.expandable-btn-icon-red {
+  margin-left: -24px;
+  transition: transform 200ms, margin-left 200ms;
+}
+.expandable-btn .expandable-btn-icon.expanded.expandable-btn-icon-blue {
+  margin-left: -24px;
+  transition: transform 200ms, margin-left 200ms;
 }
 
 .show-gloss-terms-btn .expandable-btn-icon,
@@ -1001,7 +1066,7 @@ button {
 }
 
 .jsonline {
-  padding-top: 12px;
+  padding-top: 16px;
 }
 
 .pos {
@@ -1012,8 +1077,6 @@ button {
   align-items: center;
   display: flex;
   gap: 6px;
-  margin-bottom: 6px;
-  min-height: 26px;
 }
 .pos > * {
   align-self: flex-end;
@@ -1057,6 +1120,7 @@ button {
 .senses {
   margin: 0;
   padding-left: 34px;
+  padding-top: 6px;
 }
 .senses.only-one-gloss {
   list-style-type: none;

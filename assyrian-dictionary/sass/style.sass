@@ -22,6 +22,7 @@ $searchbar-inset-x: 20px
 $close-x: $searchbar-inset-x - $side-padding
 $button-padding: 12px
 $half-icon-size: 12px
+$button-diameter: 3 * $half-icon-size + 2px
 
 @include search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x)
 
@@ -100,6 +101,7 @@ $list-margin: $list-y-margin 0 $list-y-margin $list-indent
     .highlighted
       font-weight: 500
 
+$tri-root-offset: -17px
 
 .expandable-btn
   align-items: center
@@ -117,8 +119,27 @@ $list-margin: $list-y-margin 0 $list-y-margin $list-indent
     font-size: $half-icon-size * 2
     font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
 
+    &.expandable-btn-icon-green,
+    &.expandable-btn-icon-red,
+    &.expandable-btn-icon-blue
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
+
+    &.expandable-btn-icon-red
+      margin-left: $tri-root-offset
+
+    &.expandable-btn-icon-blue
+      margin-left: $tri-root-offset
+
     &.expanded
       transform: rotate(90deg)
+
+      &.expandable-btn-icon-red
+        margin-left: -2 * $half-icon-size
+        transition: transform 200ms, margin-left 200ms
+
+      &.expandable-btn-icon-blue
+        margin-left: -2 * $half-icon-size
+        transition: transform 200ms, margin-left 200ms
 
 .show-gloss-terms-btn,
 .show-examples-btn,
@@ -232,7 +253,7 @@ button
 
 
 .jsonline
-  padding-top: 12px
+  padding-top: 16px
 
 
 .pos
@@ -240,9 +261,6 @@ button
   align-items: center
   display: flex
   gap: 6px
-  margin-bottom: 6px
-  min-height: $half-icon-size * 2 + 2px // ex. "khdha"  has mix of pos which can/can't expand, this ensures consistent height
-
 
   & > *
     align-self: flex-end
@@ -286,6 +304,7 @@ button
 .senses
   margin: 0
   padding-left: 34px
+  padding-top: 6px
 
   &.only-one-gloss
     list-style-type: none
@@ -467,7 +486,6 @@ $sound-button-padding: 6px
 
 .more-sounds-button
   $br-width: 1px
-  $button-width: 3 * $half-icon-size + 2px
 
   border-radius: $half-icon-size + $sound-button-padding
   border-style: solid
@@ -477,10 +495,10 @@ $sound-button-padding: 6px
   flex-shrink: 0
   font-size: $half-icon-size * 2
   font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
-  height: $button-width
+  height: $button-diameter
   margin-right: 8px
   padding: 0
-  width: $button-width
+  width: $button-diameter
 
   &::before
     content: 'select_to_speak'

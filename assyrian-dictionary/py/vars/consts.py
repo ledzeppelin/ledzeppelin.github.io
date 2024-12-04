@@ -50,6 +50,7 @@ language_codes = {
   'fa-cls': 'Classical Persian',
   'fr': 'French',
   'fro': 'Old French',
+  'gbz': 'Zoroastrian Dari',
   'gez': "Ge'ez",
   'gkm': 'Byzantine Greek',
   'grc': 'Ancient Greek',

@@ -7,7 +7,7 @@ ht_schema_omit = {
 }
 
 def adj_wrap(gram_category):
-    return f"describing {gram_category} nouns"
+    return f"describing {gram_category} noun"
 
 # when resolving issues from uptaking new dictionary
 # 1. add missing value to either 'forms' or 'genders' set
@@ -45,7 +45,7 @@ ht_schema = {
         'genders': set(),
     },
     "aii-interj": {
-        'omit': { "1", "head", "tr" },
+        'omit': { "1", "head", "tr", 'ftr', 'pltr' },
         'forms': {"f", "fs", "ms", "pl"},
         'genders': { "g" },    
     },
@@ -82,7 +82,7 @@ ht_schema = {
         'forms': {"head2", "head3", "head4"},
         'genders': set(),
     },
-    "aii-past participle": {
+    "aii-past-participle": {
         'omit': { "1", "head" },
         'forms': {"f", "pl"},
         'genders': set(),
@@ -98,17 +98,17 @@ ht_schema = {
         'forms': { "head2" },
         'genders': set(),
     },
-    "aii-present participle": {
+    "aii-present-participle": {
         'omit': { "1" },
         'forms': set(),
         'genders': set(),
     },
     "aii-pronoun": {
-        'omit': { "1", "head", "tr" },
+        'omit': { "1", "head", "tr", "tr2" },
         'forms': {"f", "head2", "pl", "ms", "fs", "m", "mpl", "fpl", "s"},
         'genders': {"2", "g", "g2"},
     },
-    "aii-proper noun": {
+    "aii-proper-noun": {
         'omit': { "1", "tr", "tr2" },
         'forms': { "head2" },
         'genders': {"2", "g", "g2"},
@@ -119,8 +119,8 @@ ht_schema = {
         'genders': {"g"},
     },
     "aii-verb": {
-        'omit': { "1", "head", "tr", "pptr", "prptr" },
-        'forms': { "head2", "pp", "prp"},
+        'omit': { "1"},
+        'forms': { "head2"},
         'genders': set(),
     },
 }
@@ -130,11 +130,11 @@ ht_schema = {
 gender_abbrev = {
     "aii-adjective": { },
     "aii-interj": {
-        "m-s": 'for masculine nouns',
-        "f-s": 'for feminine nouns',
-        "p": 'for plural nouns',
+        "m-s": 'for masculine noun',
+        "f-s": 'for feminine noun',
+        "p": 'for plural noun',
     },
-    "aii-past participle": {},
+    "aii-past-participle": {},
     "aii-suffix": {
         "m-s": 'masculinizing',
     },
@@ -161,12 +161,12 @@ forms_abbrev = {
         "mpl": adj_wrap('plural masculine'),
     },
     "aii-interj": {
-        "fs": 'for feminine nouns',
-        "f": 'for feminine nouns',
-        "ms": 'for masculine nouns',
-        "pl": 'for plural nouns',
+        "fs": 'for feminine noun',
+        "f": 'for feminine noun',
+        "ms": 'for masculine noun',
+        "pl": 'for plural noun',
     },
-    "aii-past participle": {
+    "aii-past-participle": {
         "f": adj_wrap('feminine'),
         "pl": adj_wrap('plural'),
     },

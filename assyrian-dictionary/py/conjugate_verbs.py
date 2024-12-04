@@ -3,7 +3,7 @@ import re
 import itertools
 import copy
 from vars.verb_templates import conj_schema, conj_stems_and_patterns
-from vars.infl_schemas import infl_schema
+from vars.infl_schemas import verb_infl_schema
 
 def strip_markers():
     # this is a port of /shared_js/aii-utils.js
@@ -44,10 +44,10 @@ def root_letters_in_verb_args(root_letters, verb_args):
     va_stripped = [re.sub(regex, '', atuta) for atuta in verb_args]
     va_intersected = [None] * len(verb_args)
 
-    if len(root_letters) > 4:
-        raise Exception('root has more than 4 letters')
+    if len(root_letters) > 5:
+        raise Exception('root has more than 5 letters')
 
-    if not (len(root_letters) in (2,3,4) and len(verb_args) in (1,2,3,4)):
+    if not (len(root_letters) in (2,3,4, 5) and len(verb_args) in (1,2,3,4,5)):
         return None
 
     max_num_matches = min(len(root_letters), len(verb_args))
@@ -73,81 +73,138 @@ def root_letters_in_verb_args(root_letters, verb_args):
                     return va_intersected
     return None
 
-def root_venn(item):
+def root_venn(item, verb_args):
     if 'etymology_templates' in item:
         for ety in item['etymology_templates']:
             if not (ety['name'] == 'aii-root' and item['pos'] == 'verb'):
                 continue
 
-            template = item['inflection_templates'][0]
-            if template['name'].startswith('aii-conj-verb/'):
-                root = ety['args']['1'].split(' ')
-                verb_args = list(template['args'].values())
+            root = ety['args']['1'].split(' ')
+            regex = strip_markers()
+            va_stripped = [re.sub(regex, '', atuta) for atuta in verb_args]
+            valid_verb_args = all(len(verb_arg) <= 1 for verb_arg in va_stripped)
+            if valid_verb_args:
+                return root, root_letters_in_verb_args(root, verb_args)
+    return None, None
 
-                regex = strip_markers()
-                va_stripped = [re.sub(regex, '', atuta) for atuta in verb_args]
-                valid_verb_args = all(len(verb_arg) <= 1 for verb_arg in va_stripped)
-                if valid_verb_args:
-                    return root, verb_args, root_letters_in_verb_args(root, verb_args)
-    return None, None, None
+def parse_verb_pattern(input_str):
+    # "G-strong|ܩ|ܪ|ܡ}}"
+    # Output: ('G-strong', ['ܩ', 'ܪ', 'ܡ'])
+    if 'aii-conj-haweh' in input_str:
+        return 'aii-conj-haweh', []
+    cleaned_str = input_str.strip('}}')
+    parts = cleaned_str.split('|')
+    return f"aii-conj-verb/{parts[0]}", parts[1:]
+
+def unique_forms(aii_v, item, template_name, irregular_num_forms):
+    # turn the relevant aii forms into a list whose values will be used to fill out the template
+    alphabet = 'ܦܒܬܛܕܟܓܩܣܨܙܫܚܥܗܡܢܪܠܐܘܝ'
+    matching_forms = []
+    for entry in item.get('forms', []):
+        if entry.get("source") in {"conjugation", "inflection"}:
+            if any(char in alphabet or entry["form"] == '-' for char in entry["form"]):
+                matching_forms.append(entry["form"])
+
+    if template_name in irregular_num_forms:
+        if irregular_num_forms[template_name] != len(matching_forms):
+            raise Exception(len(matching_forms), matching_forms, aii_v)
+    else:
+        if len(matching_forms) != 53:
+            raise Exception(len(matching_forms), matching_forms, aii_v)
+
+    return set(matching_forms)
+
+def replace_placeholders(input_string, replacements):
+    for i, replacement in enumerate(replacements, start=1):
+        input_string = input_string.replace(f"{{{{{{{i}}}}}}}", replacement)
+    return input_string
 
 
-def set_verb_conj(item, obj, html_template_name, template_name, aii_v, vocalized_cache, visual_conj_cache):
-    template = copy.deepcopy(infl_schema[html_template_name]['template'])
-    unique_keys = {}
-    for tense, pronouns in template.items():
-        for pronoun, conj in pronouns.items():
-            for key in conj:
-                # {'past-3rd-sm' : ('He', 'past')}
-                unique_keys[key] = (pronoun, tense)
+def set_verb_conj(item, obj, aii_v, vocalized_cache, visual_conj_cache):
+    irregular_num_forms = {
+        'aii-conj-verb/azel': 52,
+        'aii-conj-verb/yavel': 52,
+        'aii-conj-verb/atheh': 52,
+        'aii-conj-haweh': 54
+    }
 
-    omit = infl_schema[html_template_name]['omit']
+    template_str_invocation = item['forms'][-1]['form']
+    template_name, template_args = parse_verb_pattern(template_str_invocation)
+    if template_name == 'aii-conj-verb/G-weak-1i':
+        return
+    if template_name not in list(conj_schema):
+        raise Exception(aii_v, template_name)
 
-    for arg, aii in item['inflection_templates'][-1]['args'].items():
-        if arg in omit:
-            pass
-        elif arg in unique_keys:
-            pron, tense = unique_keys.pop(arg)
-            template[tense][pron][arg] = aii
-        else:
-            raise Exception(f'missing {arg} for word {item["word"]}')
+    AII_CONJ_VERB = 'aii-conj-haweh' if template_name == 'aii-conj-haweh' else 'aii-conj-verb'
+    template = copy.deepcopy(verb_infl_schema[AII_CONJ_VERB]['template'])
+    unique = unique_forms(aii_v, item, template_name, irregular_num_forms)
 
-    if unique_keys:
-        raise Exception(unique_keys)
+
+    vn_tense_key = None
+    for tense_key, tense in template.items():
+        for pronoun in tense.values():
+            for form in pronoun.keys():
+                if form == 'vn' and form not in conj_schema[template_name]:
+                    vn_tense_key = tense_key
+                    continue
+                eval_form = replace_placeholders(conj_schema[template_name][form], template_args)
+                if eval_form not in unique:
+                    raise Exception(template_name, form, eval_form, aii_v, 'form doesnt match')
+                pronoun[form] = eval_form
+
+    if vn_tense_key:
+        # raise Exception(vn_tense_key)
+        del template[vn_tense_key]
 
     tenses = []
 
-    root, verb_args, verb_args_x_root = root_venn(item)
+
+    root, verb_args_x_root = root_venn(item, template_args)
+
+    alt_heading = {
+        'Present Participle': ' ',
+        'Past Participle': 'Gender of Described Noun',
+        'Verbal Noun': ' ',
+        'Agent Noun': 'Number and Gender',
+        'Instance Noun': 'Number',
+    }
 
     for tense, pronouns in template.items():
         rows = []
+        # raise Exception(tense)
+        true_heading = alt_heading[tense] if tense in alt_heading else verb_infl_schema[AII_CONJ_VERB]["heading"]
+
         for pronoun, conj_obj in pronouns.items():
             rows.append(
                 annotated_verb_row(
                     pronoun, conj_obj, aii_v, vocalized_cache, template_name,
-                    verb_args, verb_args_x_root, visual_conj_cache, root
+                    template_args, verb_args_x_root, visual_conj_cache, root
                 )
             )
         tenses.append(
-            {'heading': infl_schema[html_template_name]["heading"], 'heading_2': [tense], 'rows': rows}
+            {'heading': true_heading, 'heading_2': [tense], 'rows': rows}
         )
 
 
-    if template_name == html_template_name:
-        stem_name = "Irregular-stem"
-        pattern = "Irregular"
+    is_irregular = template_name in irregular_num_forms
+    if is_irregular:
+        stem_name = "Irregular"
+        obj['tier2_vis_verb'] = {
+            'stem': stem_name,
+        }
+        obj['tier2_tags'].append(f'stem:{stem_name}')
     else:
         pattern = template_name.removeprefix('aii-conj-verb/')
         stem_name = find_stem_of_pattern(conj_stems_and_patterns, pattern)
 
-    obj['tier2_vis_verb'] = {
-        'stem': stem_name,
-        'pattern': pattern,
-    }
-    obj['tier2_tags'].append(f'stem:{stem_name}')
-    obj['tier2_tags'].append(f'pattern:{pattern}')
+        obj['tier2_vis_verb'] = {
+            'stem': stem_name,
+            'pattern': pattern,
+        }
+        obj['tier2_tags'].append(f'stem:{stem_name}')
+        obj['tier2_tags'].append(f'pattern:{pattern}')
 
-    if template_name == html_template_name:
+    if is_irregular:
         set_singleton_not_vis_root_table(item, obj, aii_v)
     else:
         set_singleton_vis_root_table(tenses, obj, aii_v, root)
@@ -173,10 +230,11 @@ def annotated_row(meta, aii_values, aii_v):
 
 def get_singleton_root_table_headers():
     root_tense = {
-      "heading": "Morpheme",
+      "heading": " ",
+      "heading_2": ["Root of Verb"],
       'rows': [],
     }
-    meta_name = 'root of verb'
+    meta_name = ' '
     return root_tense, meta_name
 
 def set_singleton_vis_root_table(tenses, obj, aii_v, root):
@@ -205,10 +263,10 @@ def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root, a
     if len(verb_args) != len(verb_args_x_root):
         raise Exception('oh dear')
 
-    capture_group = r"({{{[1-4]}}})"
+    capture_group = r"({{{[1-5]}}})"
 
     matches = re.findall(capture_group, template_str)
-    if len(matches) > 4 or len(matches) > len(verb_args):
+    if len(matches) > 5 or len(matches) > len(verb_args):
         raise Exception(f"{template_str} {verb_args}")
 
     evaluated_template_str = template_str
@@ -236,26 +294,9 @@ def replace_template_str(template_str, aii_value, verb_args, verb_args_x_root, a
     return partial_template_str, chars
 
 
-# def ambiguate_atwateh_colors(template_atwateh, root):
-#     # when root has consec chars and one of them is dropped during conjugation (see G-2i)
-#     # root_letters_in_verb_args can't tell which one is actually dropped
-#     res = []
-#     for i, char in enumerate(root):
-#         if i == 0:
-#             res.append([i, char])
-#         else:
-#             prev_idx, prev_char = res[-1]
-#             if char == prev_char:
-#                 res.append([prev_idx, char])
-#             else:
-#                 res.append([i, char])
-#     return res
-
-
 def annotated_root_row(aii_v, root, meta):
     row = {
         'meta': meta,
-        # 'meta': 'root of verb',
     }
     root_str = ' '.join(root)
 
