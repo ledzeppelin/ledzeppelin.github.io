@@ -58,12 +58,29 @@ class AiiUtils {
   static paramsToString(newKeyValues, currentSearchParams = null) {
     const searchParams = currentSearchParams === null ? new URLSearchParams() : currentSearchParams;
     newKeyValues.forEach(([key, value]) => {
+      // either adds new or overrites existing value associated with key
+      // searchParams key-value pairs are ordered by query string order/append order
       searchParams.set(key, value);
     });
 
     // https://stackoverflow.com/a/14269897
     // Prevent percent encoding of colons for better human readability
     return searchParams.toString().replaceAll('%3A', ':');
+  }
+
+  static updateURL(url, app, newKeyValues, currentSearchParams = null) {
+    // `?` is automatically prepended to url.search
+
+    // acceptable to disable run since we aren't trying to access arguments object
+    // eslint-disable-next-line no-param-reassign
+    url.search = AiiUtils.paramsToString(newKeyValues, currentSearchParams);
+    // we always set the canonical because
+    // the page could be loading for the first time from the query string params
+    $('#canonical-link').attr('href', `https://www.sharrukin.io/${app}/${url.search}`);
+    if (window.location.search !== url.search) {
+      // console.log(`${window.location.search} doesnt equal\n${url.search}`);
+      window.history.replaceState(null, '', url);
+    }
   }
 }
 

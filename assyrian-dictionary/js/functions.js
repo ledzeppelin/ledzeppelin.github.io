@@ -9,6 +9,120 @@ const DictionaryQueryType = Object.freeze({
 const TO_BE_REMOVED = 'to-be-removed';
 const TO_BE_REMOVED_CLASS = `.${TO_BE_REMOVED}`;
 
+function isColorfulFreeText(jsonline) {
+  // TODO: this needs to be cleaned up once conjugations are done on client-side
+
+  // eslint-disable-next-line max-len
+  const isColorfulVerb = jsonline?.conj?.tenses?.[0]?.rows?.[0]?.values?.[0]?.template_str !== undefined;
+  // eslint-disable-next-line max-len
+  const isColorfulRoot = jsonline?.other_forms?.rows?.[0]?.values?.[0]?.template_str !== undefined;
+  return isColorfulVerb || isColorfulRoot;
+}
+
+function generateFreeTextTier1Skeleton(aiiV) {
+  const frag = $(document.createDocumentFragment());
+  const classes = `free-text-t1 tier1-tag ${TO_BE_REMOVED}`;
+
+  aiiV.ipas?.forEach(([accents, ipa]) => {
+    accents.forEach((accent) => {
+      // eslint-disable-next-line max-len
+      // const longIpa = '[bʃɪmmɑː‿dbaːbaː‿wbroːnaː‿wruːħaː‿dquðʃaː] [bʃɪmmɑː‿dbaːbaː‿wbroːnaː‿wruːħaː‿dquðʃaː]';
+      frag.append(
+        $('<div/>', { class: `${classes} free-text-t1-ipa-container` }).append(
+          $('<span/>', { class: 'material-symbols-rounded free-text-t1-play-sound', text: 'volume_up' }),
+          $('<div/>').append(
+            $('<div/>', { class: 'free-text-accent-name', text: accent }),
+            $('<div/>', { class: 'free-text-ipa', text: ipa }),
+          ),
+        ),
+      );
+    });
+  });
+
+  if ('is_common_word' in aiiV) {
+    frag.append($('<div/>', { class: classes, text: 'common word' }));
+  }
+
+  aiiV.tier1_etymology?.forEach((ety) => {
+    frag.append($('<div/>', { class: classes, text: ety }));
+  });
+
+  return frag;
+}
+
+function generateFreeTextTier2Skeleton(jsonline) {
+  const frag = $(document.createDocumentFragment());
+  const classes = `free-text-t2 tier2-tag ${TO_BE_REMOVED}`;
+
+  frag.append($('<div/>', { class: classes, text: jsonline.pos }));
+
+  if ('root_tag_val' in jsonline) {
+    frag.append($('<div/>', { class: classes, text: jsonline.root_tag_val }));
+  }
+
+  if ('tier2_vis_verb' in jsonline) {
+    frag.append($('<div/>', { class: classes, text: jsonline.tier2_vis_verb.stem }));
+    if ('pattern' in jsonline.tier2_vis_verb) {
+      frag.append($('<div/>', { class: classes, text: jsonline.tier2_vis_verb.pattern }));
+    }
+  }
+
+  jsonline.tier2_etymology?.forEach((ety) => {
+    frag.append($('<div/>', { class: classes, text: ety }));
+  });
+
+  return frag;
+}
+
+function createFragmentsGroupedByUnvocalizedSpelling(result, isTagSearch = false) {
+  const isRoot = Array.isArray(result.item.aii_not_v);
+
+  const resultFragmentsGrouped = $(document.createDocumentFragment());
+  result.item.aii_v_s.forEach((aiiV) => {
+    const resultFragment = createFreeTextResultFrag(aiiV.aii_v).addClass(TO_BE_REMOVED);
+    resultFragment.append(
+      createAiiVFrag(aiiV.aii_v, isRoot),
+      $('<div/>', { class: 'aii-v-word-tr-container' }).append(
+        $('<div/>', { class: 'aii-v-word-tr', text: aiiV.aii_v_tr }),
+      ),
+    );
+    if (isTagSearch) {
+      resultFragment.append(generateFreeTextTier1Skeleton(aiiV));
+    }
+
+    aiiV.jsonlines.forEach((jsonline) => {
+      const sensesFragment = $('<ul/>', { class: `free-text-senses ${TO_BE_REMOVED}` });
+      if (isColorfulFreeText(jsonline)) {
+        resultFragment.addClass('colorful-verb');
+      }
+      jsonline.senses.forEach((sense) => {
+        const liFrag = $('<li/>', {
+          class: `free-text-gloss ${TO_BE_REMOVED}`,
+          text: sense.gloss,
+        });
+        if (isTagSearch) {
+          sense.tier3_categories?.forEach((tier3Category) => {
+            liFrag.append(
+              $('<div/>', {
+                class: `tier3-tag ${TO_BE_REMOVED}`,
+                text: tier3Category,
+              }),
+            );
+          });
+        }
+        sensesFragment.append(liFrag);
+      });
+      if (isTagSearch) {
+        resultFragment.append(generateFreeTextTier2Skeleton(jsonline));
+      }
+      resultFragment.append(sensesFragment);
+    });
+
+    resultFragmentsGrouped.append(resultFragment);
+  });
+  return resultFragmentsGrouped;
+}
+
 function loadResults(searchQuery, PAGINATE_AMT) {
   // console.time('test');
   // console.log(searchQuery.results);
@@ -27,68 +141,119 @@ function loadResults(searchQuery, PAGINATE_AMT) {
     'aii_v_s.jsonlines.senses.tier3_tags': '.tier3-tag',
   };
 
-  searchQuery.results.slice(searchQuery.i, searchQuery.i + PAGINATE_AMT).forEach((result, i) => {
+  searchQuery.results.slice(searchQuery.i, searchQuery.i + PAGINATE_AMT).forEach((result) => {
     if (searchQuery.queryType === DictionaryQueryType.ENG) {
-      const isRoot = Array.isArray(result.item.aii_not_v);
+      // 1. create fragments
+      const resultFragmentsGrouped = createFragmentsGroupedByUnvocalizedSpelling(result);
 
-      const resultFragmentsGrouped = $(document.createDocumentFragment());
-      result.item.aii_v_s.forEach((aiiV) => {
-        const resultFragment = createFreeTextResultFrag(aiiV.aii_v).addClass(TO_BE_REMOVED);
-        const sensesFragment = $('<ul/>', { class: 'free-text-senses' });
-        aiiV.jsonlines.forEach((jsonline) => {
-          // TODO: this needs to be cleaned up once conjugations are done on client-side
-          // eslint-disable-next-line max-len
-          const isColorfulVerb = jsonline?.conj?.tenses?.[0]?.rows?.[0]?.values?.[0]?.template_str !== undefined;
-          // eslint-disable-next-line max-len
-          const isColorfulRoot = jsonline?.other_forms?.rows?.[0]?.values?.[0]?.template_str !== undefined;
-          if (isColorfulVerb || isColorfulRoot) {
-            resultFragment.addClass('colorful-verb');
-          }
-          jsonline.senses.forEach((sense) => {
-            sensesFragment.append(
-              $('<li/>', {
-                class: `free-text-gloss ${TO_BE_REMOVED}`,
-                text: sense.gloss,
-              }),
-            );
-          });
-        });
-
-        resultFragment.append(
-          createAiiVFrag(aiiV.aii_v, isRoot),
-          $('<div/>', { class: 'aii-v-word-tr-container' }).append(
-            $('<div/>', { class: 'aii-v-word-tr', text: aiiV.aii_v_tr }),
-          ),
-          sensesFragment,
-        );
-        resultFragmentsGrouped.append(resultFragment);
-      });
-
-      // console.log(result);
+      // 2. remove TO_BE_REMOVED, highlight matches
       result.matches.forEach((match) => {
-        const abc = highlightEngIndices(match.value, match.indices);
         const frag = resultFragmentsGrouped.find(indexedEng[match.key]).eq(match.refIndex);
         if (match.key === 'aii_v_s.jsonlines.senses.gloss') {
-          frag.removeClass(TO_BE_REMOVED);
+          frag.removeClass(TO_BE_REMOVED)
+            .parent('.free-text-senses').removeClass(TO_BE_REMOVED);
+        }
+        if (match.key === 'aii_v_s.aii_v_tr') {
+          // if tr matches, show all glosses
+          frag.parent().siblings('.free-text-senses').removeClass(TO_BE_REMOVED)
+            .children('.free-text-gloss')
+            .removeClass(TO_BE_REMOVED);
         }
         frag.closest('.free-text-search-result').removeClass(TO_BE_REMOVED);
 
+        const abc = highlightEngIndices(match.value, match.indices); // tr or gloss
         frag.html(abc);
       });
 
-      resultFragmentsGrouped.find('.free-text-senses').each((_, senses) => {
-        const $senses = $(senses);
-        const totalChildren = $senses.children().length;
-        const removableChildren = $senses.children(TO_BE_REMOVED_CLASS).length;
+      // 3. remove unmatched glosses and .free-text-senses
+      resultFragmentsGrouped.find(TO_BE_REMOVED_CLASS).remove();
+      $('#search-results').append(resultFragmentsGrouped);
+    } else if (searchQuery.queryType === DictionaryQueryType.AII_VOCALIZED) {
+      // 1. create fragments
+      const resultFragmentsGrouped = createFragmentsGroupedByUnvocalizedSpelling(result);
 
-        if (totalChildren === removableChildren) {
-          $senses.children().first().removeClass(TO_BE_REMOVED);
+      // 2. remove TO_BE_REMOVED, highlight matches
+      result.matches.forEach((match) => {
+        const frag = resultFragmentsGrouped.find(indexedAiiV[match.key]).eq(match.refIndex);
+        frag.next('.aii-v-word-tr-container').siblings('.free-text-senses').removeClass(TO_BE_REMOVED)
+          .children('.free-text-gloss')
+          .removeClass(TO_BE_REMOVED);
+        frag.parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
+        highlightAiiText(frag, match.value, searchQuery.aii_v_query, true);
+      });
+
+      // 3. remove unmatched glosses and .free-text-senses
+      resultFragmentsGrouped.find(TO_BE_REMOVED_CLASS).remove();
+
+      $('#search-results').append(resultFragmentsGrouped);
+    } else if (searchQuery.queryType === DictionaryQueryType.AII_UNVOCALIZED) {
+      // 1. create fragments
+      const resultFragmentsGrouped = createFragmentsGroupedByUnvocalizedSpelling(result);
+
+      // 2. remove TO_BE_REMOVED, highlight matches
+      const isRoot = Array.isArray(result.item.aii_not_v);
+      resultFragmentsGrouped.find('.aii-v-word').each((_, frag) => {
+        // eslint-disable-next-line newline-per-chained-call
+        $(frag).next('.aii-v-word-tr-container').siblings('.free-text-senses').removeClass(TO_BE_REMOVED).children('.free-text-gloss').removeClass(TO_BE_REMOVED);
+        $(frag).parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
+        if (isRoot) {
+          $(frag).find('.atuta-box-large').addClass('highlighted');
+        } else {
+          highlightAiiText($(frag), $(frag).text(), searchQuery.aii_not_v_query, false);
         }
       });
 
+      // 3. remove unmatched glosses and .free-text-senses
       resultFragmentsGrouped.find(TO_BE_REMOVED_CLASS).remove();
       $('#search-results').append(resultFragmentsGrouped);
-    } else {
+    } else if (searchQuery.queryType === DictionaryQueryType.TAG) {
+      // 1. create fragments
+      const resultFragmentsGrouped = createFragmentsGroupedByUnvocalizedSpelling(result, true);
+
+      // // 2. remove TO_BE_REMOVED, highlight matches
+      result.matches.forEach((match) => {
+        const frag = resultFragmentsGrouped.find(indexedTags[match.key]).eq(match.refIndex);
+        if (match.key === 'aii_v_s.tier1_tags') {
+          frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
+            .parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
+          frag.siblings('.free-text-senses').removeClass(TO_BE_REMOVED)
+            .children('.free-text-gloss').removeClass(TO_BE_REMOVED);
+        } else if (match.key === 'aii_v_s.jsonlines.tier2_tags') {
+          frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
+            .parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
+          frag.nextAll('.free-text-senses').first().removeClass(TO_BE_REMOVED)
+            .children('.free-text-gloss')
+            .removeClass(TO_BE_REMOVED);
+        } else if (match.key === 'aii_v_s.jsonlines.senses.tier3_tags') {
+          frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
+            .parent('.free-text-gloss').removeClass(TO_BE_REMOVED)
+            .parent('.free-text-senses')
+            .removeClass(TO_BE_REMOVED);
+          frag.closest('.free-text-search-result').removeClass(TO_BE_REMOVED);
+        }
+      });
+
+      // 3. remove unmatched glosses and .free-text-senses
+      resultFragmentsGrouped.find(TO_BE_REMOVED_CLASS).remove();
+
+      // 4. add ordinals to if ipa is matching
+      // eslint-disable-next-line func-names
+      $(resultFragmentsGrouped).children('.free-text-search-result').each(function () {
+        // eslint-disable-next-line func-names
+        $(this).children('.free-text-t1-ipa-container').each(function (idx) {
+          if (idx > 0) {
+            let str = ' alternate';
+            if (idx > 1) {
+              str = ` ${idx}${getOrdinal(idx)}${str}`;
+            }
+            const span = $('<span>', { class: 'free-text-ordinal' }).text(str);
+            $(this).find('.free-text-accent-name').append(span);
+          }
+        });
+      });
+
+      $('#search-results').append(resultFragmentsGrouped);
+    } else if (searchQuery.queryType === DictionaryQueryType.AII_EXACT_SEARCH) {
       const resultFragment = $('<div/>', { class: 'search-result' });
 
       const isRoot = Array.isArray(result.item.aii_not_v);
@@ -126,10 +291,15 @@ function loadResults(searchQuery, PAGINATE_AMT) {
           jsonlinesFragment.append(jsonlineFragment);
         });
 
+        const moreSoundsButton = aiiV.ipas
+          ? $('<button/>', { class: 'material-symbols-rounded more-sounds-button' })
+          : null;
+
         resultFragment.append(
           $('<div/>', { class: 'aii-v-word-container' }).append(
             createAiiVFrag(aiiV.aii_v, isRoot),
             $('<div/>', { class: 'aii-v-word-tr-container' }).append(
+              moreSoundsButton,
               $('<div/>', { class: 'aii-v-word-tr', text: aiiV.aii_v_tr }),
             ),
             createIpaContainerFrag(aiiV),
@@ -143,10 +313,9 @@ function loadResults(searchQuery, PAGINATE_AMT) {
       const DEBUG_HIGHLIGHT = false;
       if (DEBUG_HIGHLIGHT === false) {
         // eslint-disable-next-line max-len
-        highlightResultFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV, indexedTags);
+        highlightAiiExactSearchFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV, indexedTags);
       }
 
-      showMoreSounds(resultFragment, aiiNotV);
       showMore(resultFragment);
       setTrBacklink(resultFragment);
 
@@ -159,53 +328,16 @@ function loadResults(searchQuery, PAGINATE_AMT) {
   // console.timeEnd('test');
 }
 
-function highlightResultFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV, indexedTags) {
+function highlightAiiExactSearchFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV, indexedTags) {
   result.matches.forEach((match) => {
-    // these conditionals represent the 4 distinct types of query strings
-    // 1. at least one aii char with diacritics
-    // 2. at least one aii char without diacritics
-    // 3. english search
-    // 4. tagged search
-
-    if (searchQuery.queryType === DictionaryQueryType.AII_EXACT_SEARCH) {
-      // this block only runs if there were any actual results from the exact search
-      const isSpacedRoot = isRoot && searchQuery.aii_v_query === result.item.aii_not_v[0];
-      if (isSpacedRoot) {
-        const aiiVWords = resultFragment.find('.aii-v-word');
-        aiiVWords.each((_, ele) => {
-          $(ele).find('.atuta-box-large').each((index, element) => {
-            $(element).addClass(`atuta-box-clr-${index}`);
-          });
-          $(ele).find('a').contents().unwrap();
-        });
-      } else if (match.key in indexedAiiV) {
-        const aiiVEle = resultFragment.find(indexedAiiV[match.key]).eq(match.refIndex);
-        aiiVEle.addClass('exact-aii-search-match');
-        aiiVEle.parent().addClass('show-first');
-      }
+    // this block only runs if there were any actual results from the exact search
+    const isSpacedRoot = isRoot && searchQuery.aii_v_query === result.item.aii_not_v[0];
+    if (isSpacedRoot) {
+      resultFragment.find('.aii-v-word').addClass('exact-aii-search-match');
     } else if (match.key in indexedAiiV) {
       const aiiVEle = resultFragment.find(indexedAiiV[match.key]).eq(match.refIndex);
-      // eslint-disable-next-line max-len
-      highlightUnvocalizedAiiText(aiiVEle, match.value, searchQuery.aii_v_query, true);
-    } else if (match.key === 'aii_not_v') {
-      if (isRoot) {
-        resultFragment.find('.atuta-box-large').addClass('highlighted');
-      } else {
-        // ex. ܒ-
-        resultFragment.find('.aii-v-word').each((_, ele) => {
-          // eslint-disable-next-line max-len
-          highlightUnvocalizedAiiText($(ele), $(ele).text(), searchQuery.aii_not_v_query, false);
-        });
-      }
-    } else if (match.key in indexedTags) {
-      const frag = resultFragment.find(indexedTags[match.key]).eq(match.refIndex);
-      frag.addClass('tag-highlight');
-      if (match.key === 'aii_v_s.tier1_tags' && frag.hasClass('tier1-tag-ipa')) {
-        frag.closest('.sound-container').addClass('always-show');
-      }
-      // replace <a> with <span> so cursor is pointer
-      const replaceFrag = $('<span/>', { class: frag.attr('class'), text: frag.text() });
-      frag.replaceWith(replaceFrag);
+      aiiVEle.addClass('exact-aii-search-match');
+      aiiVEle.parent().addClass('show-first');
     }
   });
 }
@@ -233,25 +365,6 @@ function showMore(resultFragment) {
   });
 }
 
-function showMoreSounds(resultFragment) {
-  resultFragment.find('.sound-containers').each((i, ele) => {
-    const improveIpaFrag = $('<div/>', { class: 'ipa-info' }).append(
-      $('<span/>', { text: 'audio is machine-generated from ipa' }),
-    );
-
-    if ($(ele).children('.sound-container:not(.always-show)').length > 0) {
-      $(ele).prev().prepend(
-        $('<button/>', { class: 'material-symbols-rounded more-sounds-button' }),
-      );
-    }
-    if ($(ele).children('.sound-container.always-show').length > 0) {
-      improveIpaFrag.addClass('always-show');
-    }
-
-    $(ele).append(improveIpaFrag);
-  });
-}
-
 function setTrBacklink(resultFragment) {
   const ele = resultFragment.find('.show-first .aii-v-word-tr');
   ele.wrap(
@@ -265,13 +378,13 @@ function setTrBacklink(resultFragment) {
 }
 
 // element, aiiV text, querystring, isVocalized
-function highlightUnvocalizedAiiText(aiiVEle, aiiVText, query, isVocalized) {
+function highlightAiiText(aiiVEle, aiiVText, query, isVocalized) {
   const re = isVocalized ? wordRegexAiiV(query) : wordRegexAiiNotV(query);
   const abc = regexHighlight(aiiVText, re, 'highlighted');
   aiiVEle.html(abc);
 }
 
-function minVocalizedTR(searchStr, aiiVs) {
+function minVocalizedTR(tagSearchParam, aiiVs) {
   // we want to sort by those transliterations which will be shown, otherwise
   // 'from:Sumerian' would have 'gareh' as the first since its sorting by 'aghra' (not shown)
 
@@ -299,7 +412,7 @@ function minVocalizedTR(searchStr, aiiVs) {
       }
     });
 
-    if (tags.has(searchStr)) {
+    if (tags.has(tagSearchParam)) {
       translits.push(aiiV.aii_v_tr);
     }
   });

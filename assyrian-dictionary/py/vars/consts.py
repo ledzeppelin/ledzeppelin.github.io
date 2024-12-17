@@ -38,6 +38,7 @@ language_codes = {
   'ber': 'Berber',
   'bn': 'Bengali',
   'bo': 'Tibetan',
+  'ckb': 'Central Kurdish',
   'de': 'German',
   'egy': 'Egyptian',
   'el': 'Greek',

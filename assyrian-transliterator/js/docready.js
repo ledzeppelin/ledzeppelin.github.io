@@ -1,17 +1,18 @@
 $(document).ready(() => {
+  const TR_APP_NAME = 'assyrian-transliterator';
+
   $('#syrc').on('input', (e) => {
     $('#rand-sentence-ref').empty();
     updateTransliteration(true);
 
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
+
     if (e.target.value.length) {
-      url.search = AiiUtils.paramsToString([['assyrian', e.target.value]], params);
-      window.history.replaceState(null, '', url);
+      AiiUtils.updateURL(url, TR_APP_NAME, [['assyrian', e.target.value]], params);
     } else if (params.has('assyrian')) {
       params.delete('assyrian');
-      url.search = AiiUtils.paramsToString([], params);
-      window.history.replaceState(null, '', url);
+      AiiUtils.updateURL(url, TR_APP_NAME, [], params);
     }
   });
 
@@ -25,12 +26,10 @@ $(document).ready(() => {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
     if ($(e.currentTarget).index() === 0) {
-      url.search = AiiUtils.paramsToString([['latin', 1]], params);
-      window.history.replaceState(null, '', url);
+      AiiUtils.updateURL(url, TR_APP_NAME, [['latin', 1]], params);
     } else if (params.has('latin')) {
       params.delete('latin');
-      url.search = AiiUtils.paramsToString([], params);
-      window.history.replaceState(null, '', url);
+      AiiUtils.updateURL(url, TR_APP_NAME, [], params);
     }
   });
 
@@ -42,12 +41,10 @@ $(document).ready(() => {
     const params = new URLSearchParams(url.search);
     const dialect = parseInt($(e.currentTarget).val(), 10);
     if (dialect === 1 || dialect === 2) {
-      url.search = AiiUtils.paramsToString([['dialect', dialect]], params);
-      window.history.replaceState(null, '', url);
+      AiiUtils.updateURL(url, TR_APP_NAME, [['dialect', dialect]], params);
     } else if (params.has('dialect')) {
       params.delete('dialect');
-      url.search = AiiUtils.paramsToString([], params);
-      window.history.replaceState(null, '', url);
+      AiiUtils.updateURL(url, TR_APP_NAME, [], params);
     }
   });
 
@@ -59,8 +56,7 @@ $(document).ready(() => {
     const url = new URL(window.location.href);
     const params = new URLSearchParams(url.search);
     params.delete('assyrian');
-    url.search = AiiUtils.paramsToString([], params);
-    window.history.replaceState(null, '', url);
+    AiiUtils.updateURL(url, TR_APP_NAME, [], params);
   });
 
   $('#roll-dice-aii').click((e) => {

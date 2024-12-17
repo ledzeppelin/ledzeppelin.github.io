@@ -29,15 +29,8 @@ $(document).ready(() => {
   });
 
   $('#search-results').on('click', '.more-sounds-button', (e) => {
-    $(e.currentTarget).parent().next()
-      .children('.sound-container:not(.always-show)')
+    $(e.currentTarget).toggleClass('expanded').parent().next('.sound-containers')
       .slideToggle(SPEED_MS);
-
-    $(e.currentTarget).parent().next()
-      .children('.ipa-info:not(.always-show)')
-      .slideToggle(SPEED_MS);
-
-    $(e.currentTarget).toggleClass('expanded');
   });
 
   $('#search-results').on('click', '.more-defs-button-container', (e) => {

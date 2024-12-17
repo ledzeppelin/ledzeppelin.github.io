@@ -339,8 +339,8 @@ function typeWriter(txt) {
 
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
-  url.search = AiiUtils.paramsToString([['assyrian', txt]], params);
-  window.history.replaceState(null, '', url);
+
+  AiiUtils.updateURL(url, 'assyrian-transliterator', [['assyrian', txt]], params);
 
   // hide typos while typing for words like ܡ̣ܢ
   $('#aii-typo-caption, #tru-typo-caption').css('visibility', 'hidden');
@@ -415,11 +415,7 @@ function processQueryStringParams() {
     }
   }
 
-  url.search = AiiUtils.paramsToString([], params);
-  if (window.location.search !== url.search) {
-    // console.log('updating params');
-    window.history.replaceState(null, '', url);
-  }
+  AiiUtils.updateURL(url, 'assyrian-transliterator', [], params);
 }
 
 // https://stackoverflow.com/a/70477376

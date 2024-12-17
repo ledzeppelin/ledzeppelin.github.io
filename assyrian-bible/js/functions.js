@@ -199,23 +199,11 @@ function setDisplayedVerses({
     ['chapter', highlightVerses == null ? chapter : highlightVerses],
   ];
 
-  const canonicalSearchParams = [
-    ['book', bookShortName],
-    ['chapter', chapter],
-  ];
-
   if (readingLevel > 1) {
     searchParams.push(['reading_level', readingLevel]);
   }
 
-  const BIBLE_CANONICAL_URL = 'https://www.sharrukin.io/assyrian-bible/'; // window.location.href
-  $('#canonical-link').attr('href', `${BIBLE_CANONICAL_URL}?${AiiUtils.paramsToString(canonicalSearchParams)}`);
-
-  url.search = AiiUtils.paramsToString(searchParams);
-
-  if (window.location.search !== url.search) {
-    window.history.replaceState(null, '', url);
-  }
+  AiiUtils.updateURL(url, 'assyrian-bible', searchParams);
 }
 
 function scrollToStartOfBook() {
