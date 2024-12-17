@@ -49,8 +49,6 @@ $apple-rgba-alpha: .75
       $dark-color: list.nth($apple-colors-dark, $i + 1)
       @include atuta-box-color($color, $dark-color)
 
-
-
 #tagged-results-meta
   color: $secondary-label
   @media (prefers-color-scheme: dark)
@@ -194,7 +192,6 @@ $apple-rgba-alpha: .75
   @media (prefers-color-scheme: dark)
     border-color: $separator-dark
 
-@include atuta-box-colors($apple-colors, $apple-colors-dark)
 
 .aii-v-word-tr-container
   .aii-v-word-tr
@@ -359,32 +356,38 @@ $apple-rgba-alpha: .75
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
 
+@include atuta-box-colors($apple-colors, $apple-colors-dark)
 
-.more-sounds-button
-  background-color: $secondary-background
+.more-sounds-button,
+.play-sound
+  background-color: transparent
   border-color: $separator
   color: $label
   @media (prefers-color-scheme: dark)
-    background-color: $background-dark
+    background-color: transparent
     border-color: $separator-dark
     color: $label-dark
 
 
+.free-text-t1-play-sound
+  border-color: rgba($separator, .15)
+  color: rgba($label, .25)
+  @media (prefers-color-scheme: dark)
+    border-color: rgba($separator-dark, .3)
+    color: rgba($label-dark, .35)
+
+
+.free-text-ordinal
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
+
+
 .play-sound-container
-  .play-sound
-    background-color: $secondary-background
-    border-color: $separator
-    color: $label
+  .waiting
+    color: color.adjust($label, $lightness: 50%)
     @media (prefers-color-scheme: dark)
-      background-color: $background-dark
-      border-color: $separator-dark
-      color: $label-dark
-
-
-    &.waiting
-      color: color.adjust($label, $lightness: 50%)
-      @media (prefers-color-scheme: dark)
-        color: color.mix($label-dark, $background-dark, 40%)
+      color: color.mix($label-dark, $background-dark, 40%)
 
 
   .accent-name-container
@@ -393,7 +396,8 @@ $apple-rgba-alpha: .75
       color: $secondary-label-dark
 
 
-.ipa
+.ipa,
+.free-text-ipa
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark

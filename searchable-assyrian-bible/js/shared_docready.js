@@ -1,5 +1,6 @@
 $(document).ready(() => {
-  const DICT_CANONICAL_URL = 'https://www.sharrukin.io/assyrian-dictionary/'; // window.location.href
+  const DICT_APP_NAME = 'assyrian-dictionary';
+  const APP_NAME = IS_DICTIONARY ? DICT_APP_NAME : 'searchable-assyrian-bible';
 
   let searchQuery;
   function shouldLoadMore() {
@@ -49,7 +50,7 @@ $(document).ready(() => {
 
   $('#searchbar').on('input', (e) => {
     // when people use auto-complete on mobile, trim trailing whitespace
-    console.time('start');
+    console.time('e2e - keystroke');
     const searchStr = $(e.currentTarget).val().trim();
 
     if (IS_DICTIONARY) {
@@ -65,6 +66,7 @@ $(document).ready(() => {
       $('#search-results').empty();
       searchQuery = null; // not needed but helps readability
       window.history.replaceState(null, document.title, window.location.pathname);
+      $('#canonical-link').attr('href', `https://www.sharrukin.io/${APP_NAME}/`);
     } else {
       $('#clear-text').show();
 
@@ -78,12 +80,14 @@ $(document).ready(() => {
           searchQuery = {
             results: runExtendedSearchQuery(normalizedSearchStr, fuseAiiVocalized, true),
             aii_v_query: normalizedSearchStr,
+            ...(IS_DICTIONARY && { queryType: DictionaryQueryType.AII_VOCALIZED }),
           };
         } else {
           // console.log('unvocalized search');
           searchQuery = {
             results: runExtendedSearchQuery(searchStr, fuseAiiUnvocalized, true),
             aii_not_v_query: searchStr,
+            ...(IS_DICTIONARY && { queryType: DictionaryQueryType.AII_UNVOCALIZED }),
           };
         }
       } else {
@@ -120,12 +124,9 @@ $(document).ready(() => {
       }
 
       const url = new URL(window.location.href);
-      url.search = AiiUtils.paramsToString([['search', searchStr]]);
-      if (window.location.search !== url.search) {
-        window.history.replaceState(null, '', url);
-      }
+      AiiUtils.updateURL(url, APP_NAME, [['search', searchStr]]);
     }
-    console.timeEnd('start');
+    console.timeEnd('e2e - keystroke');
   });
 
   $('#clear-text').on('click', () => {
@@ -141,7 +142,7 @@ $(document).ready(() => {
   // read query string params if set
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
-
+  console.time('e2e - querystring');
   if (IS_DICTIONARY && params.has('tag-search')) {
     const tagSearchParam = params.get('tag-search');
     if (tagSearchParam.length) {
@@ -155,7 +156,6 @@ $(document).ready(() => {
           results: [],
         };
 
-        highlightExactMatchInTopTagsMenu(tagSearchParam);
         $('#numbers-table').children().show();
         shouldLoadTagExactSearchResults = true;
       } else if (tagSearchParam === 'special:common word') {
@@ -163,10 +163,9 @@ $(document).ready(() => {
           a.item.min_common_word_idx < b.item.min_common_word_idx ? -1 : 1
         );
 
-        highlightExactMatchInTopTagsMenu(tagSearchParam);
         searchQuery = {
           results: tagExactSearchResults.sort(compareFn),
-          searchingCommonWords: true,
+          queryType: DictionaryQueryType.TAG,
         };
         shouldLoadTagExactSearchResults = true;
       } else if (tagSearchParam === 'pos:numeral') {
@@ -174,10 +173,9 @@ $(document).ready(() => {
           a.item.min_numeral_idx < b.item.min_numeral_idx ? -1 : 1
         );
 
-        highlightExactMatchInTopTagsMenu(tagSearchParam);
         searchQuery = {
           results: tagExactSearchResults.sort(compareFn),
-          searchingCommonWords: true,
+          queryType: DictionaryQueryType.TAG,
         };
         shouldLoadTagExactSearchResults = true;
       } else if (tagExactSearchResults.length) {
@@ -186,14 +184,15 @@ $(document).ready(() => {
           minVocalizedTR(tagSearchParam, a.item.aii_v_s) < minVocalizedTR(tagSearchParam, b.item.aii_v_s) ? -1 : 1
         );
 
-        highlightExactMatchInTopTagsMenu(tagSearchParam);
         searchQuery = {
           results: tagExactSearchResults.sort(compareFn),
+          queryType: DictionaryQueryType.TAG,
         };
         shouldLoadTagExactSearchResults = true;
       }
 
       if (shouldLoadTagExactSearchResults) {
+        highlightExactMatchInTopTagsMenu(tagSearchParam);
         const matchedTagName = tagSearchParam.split(/:(.+)/)[1];
         $('#matched-tag').text(matchedTagName);
         $('#tagged-results-meta').show();
@@ -204,15 +203,11 @@ $(document).ready(() => {
           loadResults(searchQuery, 1);
         }
 
-        const search = AiiUtils.paramsToString([['tag-search', tagSearchParam]]);
-        // $('#canonical-link').attr('href', `${DICT_CANONICAL_URL}?${search}`);
-        url.search = search;
-        if (window.location.search !== url.search) {
-          window.history.replaceState(null, '', url);
-        }
+        AiiUtils.updateURL(url, DICT_APP_NAME, [['tag-search', tagSearchParam]]);
       }
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
+      $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);
     }
   } else if (IS_DICTIONARY && params.has('aii-exact-search')) {
     const aiiExactSearchParam = params.get('aii-exact-search');
@@ -224,14 +219,11 @@ $(document).ready(() => {
         queryType: DictionaryQueryType.AII_EXACT_SEARCH,
       };
       loadResults(searchQuery, 1);
-      const search = AiiUtils.paramsToString([['aii-exact-search', aiiExactSearchParam]]);
-      $('#canonical-link').attr('href', `${DICT_CANONICAL_URL}?${search}`);
-      url.search = search;
-      if (window.location.search !== url.search) {
-        window.history.replaceState(null, '', url);
-      }
+
+      AiiUtils.updateURL(url, DICT_APP_NAME, [['aii-exact-search', aiiExactSearchParam]]);
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
+      $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);
     }
   } else if (params.has('search')) {
     const searchParam = params.get('search');
@@ -241,6 +233,8 @@ $(document).ready(() => {
       $('#searchbar').val(searchParam).trigger('input');
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
+      $('#canonical-link').attr('href', `https://www.sharrukin.io/${APP_NAME}/`);
     }
   }
+  console.timeEnd('e2e - querystring');
 });

@@ -191,6 +191,9 @@ def validate_t1_tags(aii_v):
             raise Exception(f'{tier1} doesnt equal {aii_v['tier1_tags']}')
 
 def validate_t2_tags(jsonline):
+    if 'pos' not in jsonline:
+        raise Exception('pos isnt in jsonline')
+
     if 'tier2_tags' in jsonline:
         # per functions.js the DOM elements with .tier2-tag should appear in this order:
         # pos -> root num letters -> stem -> pattern -> tier 2 etymology
@@ -204,9 +207,6 @@ def validate_t2_tags(jsonline):
                 tier2.append(f'pattern:{vis['pattern']}')
         if 'tier2_etymology' in jsonline:
             tier2 += [f'from:{ety}' for ety in jsonline['tier2_etymology']]
-
-        # if 'tier2_vis_verb' in jsonline and 'tier2_etymology' in jsonline:
-        #     raise Exception(jsonline)
 
         if tier2 != jsonline['tier2_tags']:
             raise Exception(f'{tier2} doesnt equal {jsonline['tier2_tags']}')

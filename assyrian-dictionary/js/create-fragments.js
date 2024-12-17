@@ -252,6 +252,11 @@ function createIpaContainerFrag(aiiV) {
         createSoundContainerFrag(accents, ipa, ipaHash, accentCounts),
       );
     });
+    frag.append(
+      $('<div/>', { class: 'ipa-info' }).append(
+        $('<span/>', { text: 'audio is machine-generated from ipa' }),
+      ),
+    );
   }
   return frag;
 }
@@ -405,12 +410,12 @@ function regexAtwatehBoxes(templateStr, templateAtwateh, breakLigatures) {
 
     const rootLetterText = $1 === undefined ? atuta : `${atuta}${$1}`;
 
-    const atutaFirstChar = (i === 0 && strMatchIdx === 0) ? 'atuta-box-small-is-first' : '';
+    const atutaFirstChar = (i === 0 && strMatchIdx === 0) ? ' atuta-box-small-is-first' : '';
 
     const brLig = breakLigatures ? ' break-ligatures' : '';
 
     fragment.append(
-      $('<span/>', { class: `atuta-box-small${brLig} atuta-box-clr-${rootIdx} ${atutaFirstChar}`, text: rootLetterText }),
+      $('<span/>', { class: `atuta-box-small${brLig} atuta-box-clr-${rootIdx}${atutaFirstChar}`, text: rootLetterText }),
     );
     i = strMatchIdx + match.length;
     atutaIdx += 1;

@@ -15,10 +15,13 @@ def set_examples(item_sense, sense):
     if 'examples' in item_sense:
         res = []
         for example in item_sense['examples']:
+            if 'type' in example and example['type'] not in {'example', 'quotation', 'quote'}:
+                raise Exception('invalid example type')
+
             if 'text' in example and 'english' in example:
                 aii = example['text']
                 english = example['english']
-                if 'type' in example and example['type'] == 'quotation':
+                if 'type' in example and example['type'] in {'quote', 'quotation'}:
                     left_quote = '“'
                     right_quote = '”'
 
@@ -434,7 +437,6 @@ def datadump_to_dict():
         'ܡܦܪܲܣܚܲܙܹܐ',
         'ܡܚܘܛܡܠܠ',
         #####
-        'ܐܵܙܹܠ',
     }
 
     vocalized_cache = {generate_aii_v(item, item['word']) for item in data}

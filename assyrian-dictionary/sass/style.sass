@@ -153,7 +153,7 @@ $tri-root-offset: -17px
   display: block
   margin: 0 $side-padding $side-padding
   overflow: hidden // Ensures ::after follows the border-radius
-  padding: 12px $searchbar-inset-x
+  padding: $searchbar-inset-x
   position: relative
   text-decoration: none
 
@@ -170,6 +170,9 @@ $tri-root-offset: -17px
   &:visited,
   &:active
     text-decoration: none
+
+  &> .aii-v-word-tr-container
+    margin-bottom: 8px
 
 
 .search-result
@@ -296,14 +299,49 @@ button
       &.expanded
         transform: rotate(180deg)
 
+.free-text-t1,
+.free-text-t2
+  @include eng-text('s')
+  margin-bottom: 2px
+  margin-top: 16px
+
+
+$sound-button-padding: 6px
+$sound-accent-offset: 8px
+
+.free-text-t1-ipa-container
+  align-items: center
+  display: flex
+  margin-bottom: 8px
+
+  .free-text-ordinal
+    @include eng-text('s')
+
+  .free-text-t1-play-sound
+    border-radius: $half-icon-size + $sound-button-padding
+    border-style: solid
+    border-width: 1px
+    font-size: $half-icon-size * 2
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
+    margin-right: $sound-accent-offset
+    padding: $sound-button-padding
+
+.free-text-ipa
+  @include eng-text('m')
+  // otherwise letters of ipa [mɡarɡɪm] for 'mgargim' don't appear aligned to baseline on windows
+  font-family: sans-serif
+  overflow-wrap: anywhere // break long words "holy spirit"
+  white-space: normal
+
+$sense-indent: 34px
 
 .free-text-senses
-  margin-bottom: 0
-  margin-top: 8px
+  margin: 0
+  padding-left: $sense-indent
 
 .senses
   margin: 0
-  padding-left: 34px
+  padding-left: $sense-indent
   padding-top: 6px
 
   &.only-one-gloss
@@ -332,14 +370,12 @@ $display-toggle: none
 
 // https://chriskirknielsen.com/blog/inline-lists-with-conditional-separators/
 .t3-categories
-  display: inline
   padding: 0
 
 .t3-categories > li
-  display: inline
+  display: inline-block
 
-  // &:not(:first-child)::before
-  &::before
+  &:not(:last-child)::after
     content: ' |'
     $space-px: 3px
     margin-left: 3px
@@ -475,14 +511,11 @@ $display-toggle: none
   margin-right: 0
 
 .sound-containers
+  &:not(.always-show)
+    display: none
+
   .sound-container
     padding-top: 12px
-
-    &:not(.always-show)
-      display: none
-
-
-$sound-button-padding: 6px
 
 .more-sounds-button
   $br-width: 1px
@@ -511,9 +544,6 @@ $sound-button-padding: 6px
     &::before
       content: 'collapse_content'
 
-
-$sound-button-padding: 6px
-$sound-accent-offset: 8px
 
 .play-sound-container
   align-items: center
@@ -558,9 +588,6 @@ $sound-accent-offset: 8px
 .ipa-info
   @include eng-text('xs')
   margin-left: 46px
-
-  &:not(.always-show)
-    display: none
 
 .tag-highlight
   font-weight: 500
