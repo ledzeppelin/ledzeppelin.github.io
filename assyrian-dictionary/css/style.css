@@ -112,15 +112,6 @@
   }
 }
 
-#numbers-table .more-info {
-  border-bottom-color: rgba(91, 91, 96, 0.29);
-}
-@media (prefers-color-scheme: dark) {
-  #numbers-table .more-info {
-    border-bottom-color: rgba(119, 119, 127, 0.6);
-  }
-}
-
 .free-text-search-result {
   background-color: rgb(245.9, 245.9, 249.4);
   box-shadow: rgba(0, 0, 0, 0.16) 0 6px 12px, rgba(0, 0, 0, 0.06) 0 0 0 1px;
@@ -842,16 +833,14 @@ kbd {
 }
 
 #search-results {
-  padding: 8px 0 16px;
+  margin: 20px 0;
 }
 
 #numbers-table {
-  margin: 0 36px 16px;
+  margin: 20px 36px;
 }
 #numbers-table .more-info {
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  padding-top: 0;
+  margin: 0;
 }
 
 #tagged-results-meta {
@@ -860,7 +849,7 @@ kbd {
   font-family: Roboto, sans-serif;
   font-size: 14px;
   display: none;
-  margin: 12px 36px;
+  margin: 20px 36px;
   padding: 0;
 }
 #tagged-results-meta #matched-tag {
@@ -868,7 +857,7 @@ kbd {
 }
 
 #top-tags-menu {
-  margin: 12px 16px 0 36px;
+  margin: 20px 16px 20px 36px;
 }
 
 .top-tags-group {
@@ -1470,7 +1459,7 @@ button {
   line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 12px;
-  margin-top: 0;
+  margin: 20px 0;
   padding-left: 36px;
   padding-right: 36px;
   text-align: justify;

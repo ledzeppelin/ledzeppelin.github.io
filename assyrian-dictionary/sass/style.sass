@@ -26,30 +26,29 @@ $button-diameter: 3 * $half-icon-size + 2px
 
 @include search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x)
 
+$view-margin-y: 20px
+
 #search-results
-  padding: 8px 0 16px
+  margin: $view-margin-y 0
 
 #numbers-table
-  margin: 0 $side-padding + $searchbar-inset-x 16px
+  margin: $view-margin-y $side-padding + $searchbar-inset-x
 
   .more-info
-    border-bottom-style: solid
-    border-bottom-width: 1px
-    padding-top: 0
+    margin: 0
 
 
 #tagged-results-meta
   @include eng-text('s')
   display: none
-  margin: 12px $side-padding + $searchbar-inset-x
+  margin: $view-margin-y $side-padding + $searchbar-inset-x
   padding: 0
 
   #matched-tag
     font-weight: 500
 
-
 #top-tags-menu
-  margin: 12px $side-padding 0 $side-padding + $searchbar-inset-x
+  margin: $view-margin-y $side-padding $view-margin-y $side-padding + $searchbar-inset-x
 
 
 $list-indent: 16px
@@ -599,7 +598,7 @@ $display-toggle: none
 
 #wiktionary-datadump
   @include eng-text('xs')
-  margin-top: 0
+  margin: $view-margin-y 0
   padding-left: $side-padding + $searchbar-inset-x
   padding-right: $side-padding + $searchbar-inset-x
   text-align: justify
