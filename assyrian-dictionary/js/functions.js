@@ -388,34 +388,40 @@ function minVocalizedTR(tagSearchParam, aiiVs) {
   // we want to sort by those transliterations which will be shown, otherwise
   // 'from:Sumerian' would have 'gareh' as the first since its sorting by 'aghra' (not shown)
 
-  // gather all tags into set
-  const translits = [];
+  // per unvocalized spelling we
+  // 1. if a vocalized spelling has a t1, t2 or t3 tag
+  // 2. add its' transliteration to a list
+  // 3. return the earliest element in the sorted list or null if list if empty
+
+  let minTranslit = null;
+
+  function updateMin(currentMin, candidate) {
+    if (currentMin === null || candidate < currentMin) {
+      return candidate;
+    }
+    return currentMin;
+  }
 
   aiiVs.forEach((aiiV) => {
-    const tags = new Set();
-
-    if ('tier1_tags' in aiiV) {
-      aiiV.tier1_tags.forEach((tag) => tags.add(tag));
+    if (aiiV.tier1_tags?.includes(tagSearchParam)) {
+      minTranslit = updateMin(minTranslit, aiiV.aii_v_tr);
+      return; // skip t2, t3
     }
 
     aiiV.jsonlines.forEach((jsonline) => {
-      if ('tier2_tags' in jsonline) {
-        jsonline.tier2_tags.forEach((tag) => tags.add(tag));
+      if (jsonline.tier2_tags?.includes(tagSearchParam)) {
+        minTranslit = updateMin(minTranslit, aiiV.aii_v_tr);
+        return; // skip t3
       }
 
-      if ('senses' in jsonline) {
-        jsonline.senses.forEach((sense) => {
-          if ('tier3_tags' in sense) {
-            sense.tier3_tags.forEach((tag) => tags.add(tag));
-          }
-        });
-      }
+      jsonline.senses?.forEach((sense) => {
+        if (sense.tier3_tags?.includes(tagSearchParam)) {
+          minTranslit = updateMin(minTranslit, aiiV.aii_v_tr);
+          // return; // return not needed
+        }
+      });
     });
-
-    if (tags.has(tagSearchParam)) {
-      translits.push(aiiV.aii_v_tr);
-    }
   });
 
-  return translits.reduce((min, c) => (c < min ? c : min));
+  return minTranslit;
 }

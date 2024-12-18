@@ -1,4 +1,5 @@
 $(document).ready(() => {
+  console.time('shared docready load');
   const DICT_APP_NAME = 'assyrian-dictionary';
   const APP_NAME = IS_DICTIONARY ? DICT_APP_NAME : 'searchable-assyrian-bible';
 
@@ -50,7 +51,7 @@ $(document).ready(() => {
 
   $('#searchbar').on('input', (e) => {
     // when people use auto-complete on mobile, trim trailing whitespace
-    console.time('e2e - keystroke');
+    console.time('keystroke');
     const searchStr = $(e.currentTarget).val().trim();
 
     if (IS_DICTIONARY) {
@@ -126,7 +127,7 @@ $(document).ready(() => {
       const url = new URL(window.location.href);
       AiiUtils.updateURL(url, APP_NAME, [['search', searchStr]]);
     }
-    console.timeEnd('e2e - keystroke');
+    console.timeEnd('keystroke');
   });
 
   $('#clear-text').on('click', () => {
@@ -136,13 +137,12 @@ $(document).ready(() => {
 
   if (IS_DICTIONARY) {
     $('#top-tags-menu').html(createTopTagsMenuFragment(aiiDictionaryTags));
-    $('#numbers-table').html(createTableFrag(aiiNumbersTable));
   }
 
   // read query string params if set
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
-  console.time('e2e - querystring');
+
   if (IS_DICTIONARY && params.has('tag-search')) {
     const tagSearchParam = params.get('tag-search');
     if (tagSearchParam.length) {
@@ -156,7 +156,7 @@ $(document).ready(() => {
           results: [],
         };
 
-        $('#numbers-table').children().show();
+        $('#numbers-table').html(createTableFrag(aiiNumbersTable)).children().show();
         shouldLoadTagExactSearchResults = true;
       } else if (tagSearchParam === 'special:common word') {
         const compareFn = (a, b) => (
@@ -236,5 +236,6 @@ $(document).ready(() => {
       $('#canonical-link').attr('href', `https://www.sharrukin.io/${APP_NAME}/`);
     }
   }
-  console.timeEnd('e2e - querystring');
+
+  console.timeEnd('shared docready load');
 });

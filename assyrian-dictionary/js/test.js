@@ -1,7 +1,14 @@
 const arr = ['d', 'a', 'b', 'c'];
+const arr2 = [1, 2, 3];
 
-arr.slice(1, 12).forEach((char, i) => {
-  console.log(char, i);
+arr.forEach((char) => {
+  console.log(char);
+  if (char === 'a') {
+    return;
+  }
+
+  arr2.forEach((num) => {
+    console.log(num);
+  });
+  console.log('\n');
 });
-
-
