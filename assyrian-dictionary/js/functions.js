@@ -388,10 +388,9 @@ function minVocalizedTR(tagSearchParam, aiiVs) {
   // we want to sort by those transliterations which will be shown, otherwise
   // 'from:Sumerian' would have 'gareh' as the first since its sorting by 'aghra' (not shown)
 
-  // per unvocalized spelling we
-  // 1. if a vocalized spelling has a t1, t2 or t3 tag
-  // 2. add its' transliteration to a list
-  // 3. return the earliest element in the sorted list or null if list if empty
+  // for an unvocalized spelling,
+  // find the minimum (alphabetically sorted) transliteration of its vocalized spellings
+  // which contain a matching tag
 
   let minTranslit = null;
 
