@@ -2,7 +2,7 @@ from collections import defaultdict
 import re
 import itertools
 import copy
-from vars.verb_templates import conj_schema, conj_stems_and_patterns
+from vars.verb_templates import conj_schema
 from vars.infl_schemas import verb_infl_schema
 
 def strip_markers():
@@ -187,22 +187,12 @@ def set_verb_conj(item, obj, aii_v, vocalized_cache, visual_conj_cache):
 
 
     is_irregular = template_name in irregular_num_forms
-    if is_irregular:
-        stem_name = "Irregular"
-        obj['tier2_vis_verb'] = {
-            'stem': stem_name,
-        }
-        obj['tier2_tags'].append(f'stem:{stem_name}')
-    else:
-        pattern = template_name.removeprefix('aii-conj-verb/')
-        stem_name = find_stem_of_pattern(conj_stems_and_patterns, pattern)
 
-        obj['tier2_vis_verb'] = {
-            'stem': stem_name,
-            'pattern': pattern,
-        }
-        obj['tier2_tags'].append(f'stem:{stem_name}')
-        obj['tier2_tags'].append(f'pattern:{pattern}')
+    pattern = "Irregular" if is_irregular else template_name.removeprefix('aii-conj-verb/')
+    obj['tier2_vis_verb'] = {
+        'pattern': pattern,
+    }
+    obj['tier2_tags'].append(f'pattern:{pattern}')
 
     if is_irregular:
         set_singleton_not_vis_root_table(item, obj, aii_v)
@@ -210,12 +200,6 @@ def set_verb_conj(item, obj, aii_v, vocalized_cache, visual_conj_cache):
         set_singleton_vis_root_table(tenses, obj, aii_v, root)
 
     obj['conj']['tenses'] += tenses
-
-def find_stem_of_pattern(_conj_stems_and_patterns, conj_pattern):
-    for stem, conj_patterns in _conj_stems_and_patterns.items():
-        if conj_pattern in conj_patterns:
-            return f'{stem}-stem'
-    raise ValueError(f"{conj_pattern} not found")
 
 
 def annotated_row(meta, aii_values, aii_v):

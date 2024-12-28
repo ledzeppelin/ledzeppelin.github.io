@@ -1,15 +1,6 @@
 # https://en.wiktionary.org/wiki/Category:Assyrian_Neo-Aramaic_verb_inflection-table_templates
 
-conj_stems_and_patterns = {
-    'C': {'C-strong', 'C-weak-2d-3i', 'C-weak-3i', 'C-weak-d', 'C-weak-m'},
-    'D': {'D-strong', 'D-weak-3i'},
-    'G': {'G-strong', 'G-weak-1i', 'G-weak-2i', 'G-weak-3i', 'Gt-strong'},
-    'Penta': {'Penta-strong'},
-    'Q': {'Q-strong', 'Q-weak', 'Qi-strong'},
-}
-
 conj_schema = {
-    # c-stem
     'aii-conj-verb/C-strong': {
         'prp': 'ܡܲ{{{1}}}{{{2}}}ܘܿ{{{3}}}ܹܐ',
         'pp-sm': 'ܡܘܼ{{{1}}}{{{2}}}{{{3}}}ܵܐ',
@@ -215,8 +206,6 @@ conj_schema = {
         'in-s': 'ܡܲ{{{1}}}ܝܲ{{{2}}}ܬܵܐ',
         'in-p': 'ܡܲ{{{1}}}ܝܲ{{{2}}}ܝܵܬ݂̈ܵܐ',
     },
-
-    # d-stem
     'aii-conj-verb/D-strong': {
         'prp': 'ܡ{{{1}}}ܲ{{{2}}}ܘܿ{{{3}}}ܹܐ',
         'pp-sm': 'ܡ{{{1}}}ܘܼ{{{2}}}{{{3}}}ܵܐ',
@@ -301,8 +290,6 @@ conj_schema = {
         'in-s': '{{{1}}}ܲ{{{2}}}ܲܝܬܵܐ',
         'in-p': '{{{1}}}ܲ{{{2}}}ܲܝ̈ܵܬ݂ܵܐ',
     },
-
-    # g-stem
     'aii-conj-verb/G-strong': {
         'prp': '{{{1}}}{{{2}}}ܵ{{{3}}}ܵܐ',
         'pp-sm': '{{{1}}}{{{2}}}ܝܼ{{{3}}}ܵܐ',

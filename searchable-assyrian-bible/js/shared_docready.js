@@ -9,7 +9,16 @@ $(document).ready(() => {
     if (lastRes.length) {
       // https://stackoverflow.com/a/3898152
       // lastRes.offset().top means distance from top of doc to top border of element
-      const isTopOfLastVisible = $(window).scrollTop() + $(window).height() >= lastRes.offset().top;
+
+      const viewportHeight = Math.max(
+        window.visualViewport ? window.visualViewport.height : 0,
+        $(window).height(),
+      );
+
+      const slack = 0; // if scroll is choppy, increase this
+
+      // eslint-disable-next-line max-len
+      const isTopOfLastVisible = $(window).scrollTop() + viewportHeight + slack >= lastRes.offset().top;
       // eslint-disable-next-line max-len
       if (isTopOfLastVisible && searchQuery !== null && searchQuery.i < searchQuery.results.length) {
         return true;

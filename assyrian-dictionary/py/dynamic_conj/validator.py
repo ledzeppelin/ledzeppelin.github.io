@@ -3,7 +3,7 @@ import re
 from collections import defaultdict
 from utils import AiiConjugation
 
-def generate_stem_patterns():
+def generate_conj_patterns():
     with open('js/json/aii-dict-no-tr.json', 'r') as file:
         data = json.load(file)
 
@@ -12,7 +12,7 @@ def generate_stem_patterns():
     }
 
 
-    stem_patterns = defaultdict(set)
+    conj_patterns = defaultdict(set)
     for obj in data:
         for _aii_v in obj['aii_v_s']:
             if _aii_v['aii_v'] in ALREADY_MOVED:
@@ -22,7 +22,7 @@ def generate_stem_patterns():
                     continue
                 if 'tier2_vis_verb' in jsonline:
                     if jsonline['tier2_vis_verb']['pattern'] != 'Irregular':
-                        stem_patterns[jsonline['tier2_vis_verb']['pattern']].add(_aii_v['aii_v'])
+                        conj_patterns[jsonline['tier2_vis_verb']['pattern']].add(_aii_v['aii_v'])
                 else:
                     keywords = {'participle', 'first-person', 'second-person', 'third-person',
                     'infinitive of', 'feminine singular', 'Contraction of'}
@@ -30,8 +30,8 @@ def generate_stem_patterns():
                     if any(keyword in sense['gloss'] for sense in jsonline['senses'] for keyword in keywords):
                         pass
                     else:
-                        stem_patterns['---'].add(_aii_v['aii_v'])
-    return stem_patterns
+                        conj_patterns['---'].add(_aii_v['aii_v'])
+    return conj_patterns
 
 
 
@@ -46,7 +46,7 @@ def fix_template_warning(old_pattern, new_pattern, _aii_v):
 
 conj = AiiConjugation()
 pattern_regexes = conj.get_patterns()
-_stem_patterns = generate_stem_patterns()
+_conj_patterns = generate_conj_patterns()
 
 
 msg = 'aii-conj validation'
@@ -57,7 +57,7 @@ print(msg)
 print('#' * len(msg))
 
 
-for cur_pattern, aii_vs in _stem_patterns.items():
+for cur_pattern, aii_vs in _conj_patterns.items():
     for aii_v in aii_vs:
         matched_patterns = []
         vowel_diacritics_stripped  = re.sub(f"[^{conj.LETTERS}]", '', aii_v)
