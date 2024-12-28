@@ -348,21 +348,11 @@ function createVisVerbFrag(key, obj, tierTag) {
       ' (',
       $('<a/>', {
         class: tierTag,
-        text: obj[key].stem,
-        href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `stem:${obj[key].stem}`]])}`,
+        text: obj[key].pattern,
+        href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `pattern:${obj[key].pattern}`]])}`,
       }),
+      ') ',
     );
-    if ('pattern' in obj[key]) {
-      frag.append(
-        ', ',
-        $('<a/>', {
-          class: tierTag,
-          text: obj[key].pattern,
-          href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `pattern:${obj[key].pattern}`]])}`,
-        }),
-      );
-    }
-    frag.append(')');
   }
   return frag;
 }

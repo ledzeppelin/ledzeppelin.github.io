@@ -61,10 +61,7 @@ function generateFreeTextTier2Skeleton(jsonline) {
   }
 
   if ('tier2_vis_verb' in jsonline) {
-    frag.append($('<div/>', { class: classes, text: jsonline.tier2_vis_verb.stem }));
-    if ('pattern' in jsonline.tier2_vis_verb) {
-      frag.append($('<div/>', { class: classes, text: jsonline.tier2_vis_verb.pattern }));
-    }
+    frag.append($('<div/>', { class: classes, text: jsonline.tier2_vis_verb.pattern }));
   }
 
   jsonline.tier2_etymology?.forEach((ety) => {

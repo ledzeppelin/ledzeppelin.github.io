@@ -1,7 +1,5 @@
 import json
 from collections import defaultdict
-from vars.verb_templates import conj_stems_and_patterns
-from conjugate_verbs import find_stem_of_pattern
 
 def tag_counts():
     with open('./js/json/aii-dict-no-tr.json', encoding="utf-8") as f:
@@ -39,41 +37,21 @@ def tag_counts_grouped(tag_counter):
     # {'ipa': ['standard', 'Urmian', 'Nineveh Plains']}
     return results
 
-def generate_verb_stem_list(stem_tag_names, pattern_tag_names):
+def conjugations_patterns(pattern_tag_names):
     return [
         {
-            'name': 'Verb Conjugations',
-            'children': generate_stems_list(stem_tag_names, pattern_tag_names)
+            'name': 'Verb Conjugation Patterns',
+            'children': generate_patterns_list(pattern_tag_names)
         }
     ]
 
-def generate_stems_list(stem_tag_names, pattern_tag_names):
-    # raise Exception(stem_tag_names, pattern_tag_names)
-    res = []
-    for stem_tag_name in stem_tag_names:
-        res.append({
-            'name': stem_tag_name,
-            'tag': f"stem:{stem_tag_name}",
-        })
-        res += generate_patterns_list(pattern_tag_names, stem_tag_name)
-
-    if not res:
-        raise Exception('empty stem list')
-
-    return res
-
-
-def generate_patterns_list(pattern_tag_names, stem_tag_name):
+def generate_patterns_list(pattern_tag_names):
     res = []
     for pattern_tag_name in pattern_tag_names:
-        if stem_tag_name == find_stem_of_pattern(conj_stems_and_patterns, pattern_tag_name):
-            res.append({
-                'name': pattern_tag_name,
-                'tag': f"pattern:{pattern_tag_name}",
-            })
-
-    if not res and stem_tag_name != 'Irregular':
-        raise Exception('empty pattern list')
+        res.append({
+            'name': pattern_tag_name,
+            'tag': f"pattern:{pattern_tag_name}",
+        })
 
     return res
 
@@ -130,15 +108,15 @@ def parse_indices(tag_counter):
     }
 
     grouped_tags = tag_counts_grouped(tag_counter)
-    # raise Exception(grouped_tags['pattern'])
-    verb_stem_list = generate_verb_stem_list(grouped_tags['stem'], grouped_tags['pattern'])
-    # raise Exception(verb_stem_list)
+
+    conj_patterns = conjugations_patterns(grouped_tags['pattern'])
+
     root_letters_list = generate_root_letters_list(grouped_tags['root'])
 
-    for tag_type_to_rem in ['pattern', 'stem', 'root']:
+    for tag_type_to_rem in ['pattern', 'root']:
         grouped_tags.pop(tag_type_to_rem)
 
-    fuse_results = verb_stem_list
+    fuse_results = conj_patterns
     for tag_type, tag_names in grouped_tags.items():
         if tag_type in omit:
             pass

@@ -196,15 +196,15 @@ def validate_t2_tags(jsonline):
 
     if 'tier2_tags' in jsonline:
         # per functions.js the DOM elements with .tier2-tag should appear in this order:
-        # pos -> root num letters -> stem -> pattern -> tier 2 etymology
+        # pos -> root num letters -> pattern -> tier 2 etymology
         tier2 = [f'pos:{jsonline['pos']}']
         if 'root_tag_val' in jsonline:
             tier2.append(f'root:{jsonline['root_tag_val']}')
         if 'tier2_vis_verb' in jsonline:
             vis = jsonline['tier2_vis_verb']
-            tier2.append(f'stem:{vis['stem']}')
-            if 'pattern' in vis:
-                tier2.append(f'pattern:{vis['pattern']}')
+            if 'pattern' not in vis:
+                raise Exception('oh dear')
+            tier2.append(f'pattern:{vis['pattern']}')
         if 'tier2_etymology' in jsonline:
             tier2 += [f'from:{ety}' for ety in jsonline['tier2_etymology']]
 
