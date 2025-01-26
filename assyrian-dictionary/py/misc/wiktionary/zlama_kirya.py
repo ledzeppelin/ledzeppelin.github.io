@@ -22,6 +22,7 @@ def zlama_yareekha_not_kirya():
 
 ZQAPA = '\u0735'
 ZLAMA_KIRYA = '\u0738'
+ZLAMA_YAREEKHA = '\u0739'
 
 CONSONANTS = 'ܦܒܬܛܕܟܓܩܣܨܙܫܚܥܗܡܢܪܠ'
 ALAP = 'ܐ'

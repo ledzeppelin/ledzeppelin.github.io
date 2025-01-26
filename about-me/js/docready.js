@@ -28,7 +28,7 @@ $(document).ready(() => {
     const frag = $(document.createDocumentFragment());
     frag.append(
       // createPDFYearFrag(2025, 0, 11),
-      createPDFYearFrag(2024, 3, 4),
+      createPDFYearFrag(2024, 0, 11),
     );
     return frag;
   }
@@ -54,51 +54,29 @@ $(document).ready(() => {
     return gradient;
   }
 
-  const datapoints = [
-    [128, "Apr '24"],
-    [1700, ""],
-    [2200, "May '24"],
-    // [2000, "Jun '24"],
-    // [4000, "Jul '24"],
-    // [8000, "Aug '24"],
-    // [8000, "Sep '24"],
-    // [8000, "Oct '24"],
-    // [8000, "Nov '24"],
-    // [8000, "Dec '24"],
-  ];
-
-  // Instructions to cut over from month to year
-  //
-  // once end of 2024, blank out all but first month
-  // then set autoSkip: false to ensure year is always shown
   // if running out of room, change 2024 to '24 or increment by every 2 years
-  // const datapoints = [
-  //   [128, '2024'], [1000, ''],
-  //   [2000, ''], [4000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''],
+  const datapoints = [
+    [158, '2024'], [123, ''],
+    [113, ''], [128, ''],
+    [2200, ''], [744, ''],
+    [597, ''], [1300, ''],
+    [855, ''], [798, ''],
+    [1100, ''], [1500, '2025'],
 
-  //   [128, '2025'], [1000, ''],
-  //   [2000, ''], [4000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''], [1000, ''],
-  //   [2000, ''], [4000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''],
+    // [1000, '2025'], [1000, ''],
+    // [2000, ''], [4000, ''],
+    // [8000, ''], [8000, ''],
+    // [8000, ''], [8000, ''],
+    // [8000, ''], [1000, ''],
+    // [2000, ''], [4000, ''],
 
-  //   [128, '2026'], [1000, ''],
-  //   [2000, ''], [4000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''], [1000, ''],
-  //   [2000, ''], [4000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''], [8000, ''],
-  //   [8000, ''],
-  // ];
+    // [128, '2026'], [1000, ''],
+    // [2000, ''], [4000, ''],
+    // [8000, ''], [8000, ''],
+    // [8000, ''], [8000, ''],
+    // [8000, ''], [1000, ''],
+    // [2000, ''], [4000, ''],
+  ];
 
   const xLabels = datapoints.map((item) => item[1]);
   const monthlyCnt = datapoints.map((item) => item[0]);
@@ -131,7 +109,7 @@ $(document).ready(() => {
   // Configuration options
   const config = {
     type: 'line',
-    data: data,
+    data,
     options: {
       animation: false,
       responsive: true,
@@ -162,10 +140,8 @@ $(document).ready(() => {
             display: true,
           },
           ticks: {
-            // uncomment when cutting over to years
-            // autoSkip: false, // Disable auto skipping of labels
-            // maxRotation: 0, // Prevent rotation of labels
-            // minRotation: 0, // Prevent rotation of labels
+            autoSkip: false, // Disable auto skipping of labels
+            maxRotation: 0, // Prevent rotation of labels
             color: secondaryLabelDark,
             font: {
               size: 14,

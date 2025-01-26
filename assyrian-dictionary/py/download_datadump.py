@@ -1,6 +1,4 @@
 # from pprint import pprint
-import json
-import os
 import hashlib
 from pathlib import Path
 from requests import get  # to make GET request

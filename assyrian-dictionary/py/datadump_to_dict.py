@@ -9,7 +9,17 @@ from vars import consts
 from vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
 from vars.infl_schemas import noun_infl_schema, omitted_infl_schema
 from ipa_to_mp3 import ipa_to_mp3
-from conjugate_verbs import set_verb_conj, annotated_row
+from conjugate_verbs import set_verb_conj
+
+def annotated_row(meta, aii_values):
+    row = defaultdict(list)
+    row['meta'] = meta
+
+    for aii_value in aii_values:
+        val_obj = {'value': aii_value}
+        row['values'].append(val_obj)
+
+    return row
 
 def set_examples(item_sense, sense):
     if 'examples' in item_sense:
@@ -65,7 +75,7 @@ def parse_senses(item, aii_v, obj):
             tier3_categories = []
             for category in item_sense['categories']:
                 if 'langcode' in category and category['langcode'] == 'aii':
-                    tier3_categories.append(category['name'])
+                    tier3_categories.append(category['name'].lower())
             if tier3_categories:
                 sense['tier3_categories'] = tier3_categories
                 sense['tier3_tags'] = [f"category:{t3cat}" for t3cat in tier3_categories]
@@ -73,14 +83,14 @@ def parse_senses(item, aii_v, obj):
 
     return senses
 
-def set_infl(item, obj, aii_v, vocalized_cache, visual_conj_cache):
+def set_infl(item, obj, aii_v, verb_denominal_forms = None):
     if 'inflection_templates' not in item:
         return
 
     html_template_name = item['inflection_templates'][-1]['name']
 
     if html_template_name == 'aii-conj':
-        set_verb_conj(item, obj, aii_v, vocalized_cache, visual_conj_cache)
+        set_verb_conj(item, obj, aii_v, verb_denominal_forms)
     elif html_template_name in noun_infl_schema:
         set_noun_infl(item, obj, html_template_name, aii_v)
     elif html_template_name in omitted_infl_schema:
@@ -109,7 +119,7 @@ def set_noun_infl(item, obj, template_name, aii_v):
 
     rows = []
     for key, val in template.items():
-        rows.append( annotated_row(key, list(val.values()), aii_v))
+        rows.append( annotated_row(key, list(val.values())))
 
     obj['table'] = {
         "heading": noun_infl_schema[template_name]['heading'],
@@ -138,7 +148,7 @@ def set_head_template(item, obj, aii_v):
                 form_name = forms_abbrev['default'][arg]
 
             obj['other_forms']['rows'].append(
-                annotated_row(form_name, [val], aii_v)
+                annotated_row(form_name, [val])
             )
 
         elif arg in ht_schema[ht_name]['genders']:
@@ -149,7 +159,7 @@ def set_head_template(item, obj, aii_v):
 
             if arg == "g2":
                 obj['other_forms']['rows'].append(
-                    annotated_row(f'sometimes {pos_gender_abbrev[val]}', [aii_v], aii_v)
+                    annotated_row(f'sometimes {pos_gender_abbrev[val]}', [aii_v])
                 )
 
         else:
@@ -161,7 +171,6 @@ def set_head_template(item, obj, aii_v):
             raise Exception('oh dear')
         obj['gender'] = ht_schema[ht_name]['default_gender']
 
-
 def set_linkage_table(parent, obj, aii_v):
     already_there = already_there_set(obj)
     already_there.add(aii_v)
@@ -170,10 +179,17 @@ def set_linkage_table(parent, obj, aii_v):
         if linkage_key in parent:
             for linkage in parent[linkage_key]: # ex. for synonym in synonyms
                 word_linkage = linkage['word']
+
+                # personal_pronouns pronouns dont show up when linkage_key == 'related' outside of
+                # being implicitly provided by {{aii-personal_pronouns}}
+                # so we can always safely omit them
+                if linkage_key == 'related' and word_linkage in consts.personal_pronouns:
+                    continue
+
                 omit = re.search('[a-zA-Z]', linkage['word']) or word_linkage in already_there
                 if not omit:
                     obj['other_forms']['rows'].append(
-                        annotated_row(linkage_val, [word_linkage], aii_v)
+                        annotated_row(linkage_val, [word_linkage])
                     )
                     already_there.add(word_linkage)
 
@@ -186,12 +202,13 @@ def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
                 # for 128-bit algo, 50% chance of collision after 2^64 ipas, ie hexdigest(16)
                 #                   50% chance of collision after 2^32 ipas, ie hexdigest(8)
                 hash_str = hashlib.shake_128(enc_str).hexdigest(16)
-                # .title() is mainly for uppercasing "standard"
                 if 'tags' in sound:
-                    ipas.append((sound['tags'][0], sound['ipa'], hash_str))
+                    # most "Standard" ipa
+                    ipas.append((sound['tags'][0].lower(), sound['ipa'], hash_str))
                 else:
+                    # other ipa
                     for note in sound['note'].split(', '):
-                        ipas.append((note, sound['ipa'], hash_str))
+                        ipas.append((note.lower(), sound['ipa'], hash_str))
 
     if ipas:
         aii_sounds[aii_not_v][aii_v].append(ipas)
@@ -264,7 +281,7 @@ def already_there_set(obj):
                     already_there.add(value['value'])
     return already_there
 
-def annotate_row_if_not_there(meta, aii_values, aii_v, obj, prepend=False):
+def annotate_row_if_not_there(meta, aii_values, obj):
     already_there = already_there_set(obj)
 
     # if any value of values is there, we just omit all values
@@ -274,18 +291,12 @@ def annotate_row_if_not_there(meta, aii_values, aii_v, obj, prepend=False):
             return
 
     if aii_values:
-        if prepend:
-            obj['other_forms']['rows'].insert(
-                0,
-                annotated_row(meta, aii_values, aii_v)
-            )
-        else:
-            obj['other_forms']['rows'].append(
-                annotated_row(meta, aii_values, aii_v)
-            )
+        obj['other_forms']['rows'].append(
+            annotated_row(meta, aii_values)
+        )
 
 
-def annotate_row_if_not_there2(meta, aii_values, aii_v, obj):
+def annotate_row_if_not_there2(meta, aii_values, obj):
     # function exists so we don't get extra rows-y-padding
     already_there = already_there_set(obj)
     for aii_value in aii_values:
@@ -295,7 +306,7 @@ def annotate_row_if_not_there2(meta, aii_values, aii_v, obj):
     if aii_values:
         for i, aii_value in enumerate(aii_values):
             obj['other_forms']['rows'].append(
-                annotated_row(meta if i == 0 else ' ', [aii_value], aii_v)
+                annotated_row(meta if i == 0 else ' ', [aii_value])
             )
 
 
@@ -303,15 +314,15 @@ def add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias):
     if ety['name'] == 'cog' and '2' in ety['args']:
         set_cognate(obj, item, ety)
     elif ety['name'] in ('contraction') and ety['args']['1'] == 'aii' and '2' in ety['args']:
-        annotate_row_if_not_there(alias, [ety['args']['2']], aii_v, obj)
+        annotate_row_if_not_there(alias, [ety['args']['2']], obj)
     elif ety['name'] in ('m', 'l', 'clipping', 'back-form') and ety['args']['1'] == 'aii':
-        annotate_row_if_not_there(alias, [ety['args']['2']], aii_v, obj)
+        annotate_row_if_not_there(alias, [ety['args']['2']], obj)
     elif ety['name'] in ('doublet') and ety['args']['1'] == 'aii':
         if '5' in ety['args']:
             raise Exception(f'{aii_v} too many doublets')
         for doublet_num in ['2', '3', '4']:
             if doublet_num in ety['args']:
-                annotate_row_if_not_there(alias, [ety['args'][doublet_num]], aii_v, obj)
+                annotate_row_if_not_there(alias, [ety['args'][doublet_num]], obj)
     elif ety['name'] in ('affix', 'af', 'com', 'compound', 'surf', 'blend', 'univerbation') and ety['args']['1'] == 'aii':
         if ety['name'] in ('affix', 'af'):
             for lang in ['lang1', 'lang2']:
@@ -324,32 +335,28 @@ def add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias):
         for affix_num in ['3', '4', '5']:
             if affix_num in ety['args']:
                 aii_affixes.append(ety['args'][affix_num])
-        annotate_row_if_not_there2(alias, aii_affixes, aii_v, obj)
+        annotate_row_if_not_there2(alias, aii_affixes, obj)
 
 
 def add_etymology(obj, item, aii_v):
-    infl_template_name = None
-    if 'inflection_templates' in item:
-        infl_template_name = item['inflection_templates'][0]['name']
-
     if 'etymology_templates' in item:
         etymology = []
         for ety in item['etymology_templates']:
             if ety['name'] in consts.derivation_templates:
                 if ety['args']['1'] == 'aii':
                     lang_name = consts.language_codes[ety['args']['2']]
-                    etymology.append(lang_name)
+                    etymology.append(lang_name.lower())
                 elif ety['args']['1'] == 'syc':
                     for code in ['syc', ety['args']['2']]:
                         lang_name = consts.language_codes[code]
-                        etymology.append(lang_name)
+                        etymology.append(lang_name.lower())
             elif ety['name'] in consts.other_forms_from_ety_templates:
                 alias = consts.other_forms_from_ety_templates[ety['name']]
                 add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias)
             elif ety['name'] == 'aii-root':
                 if obj['pos'] == 'root':
                     raise Exception('root shouldnt contain aii-root')
-                annotate_row_if_not_there('root', [ety['args']['1']], aii_v, obj, True)
+                obj['of_root'] = ety['args']['1']
 
         if etymology:
             # remove dupes, maintain order
@@ -432,6 +439,8 @@ def datadump_to_dict():
 
     aii_dict = defaultdict(lambda: defaultdict(list))
     aii_sounds = defaultdict(lambda: defaultdict(list))
+    verb_denominal_forms = {}
+
 
     BLACKLIST = {
         'ܡܦܪܲܣܚܲܙܹܐ',
@@ -444,8 +453,6 @@ def datadump_to_dict():
     cnt_lst = ['#'*len(cnt_str), cnt_str, '#'*len(cnt_str) ]
     print('\n'.join(cnt_lst))
 
-    visual_conj_cache = {}
-
     for item in data:
         aii_not_v = item['word']
         aii_v = generate_aii_v(item, aii_not_v)
@@ -454,23 +461,34 @@ def datadump_to_dict():
             continue
 
         obj = defaultdict(lambda: defaultdict(list))
-        obj['pos'] = consts.pos_abbrev[item['pos']]
-        obj['tier2_tags'] = [f"pos:{consts.pos_abbrev[item['pos']]}"]
-        if item['pos'] == 'root':
+
+        pronoun_types = {
+            'particle': ('attached pronoun', consts.attached_pronouns),
+            'pron': ('subject pronoun', consts.subject_pronouns)
+        }
+
+        if item['pos'] in pronoun_types and aii_v in pronoun_types[item['pos']][1]:
+            pronoun_label = pronoun_types[item['pos']][0]
+            obj['pos'] = pronoun_label
+            obj['tier2_tags'] = [f"pos:{pronoun_label}"]
+        elif item['pos'] == 'root':
             num_chars = len(aii_v.split())
             if num_chars not in (2, 3, 4, 5):
-                raise Exception(f'{aii_v} is not 2, 3, 4 letters')
+                raise Exception(f'{aii_v} is not 2, 3, 4, 5 letters')
 
-            root_tag_val = f'{num_chars}-letter-root'
-            obj['tier2_tags'].append(f'root:{root_tag_val}')
-            obj['root_tag_val'] = root_tag_val
+            n_letter_root = f'{num_chars}-letter root'
+            obj['pos'] = n_letter_root
+            obj['tier2_tags'] = [f'pos:{n_letter_root}']
+        else:
+            obj['pos'] = consts.pos_abbrev[item['pos']]
+            obj['tier2_tags'] = [f"pos:{consts.pos_abbrev[item['pos']]}"]
 
 
         obj['senses'] = parse_senses(item, aii_v, obj)
 
         set_head_template(item, obj, aii_v)
         set_linkage_table(item, obj, aii_v)
-        set_infl(item, obj, aii_v, vocalized_cache, visual_conj_cache)
+        set_infl(item, obj, aii_v, verb_denominal_forms)
 
         add_etymology(obj, item, aii_v)
         # add_tier2_linkages
@@ -478,6 +496,10 @@ def datadump_to_dict():
 
         aii_dict[aii_not_v][aii_v].append(obj)
 
-
     numbers_table = generate_numbers_table()
-    return aii_dict, collapse_sounds(aii_sounds), visual_conj_cache, numbers_table
+
+
+    with open('./js/json/verb-denominal-forms.json', 'w') as f:
+        json.dump(verb_denominal_forms, f, ensure_ascii=False, indent=4)
+
+    return aii_dict, collapse_sounds(aii_sounds), numbers_table

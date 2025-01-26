@@ -11,7 +11,7 @@ def verbs_missing_roots():
         if 'inflection_templates' not in item:
             continue
 
-        if item['inflection_templates'][-1]['name'] != 'aii-conj-verb':
+        if item['inflection_templates'][-1]['name'] != 'aii-conj':
             continue
 
         root = None

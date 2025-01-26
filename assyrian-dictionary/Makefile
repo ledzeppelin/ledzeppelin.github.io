@@ -1,7 +1,6 @@
-all: deps common-words aii-number-list scaffold schema-check dict isolates-check
-deploy: deps common-words aii-number-list download scaffold schema-check dict-with-audio isolates-check
-some: scaffold schema-check dict isolates-check
-some2: scaffold schema-check dict isolates-check missing-roots validate-conj-patterns
+all: deps common-words aii-number-list scaffold schema-check dict isolates-check validate-dynamic-conj validate-conj-forms
+some: scaffold schema-check dict isolates-check validate-dynamic-conj
+scan-articles: missing-roots validate-conj-patterns
 
 deps:
 	brew install lua jq brotli luarocks
@@ -36,6 +35,8 @@ dict:
 	cd js && brotli -4 -f consts/aii-dict.min.js -o consts/aii-dict.min.js.l4.br
 
 	python3 py/index_tags.py > js/json/indexed-tags.json
+
+	python3 py/vars/verb_templates.py
 
 	@if [ -f js/consts/aii-dict-tags.js ]; then \
 		cp js/consts/aii-dict-tags.js js/consts/aii-dict-tags.prev.js; \
@@ -74,3 +75,9 @@ missing-roots:
 
 validate-conj-patterns:
 	python py/dynamic_conj/validator.py
+
+validate-dynamic-conj:
+	python py/dynamic_conj/test_aii_conj.py
+
+validate-conj-forms:
+	cd js && node cli/verb-conjugation.tests.js

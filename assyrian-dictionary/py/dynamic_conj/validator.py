@@ -20,9 +20,8 @@ def generate_conj_patterns():
             for jsonline in _aii_v['jsonlines']:
                 if jsonline['pos'] != 'verb':
                     continue
-                if 'tier2_vis_verb' in jsonline:
-                    if jsonline['tier2_vis_verb']['pattern'] != 'Irregular':
-                        conj_patterns[jsonline['tier2_vis_verb']['pattern']].add(_aii_v['aii_v'])
+                if 'verb_conjugation' in jsonline:
+                    conj_patterns[jsonline['verb_conjugation']['pattern']].add(_aii_v['aii_v'])
                 else:
                     keywords = {'participle', 'first-person', 'second-person', 'third-person',
                     'infinitive of', 'feminine singular', 'Contraction of'}

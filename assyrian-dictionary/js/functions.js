@@ -9,16 +9,6 @@ const DictionaryQueryType = Object.freeze({
 const TO_BE_REMOVED = 'to-be-removed';
 const TO_BE_REMOVED_CLASS = `.${TO_BE_REMOVED}`;
 
-function isColorfulFreeText(jsonline) {
-  // TODO: this needs to be cleaned up once conjugations are done on client-side
-
-  // eslint-disable-next-line max-len
-  const isColorfulVerb = jsonline?.conj?.tenses?.[0]?.rows?.[0]?.values?.[0]?.template_str !== undefined;
-  // eslint-disable-next-line max-len
-  const isColorfulRoot = jsonline?.other_forms?.rows?.[0]?.values?.[0]?.template_str !== undefined;
-  return isColorfulVerb || isColorfulRoot;
-}
-
 function generateFreeTextTier1Skeleton(aiiV) {
   const frag = $(document.createDocumentFragment());
   const classes = `free-text-t1 tier1-tag ${TO_BE_REMOVED}`;
@@ -56,12 +46,8 @@ function generateFreeTextTier2Skeleton(jsonline) {
 
   frag.append($('<div/>', { class: classes, text: jsonline.pos }));
 
-  if ('root_tag_val' in jsonline) {
-    frag.append($('<div/>', { class: classes, text: jsonline.root_tag_val }));
-  }
-
-  if ('tier2_vis_verb' in jsonline) {
-    frag.append($('<div/>', { class: classes, text: jsonline.tier2_vis_verb.pattern }));
+  if ('verb_conjugation' in jsonline) {
+    frag.append($('<div/>', { class: classes, text: jsonline.verb_conjugation.pattern }));
   }
 
   jsonline.tier2_etymology?.forEach((ety) => {
@@ -72,13 +58,11 @@ function generateFreeTextTier2Skeleton(jsonline) {
 }
 
 function createFragmentsGroupedByUnvocalizedSpelling(result, isTagSearch = false) {
-  const isRoot = Array.isArray(result.item.aii_not_v);
-
   const resultFragmentsGrouped = $(document.createDocumentFragment());
   result.item.aii_v_s.forEach((aiiV) => {
     const resultFragment = createFreeTextResultFrag(aiiV.aii_v).addClass(TO_BE_REMOVED);
     resultFragment.append(
-      createAiiVFrag(aiiV.aii_v, isRoot),
+      createAiiVFrag(aiiV.aii_v),
       $('<div/>', { class: 'aii-v-word-tr-container' }).append(
         $('<div/>', { class: 'aii-v-word-tr', text: aiiV.aii_v_tr }),
       ),
@@ -89,7 +73,8 @@ function createFragmentsGroupedByUnvocalizedSpelling(result, isTagSearch = false
 
     aiiV.jsonlines.forEach((jsonline) => {
       const sensesFragment = $('<ul/>', { class: `free-text-senses ${TO_BE_REMOVED}` });
-      if (isColorfulFreeText(jsonline)) {
+
+      if (jsonline?.verb_conjugation?.strong_radicals?.length) {
         resultFragment.addClass('colorful-verb');
       }
       jsonline.senses.forEach((sense) => {
@@ -194,7 +179,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
         $(frag).next('.aii-v-word-tr-container').siblings('.free-text-senses').removeClass(TO_BE_REMOVED).children('.free-text-gloss').removeClass(TO_BE_REMOVED);
         $(frag).parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
         if (isRoot) {
-          $(frag).find('.atuta-box-large').addClass('highlighted');
+          $(frag).wrapInner($('<span>').addClass('highlighted'));
         } else {
           highlightAiiText($(frag), $(frag).text(), searchQuery.aii_not_v_query, false);
         }
@@ -268,16 +253,21 @@ function loadResults(searchQuery, PAGINATE_AMT) {
             sensesFragment.append(createGlossFrag(sense, j));
           });
 
+          if (jsonline.senses.length === 1) {
+            sensesFragment.addClass('only-one-gloss');
+          }
+
           const jsonlineFragment = $('<div/>', { class: 'jsonline' }).append(
             $('<div/>', { class: 'pos' }).append(
               $('<div/>', { class: 'pos-meta' }).append(
                 createPOSFrag(jsonline.pos),
                 createPOSPrefixFrag(jsonline),
-                isRoot ? createRootLettersFrag('root_tag_val', jsonline) : '',
-                createVisVerbFrag('tier2_vis_verb', jsonline, 'tier2-tag'),
+                createVerbPatternFrag('verb_conjugation', jsonline, 'tier2-tag'),
                 createT1IntoPOSFrag(aiiV, singletonJsonline),
                 'tier2_etymology' in jsonline ? createEtymologyFrag('tier2_etymology', jsonline, 'tier2-tag') : '',
+                createFromRootFrag(jsonline),
               ),
+              createShowInflectionsButton(jsonline),
             ),
             createInflFrag(jsonline, aiiV.aii_v),
             createConjFrag(jsonline, aiiV.aii_v),
@@ -294,7 +284,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
 
         resultFragment.append(
           $('<div/>', { class: 'aii-v-word-container' }).append(
-            createAiiVFrag(aiiV.aii_v, isRoot),
+            createAiiVFrag(aiiV.aii_v),
             $('<div/>', { class: 'aii-v-word-tr-container' }).append(
               moreSoundsButton,
               $('<div/>', { class: 'aii-v-word-tr', text: aiiV.aii_v_tr }),
@@ -310,10 +300,9 @@ function loadResults(searchQuery, PAGINATE_AMT) {
       const DEBUG_HIGHLIGHT = false;
       if (DEBUG_HIGHLIGHT === false) {
         // eslint-disable-next-line max-len
-        highlightAiiExactSearchFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV, indexedTags);
+        highlightAiiExactSearchFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV);
       }
 
-      showMore(resultFragment);
       setTrBacklink(resultFragment);
 
       $('#search-results').append(resultFragment);
@@ -325,7 +314,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
   // console.timeEnd('test');
 }
 
-function highlightAiiExactSearchFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV, indexedTags) {
+function highlightAiiExactSearchFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV) {
   result.matches.forEach((match) => {
     // this block only runs if there were any actual results from the exact search
     const isSpacedRoot = isRoot && searchQuery.aii_v_query === result.item.aii_not_v[0];
@@ -335,29 +324,6 @@ function highlightAiiExactSearchFragment(result, resultFragment, searchQuery, is
       const aiiVEle = resultFragment.find(indexedAiiV[match.key]).eq(match.refIndex);
       aiiVEle.addClass('exact-aii-search-match');
       aiiVEle.parent().addClass('show-first');
-    }
-  });
-}
-
-function showMore(resultFragment) {
-  // show the first gloss if no glosses are shown
-  // and create button if there are more defs
-  resultFragment.find('.senses').each((i, senses) => {
-    const hideMarker = $(senses).find('.gloss').length === 1;
-    if (hideMarker) {
-      $(senses).addClass('only-one-gloss');
-    }
-
-    const showInflections = $(senses).parent().find('.more-info.has-heading').length > 0;
-
-    if (showInflections) {
-      const numVisualVerbConj = $(senses).parent().find('.atwateh-boxes').length;
-      const buttonStyle = numVisualVerbConj > 0 ? 'verb-conj-button' : 'not-verb-conj-button';
-      $(senses).siblings('.pos').append(
-        $('<button/>', { class: `more-defs-button-container ${buttonStyle}` }).append(
-          $('<span/>', { class: 'material-symbols-rounded more-defs-button', text: 'keyboard_arrow_down' }),
-        ),
-      );
     }
   });
 }

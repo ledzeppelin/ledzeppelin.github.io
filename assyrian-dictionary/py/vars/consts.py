@@ -14,7 +14,6 @@ pos_abbrev = {
   'prefix': 'prefix',
   'prep': 'preposition',
   'pron': 'pronoun',
-  'root': 'root',
   'suffix': 'suffix',
   'verb': 'verb',
 }
@@ -63,6 +62,7 @@ language_codes = {
   'hit': 'Hittite',
   'hu': 'Hungarian',
   'hy': 'Armenian',
+  'iir': 'Indo-Iranian',
   'iir-pro': 'Proto-Indo-Iranian',
   'inm': 'Minaean',
   'inc': 'Indo-Aryan',
@@ -99,8 +99,10 @@ language_codes = {
   'pal': 'Middle Persian',
   'peo': 'Old Persian',
   'phn': 'Phoenician',
+  "pl": 'Polish',
   'pra-sau': 'Sauraseni Prakrit',
   'pt': 'Portuguese',
+  'qfa-sub': 'substrate',
   'ru': 'Russian',
   'sa': 'Sanskrit',
   'sem': 'Semitic',
@@ -188,4 +190,53 @@ other_forms_from_ety_templates = {
   'l': 'also',
   'surf': 'apparent etymology',
   'univerbation': 'univerbation',
+}
+
+# pronouns from https://en.wiktionary.org/wiki/Template:aii-personal_pronouns
+personal_pronouns = {
+    "ܐܵܢܵܐ",
+    "ܐܲܚܢܲܢ",
+    "ܐܲܢ݇ܬ",
+    "ܐܲܢ݇ܬܝ",
+    "ܐܲܢ݇ܬܘܿܢ",
+    "ܐܲܢ݇ܬܹܝܢ",
+    "ܗ̇ܘ",
+    "ܗ̇ܝ",
+    "ܗܸܢܘܿܢ",
+    "ܗܸܢܹܝܢ",
+    "-ܝܼ",
+    "-ܲܢ",
+    "-ܘܼܟ݂",
+    "-ܵܟ݂ܝ",
+    "-ܵܘܟ݂ܘܿܢ",
+    "-ܹܗ",
+    "-ܘܼܗܝ",
+    "-ܵܗ̇",
+    "-ܘܿܗ̇",
+    "-ܗܘܿܢ",
+}
+
+attached_pronouns = {
+    "-ܝ ܼ", # incorrect form
+    # "-ܝܼ", # correct form
+    "-ܲܢ",
+    "-ܘܼܟ݂",
+    "-ܵܟ݂ܝ",
+    "-ܵܘܟ݂ܘܿܢ",
+    "-ܹܗ",
+    "-ܘܼܗܝ",
+    "-ܵܗ̇",
+    "-ܘܿܗ̇",
+    "-ܗܘܿܢ"
+}
+
+subject_pronouns = {
+    "ܐܵܢܵܐ",
+    "ܐܲܚܢܲܢ",
+    "ܐܲܢ݇ܬ",
+    "ܐܲܢ݇ܬܝ",
+    "ܐܲܚܬܘܿܢ",
+    "ܗ̇ܘ",
+    "ܗ̇ܝ",
+    "ܐܵܢܝܼ",
 }
