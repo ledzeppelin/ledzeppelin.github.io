@@ -1,5 +1,7 @@
 import re
-from utils import AiiConjugation
+import sys
+sys.path.append('py')
+from dynamic_conj.utils import AiiConjugation
 
 def aii_conj(aii_v):
     # given the non-past, 3rd person, single, masculine form of a verb
@@ -26,7 +28,7 @@ def aii_conj(aii_v):
             args = list(match.groups())
             matched_patterns.append(
                 {
-                    'title': f"aii-conj-verb/{pattern}",
+                    'title': pattern,
                     'args': args,
                 }
             )

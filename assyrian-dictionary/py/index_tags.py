@@ -1,6 +1,12 @@
 import json
 from collections import defaultdict
 
+from vars.consts import attached_pronouns, subject_pronouns
+expected_counts = {
+    'pos:attached pronoun': len(attached_pronouns),
+    'pos:subject pronoun': len(subject_pronouns)
+}
+
 def tag_counts():
     with open('./js/json/aii-dict-no-tr.json', encoding="utf-8") as f:
         data = json.load(f)
@@ -25,13 +31,20 @@ def tag_counts():
     return counter
 
 def tag_counts_grouped(tag_counter):
-    MIN_OCCURENCES = 4
-    # MIN_OCCURENCES = 1
-    exempt_from_min_occurrences = {'root:2-letter-root', 'root:4-letter-root', 'root:5-letter-root'}
+    MIN_OCCURRENCES = 4
+    # MIN_OCCURRENCES = 1
+
+    for tag, expected_count in expected_counts.items():
+        if tag_counter[tag] != expected_count:
+            raise Exception(f"Expecting {expected_count} {tag.replace('pos:', '')}, got {tag_counter[tag]}")
+
+
+    exempt_from_min_occurrences = {'pos:2-letter root', 'pos:4-letter root', 'pos:5-letter root'}
     results = defaultdict(list)
     # raise Exception(tag_counter.items())
     for tag, count in tag_counter.items():
-        if count >= MIN_OCCURENCES or tag in exempt_from_min_occurrences:
+        # if count >= MIN_OCCURRENCES or tag in exempt_from_min_occurrences or tag.startswith('pattern:'):
+        if count >= MIN_OCCURRENCES or tag in exempt_from_min_occurrences:
             tag_type, tag_name = tag.split(':', 1)
             results[tag_type].append(tag_name)
     # {'ipa': ['standard', 'Urmian', 'Nineveh Plains']}
@@ -55,30 +68,20 @@ def generate_patterns_list(pattern_tag_names):
 
     return res
 
-def generate_root_letters_list(root_letters_tag_names):
-    res = []
-    for root_letters_tag_name in root_letters_tag_names:
-        tag = f"root:{root_letters_tag_name}"
-        res.append({
-            'name': root_letters_tag_name,
-            'tag': tag,
-            'sort_key': tag,
-        })
 
-    return res
-
-
-def append_l2(tag_type, tag_names, root_letters_list, l2_full_name, fuse_results):
-    children = []
+def append_l2(tag_type, tag_names, l2_full_name, fuse_results):
+    children =  []
     for tag_name in tag_names:
         child = {
             'name': tag_name,
             'tag': f"{tag_type}:{tag_name}",
         }
 
+        if f"{tag_type}:{tag_name}" in expected_counts:
+            child['sort_key'] = f'pronoun {tag_name}'
+
         children.append(child)
-        if tag_type == 'pos' and tag_name == 'root':
-            children += root_letters_list
+
 
 
     fuse_results.append({
@@ -111,9 +114,7 @@ def parse_indices(tag_counter):
 
     conj_patterns = conjugations_patterns(grouped_tags['pattern'])
 
-    root_letters_list = generate_root_letters_list(grouped_tags['root'])
-
-    for tag_type_to_rem in ['pattern', 'root']:
+    for tag_type_to_rem in ['pattern']:
         grouped_tags.pop(tag_type_to_rem)
 
     fuse_results = conj_patterns
@@ -121,7 +122,7 @@ def parse_indices(tag_counter):
         if tag_type in omit:
             pass
         elif tag_type in l2_full_names:
-            append_l2(tag_type, tag_names, root_letters_list, l2_full_names[tag_type], fuse_results)
+            append_l2(tag_type, tag_names, l2_full_names[tag_type], fuse_results)
         else:
             raise Exception(f'{tag_type} not found')
 

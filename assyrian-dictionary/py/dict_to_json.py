@@ -17,58 +17,11 @@ def collapse_etymologies(inner_obj, jsonlines):
                 jsonline['tier2_tags'].extend([f"from:{language}" for language in jsonline['tier2_etymology']])
     inner_obj['jsonlines'] = jsonlines
 
-def set_derived_from_root_conj(jsonlines, visual_conj_cache, vis_pres_3rd_sm, aii_v):
-    # check if any terms derived from root can be visually conjugated
-    for jsonline in jsonlines:
-        if jsonline['pos'] == 'root':
-            visualize_derived_terms(jsonline, visual_conj_cache)
-            add_more_visualized_derived_terms(jsonline, visual_conj_cache, vis_pres_3rd_sm, aii_v)
-
-def add_more_visualized_derived_terms(jsonline, visual_conj_cache, vis_pres_3rd_sm, aii_v_root):
-    # attempt to add any pres-3rd-sm which is visualized but not in the wiktionary root page
-    if aii_v_root in vis_pres_3rd_sm:
-        already_there = set()
-        if 'other_forms' in jsonline:
-            for row in jsonline['other_forms']['rows']:
-                for value in row['values']:
-                    if 'value' in value:
-                        already_there.add(value['value'])
-
-        not_already_there = vis_pres_3rd_sm[aii_v_root] - already_there
-        for aii_v in sorted(list(not_already_there)):
-            del visual_conj_cache[aii_v]['derived_from_root']
-
-            jsonline['other_forms']['rows'].insert(
-                0,
-                {
-                  "meta": "derived term",
-                  "values": [visual_conj_cache[aii_v]]
-                }
-            )
-
-
-def visualize_derived_terms(jsonline, visual_conj_cache):
-    if 'other_forms' in jsonline:
-        idx = 0
-        for row in jsonline['other_forms']['rows']:
-            for value in row['values']:
-                if 'cog_value' in value:
-                    continue
-                aii = value['value']
-                if aii in visual_conj_cache:
-                    value['template_str'] = visual_conj_cache[aii]['template_str']
-                    value['template_atwateh'] = visual_conj_cache[aii]['template_atwateh']
-
-                    jsonline['other_forms']['rows'].remove(row)
-                    jsonline['other_forms']['rows'].insert(idx, row)
-                    idx += 1
-                    # raise Exception(visual_conj_cache[aii])
-
 
 def unvocalized_contains_root(aii_v_s):
     for jsonlines in aii_v_s.values():
         for jsonline in jsonlines:
-            if jsonline['pos'] == 'root':
+            if jsonline['pos'] in {f'{i}-letter root' for i in range(2, 6)}:
                 if len(aii_v_s) > 1:
                     raise Exception('numerous vocalized spellings for the unvocalized root')
                 if len(jsonlines) > 1:
@@ -76,7 +29,7 @@ def unvocalized_contains_root(aii_v_s):
                 return True
     return False
 
-def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache, numbers_table):
+def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
     # structure dictionary in a format that can be indexed by fusejs and on a per vocalized
     # 1. add ipas
     # 2. check if common word
@@ -101,12 +54,6 @@ def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache, numbers_table):
 
     deduped_common_words = list(dict.fromkeys(parsed_json))
 
-    # maps roots to list of derived terms
-    vis_pres_3rd_sm = defaultdict(set)
-    for key_aii_v, val_obj in visual_conj_cache.items():
-        vis_pres_3rd_sm[val_obj['derived_from_root']].add(key_aii_v)
-
-
     fuse_data = []
     for aii_not_v, aii_v_s in aii_dict.items():
         obj = defaultdict(lambda:float('inf'))
@@ -127,8 +74,6 @@ def aii_dict_to_fuse(aii_dict, sounds, visual_conj_cache, numbers_table):
 
             # if len(jsonlines) > 4:
             #     raise Exception(aii_v)
-
-            set_derived_from_root_conj(jsonlines, visual_conj_cache, vis_pres_3rd_sm, aii_v)
 
             if aii_not_v in sounds and aii_v in sounds[aii_not_v]:
                 inner_obj['ipas'] = sounds[aii_not_v][aii_v]
@@ -196,12 +141,10 @@ def validate_t2_tags(jsonline):
 
     if 'tier2_tags' in jsonline:
         # per functions.js the DOM elements with .tier2-tag should appear in this order:
-        # pos -> root num letters -> pattern -> tier 2 etymology
+        # pos -> pattern -> tier 2 etymology
         tier2 = [f'pos:{jsonline['pos']}']
-        if 'root_tag_val' in jsonline:
-            tier2.append(f'root:{jsonline['root_tag_val']}')
-        if 'tier2_vis_verb' in jsonline:
-            vis = jsonline['tier2_vis_verb']
+        if 'verb_conjugation' in jsonline:
+            vis = jsonline['verb_conjugation']
             if 'pattern' not in vis:
                 raise Exception('oh dear')
             tier2.append(f'pattern:{vis['pattern']}')
@@ -225,9 +168,9 @@ def validate_t3_tags(sense):
 
 
 # print(json.dumps(foo))
-aii_dict1, aii_collapsed_sounds1, visual_conj_cache_, numbers_table_ = datadump_to_dict()
+aii_dict1, aii_collapsed_sounds1, numbers_table_ = datadump_to_dict()
 
-foo = aii_dict_to_fuse(aii_dict1, aii_collapsed_sounds1, visual_conj_cache_, numbers_table_)
+foo = aii_dict_to_fuse(aii_dict1, aii_collapsed_sounds1, numbers_table_)
 validate_tag_order(foo)
 
 with open("js/json/aii-dict-no-tr.json", "w") as file:

@@ -49,6 +49,8 @@ $apple-rgba-alpha: .75
       $dark-color: list.nth($apple-colors-dark, $i + 1)
       @include atuta-box-color($color, $dark-color)
 
+
+
 #tagged-results-meta
   color: $secondary-label
   @media (prefers-color-scheme: dark)
@@ -68,30 +70,6 @@ $apple-rgba-alpha: .75
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
-
-
-.expandable-btn-icon-green
-  color: rgba($apple-green, $apple-rgba-alpha)
-  @media (prefers-color-scheme: dark)
-    color: rgba($apple-green-dark, $apple-rgba-alpha)
-
-
-.expandable-btn-icon-red
-  color: rgba($apple-red, $apple-rgba-alpha)
-  @media (prefers-color-scheme: dark)
-    color: rgba($apple-red-dark, $apple-rgba-alpha)
-
-
-.expandable-btn-icon-blue
-  color: rgba($apple-blue, $apple-rgba-alpha)
-  @media (prefers-color-scheme: dark)
-    color: rgba($apple-blue-dark, $apple-rgba-alpha)
-
-
-  &.expanded
-    color: $secondary-label
-    @media (prefers-color-scheme: dark)
-      color: $secondary-label-dark
 
 
 .tag-menu-btn-l2
@@ -177,12 +155,6 @@ $apple-rgba-alpha: .75
     color: $key-color
     @media (prefers-color-scheme: dark)
       color: $key-color-dark
-
-
-.atuta-box-large
-  border-color: $separator
-  @media (prefers-color-scheme: dark)
-    border-color: $separator-dark
 
 
 .aii-v-word-tr-container
@@ -349,6 +321,15 @@ $apple-rgba-alpha: .75
     color: $secondary-label-dark
 
 @include atuta-box-colors($apple-colors, $apple-colors-dark)
+
+.atuta-box-clr-weak
+  border-color: $secondary-label
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    border-color: $secondary-label-dark
+    color: $secondary-label-dark
+
+
 
 .more-sounds-button,
 .play-sound

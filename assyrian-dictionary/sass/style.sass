@@ -39,9 +39,10 @@ $view-margin-y: 20px
 
 
 #tagged-results-meta
-  @include eng-text('s')
+  @include eng-text('xs')
   display: none
   margin: $view-margin-y $side-padding + $searchbar-inset-x
+  margin-bottom: calc(-1 * $view-margin-y / 2)
   padding: 0
 
   #matched-tag
@@ -118,27 +119,8 @@ $tri-root-offset: -17px
     font-size: $half-icon-size * 2
     font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
 
-    &.expandable-btn-icon-green,
-    &.expandable-btn-icon-red,
-    &.expandable-btn-icon-blue
-      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
-
-    &.expandable-btn-icon-red
-      margin-left: $tri-root-offset
-
-    &.expandable-btn-icon-blue
-      margin-left: $tri-root-offset
-
     &.expanded
       transform: rotate(90deg)
-
-      &.expandable-btn-icon-red
-        margin-left: -2 * $half-icon-size
-        transition: transform 200ms, margin-left 200ms
-
-      &.expandable-btn-icon-blue
-        margin-left: -2 * $half-icon-size
-        transition: transform 200ms, margin-left 200ms
 
 .show-gloss-terms-btn,
 .show-examples-btn,
@@ -227,17 +209,6 @@ button
   &.exact-aii-search-match
     font-weight: 500
 
-  .atuta-box-large
-    border-radius: 6px
-    border-style: solid
-    border-width: 2px
-    margin-right: 2px
-    padding: 0 5px
-
-    &::before
-      content: '\200C'
-
-
 .aii-v-word-tr-container
   align-items: center
   display: flex
@@ -298,11 +269,22 @@ button
       &.expanded
         transform: rotate(180deg)
 
+.of-root-container
+  display: inline-block
+
+.of-root-tr
+  @include eng-text('s', $is-translit: true)
+
+.of-root-aii
+  @include aii-text('s')
+
+$y-margin: 8px
+
 .free-text-t1,
 .free-text-t2
   @include eng-text('s')
   margin-bottom: 2px
-  margin-top: 16px
+  margin-top: $y-margin // no margin collapsing since these are inline-block
 
 
 $sound-button-padding: 6px
@@ -310,8 +292,9 @@ $sound-accent-offset: 8px
 
 .free-text-t1-ipa-container
   align-items: center
-  display: flex
+  display: flex !important // prevent inline-block style of .tier1-tag
   margin-bottom: 8px
+  margin-top: 2 * $y-margin // 2x to account for margin collapsing
 
   .free-text-ordinal
     @include eng-text('s')
@@ -365,6 +348,19 @@ $display-toggle: none
 
   .highlighted
     font-weight: 500
+
+
+.ety-list
+  display: inline
+  margin: 0
+  padding: 0
+
+
+.ety-list > li
+  display: inline-block
+
+  &:not(:last-child)::after
+    content: ',\00A0'
 
 
 // https://chriskirknielsen.com/blog/inline-lists-with-conditional-separators/
@@ -422,17 +418,10 @@ $display-toggle: none
     margin-left: auto
 
 
-// 3 tables for vis verb conj
-//   no heading
-//     1. root's derived terms
+// 2 tables for vis verb conj
 //   has heading
-//     2. root entry table
-//     3. verb conj table
-
-.more-info > .rows-y-padding
-  // this matches vis conjugations in root's derived terms
-  margin: 8px 0
-  // background-color: rgba(green, .1)
+//     1. root entry table
+//     2. verb conj table
 
 
 .headered-rows > .rows-y-padding
@@ -499,12 +488,8 @@ $display-toggle: none
   // need y-padding for diacritics
   padding: 2px 4px
 
-  &.break-ligatures
-    &::before
-      content: '\200C'
-
-    &::after
-      content: '\200C'
+  &.atuta-box-clr-weak
+    border-style: dotted
 
 .atuta-box-small-is-first
   margin-right: 0
@@ -583,7 +568,6 @@ $display-toggle: none
   // more pronounced when line-height is 1.5
   transition: color 200ms
 
-
 .ipa-info
   @include eng-text('xs')
   margin-left: 46px
@@ -615,9 +599,6 @@ $display-toggle: none
 
 .tier1-tag,
 .tier2-tag,
-.tier3-tag,
-.l-inline-tag,
-.in-numbers-table,
-.top-tag-anchor
-  white-space: nowrap
+.in-numbers-table
+  display: inline-block
 

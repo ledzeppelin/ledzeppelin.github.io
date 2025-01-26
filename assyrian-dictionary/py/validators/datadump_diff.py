@@ -19,7 +19,7 @@ class DiffInfo:
         functions = [
             # roughly ordered by descending importance
             (self.shallow_head_template_counters, 'HEAD TEMPLATE, SHALLOW'),
-            (self.shallow_infl_template_counters, 'INFL TEMPLATE, SHALLOW'),
+            (self.infl_template_counters, 'INFL TEMPLATE, SHALLOW'),
             (self.ipa_counters, 'IPA'),
             (self.ety_counters, 'ETYMOLOGY'),
             (self.sense_key_counter, 'SENSE KEY'),
@@ -27,7 +27,6 @@ class DiffInfo:
             (self.cat_counters, 'CATEGORY'),
             (self.linkages_counter, 'LINKAGE, DEEP'),
             (self.deep_head_template_counters, 'HEAD TEMPLATE, DEEP'),
-            (self.deep_infl_template_counters, 'INFL TEMPLATE, DEEP'),
         ]
         for function, title in functions:
             prev_count, count = [function(filename) for filename in [self.prev_file, self.file]]
@@ -141,7 +140,6 @@ class DiffInfo:
             data = [json.loads(line) for line in f]
 
         shallow = defaultdict(int)
-        deep = defaultdict(lambda: defaultdict(int))
 
         for item in data:
             if not is_valid_aii_v(item):
@@ -157,27 +155,7 @@ class DiffInfo:
             shallow[pos_template_name] += 1
 
 
-            idx = 0
-            if pos_template_name.startswith('aii-conj-verb/'):
-                idx = 1
-
-            if len(item['inflection_templates']) == idx + 1:
-                if item['inflection_templates'][idx]['args']:
-                    for arg, _ in item['inflection_templates'][idx]['args'].items():
-                        deep[pos_template_name][arg] += 1
-                else:
-                    pass
-                    # raise Exception(f'{pos_template_name} oh dear')
-
-        return shallow, deep
-
-    def shallow_infl_template_counters(self, filename):
-        shallow, _ = self.infl_template_counters(filename)
-
         return shallow
-    def deep_infl_template_counters(self, filename):
-        _, deep = self.infl_template_counters(filename)
-        return deep
 
     def ipa_counters(self, filename):
         with open(f'./js/json/{filename}', encoding="utf-8") as f:

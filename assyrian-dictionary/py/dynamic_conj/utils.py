@@ -53,18 +53,18 @@ class AiiConjugation:
             # normalized to the former
             #
             # override matching Template:aii-conj-verb/G-2i since medial alap is strong
-            'ܟܵܐܹܒ': ['aii-conj-verb/G-strong', 'ܟ', 'ܐ', 'ܒ'],
-            'ܛܵܐܹܒ݂': ['aii-conj-verb/G-strong', 'ܛ', 'ܐ', 'ܒ݂'],
-            'ܫܵܐܹܠ': ['aii-conj-verb/G-strong', 'ܫ', 'ܐ', 'ܠ'],
-            'ܣܵܐܹܢ': ['aii-conj-verb/G-strong', 'ܣ', 'ܐ', 'ܢ'],
+            'ܟܵܐܹܒ݂': ['g-strong', 'ܟ', 'ܐ', 'ܒ݂'],
+            'ܛܵܐܹܒ݂': ['g-strong', 'ܛ', 'ܐ', 'ܒ݂'],
+            'ܫܵܐܹܠ': ['g-strong', 'ܫ', 'ܐ', 'ܠ'],
+            'ܣܵܐܹܢ': ['g-strong', 'ܣ', 'ܐ', 'ܢ'],
             # no matches since medial alap is strong and first radical is yudh
-            'ܝܵܐܹܒ݂': ['aii-conj-verb/G-strong', 'ܝ', 'ܐ', 'ܒ݂'],
+            'ܝܵܐܹܒ݂': ['g-strong', 'ܝ', 'ܐ', 'ܒ݂'],
 
             # Irregular Conjugations
             'ܗܵܘܹܐ': ['aii-conj-haweh'],
-            'ܐܵܬ݂ܹܐ': ['aii-conj-verb/atheh'],
-            'ܐܵܙܹܠ': ['aii-conj-verb/azel'],
-            'ܝܵܗ݇ܒ݂ܹܠ': ['aii-conj-verb/yavel'],
+            'ܐܵܬ݂ܹܐ': ['atheh'],
+            'ܐܵܙܹܠ': ['azel'],
+            'ܝܵܗ݇ܒ݂ܹܠ': ['yavel'],
         }
 
     def create_cg(self, characters):
@@ -74,25 +74,25 @@ class AiiConjugation:
     def get_patterns(self):
         # pylint: disable=line-too-long
         return [
-            ('C-strong', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.CONSONANTS_A_W_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
-            ('C-weak-2d-3i', 3, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
-            ('C-weak-3i', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
+            ('c-strong', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.CONSONANTS_A_W_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
+            ('c-weak-2-drop', 3, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
+            ('c-weak-3', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
             # geminates only occur in c-drop
-            ('C-weak-d', 3, rf"^ܡ{self.PTAKHA}{self.CONSONANTS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
-            ('C-weak-m', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.YUDH}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
+            ('c-weak-drop', 3, rf"^ܡ{self.PTAKHA}{self.CONSONANTS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
+            ('c-weak-2', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.YUDH}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
 
-            ('D-strong', 4, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.LETTERS_CG}{self.ZLAMA_KIRYA}{self.LETTERS_CG}$"),
-            ('D-weak-3i', 4, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_W_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
+            ('d-strong', 4, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.LETTERS_CG}{self.ZLAMA_KIRYA}{self.LETTERS_CG}$"),
+            ('d-weak-3', 4, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_W_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
 
-            ('G-strong', 3, rf"^{self.CONSONANTS_Y_CG}{self.ZQAPA}{self.CONSONANTS_W_CG}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_CG}$"),
-            ('G-weak-1i', 3, rf"^{self.ALAP}{self.ZQAPA}{self.CONSONANTS_A_CG}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_CG}$"),
-            ('G-weak-2i', 3, rf"^{self.CONSONANTS_CG}{self.ZQAPA}{self.A_Y_CHAR_CLASS}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_CG}$"),
-            ('G-weak-3i', 3, rf"^{self.CONSONANTS_A_Y_CG}{self.ZQAPA}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
-            ('Gt-strong', 5, rf"^ܡ{self.ZLAMA_KIRYA}ܬ{self.RUKKAKHA}{self.CONSONANTS_CG}{self.CONSONANTS_CG}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_A_CG}$"),
+            ('g-strong', 3, rf"^{self.CONSONANTS_Y_CG}{self.ZQAPA}{self.CONSONANTS_W_CG}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_CG}$"),
+            ('g-weak-1', 3, rf"^{self.ALAP}{self.ZQAPA}{self.CONSONANTS_A_CG}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_CG}$"),
+            ('g-weak-2', 3, rf"^{self.CONSONANTS_CG}{self.ZQAPA}{self.A_Y_CHAR_CLASS}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_CG}$"),
+            ('g-weak-3', 3, rf"^{self.CONSONANTS_A_Y_CG}{self.ZQAPA}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
+            ('gt-strong', 5, rf"^ܡ{self.ZLAMA_KIRYA}ܬ{self.RUKKAKHA}{self.CONSONANTS_CG}{self.CONSONANTS_CG}{self.ZLAMA_YAREEKHA}{self.CONSONANTS_A_CG}$"),
 
-            ('Penta-strong', 6, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_CG}{self.CONSONANTS_CG}{self.LETTERS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
+            ('penta-strong', 6, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_CG}{self.CONSONANTS_CG}{self.LETTERS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
 
-            ('Q-strong', 5, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_W_Y_CG}{self.CONSONANTS_A_W_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
-            ('Q-weak', 5, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_W_CG}{self.CONSONANTS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
-            ('Qi-strong', 6, rf"^ܡܸܫܬܲ{self.CONSONANTS_CG}{self.CONSONANTS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
+            ('q-strong', 5, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_W_Y_CG}{self.CONSONANTS_A_W_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
+            ('q-weak-4', 5, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_W_CG}{self.CONSONANTS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
+            ('qi-strong', 6, rf"^ܡܸܫܬܲ{self.CONSONANTS_CG}{self.CONSONANTS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
         ]

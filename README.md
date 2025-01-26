@@ -23,7 +23,7 @@ make all
 Subsequently run `cd assyrian-dictionary` and update the dictionary (while the venv is activated)
 1. Pull in latest changes via `make download`
 2. Surface issues via `make some`, then fix - repeat until no more issues
-3. Run `make deploy`
+3. Run `make dict-with-audio-cache` or `make dict-with-audio`
 
 
 ### Generating favicons and social media cards for apps

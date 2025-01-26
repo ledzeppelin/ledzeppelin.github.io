@@ -13,22 +13,10 @@ function createFreeTextResultFrag(aiiV) {
   });
 }
 
-function createTopTagsMenuButton(buttonClassName, buttonText, useTriRootChevron = false) {
-  const chevronFrag = $(document.createDocumentFragment());
-  if (useTriRootChevron) {
-    chevronFrag.append(
-      $('<span/>', { class: 'expandable-btn-icon expandable-btn-icon-green material-symbols-rounded', text: 'keyboard_arrow_right' }),
-      $('<span/>', { class: 'expandable-btn-icon expandable-btn-icon-red material-symbols-rounded', text: 'keyboard_arrow_right' }),
-      $('<span/>', { class: 'expandable-btn-icon expandable-btn-icon-blue material-symbols-rounded', text: 'keyboard_arrow_right' }),
-    );
-  } else {
-    chevronFrag.append(
-      $('<span/>', { class: 'expandable-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right' }),
-    );
-  }
+function createTopTagsMenuButton(buttonClassName, buttonText) {
   return $('<button/>', { class: `expandable-btn ${buttonClassName}` }).append(
     $('<span/>', { class: 'expandable-btn-text', text: buttonText }),
-    chevronFrag,
+    $('<span/>', { class: 'expandable-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right' }),
   );
 }
 
@@ -119,17 +107,7 @@ function highlightExactMatchInTopTagsMenu(tagSearchParam) {
     .closest('.top-tags-group').addClass('always-show');
 }
 
-function createAiiVFrag(aiiV, anyJsonlineRoot) {
-  if (anyJsonlineRoot) {
-    const innerFrag = $(document.createDocumentFragment());
-    aiiV.split(' ').forEach((char) => {
-      innerFrag.append(
-        $('<span/>', { class: 'atuta-box-large', text: char }),
-      );
-    });
-    return $('<div/>', { class: 'aii-v-word' }).append(innerFrag);
-  }
-
+function createAiiVFrag(aiiV) {
   return $('<div/>', { class: 'aii-v-word', text: aiiV });
 }
 
@@ -325,23 +303,21 @@ function createPOSFrag(pos) {
   });
 }
 
-function createRootLettersFrag(key, obj) {
-  const frag = $(document.createDocumentFragment());
-  if (key in obj) {
-    frag.append(
-      ' (',
-      $('<a/>', {
-        class: 'tier2-tag',
-        text: obj[key],
-        href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `root:${obj[key]}`]])}`,
-      }),
-      ')',
+function createShowInflectionsButton(jsonline) {
+  const isInflection = 'table' in jsonline;
+  const isVerbConj = 'verb_conjugation' in jsonline;
+  const isColorfulVerbConj = jsonline?.verb_conjugation?.strong_radicals?.length;
+
+  if (isInflection || isVerbConj || isColorfulVerbConj) {
+    const buttonStyle = isColorfulVerbConj ? 'verb-conj-button' : 'not-verb-conj-button';
+    return $('<button/>', { class: `more-defs-button-container ${buttonStyle}` }).append(
+      $('<span/>', { class: 'material-symbols-rounded more-defs-button', text: 'keyboard_arrow_down' }),
     );
   }
-  return frag;
+  return null;
 }
 
-function createVisVerbFrag(key, obj, tierTag) {
+function createVerbPatternFrag(key, obj, tierTag) {
   const frag = $(document.createDocumentFragment());
   if (key in obj) {
     frag.append(
@@ -351,88 +327,78 @@ function createVisVerbFrag(key, obj, tierTag) {
         text: obj[key].pattern,
         href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `pattern:${obj[key].pattern}`]])}`,
       }),
-      ') ',
+      ')',
     );
   }
   return frag;
 }
 
 function createEtymologyFrag(etyKey, obj, tierTag) {
-  const frag = $(document.createDocumentFragment());
+  const frag = $(document.createDocumentFragment()).append(' from ');
 
-  frag.append(
-    ' from ',
-  );
-  obj[etyKey].forEach((et, i) => {
-    frag.append(
-      $('<a/>', {
-        class: tierTag,
-        text: et,
-        href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `from:${et}`]])}`,
-      }),
+  const innerFrag = $('<ul/>', { class: 'ety-list' });
+  obj[etyKey].forEach((et) => {
+    innerFrag.append(
+      $('<li/>').append(
+        $('<a/>', {
+          class: tierTag,
+          text: et,
+          href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `from:${et}`]])}`,
+        }),
+      ),
     );
-
-    const secondToLast = i === obj[etyKey].length - 2;
-    if (secondToLast) {
-      frag.append(' and ');
-    } else if (i < obj[etyKey].length - 1) {
-      frag.append(', ');
-    }
   });
+
+  frag.append(innerFrag);
 
   return frag;
 }
 
-function regexAtwatehBoxes(templateStr, templateAtwateh, breakLigatures) {
+function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
+  const tripleBraceRegex = new RegExp(`{{{([1-9ܐܝܘ])}}}(${AiiUtils.diacriticCharClass}*)`, 'g');
   const fragment = $(document.createDocumentFragment());
   let i = 0;
-  let atutaIdx = 0;
-  // eslint-disable-next-line prefer-regex-literals
-  const re = new RegExp(`(?:{{{[0-9]}}})(${AiiUtils.diacriticCharClass})*`, 'g');
-  templateStr.replace(re, (match, $1, strMatchIdx) => {
-    // https://stackoverflow.com/a/49262416
-    if (strMatchIdx > i) {
-      // test case - match starts at i = 0
-      fragment.append(templateStr.slice(i, strMatchIdx));
+  let matchCount = 0;
+  let digitIndex = 0;
+
+  templateStr.replace(tripleBraceRegex, (match, radical, diacritics, offset) => {
+    if (offset > i) {
+      fragment.append(templateStr.slice(i, offset));
     }
-
-    const [rootIdx, atuta] = templateAtwateh[atutaIdx];
-
-    const rootLetterText = $1 === undefined ? atuta : `${atuta}${$1}`;
-
-    const atutaFirstChar = (i === 0 && strMatchIdx === 0) ? ' atuta-box-small-is-first' : '';
-
-    const brLig = breakLigatures ? ' break-ligatures' : '';
-
-    fragment.append(
-      $('<span/>', { class: `atuta-box-small${brLig} atuta-box-clr-${rootIdx}${atutaFirstChar}`, text: rootLetterText }),
-    );
-    i = strMatchIdx + match.length;
-    atutaIdx += 1;
-    // Return the replacement leveraging the parameters.
+    let letter;
+    let cssClass;
+    if (/\d/.test(radical)) {
+      letter = templateAtwateh[digitIndex] + (diacritics || '');
+      cssClass = `atuta-box-small atuta-box-clr-${matchCount}`;
+      digitIndex += 1;
+    } else {
+      letter = radical + (diacritics || '');
+      cssClass = 'atuta-box-small atuta-box-clr-weak';
+    }
+    if (offset === 0) {
+      cssClass += ' atuta-box-small-is-first';
+    }
+    fragment.append($('<span/>', { class: cssClass, text: letter }));
+    i = offset + match.length;
+    matchCount += 1;
+    return '';
   });
+
   if (i < templateStr.length) {
-    fragment.append(templateStr.slice(i, templateStr.length));
+    fragment.append(templateStr.slice(i));
   }
 
-  return fragment;
-}
-
-function createAtwatehBoxesFrag(templateStr, templateAtwateh, breakLigatures) {
-  return $('<div/>', { class: 'atwateh-boxes' }).append(
-    regexAtwatehBoxes(templateStr, templateAtwateh, breakLigatures),
-  );
+  return $('<div/>', { class: 'atwateh-boxes' }).append(fragment);
 }
 
 function createTableRowsFrag(table, aiiV) {
   const tableRows = $(document.createDocumentFragment());
   table.rows.forEach((row) => {
     let extraYPadding = row.values.length > 1 ? 'rows-y-padding' : '';
-
     const rowValues = $(document.createDocumentFragment());
     row.values.forEach((aii) => {
       if ('template_str' in aii) {
-        rowValues.append(createAtwatehBoxesFrag(aii.template_str, aii.template_atwateh, 'break_ligatures' in aii));
+        rowValues.append(createAtwatehBoxesFrag(aii.template_str, aii.template_atwateh));
         extraYPadding = 'rows-y-padding';
       }
 
@@ -529,49 +495,123 @@ function createGlossFrag(sense, j) {
   );
 }
 
+function createFromRootFrag(jsonline) {
+  if ('of_root' in jsonline) {
+    const frag = $(document.createDocumentFragment());
+    let rootHtml;
+    if (fuseAiiVocalized.search(`="${jsonline.of_root}"`).length > 0) {
+      // fuseAiiVocalized a global which is imported before this file is imported
+      // but this function gets called from shared_docready.js which is imported later
+      rootHtml = $('<a/>', {
+        class: 'of-root-aii',
+        text: jsonline.of_root,
+        href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[AII_EXACT_SEARCH_PARAM, jsonline.of_root]])}`,
+      });
+    } else {
+      rootHtml = $('<span/>', { class: 'of-root-aii', text: jsonline.of_root });
+    }
+
+    const rootTr = $('<span/>', {
+      class: 'of-root-tr',
+      text: aiiTranslitWrapper(jsonline.of_root, AiiUtils.validLetters, aiiTranslit),
+    });
+
+    return frag.append(
+      ' of root ',
+      $('<span/>', { class: 'of-root-container' }).append(
+        rootTr,
+        '&nbsp;&nbsp;',
+        rootHtml,
+      ),
+    );
+  }
+  return null;
+}
+
 function createOtherFormsFrag(jsonline, aiiV) {
   if ('other_forms' in jsonline) {
     return createTableFrag(jsonline.other_forms, aiiV);
   }
-  return $(document.createDocumentFragment());
-}
-
-function colorfulRelatedTerms(jsonline) {
-  return (
-    // eslint-disable-next-line max-len
-    jsonline?.other_forms?.rows?.some((row) => row?.values?.some((value) => value?.template_str)) || false
-  );
+  return null;
 }
 
 function createOtherFormsButtonFrag(jsonline) {
   if ('other_forms' in jsonline) {
-    return createTopTagsMenuButton('show-other-forms-btn', 'related terms', colorfulRelatedTerms(jsonline));
+    return createTopTagsMenuButton('show-other-forms-btn', 'related terms');
   }
-  return $(document.createDocumentFragment());
+  return null;
 }
 
 function createInflFrag(jsonline, aiiV) {
   if ('table' in jsonline) {
     return createTableFrag(jsonline.table, aiiV);
   }
-  return $(document.createDocumentFragment());
+  return null;
+}
+
+function replacePlaceholders(inputString, strongRadicals) {
+  // Only capture a single digit [1-9] or weak radical (Alap, Yudh, Waw)
+  const tripleBraceRegex = /{{{([1-9ܐܝܘ])}}}/g;
+
+  return inputString.replace(tripleBraceRegex, (_, placeholder) => {
+    // If the placeholder is a digit (1–9), use it to index into strongRadicals.
+    if (/\d/.test(placeholder)) {
+      const numericIndex = parseInt(placeholder, 10);
+      // Index is 1-based in the placeholder, so subtract 1.
+      return strongRadicals[numericIndex - 1] || '';
+    }
+
+    // placeholder must be Alap, Yudh, Waw
+    return placeholder;
+  });
+}
+
+function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, isIrregular) {
+  return {
+    heading: schemaTense.left_heading,
+    heading_2: [schemaTense.right_heading],
+    rows: schemaTense.rows.map(([formMeta, grammaticalPerson]) => ({
+      meta: formMeta,
+      values: [
+        {
+          value: replacePlaceholders(patternArguments[grammaticalPerson], strongRadicals),
+          ...(!isIrregular && {
+            template_str: patternArguments[grammaticalPerson],
+            template_atwateh: strongRadicals,
+          }),
+        },
+      ],
+    })),
+  };
 }
 
 function createConjFrag(jsonline, aiiV) {
-  const frag = $(document.createDocumentFragment());
-  if ('conj' in jsonline) {
-    jsonline.conj.tenses.forEach((tense) => {
-      frag.append(createTableFrag(tense, aiiV));
+  if ('verb_conjugation' in jsonline) {
+    const frag = $(document.createDocumentFragment());
+
+    const { schema } = jsonline.verb_conjugation;
+    const patternKey = jsonline.verb_conjugation.alt_pattern || jsonline.verb_conjugation.pattern;
+    const patternArguments = conjPatterns[patternKey].parameters;
+
+    verbConjSchemas[schema].forEach((schemaTense) => {
+      const preTable = createVerbConjPreTable(
+        schemaTense,
+        patternArguments,
+        jsonline.verb_conjugation.strong_radicals,
+        'alt_pattern' in jsonline.verb_conjugation,
+      );
+      frag.append(createTableFrag(preTable, aiiV));
     });
+    return frag;
   }
-  return frag;
+  return null;
 }
 
 function createGlossTermsButtonFrag(sense) {
   if ('other_forms' in sense) {
     return createTopTagsMenuButton('show-gloss-terms-btn', 'gloss terms');
   }
-  return $(document.createDocumentFragment());
+  return null;
 }
 
 function createGlossTermsTableFrag(sense) {
@@ -581,14 +621,14 @@ function createGlossTermsTableFrag(sense) {
     frag.append(createTableRowsFrag(sense.other_forms, null));
     return frag;
   }
-  return $(document.createDocumentFragment());
+  return null;
 }
 
 function createExamplesButtonFrag(sense) {
   if ('examples' in sense) {
     return createTopTagsMenuButton('show-examples-btn', 'examples');
   }
-  return $(document.createDocumentFragment());
+  return null;
 }
 
 function createExamplesTableFrag(sense) {
@@ -607,13 +647,12 @@ function createExamplesTableFrag(sense) {
     });
     return frag;
   }
-  return $(document.createDocumentFragment());
+  return null;
 }
 
 function createTier3CategoriesFrag(sense) {
-  const frag = $(document.createDocumentFragment());
-
   if ('tier3_categories' in sense) {
+    const frag = $(document.createDocumentFragment());
     sense.tier3_categories.forEach((tier3Category) => {
       frag.append(
         $('<li/>').append(
@@ -628,7 +667,7 @@ function createTier3CategoriesFrag(sense) {
     return $('<ul/>', { class: 't3-categories', html: frag });
   }
 
-  return frag;
+  return null;
 }
 
 function getOrdinal(n) {
@@ -644,4 +683,12 @@ function getOrdinal(n) {
   }
 
   return ord;
+}
+
+// This allows us to run code in a Node.js context and also in browser-side JavaScript
+if (typeof module === 'object') {
+  module.exports = {
+    createAtwatehBoxesFrag,
+    replacePlaceholders,
+  };
 }
