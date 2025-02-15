@@ -1,5 +1,5 @@
 function aiiTranslitWrapper(vocalizedSpelling, validLetters, aiiTranslit_) {
-  const regex = new RegExp(`^(?:[${validLetters}] ){1,4}[${validLetters}]$`);
+  const regex = new RegExp(`^(?:[${validLetters}] ){2,4}[${validLetters}]$`);
   const isRoot = regex.test(vocalizedSpelling);
   if (isRoot) {
     const trAtwateh = aiiTranslit_(vocalizedSpelling).phonetic;

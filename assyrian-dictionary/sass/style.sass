@@ -133,19 +133,9 @@ $tri-root-offset: -17px
   border-radius: 12px
   display: block
   margin: 0 $side-padding $side-padding
-  overflow: hidden // Ensures ::after follows the border-radius
   padding: $searchbar-inset-x
   position: relative
   text-decoration: none
-
-  &.colorful-verb
-    &::after
-      bottom: 0
-      content: ''
-      height: 2px
-      left: 0
-      position: absolute
-      width: 100%
 
   &:hover,
   &:visited,
@@ -228,6 +218,18 @@ button
 .jsonline
   padding-top: 16px
 
+$microrad-height: 14px
+$microrad-border-width: 2px
+
+$add-space: 4px
+
+//////////////////////////////////////////////
+// dont adjust these only change $add-space //
+//////////////////////////////////////////////
+$more-defs-button-diam: 38px
+$cir-pad: $microrad-height + 2 * $microrad-border-width + $add-space
+
+
 
 .pos
   @include eng-text('s')
@@ -238,29 +240,28 @@ button
   & > *
     align-self: flex-end
 
-  .more-defs-button-container
-    border-radius: 19px
+  .colorful-verb-wrapper
+    // background-color: lightblue
+    height: $more-defs-button-diam + $add-space
+    margin-left: auto
+    // outline: 1px solid #333
+    padding: $cir-pad $cir-pad 0 $cir-pad
+    position: relative
+    width: $more-defs-button-diam
+
+  .inflections-button-container
+    border-radius: 50%
+    border-style: solid
+    border-width: 1px
     cursor: pointer
     flex-shrink: 0
-    height: 38px
+    height: $more-defs-button-diam
     margin-left: auto
     padding: 0
-    width: 38px
-
-    &.not-verb-conj-button
-      border-style: solid
-      border-width: 1px
-
-    &.verb-conj-button
-      background-clip: padding-box, border-box
-      background-origin: padding-box, border-box
-      border: 2px solid transparent
-
-      .more-defs-button
-        margin-top: 3px
+    width: $more-defs-button-diam
 
 
-    .more-defs-button
+    .inflections-button
       font-size: $half-icon-size * 2
       font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
       margin-top: 4px
@@ -268,6 +269,48 @@ button
 
       &.expanded
         transform: rotate(180deg)
+
+=position-microrad-along-arc($i, $radius)
+  $angle: $i * 45deg
+  $orbit-name: orbit-#{$i}
+  $orbit-end: translate(-50%, 0) rotate(-$angle) translate($radius) rotate(90deg)
+  animation: #{$orbit-name} .4s ease
+  left: 50%
+  position: absolute
+  top: 50%
+  transform: $orbit-end
+  z-index: 5 - $i
+
+  @keyframes #{$orbit-name}
+    from
+      transform: translate(-50%, 0) rotate(0deg) translate($radius) rotate(90deg)
+
+    to
+      transform: $orbit-end
+
+@each $total in 2, 3, 4, 5
+  @for $i from 0 through ($total - 1)
+    .microrad-along-arc-#{$i}
+      +position-microrad-along-arc($i, 28px + $add-space)
+
+
+
+.microrad-legend
+  position: absolute
+  right: $searchbar-inset-x
+  top: $searchbar-inset-x
+
+  > div
+    margin-left: 4px
+
+.microrad
+  border-radius: 3px
+  border-style: solid
+  border-width: $microrad-border-width
+  display: inline-block
+  height: $microrad-height
+  width: 10px
+
 
 .of-root-container
   display: inline-block
@@ -293,14 +336,14 @@ $sound-accent-offset: 8px
 .free-text-t1-ipa-container
   align-items: center
   display: flex !important // prevent inline-block style of .tier1-tag
-  margin-bottom: 8px
-  margin-top: 2 * $y-margin // 2x to account for margin collapsing
+  margin-bottom: 12px
+  margin-top: 12px
 
   .free-text-ordinal
     @include eng-text('s')
 
   .free-text-t1-play-sound
-    border-radius: $half-icon-size + $sound-button-padding
+    border-radius: 50%
     border-style: solid
     border-width: 1px
     font-size: $half-icon-size * 2
@@ -475,11 +518,11 @@ $display-toggle: none
     @include aii-text('s')
 
 
-.atwateh-boxes
+.radical-highlighted-verb-form
   @include aii-text('s')
   margin: 8px 0
 
-.atuta-box-small
+.tinyrad
   @include aii-text('s')
   border-radius: 4px
   border-style: solid
@@ -488,11 +531,11 @@ $display-toggle: none
   // need y-padding for diacritics
   padding: 2px 4px
 
-  &.atuta-box-clr-weak
-    border-style: dotted
-
-.atuta-box-small-is-first
+.tinyrad-is-first
   margin-right: 0
+
+.rad-is-weak
+  border-style: dotted
 
 .sound-containers
   &:not(.always-show)
@@ -501,32 +544,55 @@ $display-toggle: none
   .sound-container
     padding-top: 12px
 
-.more-sounds-button
+.inactive-num-pronunciations-button
+  @include eng-text('m', 700)
+  border-radius: 50%
+  border-style: solid
+  border-width: 1px
+
+  cursor: pointer
+  flex-shrink: 0
+  height: $button-diameter - 2px
+  line-height: $button-diameter - 2px
+  margin-right: 8px
+  text-align: center
+  width: $button-diameter - 2px
+
+
+
+.num-pronunciations-button
   $br-width: 1px
 
-  border-radius: $half-icon-size + $sound-button-padding
+  border-radius: 50%
   border-style: solid
   border-width: $br-width
 
   cursor: pointer
   flex-shrink: 0
-  font-size: $half-icon-size * 2
-  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
   height: $button-diameter
   margin-right: 8px
   padding: 0
+  // chrome on mac, text inside button is off by 1px vertically depending on the previous elements
+  // ex. fully collapse audio pronunciations
+  // translateZ forces hardware acceleration to resolve issue
+  // however we don't set it because then safari rotates the 180deg ccwise instead of cwise
+  // transform: translateZ(0)
+  transition: transform 200ms
   width: $button-diameter
 
-  &::before
-    content: 'select_to_speak'
-
-
-  &.expanded
-    font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24
-    transform: rotate(90deg)
+  &:not(.expanded)
+    @include eng-text('m', 700)
 
     &::before
-      content: 'collapse_content'
+      content: attr(data-num-pronunciations)
+
+  &.expanded
+    font-size: $half-icon-size * 2
+    font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
+    transform: rotate(180deg)
+
+    &::before
+      content: 'keyboard_arrow_down'
 
 
 .play-sound-container
@@ -534,7 +600,7 @@ $display-toggle: none
   display: flex
 
   .play-sound
-    border-radius: $half-icon-size + $sound-button-padding
+    border-radius: 50%
     border-style: solid
     border-width: 1px
     cursor: pointer

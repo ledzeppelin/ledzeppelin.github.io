@@ -303,16 +303,44 @@ function createPOSFrag(pos) {
   });
 }
 
+function createRadicalLegend(strongRadicals) {
+  if (strongRadicals.length < 2 || strongRadicals.length > 5) {
+    console.error('The strongRadicals array must have between 2 and 5 items.');
+    return $(document.createDocumentFragment());
+  }
+
+  const legend = $('<div/>', { class: 'microrad-legend' });
+  for (let i = 0; i < strongRadicals.length; i += 1) {
+    const clrClass = strongRadicals[i] === false ? 'rad-is-weak' : `rad-clr-${i}`;
+    const microrad = $('<div/>', { class: `microrad ${clrClass}` });
+    legend.prepend(microrad);
+  }
+  return legend;
+}
+
 function createShowInflectionsButton(jsonline) {
   const isInflection = 'table' in jsonline;
   const isVerbConj = 'verb_conjugation' in jsonline;
   const isColorfulVerbConj = jsonline?.verb_conjugation?.strong_radicals?.length;
 
   if (isInflection || isVerbConj || isColorfulVerbConj) {
-    const buttonStyle = isColorfulVerbConj ? 'verb-conj-button' : 'not-verb-conj-button';
-    return $('<button/>', { class: `more-defs-button-container ${buttonStyle}` }).append(
-      $('<span/>', { class: 'material-symbols-rounded more-defs-button', text: 'keyboard_arrow_down' }),
+    const frag = $('<button/>', { class: 'inflections-button-container' }).append(
+      $('<span/>', { class: 'material-symbols-rounded inflections-button', text: 'keyboard_arrow_down' }),
     );
+
+    if (isColorfulVerbConj) {
+      const strongRadicals = conjPatterns[jsonline.verb_conjugation.pattern].is_radical_strong;
+      const wrapper = $('<div/>', { class: 'colorful-verb-wrapper' });
+
+      strongRadicals.forEach((isRadicalStrong, i) => {
+        const clrClass = isRadicalStrong === false ? 'rad-is-weak' : `rad-clr-${i}`;
+        const square = $('<div/>', { class: `microrad microrad-along-arc-${i} ${clrClass}` });
+        wrapper.append(square);
+      });
+      return wrapper.append(frag);
+    }
+
+    return frag;
   }
   return null;
 }
@@ -369,14 +397,14 @@ function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
     let cssClass;
     if (/\d/.test(radical)) {
       letter = templateAtwateh[digitIndex] + (diacritics || '');
-      cssClass = `atuta-box-small atuta-box-clr-${matchCount}`;
+      cssClass = `tinyrad rad-clr-${matchCount}`;
       digitIndex += 1;
     } else {
       letter = radical + (diacritics || '');
-      cssClass = 'atuta-box-small atuta-box-clr-weak';
+      cssClass = 'tinyrad rad-is-weak';
     }
     if (offset === 0) {
-      cssClass += ' atuta-box-small-is-first';
+      cssClass += ' tinyrad-is-first';
     }
     fragment.append($('<span/>', { class: cssClass, text: letter }));
     i = offset + match.length;
@@ -388,7 +416,7 @@ function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
     fragment.append(templateStr.slice(i));
   }
 
-  return $('<div/>', { class: 'atwateh-boxes' }).append(fragment);
+  return $('<div/>', { class: 'radical-highlighted-verb-form' }).append(fragment);
 }
 
 function createTableRowsFrag(table, aiiV) {
@@ -518,6 +546,7 @@ function createFromRootFrag(jsonline) {
 
     return frag.append(
       ' of root ',
+      // ' of root of root of root of root of root of root of root of root of root of root of root of root',
       $('<span/>', { class: 'of-root-container' }).append(
         rootTr,
         '&nbsp;&nbsp;',

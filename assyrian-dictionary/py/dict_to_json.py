@@ -1,6 +1,7 @@
 import json
 from collections import defaultdict
 from datadump_to_dict import datadump_to_dict
+from vars.consts import aii_alphabet
 
 def collapse_etymologies(inner_obj, jsonlines):
     etys = [jsonline['tier2_etymology'] for jsonline in jsonlines if 'tier2_etymology' in jsonline]
@@ -21,13 +22,22 @@ def collapse_etymologies(inner_obj, jsonlines):
 def unvocalized_contains_root(aii_v_s):
     for jsonlines in aii_v_s.values():
         for jsonline in jsonlines:
-            if jsonline['pos'] in {f'{i}-letter root' for i in range(2, 6)}:
+            if jsonline['pos'] in {f'{i}-letter root' for i in range(3, 6)}:
                 if len(aii_v_s) > 1:
                     raise Exception('numerous vocalized spellings for the unvocalized root')
                 if len(jsonlines) > 1:
                     raise Exception('numerous jsonlines/parts of speech for the unvocalized root')
                 return True
     return False
+
+def contains_assyrian_alphabet(jsonlines):
+    for jsonline in jsonlines:
+        for sense in jsonline['senses']:
+            if 'assyrian alphabet' in sense.get('tier3_categories', []):
+                return True
+    return False
+
+
 
 def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
     # structure dictionary in a format that can be indexed by fusejs and on a per vocalized
@@ -36,6 +46,7 @@ def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
     # 3. check if in numbers table
     # 4. collapse etymologies if possible
 
+    remaining_alphabet_letters = len(aii_alphabet)
     numbers_table_set = set()
     cardinal_numbers = []
     for row in numbers_table['rows']:
@@ -81,6 +92,11 @@ def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
                     for accent in accents:
                         inner_obj['tier1_tags'].append(f"ipa:{accent}")
 
+
+            if contains_assyrian_alphabet(jsonlines):
+                remaining_alphabet_letters -= 1
+                obj['alpha_idx'] = aii_alphabet.index(aii_v)
+
             try:
                 idx = deduped_common_words.index(aii_v)
                 obj['min_common_word_idx'] = min(obj['min_common_word_idx'], idx)
@@ -107,6 +123,9 @@ def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
         # so searching for ܒ- will always show ܒ- before ܒܸ-
         obj['aii_v_s'].sort(key=lambda x: x['aii_v'])
         fuse_data.append(obj)
+
+    if remaining_alphabet_letters != 0:
+        raise Exception(f'remaining_alphabet_letters: {remaining_alphabet_letters}')
     return fuse_data
 
 

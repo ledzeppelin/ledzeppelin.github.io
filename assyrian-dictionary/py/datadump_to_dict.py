@@ -60,6 +60,11 @@ def literally_etys_to_senses(item):
 
 def parse_senses(item, aii_v, obj):
     senses = literally_etys_to_senses(item)
+    ALPHABET = 'assyrian alphabet'
+    category_aliases = {
+        'Syriac letter names': ALPHABET
+    }
+
     for item_sense in item['senses']:
         sense = defaultdict(lambda: defaultdict(list))
         sense['gloss'] = item_sense['glosses'][0]
@@ -75,7 +80,12 @@ def parse_senses(item, aii_v, obj):
             tier3_categories = []
             for category in item_sense['categories']:
                 if 'langcode' in category and category['langcode'] == 'aii':
-                    tier3_categories.append(category['name'].lower())
+                    if category['name'].lower() == ALPHABET.lower():
+                        raise Exception(f'ALPHABET category name duplicate: {ALPHABET}')
+                    if category['name'] in category_aliases:
+                        tier3_categories.append(category_aliases[category['name']])
+                    else:
+                        tier3_categories.append(category['name'].lower())
             if tier3_categories:
                 sense['tier3_categories'] = tier3_categories
                 sense['tier3_tags'] = [f"category:{t3cat}" for t3cat in tier3_categories]
@@ -188,6 +198,8 @@ def set_linkage_table(parent, obj, aii_v):
 
                 omit = re.search('[a-zA-Z]', linkage['word']) or word_linkage in already_there
                 if not omit:
+                    if aii_v in consts.aii_alphabet and linkage['word'] in consts.aii_alphabet:
+                        continue
                     obj['other_forms']['rows'].append(
                         annotated_row(linkage_val, [word_linkage])
                     )
@@ -203,8 +215,10 @@ def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
                 #                   50% chance of collision after 2^32 ipas, ie hexdigest(8)
                 hash_str = hashlib.shake_128(enc_str).hexdigest(16)
                 if 'tags' in sound:
-                    # most "Standard" ipa
-                    ipas.append((sound['tags'][0].lower(), sound['ipa'], hash_str))
+                    omit_ipas = {'singular', 'plural', 'masculine', 'feminine'}
+                    if not any(tag in omit_ipas for tag in sound['tags']):
+                        # most "Standard" ipa
+                        ipas.append((sound['tags'][0].lower(), sound['ipa'], hash_str))
                 else:
                     # other ipa
                     for note in sound['note'].split(', '):
@@ -473,8 +487,8 @@ def datadump_to_dict():
             obj['tier2_tags'] = [f"pos:{pronoun_label}"]
         elif item['pos'] == 'root':
             num_chars = len(aii_v.split())
-            if num_chars not in (2, 3, 4, 5):
-                raise Exception(f'{aii_v} is not 2, 3, 4, 5 letters')
+            if num_chars not in (3, 4, 5):
+                raise Exception(f'{aii_v} is not 3, 4, 5 letters')
 
             n_letter_root = f'{num_chars}-letter root'
             obj['pos'] = n_letter_root

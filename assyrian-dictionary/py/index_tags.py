@@ -89,6 +89,17 @@ def append_l2(tag_type, tag_names, l2_full_name, fuse_results):
         'children': children
     })
 
+def move_alphabet_to_language_basics(fuse_results):
+    categories_obj = next(item for item in fuse_results if item["name"] == "Categories")
+    index = next(
+        i for i, child in enumerate(categories_obj["children"])
+        if child["name"] == "assyrian alphabet"
+    )
+    removed_child = categories_obj["children"].pop(index)
+    language_basics_obj = next(item for item in fuse_results if item["name"] == "Language Basics")
+    language_basics_obj["children"].append(removed_child)
+
+
 def sort_dictionary_tags(fuse_results):
     for l1 in fuse_results:
         if 'children' in l1:
@@ -126,6 +137,7 @@ def parse_indices(tag_counter):
         else:
             raise Exception(f'{tag_type} not found')
 
+    move_alphabet_to_language_basics(fuse_results)
     return sort_dictionary_tags(fuse_results)
 
 # print(tag_counts())

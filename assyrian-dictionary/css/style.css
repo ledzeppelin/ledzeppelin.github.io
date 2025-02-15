@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,collapse_content,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,select_to_speak,volume_up");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,collapse_content,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,volume_up");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
@@ -100,14 +100,6 @@
     box-shadow: black 0 4px 6px 2px, rgba(255, 255, 255, 0.45) 0 0 2px 1px;
   }
 }
-.free-text-search-result.colorful-verb::after {
-  background: linear-gradient(to right, rgba(36, 138, 61, 0.75) calc(33% - 2%), transparent calc(33% - 2%) calc(33% + 2%), rgba(215, 0, 21, 0.75) calc(33% + 2%) calc(66% - 2%), transparent calc(66% - 2%) calc(66% + 2%), rgba(0, 64, 221, 0.75) calc(66% + 2%));
-}
-@media (prefers-color-scheme: dark) {
-  .free-text-search-result.colorful-verb::after {
-    background: linear-gradient(to right, rgba(43.8, 188.4, 69.4, 0.75) calc(33% - 2%), transparent calc(33% - 2%) calc(33% + 2%), rgba(255, 105, 97, 0.75) calc(33% + 2%) calc(66% - 2%), transparent calc(66% - 2%) calc(66% + 2%), rgba(64, 156, 255, 0.75) calc(66% + 2%));
-  }
-}
 
 .wiktionary-link-container {
   border-bottom-color: rgba(91, 91, 96, 0.29);
@@ -177,29 +169,21 @@
     color: rgb(149, 149, 157);
   }
 }
-.pos .more-defs-button-container.not-verb-conj-button {
-  background-color: rgb(242, 242, 247);
+.pos .inflections-button-container {
+  background-color: #fff;
   border-color: rgba(91, 91, 96, 0.29);
 }
 @media (prefers-color-scheme: dark) {
-  .pos .more-defs-button-container.not-verb-conj-button {
-    background-color: rgb(28, 28, 30);
-    border-color: rgba(119, 119, 127, 0.6);
+  .pos .inflections-button-container {
+    background-color: rgb(54, 54, 57);
+    border-color: rgb(54, 54, 57);
   }
 }
-.pos .more-defs-button-container.verb-conj-button {
-  background: linear-gradient(rgb(242, 242, 247), rgb(242, 242, 247)), conic-gradient(rgb(242, 242, 247) 5deg, rgba(0, 64, 221, 0.75) 5deg 115deg, rgb(242, 242, 247) 115deg 125deg, rgba(215, 0, 21, 0.75) 125deg 235deg, rgb(242, 242, 247) 235deg 245deg, rgba(36, 138, 61, 0.75) 245deg 355deg, rgb(242, 242, 247) 350deg 360deg);
-}
-@media (prefers-color-scheme: dark) {
-  .pos .more-defs-button-container.verb-conj-button {
-    background: linear-gradient(rgb(28, 28, 30), rgb(28, 28, 30)), conic-gradient(rgb(28, 28, 30) 5deg, rgba(64, 156, 255, 0.75) 5deg 115deg, rgb(28, 28, 30) 115deg 125deg, rgba(255, 105, 97, 0.75) 125deg 235deg, rgb(28, 28, 30) 235deg 245deg, rgba(43.8, 188.4, 69.4, 0.75) 245deg 355deg, rgb(28, 28, 30) 350deg 360deg);
-  }
-}
-.pos .more-defs-button-container .more-defs-button {
+.pos .inflections-button-container .inflections-button {
   color: rgb(28, 28, 30);
 }
 @media (prefers-color-scheme: dark) {
-  .pos .more-defs-button-container .more-defs-button {
+  .pos .inflections-button-container .inflections-button {
     color: rgb(221, 221, 232);
   }
 }
@@ -327,112 +311,122 @@
   }
 }
 
-.atwateh-boxes {
+.radical-highlighted-verb-form {
   color: rgb(134, 134, 137);
 }
 @media (prefers-color-scheme: dark) {
-  .atwateh-boxes {
+  .radical-highlighted-verb-form {
     color: rgb(149, 149, 157);
   }
 }
 
-.atuta-box-clr-0 {
-  background-color: rgba(0, 64, 221, 0.06);
-  border-color: rgba(0, 64, 221, 0.3);
+.rad-is-weak {
+  border-color: rgb(134, 134, 137);
+}
+@media (prefers-color-scheme: dark) {
+  .rad-is-weak {
+    border-color: rgb(149, 149, 157);
+  }
+}
+
+.rad-clr-0 {
+  background-color: rgb(227.48, 231.32, 245.44);
+  border-color: rgb(164.56, 185.04, 238.68);
   color: rgb(0, 64, 221);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-clr-0 {
-    background-color: rgba(64, 156, 255, 0.12);
-    border-color: rgba(64, 156, 255, 0.3);
+  .rad-clr-0 {
+    background-color: rgb(33.4, 47.2, 63.75);
+    border-color: rgb(43.84, 84.32, 129);
     color: rgb(64, 156, 255);
   }
 }
 
-.atuta-box-clr-1 {
-  background-color: rgba(215, 0, 21, 0.06);
-  border-color: rgba(215, 0, 21, 0.3);
+.rad-clr-1 {
+  background-color: rgb(240.38, 227.48, 233.44);
+  border-color: rgb(233.36, 164.56, 174.68);
   color: rgb(215, 0, 21);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-clr-1 {
-    background-color: rgba(255, 105, 97, 0.12);
-    border-color: rgba(255, 105, 97, 0.3);
+  .rad-clr-1 {
+    background-color: rgb(62.05, 39.55, 40.05);
+    border-color: rgb(127.88, 61.88, 59.48);
     color: rgb(255, 105, 97);
   }
 }
 
-.atuta-box-clr-2 {
-  background-color: rgba(36, 138, 61, 0.06);
-  border-color: rgba(36, 138, 61, 0.3);
+.rad-clr-2 {
+  background-color: rgb(229.64, 235.76, 235.84);
+  border-color: rgb(176.08, 208.72, 187.48);
   color: rgb(36, 138, 61);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-clr-2 {
-    background-color: rgba(43.8, 188.4, 69.4, 0.12);
-    border-color: rgba(43.8, 188.4, 69.4, 0.3);
+  .rad-clr-2 {
+    background-color: rgb(30.37, 52.06, 35.91);
+    border-color: rgb(34.952, 98.576, 47.336);
     color: rgb(43.8, 188.4, 69.4);
   }
 }
 
-.atuta-box-clr-3 {
-  background-color: rgba(173, 68, 171, 0.06);
-  border-color: rgba(173, 68, 171, 0.3);
+.rad-clr-3 {
+  background-color: rgb(237.86, 231.56, 242.44);
+  border-color: rgb(219.92, 186.32, 222.68);
   color: rgb(173, 68, 171);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-clr-3 {
-    background-color: rgba(218, 143, 255, 0.12);
-    border-color: rgba(218, 143, 255, 0.3);
+  .rad-clr-3 {
+    background-color: rgb(56.5, 45.25, 63.75);
+    border-color: rgb(111.6, 78.6, 129);
     color: rgb(218, 143, 255);
   }
 }
 
-.atuta-box-clr-4 {
-  background-color: rgba(178, 80, 0, 0.06);
-  border-color: rgba(178, 80, 0, 0.3);
+.rad-clr-4 {
+  background-color: rgb(238.16, 232.28, 232.18);
+  border-color: rgb(221.52, 190.16, 167.96);
   color: rgb(178, 80, 0);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-clr-4 {
-    background-color: rgba(255, 212, 38, 0.12);
-    border-color: rgba(255, 212, 38, 0.3);
+  .rad-clr-4 {
+    background-color: rgb(62.05, 55.6, 31.2);
+    border-color: rgb(127.88, 108.96, 33.52);
     color: rgb(255, 212, 38);
   }
 }
 
-.atuta-box-clr-weak {
-  border-color: rgb(134, 134, 137);
-  color: rgb(134, 134, 137);
+.num-pronunciations-button {
+  background-color: #fff;
+  border-color: rgba(91, 91, 96, 0.29);
+  color: rgb(28, 28, 30);
 }
 @media (prefers-color-scheme: dark) {
-  .atuta-box-clr-weak {
-    border-color: rgb(149, 149, 157);
-    color: rgb(149, 149, 157);
+  .num-pronunciations-button {
+    background-color: rgb(54, 54, 57);
+    border-color: rgb(54, 54, 57);
+    color: rgb(221, 221, 232);
   }
 }
 
-.more-sounds-button,
 .play-sound {
   background-color: transparent;
   border-color: rgba(91, 91, 96, 0.29);
   color: rgb(28, 28, 30);
 }
 @media (prefers-color-scheme: dark) {
-  .more-sounds-button,
   .play-sound {
-    background-color: transparent;
     border-color: rgba(119, 119, 127, 0.6);
     color: rgb(221, 221, 232);
   }
 }
 
-.free-text-t1-play-sound {
+.free-text-t1-play-sound,
+.inactive-num-pronunciations-button {
   border-color: rgba(91, 91, 96, 0.15);
   color: rgba(28, 28, 30, 0.25);
 }
 @media (prefers-color-scheme: dark) {
-  .free-text-t1-play-sound {
+  .free-text-t1-play-sound,
+  .inactive-num-pronunciations-button {
     border-color: rgba(119, 119, 127, 0.3);
     color: rgba(221, 221, 232, 0.35);
   }
@@ -907,18 +901,9 @@ kbd {
   border-radius: 12px;
   display: block;
   margin: 0 16px 16px;
-  overflow: hidden;
   padding: 20px;
   position: relative;
   text-decoration: none;
-}
-.free-text-search-result.colorful-verb::after {
-  bottom: 0;
-  content: "";
-  height: 2px;
-  left: 0;
-  position: absolute;
-  width: 100%;
 }
 .free-text-search-result:hover, .free-text-search-result:visited, .free-text-search-result:active {
   text-decoration: none;
@@ -1028,8 +1013,17 @@ button {
 .pos > * {
   align-self: flex-end;
 }
-.pos .more-defs-button-container {
-  border-radius: 19px;
+.pos .colorful-verb-wrapper {
+  height: 42px;
+  margin-left: auto;
+  padding: 22px 22px 0 22px;
+  position: relative;
+  width: 38px;
+}
+.pos .inflections-button-container {
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
   cursor: pointer;
   flex-shrink: 0;
   height: 38px;
@@ -1037,26 +1031,270 @@ button {
   padding: 0;
   width: 38px;
 }
-.pos .more-defs-button-container.not-verb-conj-button {
-  border-style: solid;
-  border-width: 1px;
-}
-.pos .more-defs-button-container.verb-conj-button {
-  background-clip: padding-box, border-box;
-  background-origin: padding-box, border-box;
-  border: 2px solid transparent;
-}
-.pos .more-defs-button-container.verb-conj-button .more-defs-button {
-  margin-top: 3px;
-}
-.pos .more-defs-button-container .more-defs-button {
+.pos .inflections-button-container .inflections-button {
   font-size: 24px;
   font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
   margin-top: 4px;
   transition: transform 200ms;
 }
-.pos .more-defs-button-container .more-defs-button.expanded {
+.pos .inflections-button-container .inflections-button.expanded {
   transform: rotate(180deg);
+}
+
+.microrad-along-arc-0 {
+  animation: orbit-0 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  z-index: 5;
+}
+@keyframes orbit-0 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-1 {
+  animation: orbit-1 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  z-index: 4;
+}
+@keyframes orbit-1 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-0 {
+  animation: orbit-0 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  z-index: 5;
+}
+@keyframes orbit-0 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-1 {
+  animation: orbit-1 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  z-index: 4;
+}
+@keyframes orbit-1 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-2 {
+  animation: orbit-2 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-90deg) translate(32px) rotate(90deg);
+  z-index: 3;
+}
+@keyframes orbit-2 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-90deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-0 {
+  animation: orbit-0 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  z-index: 5;
+}
+@keyframes orbit-0 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-1 {
+  animation: orbit-1 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  z-index: 4;
+}
+@keyframes orbit-1 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-2 {
+  animation: orbit-2 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-90deg) translate(32px) rotate(90deg);
+  z-index: 3;
+}
+@keyframes orbit-2 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-90deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-3 {
+  animation: orbit-3 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-135deg) translate(32px) rotate(90deg);
+  z-index: 2;
+}
+@keyframes orbit-3 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-135deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-0 {
+  animation: orbit-0 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  z-index: 5;
+}
+@keyframes orbit-0 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-1 {
+  animation: orbit-1 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  z-index: 4;
+}
+@keyframes orbit-1 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-45deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-2 {
+  animation: orbit-2 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-90deg) translate(32px) rotate(90deg);
+  z-index: 3;
+}
+@keyframes orbit-2 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-90deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-3 {
+  animation: orbit-3 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-135deg) translate(32px) rotate(90deg);
+  z-index: 2;
+}
+@keyframes orbit-3 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-135deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-along-arc-4 {
+  animation: orbit-4 0.4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, 0) rotate(-180deg) translate(32px) rotate(90deg);
+  z-index: 1;
+}
+@keyframes orbit-4 {
+  from {
+    transform: translate(-50%, 0) rotate(0deg) translate(32px) rotate(90deg);
+  }
+  to {
+    transform: translate(-50%, 0) rotate(-180deg) translate(32px) rotate(90deg);
+  }
+}
+
+.microrad-legend {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.microrad-legend > div {
+  margin-left: 4px;
+}
+
+.microrad {
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 2px;
+  display: inline-block;
+  height: 14px;
+  width: 10px;
 }
 
 .of-root-container {
@@ -1092,8 +1330,8 @@ button {
 .free-text-t1-ipa-container {
   align-items: center;
   display: flex !important;
-  margin-bottom: 8px;
-  margin-top: 16px;
+  margin-bottom: 12px;
+  margin-top: 12px;
 }
 .free-text-t1-ipa-container .free-text-ordinal {
   font-weight: 400;
@@ -1102,7 +1340,7 @@ button {
   font-size: 14px;
 }
 .free-text-t1-ipa-container .free-text-t1-play-sound {
-  border-radius: 18px;
+  border-radius: 50%;
   border-style: solid;
   border-width: 1px;
   font-size: 24px;
@@ -1303,7 +1541,7 @@ button {
   font-size: 19.6px;
 }
 
-.atwateh-boxes {
+.radical-highlighted-verb-form {
   direction: rtl;
   font-family: "Noto Sans Syriac Eastern";
   font-weight: 400;
@@ -1312,7 +1550,7 @@ button {
   margin: 8px 0;
 }
 
-.atuta-box-small {
+.tinyrad {
   direction: rtl;
   font-family: "Noto Sans Syriac Eastern";
   font-weight: 400;
@@ -1324,12 +1562,13 @@ button {
   margin: 0 1px;
   padding: 2px 4px;
 }
-.atuta-box-small.atuta-box-clr-weak {
-  border-style: dotted;
+
+.tinyrad-is-first {
+  margin-right: 0;
 }
 
-.atuta-box-small-is-first {
-  margin-right: 0;
+.rad-is-weak {
+  border-style: dotted;
 }
 
 .sound-containers:not(.always-show) {
@@ -1339,28 +1578,51 @@ button {
   padding-top: 12px;
 }
 
-.more-sounds-button {
-  border-radius: 18px;
+.inactive-num-pronunciations-button {
+  font-weight: 700;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  border-radius: 50%;
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
   flex-shrink: 0;
-  font-size: 24px;
-  font-variation-settings: "FILL" 1, "wght" 300, "GRAD" 0, "opsz" 24;
+  height: 36px;
+  line-height: 36px;
+  margin-right: 8px;
+  text-align: center;
+  width: 36px;
+}
+
+.num-pronunciations-button {
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  flex-shrink: 0;
   height: 38px;
   margin-right: 8px;
   padding: 0;
+  transition: transform 200ms;
   width: 38px;
 }
-.more-sounds-button::before {
-  content: "select_to_speak";
+.num-pronunciations-button:not(.expanded) {
+  font-weight: 700;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
 }
-.more-sounds-button.expanded {
-  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
-  transform: rotate(90deg);
+.num-pronunciations-button:not(.expanded)::before {
+  content: attr(data-num-pronunciations);
 }
-.more-sounds-button.expanded::before {
-  content: "collapse_content";
+.num-pronunciations-button.expanded {
+  font-size: 24px;
+  font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
+  transform: rotate(180deg);
+}
+.num-pronunciations-button.expanded::before {
+  content: "keyboard_arrow_down";
 }
 
 .play-sound-container {
@@ -1368,7 +1630,7 @@ button {
   display: flex;
 }
 .play-sound-container .play-sound {
-  border-radius: 18px;
+  border-radius: 50%;
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
