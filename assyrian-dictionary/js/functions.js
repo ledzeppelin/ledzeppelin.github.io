@@ -21,8 +21,8 @@ function generateFreeTextTier1Skeleton(aiiV) {
         $('<div/>', { class: `${classes} free-text-t1-ipa-container` }).append(
           $('<span/>', { class: 'material-symbols-rounded free-text-t1-play-sound', text: 'volume_up' }),
           $('<div/>').append(
-            $('<div/>', { class: 'free-text-accent-name', text: accent }),
             $('<div/>', { class: 'free-text-ipa', text: ipa }),
+            $('<div/>', { class: 'free-text-accent-name', text: accent }),
           ),
         ),
       );
@@ -69,14 +69,16 @@ function createFragmentsGroupedByUnvocalizedSpelling(result, isTagSearch = false
     );
     if (isTagSearch) {
       resultFragment.append(generateFreeTextTier1Skeleton(aiiV));
+      resultFragment.attr('data-num-audio', aiiV.ipas ? aiiV.ipas.length : 0);
     }
 
     aiiV.jsonlines.forEach((jsonline) => {
       const sensesFragment = $('<ul/>', { class: `free-text-senses ${TO_BE_REMOVED}` });
-
       if (jsonline?.verb_conjugation?.strong_radicals?.length) {
-        resultFragment.addClass('colorful-verb');
+        const radicals = conjPatterns[jsonline.verb_conjugation.pattern].is_radical_strong;
+        resultFragment.append(createRadicalLegend(radicals));
       }
+
       jsonline.senses.forEach((sense) => {
         const liFrag = $('<li/>', {
           class: `free-text-gloss ${TO_BE_REMOVED}`,
@@ -222,6 +224,12 @@ function loadResults(searchQuery, PAGINATE_AMT) {
       // eslint-disable-next-line func-names
       $(resultFragmentsGrouped).children('.free-text-search-result').each(function () {
         // eslint-disable-next-line func-names
+        if ($(this).children('.free-text-t1-ipa-container').length > 0) {
+          $(this).children('.aii-v-word-tr-container').prepend(
+            $('<div/>', { class: 'inactive-num-pronunciations-button', text: $(this).attr('data-num-audio') }),
+          );
+        }
+
         $(this).children('.free-text-t1-ipa-container').each(function (idx) {
           if (idx > 0) {
             let str = ' alternate';
@@ -279,7 +287,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
         });
 
         const moreSoundsButton = aiiV.ipas
-          ? $('<button/>', { class: 'material-symbols-rounded more-sounds-button' })
+          ? $('<button/>', { class: 'num-pronunciations-button', 'data-num-pronunciations': aiiV.ipas.length })
           : null;
 
         resultFragment.append(

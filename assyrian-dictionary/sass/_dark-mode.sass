@@ -28,26 +28,28 @@ $apple-purple-dark: rgb(218, 143, 255)
 $apple-yellow-dark: rgb(255, 212, 38)
 $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $apple-purple-dark, $apple-yellow-dark)
 
-$apple-rgba-alpha: .75
 
-@mixin atuta-box-color($color, $dark-color)
-  $border-a: .3
-
-  background-color: rgba($color, .06)
-  border-color: rgba($color, $border-a)
+=rad-color($color, $dark-color)
+  background-color: color.mix($color, $secondary-background, 6%)
+  border-color: color.mix($color, $secondary-background, 32%)
   color: $color
 
   @media (prefers-color-scheme: dark)
-    background-color: rgba($dark-color, .12)
-    border-color: rgba($dark-color, $border-a)
+    background-color: color.mix($dark-color, $background-dark, 15%)
+    border-color: color.mix($dark-color, $background-dark, 44%)
     color: $dark-color
 
-@mixin atuta-box-colors($apple-colors, $apple-colors-dark)
+=rad-colors($light-colors, $dark-colors)
+  .rad-is-weak
+    border-color: $secondary-label
+    @media (prefers-color-scheme: dark)
+      border-color: $secondary-label-dark
+
   @for $i from 0 through 4
-    .atuta-box-clr-#{$i}
-      $color: list.nth($apple-colors, $i + 1)
-      $dark-color: list.nth($apple-colors-dark, $i + 1)
-      @include atuta-box-color($color, $dark-color)
+    .rad-clr-#{$i}
+      $color: list.nth($light-colors, $i + 1)
+      $dark-color: list.nth($dark-colors, $i + 1)
+      +rad-color($color, $dark-color)
 
 
 
@@ -98,14 +100,6 @@ $apple-rgba-alpha: .75
       color: $key-color-dark
 
 
-@mixin gradient-border($gap, $color1, $color2, $color3)
-  $color1: rgba($color1, $apple-rgba-alpha)
-  $color2: rgba($color2, $apple-rgba-alpha)
-  $color3: rgba($color3, $apple-rgba-alpha)
-
-  background: linear-gradient(to right, $color1 calc(33% - #{$gap}), transparent calc(33% - #{$gap}) calc(33% + #{$gap}), $color2 calc(33% + #{$gap}) calc(66% - #{$gap}), transparent calc(66% - #{$gap}) calc(66% + #{$gap}), $color3 calc(66% + #{$gap}))
-
-
 .free-text-search-result
   background-color: color.mix($background, $secondary-background, 30%)
   box-shadow: rgba(#000, .16) 0 6px 12px, rgba(0, 0, 0, .06) 0 0 0 1px
@@ -123,13 +117,6 @@ $apple-rgba-alpha: .75
         background-color: color.mix($secondary-background-dark, $background-dark, 95%)
         box-shadow: black 0 4px 6px 2px, rgba(white, .45) 0 0 2px 1px
 
-
-
-  &.colorful-verb
-    &::after
-      @include gradient-border(2%, $apple-green, $apple-red, $apple-blue)
-      @media (prefers-color-scheme: dark)
-        @include gradient-border(2%, $apple-green-dark, $apple-red-dark, $apple-blue-dark)
 
 
 .wiktionary-link-container
@@ -176,49 +163,21 @@ $apple-rgba-alpha: .75
     color: $secondary-label-dark
 
 
-@mixin verb-conj-border($bg, $blue, $red, $green)
-  $clr-gap: 5deg
-
-  $pre-0: $bg $clr-gap
-
-  $stop-1: rgba($blue, $apple-rgba-alpha) $clr-gap 120deg - $clr-gap
-  $post-1: $bg 120deg - $clr-gap 120deg + $clr-gap
-
-  $stop-2: rgba($red, $apple-rgba-alpha) 120deg + $clr-gap 240deg - $clr-gap
-  $post-2: $bg 240deg - $clr-gap 240deg + $clr-gap
-
-  $stop-3: rgba($green, $apple-rgba-alpha) 240deg + $clr-gap 360deg - $clr-gap
-  $post-3: $bg 360deg - $clr-gap - $clr-gap 360deg
-
-  // approach from: https://stackoverflow.com/a/69574606
-  $bg-gradient: linear-gradient($bg, $bg)
-  $border-gradient: conic-gradient($pre-0, $stop-1, $post-1, $stop-2, $post-2, $stop-3, $post-3)
-
-  background: $bg-gradient, $border-gradient
-
-
 .pos
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
 
 
-  .more-defs-button-container
-    &.not-verb-conj-button
-      background-color: $secondary-background
-      border-color: $separator
-      @media (prefers-color-scheme: dark)
-        background-color: $background-dark
-        border-color: $separator-dark
+  .inflections-button-container
+    background-color: $background
+    border-color: $separator
+    @media (prefers-color-scheme: dark)
+      background-color: $secondary-background-dark
+      border-color: $secondary-background-dark
 
 
-    &.verb-conj-button
-      @include verb-conj-border($secondary-background, $apple-blue, $apple-red, $apple-green)
-      @media (prefers-color-scheme: dark)
-        @include verb-conj-border($background-dark, $apple-blue-dark, $apple-red-dark, $apple-green-dark)
-
-
-    .more-defs-button
+    .inflections-button
       color: $label
       @media (prefers-color-scheme: dark)
         color: $label-dark
@@ -315,34 +274,34 @@ $apple-rgba-alpha: .75
         color: $label-dark
 
 
-.atwateh-boxes
+.radical-highlighted-verb-form
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
 
-@include atuta-box-colors($apple-colors, $apple-colors-dark)
+@include rad-colors($apple-colors, $apple-colors-dark)
 
-.atuta-box-clr-weak
-  border-color: $secondary-label
-  color: $secondary-label
+.num-pronunciations-button
+  background-color: $background
+  border-color: $separator
+  color: $label
   @media (prefers-color-scheme: dark)
-    border-color: $secondary-label-dark
-    color: $secondary-label-dark
+    background-color: $secondary-background-dark
+    border-color: $secondary-background-dark
+    color: $label-dark
 
 
-
-.more-sounds-button,
 .play-sound
   background-color: transparent
   border-color: $separator
   color: $label
   @media (prefers-color-scheme: dark)
-    background-color: transparent
     border-color: $separator-dark
     color: $label-dark
 
 
-.free-text-t1-play-sound
+.free-text-t1-play-sound,
+.inactive-num-pronunciations-button
   border-color: rgba($separator, .15)
   color: rgba($label, .25)
   @media (prefers-color-scheme: dark)

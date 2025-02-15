@@ -187,6 +187,16 @@ $(document).ready(() => {
           queryType: DictionaryQueryType.TAG,
         };
         shouldLoadTagExactSearchResults = true;
+      } else if (tagSearchParam === 'category:assyrian alphabet') {
+        const compareFn = (a, b) => (
+          a.item.alpha_idx < b.item.alpha_idx ? -1 : 1
+        );
+
+        searchQuery = {
+          results: tagExactSearchResults.sort(compareFn),
+          queryType: DictionaryQueryType.TAG,
+        };
+        shouldLoadTagExactSearchResults = true;
       } else if (tagExactSearchResults.length) {
         const compareFn = (a, b) => (
           // eslint-disable-next-line max-len
@@ -227,7 +237,11 @@ $(document).ready(() => {
         i: 0,
         queryType: DictionaryQueryType.AII_EXACT_SEARCH,
       };
-      loadResults(searchQuery, 1);
+
+      // we set this to surface typos where a vocalized headword appears in different
+      // unvocalized articles, ex. ܒܪ̈ܲܚܡܹܐ
+      const maxNumVocalized = 5;
+      loadResults(searchQuery, maxNumVocalized);
 
       AiiUtils.updateURL(url, DICT_APP_NAME, [['aii-exact-search', aiiExactSearchParam]]);
     } else {

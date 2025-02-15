@@ -37,15 +37,14 @@ $(document).ready(() => {
     });
   });
 
-  $('#search-results').on('click', '.more-sounds-button', (e) => {
-    $(e.currentTarget).toggleClass('expanded').parent().next('.sound-containers')
+  $('#search-results').on('click', '.num-pronunciations-button', (e) => {
+    $(e.currentTarget).toggleClass('expanded material-symbols-rounded').parent().next('.sound-containers')
       .slideToggle(SPEED_MS);
   });
 
-  $('#search-results').on('click', '.more-defs-button-container', (e) => {
-    $(e.currentTarget).children('.more-defs-button').toggleClass('expanded');
-
-    $(e.currentTarget).parent().parent().find('.more-info.has-heading')
+  $('#search-results').on('click', '.inflections-button-container', (e) => {
+    $(e.currentTarget).children('.inflections-button').toggleClass('expanded');
+    $(e.currentTarget).closest('.jsonline').find('.more-info.has-heading')
       .slideToggle(SPEED_MS);
   });
 

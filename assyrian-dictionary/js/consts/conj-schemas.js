@@ -117,11 +117,15 @@ const schemaTemplates = {
     { left_heading: 'Number', right_heading: schemaHeadings.instanceNoun, rows: schemaTenseRows.instanceNoun },
   ],
   haweh: [
+    { left_heading: ' ', right_heading: schemaHeadings.presentParticiple, rows: schemaTenseRows.presentParticiple },
+    { left_heading: 'Gender of Described Noun', right_heading: schemaHeadings.pastParticiple, rows: schemaTenseRows.pastParticiple },
     { left_heading: SUBJECT_PRONOUN, right_heading: schemaHeadings.pastTense, rows: schemaTenseRows.pastTense },
     { left_heading: SUBJECT_PRONOUN, right_heading: 'Present Tense', rows: schemaTenseRows.presentFutureTense },
     { left_heading: SUBJECT_PRONOUN, right_heading: schemaHeadings.copula, rows: schemaTenseRows.copula },
     { left_heading: SUBJECT_PRONOUN, right_heading: schemaHeadings.futureTense, rows: schemaTenseRows.futureTense },
     { left_heading: SUBJECT_PRONOUN, right_heading: schemaHeadings.imperativeMood, rows: schemaTenseRows.imperativeMood },
+    { left_heading: ' ', right_heading: schemaHeadings.verbalNoun, rows: schemaTenseRows.verbalNoun },
+    { left_heading: 'Number', right_heading: schemaHeadings.instanceNoun, rows: schemaTenseRows.instanceNoun },
   ],
 };
 

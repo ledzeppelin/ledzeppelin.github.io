@@ -1,4 +1,5 @@
-// This is a js port of https://en.wiktionary.org/w/index.php?title=Module:aii-translit
+// Started as a js port of https://en.wiktionary.org/w/index.php?title=Module:aii-translit
+// but now has diverged
 
 function aiiTranslit(aiiText) {
   const HBASA = '\u{073C}';
@@ -168,6 +169,7 @@ function aiiTranslit(aiiText) {
     ['ܝܼܫܘܿܥ#', 'īšoʿ#'], // starts with vowel but not silent alaph
     ['ܢܲܦ̮ܫ', 'noš'],
     ['ܘܼܦ̮', 'ܘܼ'], // pe + breve below should be silent if preceeded by waw+hbasa
+    ['ܕܝܼܢܵܐ#', 'dīnā#'], // otherwise d-īnā
     // "to be" without inital khwasa, ì
     ['#ܝܘܸܢ#', '#ìwen#'], ['#ܝܘܵܢ#', '#ìwān#'],
     ['#ܝܘܲܚ#', '#ìwaḥ#'], ['#ܝܘܸܬ#', '#ìwet#'],

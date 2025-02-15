@@ -74,12 +74,11 @@ class AiiConjugation:
     def get_patterns(self):
         # pylint: disable=line-too-long
         return [
-            ('c-strong', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.CONSONANTS_A_W_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
+            ('c-strong', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.LETTERS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
             ('c-weak-2-drop', 3, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
             ('c-weak-3', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.LETTERS_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
-            # geminates only occur in c-drop
+            # geminates only occur in c-weak-drop
             ('c-weak-drop', 3, rf"^ܡ{self.PTAKHA}{self.CONSONANTS_CG}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
-            ('c-weak-2', 4, rf"^ܡ{self.PTAKHA}{self.LETTERS_CG}{self.YUDH}{self.ZLAMA_KIRYA}{self.CONSONANTS_CG}$"),
 
             ('d-strong', 4, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.LETTERS_CG}{self.ZLAMA_KIRYA}{self.LETTERS_CG}$"),
             ('d-weak-3', 4, rf"^ܡ{self.LETTERS_CG}{self.PTAKHA}{self.CONSONANTS_W_CG}{self.ZLAMA_YAREEKHA}{self.ALAP}$"),
