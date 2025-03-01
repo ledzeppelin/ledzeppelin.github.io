@@ -2,6 +2,8 @@ $(document).ready(() => {
   console.time('shared docready load');
   const DICT_APP_NAME = 'assyrian-dictionary';
   const APP_NAME = IS_DICTIONARY ? DICT_APP_NAME : 'searchable-assyrian-bible';
+  const DICT_TAG_SEARCH_PARAM = 'tag';
+  const DICT_AII_EXACT_SEARCH_PARAM = 'assyrian-word';
 
   let searchQuery;
   function shouldLoadMore() {
@@ -152,8 +154,8 @@ $(document).ready(() => {
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
 
-  if (IS_DICTIONARY && params.has('tag-search')) {
-    const tagSearchParam = params.get('tag-search');
+  if (IS_DICTIONARY && params.has(DICT_TAG_SEARCH_PARAM)) {
+    const tagSearchParam = params.get(DICT_TAG_SEARCH_PARAM);
     if (tagSearchParam.length) {
       let tagExactSearchResults = [];
       let shouldLoadTagExactSearchResults = false;
@@ -222,14 +224,14 @@ $(document).ready(() => {
           loadResults(searchQuery, 1);
         }
 
-        AiiUtils.updateURL(url, DICT_APP_NAME, [['tag-search', tagSearchParam]]);
+        AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_TAG_SEARCH_PARAM, tagSearchParam]]);
       }
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
       $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);
     }
-  } else if (IS_DICTIONARY && params.has('aii-exact-search')) {
-    const aiiExactSearchParam = params.get('aii-exact-search');
+  } else if (IS_DICTIONARY && params.has(DICT_AII_EXACT_SEARCH_PARAM)) {
+    const aiiExactSearchParam = params.get(DICT_AII_EXACT_SEARCH_PARAM);
     if (aiiExactSearchParam.length) {
       searchQuery = {
         results: fuseAiiVocalized.search(`="${aiiExactSearchParam}"`),
@@ -243,7 +245,7 @@ $(document).ready(() => {
       const maxNumVocalized = 5;
       loadResults(searchQuery, maxNumVocalized);
 
-      AiiUtils.updateURL(url, DICT_APP_NAME, [['aii-exact-search', aiiExactSearchParam]]);
+      AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_AII_EXACT_SEARCH_PARAM, aiiExactSearchParam]]);
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
       $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);

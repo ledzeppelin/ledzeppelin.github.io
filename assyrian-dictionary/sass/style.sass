@@ -304,11 +304,14 @@ $cir-pad: $microrad-height + 2 * $microrad-border-width + $add-space
     margin-left: 4px
 
 .microrad
+  @include eng-text('xs', 500)
   border-radius: 3px
   border-style: solid
   border-width: $microrad-border-width
   display: inline-block
   height: $microrad-height
+  line-height: $microrad-height
+  text-align: center
   width: 10px
 
 
@@ -335,7 +338,7 @@ $sound-accent-offset: 8px
 
 .free-text-t1-ipa-container
   align-items: center
-  display: flex !important // prevent inline-block style of .tier1-tag
+  display: flex !important // prevent inline-block from .tier1-tag, ex. ipa:nineveh+plains
   margin-bottom: 12px
   margin-top: 12px
 

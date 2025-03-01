@@ -1,3 +1,4 @@
+@use 'sass:color'
 
 // loosely based off ios colors
 // https://sarunw.com/posts/dark-color-cheat-sheet/
@@ -18,7 +19,13 @@ $separator-dark: rgba(119, 119, 127, .6)
 // https://en.wikipedia.org/wiki/Help:Link_color#Standard_colors
 // vector 2022 colors
 $link: rgb(51, 102, 204)
+$cyan: rgb(0, 255, 255)
+$link: color.mix($link, $cyan, 90%)
+
 $visited-link: rgb(121, 92, 178)
+$orchid: rgb(127, 0, 255)
+$visited-link: color.mix($visited-link, $orchid, 80%)
+
 $active-link: orange  // sass-lint:disable-line no-color-keywords
 $link-dark: rgb(133, 177, 255)
 $visited-link-dark: rgb(186, 159, 239)

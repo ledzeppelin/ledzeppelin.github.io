@@ -670,7 +670,7 @@ const conjPatterns = {
   },
   atheh: {
     parameters: {
-      prp: 'ܐ݇ܬ݂ܵܝܵܐ',
+      prp: 'ܒܹܐܬ݂ܵܝܵܐ',
       'pp-sm': 'ܐܸܬ݂ܝܵܐ',
       'pp-sf': 'ܐ݇ܬ݂ܝܼܬ݂ܵܐ',
       'pp-p': 'ܐܸܬ݂ܝܹ̈ܐ',
@@ -714,7 +714,7 @@ const conjPatterns = {
   },
   azel: {
     parameters: {
-      prp: 'ܐ݇ܙܵܠܵܐ',
+      prp: 'ܒܹܐܙܵܠܵܐ',
       'pp-sm': 'ܐ݇ܙܝܼܠܵܐ',
       'pp-sf': 'ܐ݇ܙܝܼܠܬܵܐ',
       'pp-p': 'ܐ݇ܙܝܼ̈ܠܹܐ',
@@ -758,7 +758,7 @@ const conjPatterns = {
   },
   yavel: {
     parameters: {
-      prp: 'ܝܵܗ݇ܒ݂ܵܐ',
+      prp: 'ܒܝܼܵܗ݇ܒ݂ܵܐ',
       'pp-sm': 'ܝܘܼܗ݇ܒ݂ܵܐ',
       'pp-sf': 'ܝܘܼܗ݇ܒ݂ܹܠܬܵܐ',
       'pp-p': 'ܝܘܼܗ݇ܒ݂ܹ̈ܐ',
@@ -802,7 +802,7 @@ const conjPatterns = {
   },
   'aii-conj-haweh': {
     parameters: {
-      prp: 'ܗܘܵܝܵܐ',
+      prp: 'ܒܹܗ݇ܘܵܝܵܐ',
       'pp-sm': 'ܗܸܘܝܵܐ',
       'pp-sf': 'ܗܘܝܼܬ݂ܵܐ',
       'pp-p': 'ܗܸ̈ܘܝܹܐ',

@@ -3,8 +3,8 @@ const LOCAL_DEVELOPMENT = false; // for cleaner urls in prod
 
 const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
 
-const TAG_SEARCH_PARAM = 'tag-search';
-const AII_EXACT_SEARCH_PARAM = 'aii-exact-search';
+const TAG_SEARCH_PARAM = 'tag';
+const AII_EXACT_SEARCH_PARAM = 'assyrian-word';
 
 function createFreeTextResultFrag(aiiV) {
   return $('<a/>', {
@@ -312,7 +312,7 @@ function createRadicalLegend(strongRadicals) {
   const legend = $('<div/>', { class: 'microrad-legend' });
   for (let i = 0; i < strongRadicals.length; i += 1) {
     const clrClass = strongRadicals[i] === false ? 'rad-is-weak' : `rad-clr-${i}`;
-    const microrad = $('<div/>', { class: `microrad ${clrClass}` });
+    const microrad = $('<div/>', { class: `microrad ${clrClass}`, text: i + 1 });
     legend.prepend(microrad);
   }
   return legend;
@@ -334,7 +334,7 @@ function createShowInflectionsButton(jsonline) {
 
       strongRadicals.forEach((isRadicalStrong, i) => {
         const clrClass = isRadicalStrong === false ? 'rad-is-weak' : `rad-clr-${i}`;
-        const square = $('<div/>', { class: `microrad microrad-along-arc-${i} ${clrClass}` });
+        const square = $('<div/>', { class: `microrad microrad-along-arc-${i} ${clrClass}`, text: i+1 });
         wrapper.append(square);
       });
       return wrapper.append(frag);
@@ -480,7 +480,7 @@ function createTableRowsFrag(table, aiiV) {
   return tableRows;
 }
 
-function createTableFrag(table, aiiV = null) {
+function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
   // rest of table
   const tableRows = createTableRowsFrag(table, aiiV);
   const frag = $('<div/>', { class: 'more-info' });
@@ -488,17 +488,54 @@ function createTableFrag(table, aiiV = null) {
   // heading
   if ('heading' in table) {
     frag.addClass('has-heading');
+    const headingMeta = $('<div/>', { class: 'infl-meta' });
+    if (table.heading === 'Subject Pronoun') {
+      headingMeta.append(
+        $('<a/>', {
+          text: table.heading,
+          href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, 'pos:subject pronoun']])}`,
+        }),
+      );
+    } else {
+      headingMeta.text(table.heading);
+    }
+
     frag.append(
       $('<div/>', { class: 'infl-row is-heading' }).append(
-        $('<div/>', { class: 'infl-meta', text: table.heading }),
+        headingMeta,
       ),
     );
     if ('heading_2' in table) {
       const heading2 = $('<div/>', { class: 'infl-vals' });
       table.heading_2.forEach((val) => {
+        const heading2Meta = $('<span/>', { class: 'infl-val-eng' });
+
+        if (val === 'Present/Future Tense') {
+          const futureBit = 'ܒܸܬ';
+          heading2Meta.append(
+            'Present/',
+            $('<a/>', {
+              text: 'Future',
+              href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[AII_EXACT_SEARCH_PARAM, futureBit]])}`,
+            }),
+            ' Tense',
+          );
+        } else if (useProgressivePrefix && val === 'Present Participle') {
+          const progPrefix = 'ܒܸ-';
+          heading2Meta.append(
+            $('<a/>', {
+              text: 'Prefixed',
+              href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[AII_EXACT_SEARCH_PARAM, progPrefix]])}`,
+            }),
+            ` ${val}`,
+          );
+        } else {
+          heading2Meta.append(val);
+        }
+
         heading2.append(
           $('<div/>', { class: 'infl-val-container' }).append(
-            $('<span/>', { class: 'infl-val-eng', text: val }),
+            heading2Meta,
           ),
         );
       });
@@ -621,6 +658,7 @@ function createConjFrag(jsonline, aiiV) {
     const { schema } = jsonline.verb_conjugation;
     const patternKey = jsonline.verb_conjugation.alt_pattern || jsonline.verb_conjugation.pattern;
     const patternArguments = conjPatterns[patternKey].parameters;
+    const useProgressivePrefix = ['irregular', 'g-strong', 'g-weak-1', 'g-weak-2', 'g-weak-3'].includes(jsonline.verb_conjugation.pattern);
 
     verbConjSchemas[schema].forEach((schemaTense) => {
       const preTable = createVerbConjPreTable(
@@ -629,7 +667,7 @@ function createConjFrag(jsonline, aiiV) {
         jsonline.verb_conjugation.strong_radicals,
         'alt_pattern' in jsonline.verb_conjugation,
       );
-      frag.append(createTableFrag(preTable, aiiV));
+      frag.append(createTableFrag(preTable, aiiV, useProgressivePrefix));
     });
     return frag;
   }

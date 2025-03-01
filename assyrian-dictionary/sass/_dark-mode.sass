@@ -42,8 +42,10 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 =rad-colors($light-colors, $dark-colors)
   .rad-is-weak
     border-color: $secondary-label
+    color: $secondary-label
     @media (prefers-color-scheme: dark)
       border-color: $secondary-label-dark
+      color: $secondary-label-dark
 
   @for $i from 0 through 4
     .rad-clr-#{$i}
