@@ -108,9 +108,9 @@ function paramsToString() {
   const examples = [
     // dictionary
     [
-      [['tag-search', 'from:Classical Syriac']],
+      [['tag', 'from:Classical Syriac']],
       null,
-      'tag-search=from:Classical+Syriac',
+      'tag=from:Classical+Syriac',
     ],
     [
       [['search', 'a\'s']],

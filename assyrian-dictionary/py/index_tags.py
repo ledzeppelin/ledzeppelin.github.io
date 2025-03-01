@@ -39,7 +39,7 @@ def tag_counts_grouped(tag_counter):
             raise Exception(f"Expecting {expected_count} {tag.replace('pos:', '')}, got {tag_counter[tag]}")
 
 
-    exempt_from_min_occurrences = {'pos:2-letter root', 'pos:4-letter root', 'pos:5-letter root'}
+    exempt_from_min_occurrences = {'pos:4-letter root', 'pos:5-letter root'}
     results = defaultdict(list)
     # raise Exception(tag_counter.items())
     for tag, count in tag_counter.items():

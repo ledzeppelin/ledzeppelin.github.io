@@ -19,13 +19,14 @@
 * khayutha (unc infl table)
 * pos:preposition (infl table w/ obj pronouns)
 * azel (talqana touching header's border)
-* pos:root (derived terms tables)
+* pos:3-letter+root
+* pattern:q-weak-4
 * pos:phrase (long sentences when toggled/expanded)
 * 'khda' (to ensure ipa and and etymologies are collated correctly)
-* z'or vs z'ora - etymology position in article affects availability of root z-'-r
+* z'or vs z'ora - rootbox position in article affects availability of root z-'-r
 * gloss for "ace" has tag “card games” tagged twice
 * "Classical Syriac" for tier 1 vs tier 2 tags, and "Nationalities" for a lot of tier 3 tags
-* "D-stem" for multiple tier2 tag for same vocalized word
+* pattern:d-strong for multiple tier2 tag for same vocalized word
 
 # todos
 
