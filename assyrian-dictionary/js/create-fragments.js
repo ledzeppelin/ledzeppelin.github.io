@@ -383,6 +383,9 @@ function createEtymologyFrag(etyKey, obj, tierTag) {
 }
 
 function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
+  // eslint-disable-next-line no-param-reassign
+  templateStr = correctedProgressive(templateStr, templateAtwateh);
+
   const tripleBraceRegex = new RegExp(`{{{([1-9ܐܝܘ])}}}(${AiiUtils.diacriticCharClass}*)`, 'g');
   const fragment = $(document.createDocumentFragment());
   let i = 0;
@@ -615,7 +618,35 @@ function createInflFrag(jsonline, aiiV) {
   return null;
 }
 
+function correctedProgressive(inputString, strongRadicals) {
+  if (strongRadicals.length === 0) {
+    return inputString;
+  }
+
+  const gStrongPRP = 'ܒܸ{{{1}}}{{{2}}}ܵ{{{3}}}ܵܐ';
+  const gWeak3PRP = 'ܒܸ{{{1}}}{{{2}}}ܵ{{{ܝ}}}ܵܐ';
+  const ALAP = 'ܐ';
+  const YUDH = 'ܝ';
+
+  if (inputString === gStrongPRP && strongRadicals[0] === YUDH) {
+    // eslint-disable-next-line no-param-reassign
+    return 'ܒ{{{1}}}ܼ{{{2}}}ܵ{{{3}}}ܵܐ';
+  }
+  if (inputString === gWeak3PRP) {
+    if (strongRadicals[0] === YUDH) {
+      return 'ܒ{{{1}}}ܼ{{{2}}}ܵ{{{ܝ}}}ܵܐ';
+    }
+    if (strongRadicals[0] === ALAP) {
+      return 'ܒܹ{{{1}}}{{{2}}}ܵ{{{ܝ}}}ܵܐ';
+    }
+  }
+  return inputString;
+}
+
 function replacePlaceholders(inputString, strongRadicals) {
+  // eslint-disable-next-line no-param-reassign
+  inputString = correctedProgressive(inputString, strongRadicals);
+
   // Only capture a single digit [1-9] or weak radical (Alap, Yudh, Waw)
   const tripleBraceRegex = /{{{([1-9ܐܝܘ])}}}/g;
 

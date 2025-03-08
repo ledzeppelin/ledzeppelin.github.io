@@ -27,7 +27,7 @@ $(document).ready(() => {
   function createPDFYearsFrag() {
     const frag = $(document.createDocumentFragment());
     frag.append(
-      // createPDFYearFrag(2025, 0, 11),
+      createPDFYearFrag(2025, 0, 1),
       createPDFYearFrag(2024, 0, 11),
     );
     return frag;
@@ -36,7 +36,7 @@ $(document).ready(() => {
   $('#analytics-pdfs').html(createPDFYearsFrag());
 
   const labelDark = 'rgb(221, 221, 232)';
-  const labelDarkAlpha = 'rgba(221, 221, 232, .5)'; // adjust alpha based on how chart looks
+  const labelDarkAlpha = 'rgba(221, 221, 232, .45)'; // adjust alpha based on how chart looks
   const secondaryLabelDark = 'rgb(149, 149, 157)';
   const separatorDark = 'rgba(104, 104, 111, .6)';
 
@@ -49,7 +49,7 @@ $(document).ready(() => {
       chartArea.top,
     );
     gradient.addColorStop(0, 'transparent');
-    gradient.addColorStop(0.25, 'transparent');
+    gradient.addColorStop(0.8, labelDarkAlpha);
     gradient.addColorStop(1, labelDarkAlpha);
     return gradient;
   }
@@ -61,10 +61,10 @@ $(document).ready(() => {
     [2200, ''], [744, ''],
     [597, ''], [1300, ''],
     [855, ''], [798, ''],
-    [1100, ''], [1500, '2025'],
+    [1100, ''], [1500, ''],
 
-    // [1000, '2025'], [1000, ''],
-    // [2000, ''], [4000, ''],
+    [1400, '2025'], [1600, ''],
+    [1900, ''], [2100, ''],
     // [8000, ''], [8000, ''],
     // [8000, ''], [8000, ''],
     // [8000, ''], [1000, ''],
@@ -88,7 +88,7 @@ $(document).ready(() => {
         label: 'Cubic interpolation (monotone)',
         data: monthlyCnt,
         borderColor: labelDark,
-        borderWidth: 1.5,
+        borderWidth: 2,
         fill: true,
         backgroundColor: (context) => {
           const { chart } = context;
