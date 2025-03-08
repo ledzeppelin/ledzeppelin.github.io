@@ -110,6 +110,7 @@ language_codes = {
   'sem': 'Semitic',
   'sem-pro': 'Proto-Semitic',
   'sem-saf': 'Safaitic',
+  'sem-srb': 'Old South Arabian',
   'sem-wes-pro': 'Proto-West Semitic',
   'sh': 'Serbo-Croatian',
   'sla-pro': 'Proto-Slavic',

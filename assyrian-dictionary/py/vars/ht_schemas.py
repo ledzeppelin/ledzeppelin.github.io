@@ -130,6 +130,7 @@ ht_schema = {
 gender_abbrev = {
     "aii-adjective": { },
     "aii-interj": {
+        "m": 'for masculine noun',
         "m-s": 'for masculine noun',
         "f-s": 'for feminine noun',
         "p": 'for plural noun',
