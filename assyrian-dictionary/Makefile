@@ -25,12 +25,17 @@ dict:
 		cp js/consts/aii-dict.js js/consts/aii-dict.prev.js; \
 	fi
 
+	@if [ -f js/consts/aii-dict.min.js.gz ]; then \
+		cp js/consts/aii-dict.min.js.gz js/consts/aii-dict.min.prev.js.gz; \
+	fi
+
 	cd js && node cli/add-props-to-dictionary.js > ./consts/aii-dict.js
 
 	cd js && node cli/numbers-table-json-to-obj.js > ./consts/aii-numbers-table.js
 
 	cd js && uglifyjs consts/aii-dict.js --output consts/aii-dict.min.js
 	cd js && gzip -k -f consts/aii-dict.js consts/aii-dict.min.js
+	python3 py/size_check.py
 	cd js && brotli -4 -f consts/aii-dict.js -o consts/aii-dict.js.l4.br
 	cd js && brotli -4 -f consts/aii-dict.min.js -o consts/aii-dict.min.js.l4.br
 
