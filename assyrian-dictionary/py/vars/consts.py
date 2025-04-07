@@ -27,6 +27,7 @@ language_codes = {
   'ajp': 'South Levantine Arabic',
   'akk': 'Akkadian',
   'akk-lbb': 'Late Babylonian',
+  'akk-nas': 'Neo-Assyrian',
   'am': 'Amharic',
   'apc': 'North Levantine Arabic',
   'ar': 'Arabic',
@@ -220,8 +221,7 @@ personal_pronouns = {
 }
 
 attached_pronouns = {
-    "-ܝ ܼ", # incorrect form
-    # "-ܝܼ", # correct form
+    "-ܝܼ",
     "-ܲܢ",
     "-ܘܼܟ݂",
     "-ܵܟ݂ܝ",
