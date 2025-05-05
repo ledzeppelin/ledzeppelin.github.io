@@ -84,28 +84,28 @@ noun_infl_schema = {
         },
         'template': {
             'me': {
-                '1s': None,
+                '1cs': None,
             },
             'us': {
-                '1p': None,
+                '1cp': None,
             },
             'you (to a man)': {
-                '2m': None,
+                '2ms': None,
             },
             'you (to a woman)': {
-                '2f': None,
+                '2fs': None,
             },
             'you (to a group)': {
-                '2p': None,
+                '2cp': None,
             },
             'him': {
-                '3m': None,
+                '3ms': None,
             },
             'her': {
-                '3f': None,
+                '3fs': None,
             },
             'them': {
-                '3p': None,
+                '3cp': None,
             },
         }
     },
@@ -126,7 +126,7 @@ noun_infl_schema = {
             },
         }
     },
-    'aii-infl-prep-variant':{
+    'aii-infl-prep-alt':{
         'heading': 'Object Pronoun',
         'heading_2': ['base form', 'variant form'],
         'omit': {

@@ -43,6 +43,9 @@ dict:
 
 	python3 py/vars/verb_templates.py
 
+	python3 py/vars/generate_verb_schemas.py
+	cd js && gzip -k -f consts/conj-schemas.js
+
 	@if [ -f js/consts/aii-dict-tags.js ]; then \
 		cp js/consts/aii-dict-tags.js js/consts/aii-dict-tags.prev.js; \
 	fi

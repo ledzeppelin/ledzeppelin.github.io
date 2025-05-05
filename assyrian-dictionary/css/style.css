@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,volume_up");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,select_to_speak,volume_up");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
@@ -188,6 +188,19 @@
   }
 }
 
+.more-paradigms-button {
+  background-color: #fff;
+  border-color: rgba(91, 91, 96, 0.29);
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  .more-paradigms-button {
+    background-color: rgb(54, 54, 57);
+    border-color: rgb(54, 54, 57);
+    color: rgb(221, 221, 232);
+  }
+}
+
 .gloss-container {
   color: rgb(28, 28, 30);
 }
@@ -286,11 +299,11 @@
     color: rgb(221, 221, 232);
   }
 }
-.infl-val-container .infl-val-eng {
+.infl-val-container .infl-val-eng:not(select) {
   color: rgb(134, 134, 137);
 }
 @media (prefers-color-scheme: dark) {
-  .infl-val-container .infl-val-eng {
+  .infl-val-container .infl-val-eng:not(select) {
     color: rgb(149, 149, 157);
   }
 }
@@ -396,13 +409,13 @@
   }
 }
 
-.num-pronunciations-button {
+.more-sounds-button {
   background-color: #fff;
   border-color: rgba(91, 91, 96, 0.29);
   color: rgb(28, 28, 30);
 }
 @media (prefers-color-scheme: dark) {
-  .num-pronunciations-button {
+  .more-sounds-button {
     background-color: rgb(54, 54, 57);
     border-color: rgb(54, 54, 57);
     color: rgb(221, 221, 232);
@@ -422,13 +435,13 @@
 }
 
 .free-text-t1-play-sound,
-.inactive-num-pronunciations-button {
+.inactive-more-sounds-button {
   border-color: rgba(91, 91, 96, 0.15);
   color: rgba(28, 28, 30, 0.25);
 }
 @media (prefers-color-scheme: dark) {
   .free-text-t1-play-sound,
-  .inactive-num-pronunciations-button {
+  .inactive-more-sounds-button {
     border-color: rgba(119, 119, 127, 0.3);
     color: rgba(221, 221, 232, 0.35);
   }
@@ -1461,19 +1474,23 @@ button {
   align-items: baseline;
   display: flex;
   gap: 8px;
-  padding: 2px 0;
+  padding: 12px 0 0;
+}
+.infl-row:last-child {
+  padding-bottom: 6px;
 }
 .infl-row.is-heading {
   align-items: end;
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  margin-bottom: 4px;
+  padding-bottom: 6px;
 }
 .infl-row .infl-meta {
   font-weight: 400;
   line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-size: 14px;
+  white-space: nowrap;
 }
 .infl-row .infl-vals {
   margin-left: auto;
@@ -1500,11 +1517,9 @@ button {
 }
 
 .infl-val-container {
-  align-items: baseline;
-  column-gap: 4px;
-  direction: rtl;
+  align-items: flex-end;
   display: flex;
-  flex-flow: row wrap;
+  flex-direction: column;
   text-align: right;
 }
 .infl-val-container .infl-val {
@@ -1527,13 +1542,19 @@ button {
   font-family: Roboto, sans-serif;
   font-size: 14px;
 }
+.infl-val-container select.infl-val-eng {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  text-align: right;
+  width: 100%;
+}
 .infl-val-container .infl-tr {
   font-weight: 400;
   line-height: 1.4;
   font-family: Roboto, sans-serif;
   font-style: italic;
   font-size: 14px;
-  direction: ltr;
 }
 .infl-val-container .infl-tr.does-match {
   font-weight: 500;
@@ -1587,16 +1608,13 @@ button {
   padding-top: 12px;
 }
 
-.inactive-num-pronunciations-button {
-  font-weight: 700;
-  line-height: 1.4;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
+.inactive-more-sounds-button {
   border-radius: 50%;
   border-style: solid;
   border-width: 1px;
-  cursor: pointer;
   flex-shrink: 0;
+  font-size: 24px;
+  font-variation-settings: "FILL" 1, "wght" 300, "GRAD" 0, "opsz" 24;
   height: 36px;
   line-height: 36px;
   margin-right: 8px;
@@ -1604,34 +1622,54 @@ button {
   width: 36px;
 }
 
-.num-pronunciations-button {
+.more-sounds-button {
   border-radius: 50%;
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
   flex-shrink: 0;
+  font-size: 24px;
+  font-variation-settings: "FILL" 1, "wght" 300, "GRAD" 0, "opsz" 24;
   height: 38px;
   margin-right: 8px;
   padding: 0;
   transition: transform 200ms;
   width: 38px;
 }
-.num-pronunciations-button:not(.expanded) {
-  font-weight: 700;
-  line-height: 1.4;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
+.more-sounds-button::before {
+  content: "select_to_speak";
 }
-.num-pronunciations-button:not(.expanded)::before {
-  content: attr(data-num-pronunciations);
-}
-.num-pronunciations-button.expanded {
-  font-size: 24px;
+.more-sounds-button.expanded {
   font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
   transform: rotate(180deg);
 }
-.num-pronunciations-button.expanded::before {
+.more-sounds-button.expanded::before {
   content: "keyboard_arrow_down";
+}
+
+.more-paradigms {
+  display: flow-root;
+}
+
+.more-paradigms-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.more-paradigms-button {
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  font-size: 24px;
+  font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
+  height: 38px;
+  padding: 0;
+  transition: transform 200ms;
+  width: 38px;
+}
+.more-paradigms-button.expanded {
+  transform: rotate(180deg);
 }
 
 .play-sound-container {
