@@ -143,6 +143,8 @@ function testTranslit() {
     ['ܡܒܲܝܸܐ', 'mbayiʾ'],
     ['ܒܲܝܸܐܝ', 'bayiʾ'],
     ['ܡܒܘܼܝܸܐ ܠܵܘܟ݂ܘܿܢ', 'mbuyiʾ lāwḵon'],
+    ['ܣܵܗܕ݂ܘܼܟ݂', 'sāhḏuḵ'],
+    ['ܣܵܗܕ݂ܘܼ̈ܟ݂', 'sāhḏuḵ'],
     // past tense conjugations for root ending in r where yudh+kwasa should be
     ['ܥܒ݂ܝܼܪܵܟ݂ܝ', 'ʿḇirrāḵ'],
     ['ܥܒ݂ܝܼܪܹܗ', 'ʿḇirrēh'],

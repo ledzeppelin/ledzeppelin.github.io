@@ -32,6 +32,7 @@
 
 # won't do
 - on mobile safari, infinite scroll is choppy if the velocity at the point of triggering the load is too fast (independent of whether last, 2nd to last, 10th to last, etc... being in viewport causes loadResults to be triggered) - doesn't seem like it can be fixed
+   - reproduce by closing all safari tabs and going to home page, then clicking on link to dictionary, type "i", then try to scroll down fast (more pronounced if you tap "Done" beforehand)
 - omit from 'other_forms' when there's a long list of things like all the colors provided by "related terms" for a gloss like 'yellowish' or personal pronouns for things like "-ee"
 - cursor for .exact-search-match is pointer (can't fix bc of anchor)
 - for conjugation tables, the atwateh boxes - on safari desktop the ligatures are always broken but they work in chrome, not possible to fix

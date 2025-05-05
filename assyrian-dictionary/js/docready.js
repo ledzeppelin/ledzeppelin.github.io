@@ -37,15 +37,31 @@ $(document).ready(() => {
     });
   });
 
-  $('#search-results').on('click', '.num-pronunciations-button', (e) => {
-    $(e.currentTarget).toggleClass('expanded material-symbols-rounded').parent().next('.sound-containers')
+  $('#search-results').on('click', '.more-sounds-button', (e) => {
+    $(e.currentTarget).toggleClass('expanded').parent().next('.sound-containers')
       .slideToggle(SPEED_MS);
   });
 
   $('#search-results').on('click', '.inflections-button-container', (e) => {
     $(e.currentTarget).children('.inflections-button').toggleClass('expanded');
-    $(e.currentTarget).closest('.jsonline').find('.more-info.has-heading')
-      .slideToggle(SPEED_MS);
+    const mainConj = $(e.currentTarget).closest('.jsonline').children('.more-info.has-heading');
+    if (mainConj.is(':visible')) { // checks if any one of the top-level tables are visible
+      // sliding up
+      $(e.currentTarget).closest('.jsonline').children('.more-paradigms').children('.more-info.has-heading')
+        .slideUp(SPEED_MS);
+    } else {
+      $(e.currentTarget).closest('.jsonline').children('.more-paradigms').children('.more-info.has-heading.more-paradigms-was-clicked')
+        .slideDown(SPEED_MS);
+    }
+    mainConj.slideToggle(SPEED_MS);
+  });
+
+  $('#search-results').on('click', '.more-paradigms-button', (e) => {
+    $(e.currentTarget).toggleClass('expanded');
+    $(e.currentTarget).parent().parent().next('.more-paradigms')
+      .children('.more-info.has-heading')
+      .slideToggle(SPEED_MS)
+      .toggleClass('more-paradigms-was-clicked');
   });
 
   $('#search-results').on('click', '.show-other-forms-btn', (e) => {
@@ -56,6 +72,14 @@ $(document).ready(() => {
   $('#search-results').on('click', '.show-examples-btn, .show-gloss-terms-btn', (e) => {
     $(e.currentTarget).next('.t3-linkages-and-examples').slideToggle(SPEED_MS);
     $(e.currentTarget).children('.expandable-btn-icon').toggleClass('expanded');
+  });
+
+  $('#search-results').on('change', '#collapsed-paradigms-1, #collapsed-paradigms-2', (e) => {
+    const slice = $(e.currentTarget).data('slice');
+    const idx = $(e.currentTarget).val();
+    $(e.currentTarget).parent().parent().parent()
+      .next('.headered-rows')
+      .html(COLLAPSED_CHILDREN_TABLE_ROWS[slice][idx].clone());
   });
 
   $('#search-results').on('click', '.play-sound', (e) => {

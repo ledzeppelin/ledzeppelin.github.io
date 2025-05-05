@@ -423,6 +423,10 @@ function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
 }
 
 function createTableRowsFrag(table, aiiV) {
+  // tables where the will be fuse searches
+  // if (table.disable_fuse === undefined && table.heading_2) {
+  //   console.log(table.disable_fuse, table.heading_2);
+  // }
   const tableRows = $(document.createDocumentFragment());
   table.rows.forEach((row) => {
     let extraYPadding = row.values.length > 1 ? 'rows-y-padding' : '';
@@ -444,7 +448,7 @@ function createTableRowsFrag(table, aiiV) {
         if (aii.value === aiiV) {
           valFrag = $('<span/>', { class: 'infl-val does-match', text: aii.value });
           doesMatch = ' does-match';
-        } else if (fuseAiiVocalized.search(`="${aii.value}"`).length > 0) {
+        } else if (table.disable_fuse === undefined && fuseAiiVocalized.search(`="${aii.value}"`).length > 0) {
           // fuseAiiVocalized a global which is imported before this file is imported
           // but this function gets called from shared_docready.js which is imported later
           valFrag = $('<a/>', {
@@ -460,7 +464,6 @@ function createTableRowsFrag(table, aiiV) {
         // const tr = aiiTranslit(aii.value).phonetic;
         rowValue.append(
           valFrag,
-          ' ',
           $('<span/>', { class: `infl-tr${doesMatch}`, text: tr }),
         );
 
@@ -513,17 +516,7 @@ function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
       table.heading_2.forEach((val) => {
         const heading2Meta = $('<span/>', { class: 'infl-val-eng' });
 
-        if (val === 'Present/Future Tense') {
-          const futureBit = 'ܒܸܬ';
-          heading2Meta.append(
-            'Present/',
-            $('<a/>', {
-              text: 'Future',
-              href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[AII_EXACT_SEARCH_PARAM, futureBit]])}`,
-            }),
-            ' Tense',
-          );
-        } else if (useProgressivePrefix && val === 'Present Participle') {
+        if (useProgressivePrefix && val === 'Present Participle') {
           const progPrefix = 'ܒܸ-';
           heading2Meta.append(
             $('<a/>', {
@@ -663,23 +656,131 @@ function replacePlaceholders(inputString, strongRadicals) {
   });
 }
 
-function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, isIrregular) {
+function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, isVisualConj) {
+  // console.log(schemaTense.right_heading);
+
   return {
     heading: schemaTense.left_heading,
-    heading_2: [schemaTense.right_heading],
-    rows: schemaTense.rows.map(([formMeta, grammaticalPerson]) => ({
-      meta: formMeta,
-      values: [
-        {
-          value: replacePlaceholders(patternArguments[grammaticalPerson], strongRadicals),
-          ...(!isIrregular && {
-            template_str: patternArguments[grammaticalPerson],
-            template_atwateh: strongRadicals,
-          }),
-        },
-      ],
+    heading_2: schemaTense.right_heading,
+    rows: schemaTense.rows.map(({ left, right }) => ({
+      meta: left,
+      values: right.map(({ value, type }) => ({
+        value: replacePlaceholders(patternArguments[value], strongRadicals),
+        ...(isVisualConj && {
+          template_str: patternArguments[value],
+          template_atwateh: strongRadicals,
+        }),
+      })),
     })),
+    ...(schemaTense.disable_fuse === true && { disable_fuse: schemaTense.disable_fuse }),
   };
+}
+
+function createVerbConjPreTable2(schemaTense, patternArguments, strongRadicals) {
+  // console.log(schemaTense.right_heading);
+
+  const MASC_ENDING = 'ܝܠܹܗ ܗ݇ܘܵܐ';
+  const FEM_ENDING = 'ܝܠܵܗ̇ ܗ݇ܘܵܐ';
+  const GENDERED_NEW_ENDING = 'ܝܗ݇ܘܵܐ';
+  const genderedEndingRx = new RegExp(`(?:${MASC_ENDING}|${FEM_ENDING})$`, 'u');
+
+  const PLURAL_ENDING = 'ܝܢܵܐ ܗ݇ܘܵܐ';
+  const PLURAL_NEW_ENDING = 'ܝܗ݇ܘܵܘ';
+  const pluralEndingRx = new RegExp(`(?:${PLURAL_ENDING})$`, 'u');
+
+  const MASC_START = 'ܝܼܠܹܗ ܗ݇ܘܵܐ';
+  const FEM_START = 'ܝܼܠܵܗ̇ ܗ݇ܘܵܐ';
+  const GENDERED_NEW_START = 'ܝܼܗ݇ܘܵܐ';
+  const genderedStartingRx = new RegExp(`^(?:${MASC_START}|${FEM_START})`, 'u');
+
+  const PLURAL_START = 'ܝܼܢܵܐ ܗ݇ܘܵܐ';
+  const PLURAL_NEW_START = 'ܝܼܗ݇ܘܵܘ';
+  const pluralStartingRx = new RegExp(`^(?:${PLURAL_START})`, 'u');
+
+  return {
+    heading: schemaTense.left_heading,
+    heading_2: schemaTense.right_heading,
+    rows: schemaTense.rows.map(({ left, right }) => {
+      const aiiWords = [];
+
+      right.forEach(({ value, type }) => {
+        if (type === 'arg') {
+          const resolved = replacePlaceholders(
+            patternArguments[value],
+            strongRadicals,
+          );
+          aiiWords.push(resolved);
+        } else if (type === 'literal') {
+          aiiWords.push(value);
+        } else if (type === 'arg-infix-wa') {
+          const HAWEH_WA = 'ܗ݇ܘܵܐ';
+          const resolved = replacePlaceholders(
+            patternArguments[value].replace(' ', ` ${HAWEH_WA} `),
+            strongRadicals,
+          );
+          aiiWords.push(resolved);
+        }
+      });
+
+      // console.log(aiiWords.join(' ').replace(ENDING_PATTERN, NEW_ENDING))
+      return {
+        meta: left,
+        values: [{
+          value: aiiWords.join(' ')
+            .replace(genderedEndingRx, GENDERED_NEW_ENDING)
+            .replace(pluralEndingRx, PLURAL_NEW_ENDING)
+            .replace(genderedStartingRx, GENDERED_NEW_START)
+            .replace(pluralStartingRx, PLURAL_NEW_START),
+        }],
+      };
+    }),
+    disable_fuse: true,
+  };
+}
+
+const COLLAPSED_CHILDREN_TABLE_ROWS = {
+  1: [],
+  2: [],
+};
+
+function createCollapsedParadigmFrag(
+  schemaTense,
+  patternArguments,
+  jsonline,
+  aiiV,
+  useProgressivePrefix,
+  slice,
+) {
+  const children = schemaTense[`collapsed_children_${slice}`];
+  if (!children?.length) {
+    return null;
+  }
+
+  const preTables = children.map((child) =>
+    createVerbConjPreTable2(
+      child,
+      patternArguments,
+      jsonline.verb_conjugation.strong_radicals,
+      false,
+    ));
+
+  COLLAPSED_CHILDREN_TABLE_ROWS[slice].push(
+    ...preTables.map((t) => createTableRowsFrag(t, aiiV)),
+  );
+
+  const menuIdx = 5;
+
+  const selectMenu = $('<select>', { class: 'infl-val-eng', id: `collapsed-paradigms-${slice}`, 'data-slice': slice })
+    .append(
+      children.map(({ right_heading: [label] }, i) => $('<option>', { value: i, text: label })),
+    ).val(menuIdx);
+
+  const $collapsedTableFrag = createTableFrag(preTables[menuIdx], aiiV, useProgressivePrefix);
+
+  $collapsedTableFrag.children('.infl-row.is-heading').children('.infl-vals').children('.infl-val-container').last()
+    .html(selectMenu);
+
+  return $collapsedTableFrag;
 }
 
 function createConjFrag(jsonline, aiiV) {
@@ -696,9 +797,51 @@ function createConjFrag(jsonline, aiiV) {
         schemaTense,
         patternArguments,
         jsonline.verb_conjugation.strong_radicals,
-        'alt_pattern' in jsonline.verb_conjugation,
+        !('alt_pattern' in jsonline.verb_conjugation),
       );
-      frag.append(createTableFrag(preTable, aiiV, useProgressivePrefix));
+      const tableFrag = createTableFrag(preTable, aiiV, useProgressivePrefix);
+      if (schemaTense.children?.length) {
+        const $paradigmsButton = $('<button/>', { class: 'material-symbols-rounded more-paradigms-button', text: 'keyboard_arrow_down' });
+        tableFrag.append(
+          $('<div/>', { class: 'more-paradigms-button-container' }).append(
+            $paradigmsButton,
+          ),
+        );
+
+        const $moreParadigms = $('<div/>', {
+          class: 'more-paradigms',
+        });
+
+        $paradigmsButton.one('click', () => {
+          schemaTense.children.forEach((schemaTense2) => {
+            const preTable2 = createVerbConjPreTable2(
+              schemaTense2,
+              patternArguments,
+              jsonline.verb_conjugation.strong_radicals,
+              false,
+            );
+            $moreParadigms.append(
+              createTableFrag(preTable2, aiiV, useProgressivePrefix),
+            );
+          });
+
+          [1, 2].forEach((idx) => {
+            $moreParadigms.append(
+              createCollapsedParadigmFrag(
+                schemaTense,
+                patternArguments,
+                jsonline,
+                aiiV,
+                useProgressivePrefix,
+                idx,
+              ),
+            );
+          });
+        });
+        frag.append(tableFrag, $moreParadigms);
+      } else {
+        frag.append(tableFrag);
+      }
     });
     return frag;
   }

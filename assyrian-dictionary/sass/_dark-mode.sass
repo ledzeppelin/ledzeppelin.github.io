@@ -185,6 +185,16 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
         color: $label-dark
 
 
+.more-paradigms-button
+  background-color: $background
+  border-color: $separator
+  color: $label
+  @media (prefers-color-scheme: dark)
+    background-color: $secondary-background-dark
+    border-color: $secondary-background-dark
+    color: $label-dark
+
+
 .gloss-container
   color: $label
   @media (prefers-color-scheme: dark)
@@ -259,9 +269,10 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 
   .infl-val-eng
-    color: $secondary-label
-    @media (prefers-color-scheme: dark)
-      color: $secondary-label-dark
+    &:not(select)
+      color: $secondary-label
+      @media (prefers-color-scheme: dark)
+        color: $secondary-label-dark
 
 
   .infl-tr
@@ -283,7 +294,7 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 @include rad-colors($apple-colors, $apple-colors-dark)
 
-.num-pronunciations-button
+.more-sounds-button
   background-color: $background
   border-color: $separator
   color: $label
@@ -303,7 +314,7 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 
 .free-text-t1-play-sound,
-.inactive-num-pronunciations-button
+.inactive-more-sounds-button
   border-color: rgba($separator, .15)
   color: rgba($label, .25)
   @media (prefers-color-scheme: dark)

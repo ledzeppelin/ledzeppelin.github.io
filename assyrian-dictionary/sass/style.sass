@@ -438,28 +438,35 @@ $display-toggle: none
       padding: 8px 0
       padding-left: 12px
 
+$table-y-margin: 24px
 
 .more-info // all t2 tables like head templates and inflections
   display: $display-toggle
 
   &.has-heading
-    margin: 24px 0
+    margin: $table-y-margin 0
+
+$infl-row-y-pad: 6px
 
 .infl-row
   align-items: baseline
   display: flex
   gap: 8px
-  padding: 2px 0
+  padding: 2 * $infl-row-y-pad 0 0 // check verb form "azen"
+  // padding: $infl-row-y-pad 0
+
+  &:last-child
+    padding-bottom: $infl-row-y-pad
 
   &.is-heading
     align-items: end
     border-bottom-style: solid
     border-bottom-width: 1px
-    margin-bottom: 4px // for conjugations like "azen"
-
+    padding-bottom: $infl-row-y-pad
 
   .infl-meta
     @include eng-text('s', 400)
+    white-space: nowrap // improve readability for expanded verb forms
 
   .infl-vals
     margin-left: auto
@@ -491,16 +498,10 @@ $display-toggle: none
   text-align: right
 
 .infl-val-container
-  align-items: baseline
-  column-gap: 4px
-  direction: rtl
+  align-items: flex-end
   display: flex
-  flex-flow: row wrap
-
-  // background-color: rgba(red, .1)
-
+  flex-direction: column
   text-align: right
-  // padding-bottom: 80px
 
   .infl-val
     @include aii-text('s')
@@ -511,15 +512,23 @@ $display-toggle: none
   .infl-val-eng
     @include eng-text('s')
 
+  select
+    &.infl-val-eng
+      box-sizing: border-box
+      max-width: 100%
+      min-width: 0
+      text-align: right
+      width: 100%
+
   .infl-tr
     @include eng-text('s', $is-translit: true)
-    direction: ltr // ex. for question mark orientation - "dakhee-wet ?"
 
     &.does-match
       @include eng-text('s', 500, $is-translit: true)
 
   .infl-val-anchor
     @include aii-text('s')
+
 
 
 .radical-highlighted-verb-form
@@ -548,14 +557,13 @@ $display-toggle: none
   .sound-container
     padding-top: 12px
 
-.inactive-num-pronunciations-button
-  @include eng-text('m', 700)
+.inactive-more-sounds-button
   border-radius: 50%
   border-style: solid
   border-width: 1px
-
-  cursor: pointer
   flex-shrink: 0
+  font-size: $half-icon-size * 2
+  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
   height: $button-diameter - 2px
   line-height: $button-diameter - 2px
   margin-right: 8px
@@ -564,39 +572,59 @@ $display-toggle: none
 
 
 
-.num-pronunciations-button
+.more-sounds-button
   $br-width: 1px
 
   border-radius: 50%
   border-style: solid
   border-width: $br-width
-
   cursor: pointer
   flex-shrink: 0
+  font-size: $half-icon-size * 2
+  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
   height: $button-diameter
   margin-right: 8px
   padding: 0
-  // chrome on mac, text inside button is off by 1px vertically depending on the previous elements
-  // ex. fully collapse audio pronunciations
-  // translateZ forces hardware acceleration to resolve issue
-  // however we don't set it because then safari rotates the 180deg ccwise instead of cwise
-  // transform: translateZ(0)
   transition: transform 200ms
   width: $button-diameter
 
-  &:not(.expanded)
-    @include eng-text('m', 700)
-
-    &::before
-      content: attr(data-num-pronunciations)
+  &::before
+    content: 'select_to_speak'
 
   &.expanded
-    font-size: $half-icon-size * 2
     font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
     transform: rotate(180deg)
 
     &::before
       content: 'keyboard_arrow_down'
+
+
+
+.more-paradigms
+  display: flow-root // disable margin collapsing for smooth slidetoggle animations
+
+
+.more-paradigms-button-container
+  display: flex
+  justify-content: center
+
+.more-paradigms-button
+  $br-width: 1px
+
+  border-radius: 50%
+  border-style: solid
+  border-width: $br-width
+  cursor: pointer
+  font-size: $half-icon-size * 2
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
+  height: $button-diameter
+  padding: 0
+  transition: transform 200ms
+  width: $button-diameter
+
+  &.expanded
+    transform: rotate(180deg)
+
 
 
 .play-sound-container

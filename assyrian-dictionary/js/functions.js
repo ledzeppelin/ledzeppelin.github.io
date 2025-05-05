@@ -69,7 +69,6 @@ function createFragmentsGroupedByUnvocalizedSpelling(result, isTagSearch = false
     );
     if (isTagSearch) {
       resultFragment.append(generateFreeTextTier1Skeleton(aiiV));
-      resultFragment.attr('data-num-audio', aiiV.ipas ? aiiV.ipas.length : 0);
     }
 
     aiiV.jsonlines.forEach((jsonline) => {
@@ -226,7 +225,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
         // eslint-disable-next-line func-names
         if ($(this).children('.free-text-t1-ipa-container').length > 0) {
           $(this).children('.aii-v-word-tr-container').prepend(
-            $('<div/>', { class: 'inactive-num-pronunciations-button', text: $(this).attr('data-num-audio') }),
+            $('<div/>', { class: 'material-symbols-rounded inactive-more-sounds-button', text: 'select_to_speak' }),
           );
         }
 
@@ -287,7 +286,7 @@ function loadResults(searchQuery, PAGINATE_AMT) {
         });
 
         const moreSoundsButton = aiiV.ipas
-          ? $('<button/>', { class: 'num-pronunciations-button', 'data-num-pronunciations': aiiV.ipas.length })
+          ? $('<button/>', { class: 'more-sounds-button material-symbols-rounded' })
           : null;
 
         resultFragment.append(

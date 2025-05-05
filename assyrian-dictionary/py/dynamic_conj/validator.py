@@ -18,16 +18,9 @@ def generate_conj_patterns():
             if _aii_v['aii_v'] in ALREADY_MOVED:
                 continue
             for jsonline in _aii_v['jsonlines']:
-                if jsonline['pos'] != 'verb':
-                    continue
-                if 'verb_conjugation' in jsonline:
-                    conj_patterns[jsonline['verb_conjugation']['pattern']].add(_aii_v['aii_v'])
-                else:
-                    keywords = {'participle', 'first-person', 'second-person', 'third-person',
-                    'infinitive of', 'feminine singular', 'Contraction of'}
-                    # keywords = set()
-                    if any(keyword in sense['gloss'] for sense in jsonline['senses'] for keyword in keywords):
-                        pass
+                if jsonline['pos'] == 'verb':
+                    if 'verb_conjugation' in jsonline:
+                        conj_patterns[jsonline['verb_conjugation']['pattern']].add(_aii_v['aii_v'])
                     else:
                         conj_patterns['---'].add(_aii_v['aii_v'])
     return conj_patterns
@@ -46,6 +39,7 @@ def fix_template_warning(old_pattern, new_pattern, _aii_v):
 conj = AiiConjugation()
 pattern_regexes = conj.get_patterns()
 _conj_patterns = generate_conj_patterns()
+# raise Exception(_conj_patterns['---'])
 
 
 msg = 'aii-conj validation'

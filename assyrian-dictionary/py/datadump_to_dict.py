@@ -67,7 +67,10 @@ def parse_senses(item, aii_v, obj):
 
     for item_sense in item['senses']:
         sense = defaultdict(lambda: defaultdict(list))
-        sense['gloss'] = item_sense['glosses'][0]
+        if len(item_sense['glosses']) > 2:
+            raise Exception(f'{aii_v} max nesting depth of only 2 allowed')
+
+        sense['gloss'] = ' - '.join(item_sense['glosses'])
 
         set_examples(item_sense, sense)
 
@@ -209,21 +212,22 @@ def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
     ipas = []
     if 'sounds' in item:
         for sound in item['sounds']:
-            if 'tags' in sound or 'note' in sound:
-                enc_str = sound['ipa'].encode()
-                # for 128-bit algo, 50% chance of collision after 2^64 ipas, ie hexdigest(16)
-                #                   50% chance of collision after 2^32 ipas, ie hexdigest(8)
-                hash_str = hashlib.shake_128(enc_str).hexdigest(16)
-                if 'tags' in sound:
-                    omit_ipas = {'singular', 'plural', 'masculine', 'feminine'}
-                    if not any(tag in omit_ipas for tag in sound['tags']):
-                        # most "Standard" ipa
-                        ipas.append((sound['tags'][0].lower(), sound['ipa'], hash_str))
-                else:
-                    # other ipa
-                    for note in sound['note'].split(', '):
-                        ipas.append((note.lower(), sound['ipa'], hash_str))
-
+            if 'ipa' not in sound:
+                continue
+            enc_str = sound['ipa'].encode()
+            # for 128-bit algo, 50% chance of collision after 2^64 ipas, ie hexdigest(16)
+            #                   50% chance of collision after 2^32 ipas, ie hexdigest(8)
+            hash_str = hashlib.shake_128(enc_str).hexdigest(16)
+            if 'tags' in sound:
+                omit_ipas = {'singular', 'plural', 'masculine', 'feminine'}
+                if not any(tag in omit_ipas for tag in sound['tags']):
+                    # most "Standard" ipa
+                    ipas.append((sound['tags'][0].lower(), sound['ipa'], hash_str))
+            elif 'note' in sound:
+                for note in sound['note'].split(', '):
+                    ipas.append((note.lower(), sound['ipa'], hash_str))
+            else:
+                ipas.append(('standard', sound['ipa'], hash_str))
     if ipas:
         aii_sounds[aii_not_v][aii_v].append(ipas)
 

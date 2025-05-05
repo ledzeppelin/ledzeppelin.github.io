@@ -31,7 +31,7 @@ ht_schema = {
     },
     "aii-adverb": {
         'omit': {
-            "1", "head", "tr"
+            "1", "head", "tr", "tr2" 
         },
         'forms': {
             "head2",
