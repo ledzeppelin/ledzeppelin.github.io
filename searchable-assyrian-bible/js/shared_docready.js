@@ -189,7 +189,7 @@ $(document).ready(() => {
           queryType: DictionaryQueryType.TAG,
         };
         shouldLoadTagExactSearchResults = true;
-      } else if (tagSearchParam === 'category:assyrian alphabet') {
+      } else if (tagSearchParam === 'special:assyrian alphabet') {
         const compareFn = (a, b) => (
           a.item.alpha_idx < b.item.alpha_idx ? -1 : 1
         );
@@ -202,7 +202,7 @@ $(document).ready(() => {
       } else if (tagExactSearchResults.length) {
         const compareFn = (a, b) => (
           // eslint-disable-next-line max-len
-          minVocalizedTR(tagSearchParam, a.item.aii_v_s) < minVocalizedTR(tagSearchParam, b.item.aii_v_s) ? -1 : 1
+          minVocalizedTR(tagSearchParam, a.item) < minVocalizedTR(tagSearchParam, b.item) ? -1 : 1
         );
 
         searchQuery = {

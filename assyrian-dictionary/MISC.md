@@ -28,6 +28,12 @@
 * "Classical Syriac" for tier 1 vs tier 2 tags, and "Nationalities" for a lot of tier 3 tags
 * pattern:d-strong for multiple tier2 tag for same vocalized word
 
+# misc
+* tier 0 - unvocalized level
+* tier 1 - vocalized level
+* tier 2 - part of speech level
+* tier 3 - gloss level
+
 # todos
 
 # won't do

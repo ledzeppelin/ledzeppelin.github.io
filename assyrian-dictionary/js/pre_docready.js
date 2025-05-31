@@ -21,6 +21,7 @@ const optionsTagged = {
   isCaseSensitive: true, // otherwise "reduce" in minVocalizedTR() fails since array is empty
   includeScore: true,
   keys: [
+    'tier0_tags',
     'aii_v_s.tier1_tags',
     'aii_v_s.jsonlines.tier2_tags',
     'aii_v_s.jsonlines.senses.tier3_tags',

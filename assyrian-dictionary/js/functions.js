@@ -33,6 +33,10 @@ function generateFreeTextTier1Skeleton(aiiV) {
     frag.append($('<div/>', { class: classes, text: 'common word' }));
   }
 
+  if ('is_alphabet_letter' in aiiV) {
+    frag.append($('<div/>', { class: classes, text: 'assyrian alphabet' }));
+  }
+
   aiiV.tier1_etymology?.forEach((ety) => {
     frag.append($('<div/>', { class: classes, text: ety }));
   });
@@ -52,6 +56,17 @@ function generateFreeTextTier2Skeleton(jsonline) {
 
   jsonline.tier2_etymology?.forEach((ety) => {
     frag.append($('<div/>', { class: classes, text: ety }));
+  });
+
+  return frag;
+}
+
+function generateFreeTextTier0Skeleton(aiiNotV) {
+  const frag = $(document.createDocumentFragment());
+  const classes = `free-text-t0 tier0-tag ${TO_BE_REMOVED}`;
+
+  aiiNotV.tier0_categories?.forEach((cat) => {
+    frag.append($('<div/>', { class: classes, text: cat }));
   });
 
   return frag;
@@ -100,6 +115,12 @@ function createFragmentsGroupedByUnvocalizedSpelling(result, isTagSearch = false
       }
       resultFragment.append(sensesFragment);
     });
+
+    if (isTagSearch) {
+      resultFragment.append(
+        generateFreeTextTier0Skeleton(result.item),
+      );
+    }
 
     resultFragmentsGrouped.append(resultFragment);
   });
@@ -195,24 +216,35 @@ function loadResults(searchQuery, PAGINATE_AMT) {
 
       // // 2. remove TO_BE_REMOVED, highlight matches
       result.matches.forEach((match) => {
-        const frag = resultFragmentsGrouped.find(indexedTags[match.key]).eq(match.refIndex);
-        if (match.key === 'aii_v_s.tier1_tags') {
-          frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
-            .parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
-          frag.siblings('.free-text-senses').removeClass(TO_BE_REMOVED)
-            .children('.free-text-gloss').removeClass(TO_BE_REMOVED);
-        } else if (match.key === 'aii_v_s.jsonlines.tier2_tags') {
-          frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
-            .parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
-          frag.nextAll('.free-text-senses').first().removeClass(TO_BE_REMOVED)
-            .children('.free-text-gloss')
-            .removeClass(TO_BE_REMOVED);
-        } else if (match.key === 'aii_v_s.jsonlines.senses.tier3_tags') {
-          frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
-            .parent('.free-text-gloss').removeClass(TO_BE_REMOVED)
-            .parent('.free-text-senses')
-            .removeClass(TO_BE_REMOVED);
-          frag.closest('.free-text-search-result').removeClass(TO_BE_REMOVED);
+        if (match.key === 'tier0_tags') {
+          resultFragmentsGrouped.children().each((_, el) => {
+            const frag = $(el).find('.tier0-tag').eq(match.refIndex);
+
+            frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
+              .parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
+            frag.siblings('.free-text-senses').removeClass(TO_BE_REMOVED)
+              .children('.free-text-gloss').removeClass(TO_BE_REMOVED);
+          });
+        } else {
+          const frag = resultFragmentsGrouped.find(indexedTags[match.key]).eq(match.refIndex);
+          if (match.key === 'aii_v_s.tier1_tags') {
+            frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
+              .parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
+            frag.siblings('.free-text-senses').removeClass(TO_BE_REMOVED)
+              .children('.free-text-gloss').removeClass(TO_BE_REMOVED);
+          } else if (match.key === 'aii_v_s.jsonlines.tier2_tags') {
+            frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
+              .parent('.free-text-search-result').removeClass(TO_BE_REMOVED);
+            frag.nextAll('.free-text-senses').first().removeClass(TO_BE_REMOVED)
+              .children('.free-text-gloss')
+              .removeClass(TO_BE_REMOVED);
+          } else if (match.key === 'aii_v_s.jsonlines.senses.tier3_tags') {
+            frag.addClass('tag-highlight').removeClass(TO_BE_REMOVED)
+              .parent('.free-text-gloss').removeClass(TO_BE_REMOVED)
+              .parent('.free-text-senses')
+              .removeClass(TO_BE_REMOVED);
+            frag.closest('.free-text-search-result').removeClass(TO_BE_REMOVED);
+          }
         }
       });
 
@@ -270,9 +302,11 @@ function loadResults(searchQuery, PAGINATE_AMT) {
                 createPOSFrag(jsonline.pos),
                 createPOSPrefixFrag(jsonline),
                 createVerbPatternFrag('verb_conjugation', jsonline, 'tier2-tag'),
+                // tier1 etymologies and root when only 1 jsonline
                 createT1IntoPOSFrag(aiiV, singletonJsonline),
+                // tier2 etymologies
                 'tier2_etymology' in jsonline ? createEtymologyFrag('tier2_etymology', jsonline, 'tier2-tag') : '',
-                createFromRootFrag(jsonline),
+                createFromRootFrag(jsonline), // when multiple jsonlines of different roots
               ),
               createShowInflectionsButton(jsonline),
             ),
@@ -297,12 +331,16 @@ function loadResults(searchQuery, PAGINATE_AMT) {
               $('<div/>', { class: 'aii-v-word-tr', text: aiiV.aii_v_tr }),
             ),
             createIpaContainerFrag(aiiV),
-            createTier1TagsFrag(aiiV, singletonJsonline),
+            createTier1TagsFrag(aiiV, singletonJsonline), // multiple jsonlines of same root
             jsonlinesFragment,
           ),
         );
       });
-      resultFragment.append(createWiktionaryFrag(aiiNotV));
+
+      resultFragment.append(
+        createCategoriesFrag(result.item, '0'),
+        createWiktionaryFrag(aiiNotV),
+      );
 
       const DEBUG_HIGHLIGHT = false;
       if (DEBUG_HIGHLIGHT === false) {
@@ -354,7 +392,7 @@ function highlightAiiText(aiiVEle, aiiVText, query, isVocalized) {
   aiiVEle.html(abc);
 }
 
-function minVocalizedTR(tagSearchParam, aiiVs) {
+function minVocalizedTR(tagSearchParam, item) {
   // we want to sort by those transliterations which will be shown, otherwise
   // 'from:Sumerian' would have 'gareh' as the first since its sorting by 'aghra' (not shown)
 
@@ -371,8 +409,8 @@ function minVocalizedTR(tagSearchParam, aiiVs) {
     return currentMin;
   }
 
-  aiiVs.forEach((aiiV) => {
-    if (aiiV.tier1_tags?.includes(tagSearchParam)) {
+  item.aii_v_s.forEach((aiiV) => {
+    if (aiiV.tier1_tags?.includes(tagSearchParam) || item.tier0_tags?.includes(tagSearchParam)) {
       minTranslit = updateMin(minTranslit, aiiV.aii_v_tr);
       return; // skip t2, t3
     }

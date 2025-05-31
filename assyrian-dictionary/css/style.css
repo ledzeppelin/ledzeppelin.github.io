@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,select_to_speak,volume_up");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400;1,500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap");
 @font-face {
   font-family: "Noto Sans Syriac Western";
@@ -236,11 +236,13 @@
   }
 }
 
-.t3-categories {
+.t3-categories,
+.t0-categories {
   color: rgb(134, 134, 137);
 }
 @media (prefers-color-scheme: dark) {
-  .t3-categories {
+  .t3-categories,
+  .t0-categories {
     color: rgb(149, 149, 157);
   }
 }
@@ -940,7 +942,6 @@ kbd {
 .wiktionary-link-container {
   border-bottom-style: solid;
   border-bottom-width: 1px;
-  margin-top: -8px;
   padding-bottom: 4px;
   text-align: right;
 }
@@ -1339,6 +1340,7 @@ button {
   font-size: 19.6px;
 }
 
+.free-text-t0,
 .free-text-t1,
 .free-text-t2 {
   font-weight: 400;
@@ -1439,10 +1441,24 @@ button {
   padding: 0;
 }
 
-.t3-categories > li {
+.t0-categories {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  margin: 0 0 40px;
+  padding: 0;
+}
+.t0-categories::before {
+  content: "see also: ";
+}
+
+.t3-categories > li,
+.t0-categories > li {
   display: inline-block;
 }
-.t3-categories > li:not(:last-child)::after {
+.t3-categories > li:not(:last-child)::after,
+.t0-categories > li:not(:last-child)::after {
   content: " |";
   margin-left: 3px;
   margin-right: 6px;
@@ -1468,6 +1484,9 @@ button {
 }
 .more-info.has-heading {
   margin: 24px 0;
+}
+.more-info.has-heading:has(+ .more-paradigms) {
+  margin: 24px 0 0;
 }
 
 .infl-row {
@@ -1650,6 +1669,9 @@ button {
 .more-paradigms {
   display: flow-root;
 }
+.more-paradigms .more-info:first-child {
+  margin-top: 0;
+}
 
 .more-paradigms-button-container {
   display: flex;
@@ -1763,6 +1785,13 @@ button {
   font-weight: 400;
   line-height: 1.4;
   font-family: Roboto, sans-serif;
+  font-size: 14px;
+}
+
+.example-english-ref {
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: Roboto, "Noto Sans Syriac Eastern", sans-serif;
   font-size: 14px;
 }
 
