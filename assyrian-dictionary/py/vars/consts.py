@@ -137,6 +137,7 @@ language_codes = {
   'xno': 'Anglo-Norman',
   'xpr': 'Parthian',
   'xpu': 'Punic',
+  'xhu': 'Hurrian',
   'yue': 'Cantonese',
   'zh': 'Chinese',
   'zhx': 'Sinitic',

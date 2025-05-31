@@ -144,6 +144,19 @@ function createCommonWordFrag() {
   return frag;
 }
 
+function createAlphabetLetterFrag() {
+  const frag = $(document.createDocumentFragment());
+  frag.append(
+    $('<a/>', {
+      class: 'tier1-tag',
+      text: 'assyrian alphabet',
+      href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, 'special:assyrian alphabet']])}`,
+    }),
+    ' ',
+  );
+  return frag;
+}
+
 function createInNumbersTableFrag() {
   const frag = $(document.createDocumentFragment());
   const txt = 'numbers table';
@@ -171,6 +184,13 @@ function createT1IntoPOSFrag(aiiV, singletonJsonline) {
       );
     }
 
+    if ('is_alphabet_letter' in aiiV) {
+      frag.append(
+        ', ',
+        createAlphabetLetterFrag(),
+      );
+    }
+
     if ('in_numbers_table' in aiiV) {
       frag.append(
         createInNumbersTableFrag(),
@@ -179,9 +199,13 @@ function createT1IntoPOSFrag(aiiV, singletonJsonline) {
 
     if ('tier1_etymology' in aiiV) {
       frag.append(
-        createEtymologyFrag('tier1_etymology', aiiV, 'tier1-tag', 'tier1-tag-etymology'),
+        createEtymologyFrag('tier1_etymology', aiiV, 'tier1-tag'),
       );
     }
+
+    frag.append(
+      createFromRootFrag(aiiV),
+    );
   }
 
   return frag;
@@ -198,6 +222,13 @@ function createTier1TagsFrag(aiiV, singletonJsonline) {
       );
     }
 
+    if ('is_alphabet_letter' in aiiV) {
+      notEmpty = true;
+      frag.append(
+        createAlphabetLetterFrag(),
+      );
+    }
+
     if ('in_numbers_table' in aiiV) {
       notEmpty = true;
       frag.append(
@@ -208,7 +239,14 @@ function createTier1TagsFrag(aiiV, singletonJsonline) {
     if ('tier1_etymology' in aiiV) {
       notEmpty = true;
       frag.append(
-        createEtymologyFrag('tier1_etymology', aiiV, 'tier1-tag', 'tier1-tag-etymology'),
+        createEtymologyFrag('tier1_etymology', aiiV, 'tier1-tag'),
+      );
+    }
+
+    if ('of_root' in aiiV) {
+      notEmpty = true;
+      frag.append(
+        createFromRootFrag(aiiV),
       );
     }
   }
@@ -548,7 +586,7 @@ function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
 function createGlossFrag(sense, j) {
   return $('<li/>', { class: 'gloss-container', val: j + 1 }).append(
     $('<span/>', { class: 'gloss', text: sense.gloss }),
-    createTier3CategoriesFrag(sense),
+    createCategoriesFrag(sense, '3'),
     createGlossTermsButtonFrag(sense),
     createGlossTermsTableFrag(sense),
     createExamplesButtonFrag(sense),
@@ -579,7 +617,7 @@ function createFromRootFrag(jsonline) {
 
     return frag.append(
       ' of root ',
-      // ' of root of root of root of root of root of root of root of root of root of root of root of root',
+      // ' of root of root of root of root of root of root of root of root of root of',
       $('<span/>', { class: 'of-root-container' }).append(
         rootTr,
         '&nbsp;&nbsp;',
@@ -873,39 +911,70 @@ function createExamplesButtonFrag(sense) {
 }
 
 function createExamplesTableFrag(sense) {
-  if ('examples' in sense) {
-    const frag = $('<div/>', { class: 't3-linkages-and-examples' });
-    sense.examples.forEach((example) => {
-      frag.append(
-        $('<div/>', { class: 'example-row' }).append(
-          $('<div/>', { class: 'example-row-vals' }).append(
-            $('<div/>', { class: 'example-text', text: example.text }),
-            $('<div/>', { class: 'example-tr', text: aiiTranslit(example.text).phonetic }),
-            $('<div/>', { class: 'example-english', text: example.english }),
-          ),
-        ),
+  if (!('examples' in sense)) return null;
+
+  const frag = $('<div/>', { class: 't3-linkages-and-examples' });
+
+  sense.examples.forEach((example) => {
+    const aiiText = example.is_quotation ? `”${example.text}“` : example.text;
+
+    const englishDiv = $('<div/>', { class: 'example-english' });
+    const englishText = example.is_quotation ? `"${example.english}"` : example.english;
+
+    if (example.english_ref) {
+      englishDiv.append(
+        englishText,
+        ' - ',
+        $('<span/>', {
+          class: 'example-english-ref',
+          text: example.english_ref,
+        }),
       );
-    });
-    return frag;
-  }
-  return null;
+    } else {
+      englishDiv.text(englishText);
+    }
+
+    let literalDiv = null;
+    if (example.literal_meaning) {
+      literalDiv = $('<div/>', {
+        class: 'example-english',
+        text: `(literally, "${example.literal_meaning}")`,
+      });
+    }
+
+    frag.append(
+      $('<div/>', { class: 'example-row' }).append(
+        $('<div/>', { class: 'example-row-vals' }).append(
+          $('<div/>', { class: 'example-text', text: aiiText }),
+          $('<div/>', { class: 'example-tr', text: aiiTranslit(aiiText).phonetic }),
+          englishDiv,
+          literalDiv,
+        ),
+      ),
+    );
+  });
+
+  return frag;
 }
 
-function createTier3CategoriesFrag(sense) {
-  if ('tier3_categories' in sense) {
+function createCategoriesFrag(sense, tierN) {
+  const tierNCatergory = `tier${tierN}_categories`;
+  const tierNTag = `tier${tierN}-tag`;
+
+  if (tierNCatergory in sense) {
     const frag = $(document.createDocumentFragment());
-    sense.tier3_categories.forEach((tier3Category) => {
+    sense[tierNCatergory].forEach((category) => {
       frag.append(
         $('<li/>').append(
           $('<a/>', {
-            class: 'tier3-tag',
-            text: tier3Category,
-            href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `category:${tier3Category}`]])}`,
+            class: tierNTag,
+            text: category,
+            href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `category:${category}`]])}`,
           }),
         ),
       );
     });
-    return $('<ul/>', { class: 't3-categories', html: frag });
+    return $('<ul/>', { class: `t${tierN}-categories`, html: frag });
   }
 
   return null;

@@ -40,7 +40,7 @@ ht_schema = {
         'genders': set(),
     },
     "aii-conjunction": {
-        'omit': { "1" },
+        'omit': { "1", "tr" },
         'forms': set(),
         'genders': set(),
     },
@@ -55,6 +55,7 @@ ht_schema = {
             "head",                
             "pltr",
             "tr",
+            "tr2",
         },
         'forms': {
             "head2",

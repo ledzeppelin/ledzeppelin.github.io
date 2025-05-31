@@ -46,18 +46,18 @@ dict:
 	python3 py/vars/generate_verb_schemas.py
 	cd js && gzip -k -f consts/conj-schemas.js
 
-	@if [ -f js/consts/aii-dict-tags.js ]; then \
-		cp js/consts/aii-dict-tags.js js/consts/aii-dict-tags.prev.js; \
+	@if [ -f js/consts/aii-dict-tags.cur.js ]; then \
+		cp js/consts/aii-dict-tags.cur.js js/consts/aii-dict-tags.prev.js; \
 	fi
 	cd js && node cli/create-tag-search-obj.js > ./consts/aii-dict-tags.js
-
+	cp js/consts/aii-dict-tags.js js/consts/aii-dict-tags.cur.js
 
 
 diff-dict:
 	colordiff js/consts/aii-dict.prev.js js/consts/aii-dict.js
 
 diff-tags:
-	colordiff js/consts/aii-dict-tags.prev.js js/consts/aii-dict-tags.js
+	colordiff js/consts/aii-dict-tags.prev.js js/consts/aii-dict-tags.cur.js
 
 dict-with-audio: export AII_DICT_GENERATE_AUDIO=1
 dict-with-audio: dict

@@ -162,7 +162,6 @@ $v-word-spacing: 40px
 .wiktionary-link-container
   border-bottom-style: solid
   border-bottom-width: 1px
-  margin-top: $table-y-spacing - $v-word-spacing
   padding-bottom: 4px
   text-align: right
 
@@ -327,6 +326,7 @@ $cir-pad: $microrad-height + 2 * $microrad-border-width + $add-space
 
 $y-margin: 8px
 
+.free-text-t0,
 .free-text-t1,
 .free-text-t2
   @include eng-text('s')
@@ -414,7 +414,17 @@ $display-toggle: none
 .t3-categories
   padding: 0
 
-.t3-categories > li
+.t0-categories
+  @include eng-text('s')
+  margin: 0 0 $v-word-spacing
+  padding: 0
+
+  &::before
+    content: 'see also: '
+
+
+.t3-categories > li,
+.t0-categories > li
   display: inline-block
 
   &:not(:last-child)::after
@@ -445,6 +455,11 @@ $table-y-margin: 24px
 
   &.has-heading
     margin: $table-y-margin 0
+
+    // if the very next sibling is .more-paradigms, margin-bottom is 0
+    &:has(+ .more-paradigms)
+      margin: $table-y-margin 0 0
+
 
 $infl-row-y-pad: 6px
 
@@ -603,6 +618,8 @@ $infl-row-y-pad: 6px
 .more-paradigms
   display: flow-root // disable margin collapsing for smooth slidetoggle animations
 
+  .more-info:first-child
+    margin-top: 0
 
 .more-paradigms-button-container
   display: flex
@@ -694,6 +711,9 @@ $infl-row-y-pad: 6px
 
 .example-english
   @include eng-text('s')
+
+.example-english-ref
+  @include eng-text('s', $using-aii: true)
 
 .tier1-tag,
 .tier2-tag,

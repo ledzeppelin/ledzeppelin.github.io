@@ -109,62 +109,62 @@ noun_infl_schema = {
             },
         }
     },
-    'aii-infl-prep-numeral':{
-        'heading': 'Object Pronoun',
-        'omit': {
-            "base", '1',
-        },
-        'template': {
-            'us': {
-                '1p': None,
-            },
-            'you (to a group)': {
-                '2p': None,
-            },
-            'them': {
-                '3p': None,
-            },
-        }
-    },
-    'aii-infl-prep-alt':{
-        'heading': 'Object Pronoun',
-        'heading_2': ['base form', 'variant form'],
-        'omit': {
-            "heading", "base", 'variant',
-        },
-        'template': {
-            'me': {
-                'base-1s': None,
-                'variant-1s': None,
-            },
-            'us': {
-                'base-1p': None,
-                'variant-1p': None,
-            },
-            'you (to a man)': {
-                'base-2m': None,
-                'variant-2m': None,
-            },
-            'you (to a woman)': {
-                'base-2f': None,
-                'variant-2f': None,
-            },
-            'you (to a group)': {
-                'base-2p': None,
-                'variant-2p': None,
-            },
-            'him': {
-                'base-3m': None,
-                'variant-3m': None,
-            },
-            'her': {
-                'base-3f': None,
-                'variant-3f': None,
-            },
-            'them': {
-                'base-3p': None,
-                'variant-3p': None,
-            },
-        }
-    },
+    # 'aii-infl-prep-numeral':{
+    #     'heading': 'Object Pronoun',
+    #     'omit': {
+    #         "base", '1',
+    #     },
+    #     'template': {
+    #         'us': {
+    #             '1p': None,
+    #         },
+    #         'you (to a group)': {
+    #             '2p': None,
+    #         },
+    #         'them': {
+    #             '3p': None,
+    #         },
+    #     }
+    # },
+    # 'aii-infl-prep-alt':{
+    #     'heading': 'Object Pronoun',
+    #     'heading_2': ['base form', 'variant form'],
+    #     'omit': {
+    #         "heading", "base", 'variant',
+    #     },
+    #     'template': {
+    #         'me': {
+    #             'base-1s': None,
+    #             'variant-1s': None,
+    #         },
+    #         'us': {
+    #             'base-1p': None,
+    #             'variant-1p': None,
+    #         },
+    #         'you (to a man)': {
+    #             'base-2m': None,
+    #             'variant-2m': None,
+    #         },
+    #         'you (to a woman)': {
+    #             'base-2f': None,
+    #             'variant-2f': None,
+    #         },
+    #         'you (to a group)': {
+    #             'base-2p': None,
+    #             'variant-2p': None,
+    #         },
+    #         'him': {
+    #             'base-3m': None,
+    #             'variant-3m': None,
+    #         },
+    #         'her': {
+    #             'base-3f': None,
+    #             'variant-3f': None,
+    #         },
+    #         'them': {
+    #             'base-3p': None,
+    #             'variant-3p': None,
+    #         },
+    #     }
+    # },
 }

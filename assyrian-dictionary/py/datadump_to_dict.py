@@ -29,21 +29,25 @@ def set_examples(item_sense, sense):
                 raise Exception('invalid example type')
 
             if 'text' in example and 'english' in example:
-                aii = example['text']
-                english = example['english']
-                if 'type' in example and example['type'] in {'quote', 'quotation'}:
-                    left_quote = '“'
-                    right_quote = '”'
+                obj = {
+                    'text': example['text'],
+                    'english': example['english'],
+                }
+                # if 'bold_english_offsets' in example:
+                #     obj['bold_english_offsets'] = example['bold_english_offsets']
 
-                    aii = f'{right_quote}{aii}{left_quote}'
-                    english = f'"{english}"'
+                if 'type' in example and example['type'] in {'quote', 'quotation'}:
+                    obj['is_quotation'] = True
 
                 if 'ref' in example:
-                    english = f"{english} - {example['ref']}"
-                obj = {
-                    'text': aii,
-                    'english': english,
-                }
+                    obj['english_ref'] = example['ref']
+
+                if 'literal_meaning' in example:
+                    obj['literal_meaning'] = example['literal_meaning']
+                    # if 'bold_literal_offsets' in example:
+                    #     # if len(example['bold_literal_offsets']) > 1:
+                    #     #     raise Exception(sense)
+                    #     obj['bold_literal_offsets'] = example['bold_literal_offsets']
 
                 res.append(obj)
         if res:
@@ -58,12 +62,19 @@ def literally_etys_to_senses(item):
     return senses
 
 
+def parse_categories(item):
+    omit_categories = {'aii:Syriac letter names'}
+    # omit_categories = set()
+
+    tiered_categories = []
+    for category in item.get('categories', []):
+        if category.startswith("aii:") and category not in omit_categories:
+            tiered_categories.append(category.removeprefix("aii:").lower())
+    return tiered_categories
+
+
 def parse_senses(item, aii_v, obj):
     senses = literally_etys_to_senses(item)
-    ALPHABET = 'assyrian alphabet'
-    category_aliases = {
-        'Syriac letter names': ALPHABET
-    }
 
     for item_sense in item['senses']:
         sense = defaultdict(lambda: defaultdict(list))
@@ -74,24 +85,16 @@ def parse_senses(item, aii_v, obj):
 
         set_examples(item_sense, sense)
 
+        # t3 linkages
         if item['pos'] == 'root':
             set_linkage_table(item_sense, obj, aii_v)
         else:
             set_linkage_table(item_sense, sense, aii_v)
 
-        if 'categories' in item_sense:
-            tier3_categories = []
-            for category in item_sense['categories']:
-                if 'langcode' in category and category['langcode'] == 'aii':
-                    if category['name'].lower() == ALPHABET.lower():
-                        raise Exception(f'ALPHABET category name duplicate: {ALPHABET}')
-                    if category['name'] in category_aliases:
-                        tier3_categories.append(category_aliases[category['name']])
-                    else:
-                        tier3_categories.append(category['name'].lower())
-            if tier3_categories:
-                sense['tier3_categories'] = tier3_categories
-                sense['tier3_tags'] = [f"category:{t3cat}" for t3cat in tier3_categories]
+        tier3_categories = parse_categories(item_sense)
+        if tier3_categories:
+            sense['tier3_categories'] = tier3_categories
+            sense['tier3_tags'] = [f"category:{t3cat}" for t3cat in tier3_categories]
         senses.append(sense)
 
     return senses
@@ -189,24 +192,25 @@ def set_linkage_table(parent, obj, aii_v):
     already_there.add(aii_v)
 
     for linkage_key, linkage_val in consts.linkage_types.items(): # ex. {'alt_of': 'alternate',}
-        if linkage_key in parent:
-            for linkage in parent[linkage_key]: # ex. for synonym in synonyms
-                word_linkage = linkage['word']
+        for linkage in parent.get(linkage_key, []): # ex. for synonym in synonyms
+            word_linkage = linkage['word']
+            if word_linkage in already_there:
+                continue
 
-                # personal_pronouns pronouns dont show up when linkage_key == 'related' outside of
-                # being implicitly provided by {{aii-personal_pronouns}}
-                # so we can always safely omit them
-                if linkage_key == 'related' and word_linkage in consts.personal_pronouns:
-                    continue
+            # personal_pronouns pronouns dont show up when linkage_key == 'related' outside of
+            # being implicitly provided by {{aii-personal_pronouns}}
+            # so we can always safely omit them
+            if linkage_key == 'related' and word_linkage in consts.personal_pronouns:
+                continue
+            if re.search('[a-zA-Z]', linkage['word']):
+                continue
+            if aii_v in consts.aii_alphabet and linkage['word'] in consts.aii_alphabet:
+                continue
 
-                omit = re.search('[a-zA-Z]', linkage['word']) or word_linkage in already_there
-                if not omit:
-                    if aii_v in consts.aii_alphabet and linkage['word'] in consts.aii_alphabet:
-                        continue
-                    obj['other_forms']['rows'].append(
-                        annotated_row(linkage_val, [word_linkage])
-                    )
-                    already_there.add(word_linkage)
+            obj['other_forms']['rows'].append(
+                annotated_row(linkage_val, [word_linkage])
+            )
+            already_there.add(word_linkage)
 
 def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
     ipas = []
@@ -505,11 +509,16 @@ def datadump_to_dict():
         obj['senses'] = parse_senses(item, aii_v, obj)
 
         set_head_template(item, obj, aii_v)
+        # t2 linkages
         set_linkage_table(item, obj, aii_v)
         set_infl(item, obj, aii_v, verb_denominal_forms)
 
         add_etymology(obj, item, aii_v)
-        # add_tier2_linkages
+
+        tier2_categories = parse_categories(item)
+        if tier2_categories:
+            obj['tier2_categories'] = tier2_categories
+
         parse_sounds(item, aii_sounds, aii_not_v, aii_v)
 
         aii_dict[aii_not_v][aii_v].append(obj)

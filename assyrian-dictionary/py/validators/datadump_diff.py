@@ -22,9 +22,11 @@ class DiffInfo:
             (self.infl_template_counters, 'INFL TEMPLATE, SHALLOW'),
             (self.ipa_counters, 'IPA'),
             (self.ety_counters, 'ETYMOLOGY'),
-            (self.sense_key_counter, 'SENSE KEY'),
+            (self.t2_key_counter, 'T2 - KEY COUNTER'),
+            (self.sense_key_counter, 'T3 - SENSE KEY COUNTER'),
             (self.examples_key_counter, 'EXAMPLE KEY'),
             (self.cat_counters, 'CATEGORY'),
+            (self.linkages_counter_t2, 'T2 LINKAGE, DEEP'),
             (self.linkages_counter, 'LINKAGE, DEEP'),
             (self.deep_head_template_counters, 'HEAD TEMPLATE, DEEP'),
         ]
@@ -173,6 +175,23 @@ class DiffInfo:
                                 ipa_counter[note] += 1
         return ipa_counter
 
+    def linkages_counter_t2(self, filename):
+        deep_counter = defaultdict(lambda: defaultdict(int))
+        # deep_counter = defaultdict(int)
+        with open(f'./js/json/{filename}', encoding="utf-8") as f:
+            data = [json.loads(line) for line in f]
+
+        for item in data:
+            if not is_valid_aii_v(item):
+                continue
+            for key, values in item.items():
+                if key not in linkage_types:
+                    continue
+                for value in values:
+                    for key2 in value:
+                        deep_counter[key][key2] += 1
+        return deep_counter
+
     def linkages_counter(self, filename):
         deep_counter = defaultdict(lambda: defaultdict(int))
         # deep_counter = defaultdict(int)
@@ -191,6 +210,16 @@ class DiffInfo:
                             deep_counter[key][key2] += 1
         return deep_counter
 
+    def t2_key_counter(self, filename):
+        counter = defaultdict(int)
+        with open(f'./js/json/{filename}', encoding="utf-8") as f:
+            data = [json.loads(line) for line in f]
+
+        for item in data:
+            if is_valid_aii_v(item):
+                for key in item.keys():
+                    counter[key] += 1
+        return counter
 
     def sense_key_counter(self, filename):
         counter = defaultdict(int)

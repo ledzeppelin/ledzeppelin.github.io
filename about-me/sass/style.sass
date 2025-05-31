@@ -47,7 +47,7 @@ $z-img-caption: 3
 $z-symbol: 3 // needs to be greater than $z-silhouette
 
 body
-  background-color: black
+  background-color: $background-dark
   // background-color: #555
   color: $label-dark
   margin: 0 auto 100px
@@ -218,7 +218,7 @@ $space: 16px
 
 .section-title
   @include text-size('xl', 300)
-  color: #777
+  color: color.adjust($secondary-label-dark, $lightness: -10%)
   padding-bottom: 4px
 
 .section-body

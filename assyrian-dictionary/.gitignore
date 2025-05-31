@@ -7,6 +7,7 @@ js/json/indexed-tags.json
 js/json/verb-denominal-forms.json
 
 js/consts/aii-dict.js
+js/consts/aii-dict-tags.cur.js
 js/consts/aii-dict-tags.prev.js
 js/consts/aii-dict.prev.js
 js/consts/aii-dict.js.gz
