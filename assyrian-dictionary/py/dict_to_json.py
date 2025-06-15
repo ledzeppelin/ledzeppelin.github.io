@@ -1,8 +1,8 @@
 import json
 from collections import defaultdict
-from typing import Iterable, Dict, Set, List, Any
-from datadump_to_dict import datadump_to_dict
-from vars.consts import aii_alphabet
+from typing import Set
+from .datadump_to_dict import datadump_to_dict
+from .vars.consts import aii_alphabet
 
 
 def gather(lines, key):
@@ -19,7 +19,8 @@ def common_tier2_categories(jsonlines) -> Set[str]:
     category_sets = (set(obj["tier2_categories"]) for obj in jsonlines)
     return set.intersection(*category_sets)
 
-NUM_OMIT_T2_CATS = [2]
+NUM_OMIT_T2_CATS = [3]
+UNFILTERED_WORDS_WITH_T2_CATS = []
 
 def collapse_etymologies(obj, inner_obj, jsonlines):
     of_roots, should_collapse_of_roots = gather(jsonlines, 'of_root')
@@ -51,6 +52,7 @@ def collapse_etymologies(obj, inner_obj, jsonlines):
         filtered = [c for c in cats if c not in common_t2]
         if filtered:
             NUM_OMIT_T2_CATS[0] -= 1
+            UNFILTERED_WORDS_WITH_T2_CATS.append(inner_obj['aii_v'])
         jsonline.pop('tier2_categories')
 
     if common_t2:
@@ -165,8 +167,7 @@ def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
         fuse_data.append(obj)
 
     if NUM_OMIT_T2_CATS[0] < 0:
-        raise Exception('increase NUM_OMIT_T2_CATS threshold, comment this exception, '
-                        '`make some` and search tier2_categories')
+        raise Exception(f'increase NUM_OMIT_T2_CATS threshold {UNFILTERED_WORDS_WITH_T2_CATS}')
 
     if remaining_alphabet_letters != 0:
         raise Exception(f'remaining_alphabet_letters: {remaining_alphabet_letters}')

@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const {
   aiiTranslit,
 } = require('../../../assyrian-transliterator/js/aii-translit');
@@ -12,9 +10,7 @@ const {
   aiiTranslitWrapper,
 } = require('../aii-translit-wrapper');
 
-const json = fs.readFileSync('./json/aii-dict-no-tr.json', 'utf-8');
-
-const aiiDictionary = JSON.parse(json);
+const aiiDictionary = require('../json/aii-dict-no-tr.json');
 
 // we can safely add key value pairs to the objects since they are passed by reference
 aiiDictionary.forEach((item) => {

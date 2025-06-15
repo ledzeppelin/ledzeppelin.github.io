@@ -1,6 +1,6 @@
 import unittest
 
-from aii_conj import aii_conj
+from .aii_conj import aii_conj
 
 class TestExample(unittest.TestCase):
     def test_array_comparison(self):

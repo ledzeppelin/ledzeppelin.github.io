@@ -1,8 +1,4 @@
 import json
-import sys
-sys.path.append('py')
-from datadump_to_dict import generate_aii_v
-
 
 def verbs_missing_roots():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:

@@ -1,5 +1,5 @@
-from vars.verb_templates import conj_schema
-from dynamic_conj.aii_conj import aii_conj
+from .vars.verb_templates import conj_schema
+from .dynamic_conj.aii_conj import aii_conj
 
 def parse_verb_pattern(aii_conj_arg):
     # Output: ('G-strong', ['ܩ', 'ܪ', 'ܡ'])

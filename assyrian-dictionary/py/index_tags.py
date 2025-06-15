@@ -102,6 +102,7 @@ def sort_dictionary_tags(fuse_results):
 def parse_indices(tag_counter):
     # omit = {'category', 'from', 'ipa'}
     omit = set()
+    # should be in parity with l2FullNames in searchable-assyrian-bible/js/shared_docready.js
     l2_full_names = {
         'ipa': 'Audio Pronunciations',
         'category': 'Categories',

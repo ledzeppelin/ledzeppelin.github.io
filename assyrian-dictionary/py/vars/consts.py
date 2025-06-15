@@ -97,6 +97,7 @@ language_codes = {
   'nl': 'Dutch',
   'non': 'Old Norse',
   'och': 'Old Chinese',
+  'oge': 'Old Georgian',
   'osp': 'Old Spanish',
   'ota': 'Ottoman Turkish',
   'pal': 'Middle Persian',

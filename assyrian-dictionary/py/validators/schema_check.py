@@ -1,9 +1,7 @@
-import sys
-sys.path.append('py')
 from collections import Counter
-from vars import ht_schemas
-from vars import verb_templates
-from vars import consts
+from ..vars import ht_schemas
+from ..vars import verb_templates
+from ..vars import consts
 
 for key, val in ht_schemas.ht_schema.items():
     one = val['omit'] & val['forms']

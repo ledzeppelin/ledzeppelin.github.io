@@ -1,7 +1,5 @@
 import re
-import sys
-sys.path.append('py')
-from dynamic_conj.utils import AiiConjugation
+from .utils import AiiConjugation
 
 def aii_conj(aii_v):
     # given the non-past, 3rd person, single, masculine form of a verb

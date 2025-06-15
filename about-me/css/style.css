@@ -300,6 +300,12 @@ body {
   position: relative;
 }
 
+@media screen and (width > 600px) {
+  #pier {
+    border-radius: 0 0 16px 16px;
+  }
+}
+
 #headshot-container {
   z-index: 2;
 }

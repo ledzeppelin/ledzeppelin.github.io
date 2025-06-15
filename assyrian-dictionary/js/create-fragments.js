@@ -357,7 +357,8 @@ function createRadicalLegend(strongRadicals) {
 }
 
 function createShowInflectionsButton(jsonline) {
-  const isInflection = 'table' in jsonline;
+  const isInflection = ('table' in jsonline) || ('dynamic_noun_template' in jsonline);
+
   const isVerbConj = 'verb_conjugation' in jsonline;
   const isColorfulVerbConj = jsonline?.verb_conjugation?.strong_radicals?.length;
 
@@ -644,9 +645,248 @@ function createOtherFormsButtonFrag(jsonline) {
 
 function createInflFrag(jsonline, aiiV) {
   if ('table' in jsonline) {
+    // eslint-disable-next-line no-param-reassign
+    jsonline.table.disable_fuse = true;
     return createTableFrag(jsonline.table, aiiV);
   }
+
+  if ('dynamic_noun_template' in jsonline) {
+    const template = jsonline.dynamic_noun_template;
+    const rows = aiiInflNoun(template.name, template['1'], template.optional_args);
+    const preTable = createDynamicNounInflPreTable(rows);
+    preTable.disable_fuse = true;
+    return createTableFrag(preTable, aiiV);
+  }
+
   return null;
+}
+
+function aiiInflNounM(
+  stem,
+  {
+    irs,
+    irp,
+    sirs,
+    fempl = false,
+    'sg-3cp': sg3cp,
+  },
+  groups,
+  suffixes,
+) {
+  /* ── plural suffix sets ── */
+  const plMasIRS = {
+    'pl.1cs': ['ܝܼ', 'ܵܬ݂ܝܼ'],
+    'pl.1cp': ['ܲܢ', 'ܵܬ݂ܲܢ'],
+    'pl.2ms': ['ܘܼܟ݂', 'ܵܬ݂ܘܼܟ݂'],
+    'pl.2fs': ['ܵܟ݂ܝ', 'ܵܬ݂ܵܟ݂ܝ'],
+    'pl.2cp': ['ܲܘܟ݂ܘܿܢ', 'ܵܬ݂ܲܘܟ݂ܘܿܢ'],
+    'pl.3ms': ['ܘܼܗܝ', 'ܵܬ݂ܹܗ'],
+    'pl.3fs': ['ܘܼܗ̇', 'ܵܬ݂ܵܗ̇'],
+    'pl.3cp': ['ܲܝܗܘܿܢ', 'ܵܬ݂ܗܘܿܢ'],
+  };
+
+  const plMasNO = {
+    'pl.1cs': ['ܝܼ̈', 'ܵܬ݂ܝܼ̈'],
+    'pl.1cp': ['ܲܢ̈', 'ܵܬ݂ܲܢ̈'],
+    'pl.2ms': ['ܘܼ̈ܟ݂', 'ܵܬ݂ܘܼ̈ܟ݂'],
+    'pl.2fs': ['ܵܟ݂ܝ̈', 'ܵܬ݂ܵܟ݂ܝ̈'],
+    'pl.2cp': ['ܲܘ̈ܟ݂ܘܿܢ', 'ܵܬ݂ܲܘ̈ܟ݂ܘܿܢ'],
+    'pl.3ms': ['ܘܼ̈ܗܝ', '̈ܵܬ݂ܹܗ'],
+    'pl.3fs': ['ܘܼ̈ܗ̇', '̈ܵܬ݂ܵܗ̇'],
+    'pl.3cp': ['ܲܝ̈ܗܘܿܢ', 'ܵܬ݂ܗ̈ܘܿܢ'],
+  };
+
+  const build = (key) => {
+    // singular column
+    if (key.startsWith('sg.')) {
+      const base = key === 'sg.3cp' && sg3cp !== undefined ? sg3cp : stem;
+      return `${base}${suffixes.sgCore[key]}`;
+    }
+
+    // plural column
+    const needsIrs = irs !== undefined || (/pl\.3[mf]s/.test(key) && fempl && sirs !== undefined);
+
+    const base = needsIrs ? (irs ?? sirs) : (irp ?? stem);
+    const set = needsIrs ? plMasIRS : plMasNO;
+    const col = fempl ? 1 : 0;
+
+    return `${base}${set[key][col]}`;
+  };
+
+  return groups.map(([meta, [sg, pl]]) => ({
+    meta,
+    values: [{ value: build(sg) }, { value: build(pl) }],
+  }));
+}
+
+function aiiInflNounF(
+  stem,
+  {
+    irs,
+    irp,
+    sirs,
+    ircstr,
+    mpl = false,
+    st = false,
+  },
+  groups,
+  suffixes,
+) {
+  const plFemIRS = {
+    'pl.1cs': ['ܝܼ', 'ܵܬ݂ܝܼ'],
+    'pl.1cp': ['ܲܢ', 'ܵܬ݂ܲܢ'],
+    'pl.2ms': ['ܘܼܟ݂', 'ܵܬ݂ܘܼܟ݂'],
+    'pl.2fs': ['ܵܟ݂ܝ', 'ܵܬ݂ܵܟ݂ܝ'],
+    'pl.2cp': ['ܲܘܟ݂ܘܿܢ', 'ܵܬ݂ܲܘܟ݂ܘܿܢ'],
+    'pl.3ms': ['ܘܼܗܝ', 'ܵܬ݂ܹܗ'],
+    'pl.3fs': ['ܘܼܗ̇', 'ܵܬ݂ܵܗ̇'],
+    'pl.3cp': ['ܲܝܗܘܿܢ', 'ܵܬ݂ܗܘܿܢ'],
+  };
+
+  const plFemNO = {
+    'pl.1cs': ['ܝܼ̈', 'ܵܬ݂ܝܼ̈'],
+    'pl.1cp': ['ܲܢ̈', 'ܵܬ݂ܲܢ̈'],
+    'pl.2ms': ['ܘܼ̈ܟ݂', 'ܵܬ݂ܘܼ̈ܟ݂'],
+    'pl.2fs': ['ܵܟ݂ܝ̈', 'ܵܬ݂ܵܟ݂ܝ̈'],
+    'pl.2cp': ['ܲܘ̈ܟ݂ܘܿܢ', 'ܵܬ݂ܲܘ̈ܟ݂ܘܿܢ'],
+    'pl.3ms': ['ܘܼ̈ܗܝ', '̈ܵܬ݂ܹܗ'],
+    'pl.3fs': ['ܘܼ̈ܗ̇', '̈ܵܬ݂ܵܗ̇'],
+    'pl.3cp': ['ܲܝ̈ܗܘܿܢ', 'ܵܬ݂ܗ̈ܘܿܢ'],
+  };
+
+  const build = (key) => {
+    /* singular logic unchanged */
+    if (key.startsWith('sg.')) {
+      const t = st ? 'ܬ݂' : 'ܬ';
+      return `${stem}${t}${suffixes.sgCore[key]}`;
+    }
+
+    const irregular = irs !== undefined || ((key === 'pl.3ms' || key === 'pl.3fs') && sirs !== undefined);
+
+    /* ↓ only this line changed: insert ircstr before stem */
+    const base = irregular
+      ? (irs ?? sirs ?? ircstr ?? stem)
+      : (irp ?? ircstr ?? stem);
+
+    const set = irregular ? plFemIRS : plFemNO;
+    const col = mpl ? 0 : 1;
+
+    return `${base}${set[key][col]}`;
+  };
+
+  return groups.map(
+    ([meta, [sg, pl]]) => ({
+      meta,
+      values: [
+        { value: build(sg) },
+        { value: build(pl) },
+      ],
+    }),
+  );
+}
+
+function aiiInflNounFVowel(
+  stem,
+  {
+    irs,
+    irp,
+    sirs,
+    o = false,
+  },
+  groups,
+  suffixes,
+) {
+  const plFemIRS = {
+    'pl.1cs': ['ܝܼ', 'ܵܬ݂ܝܼ'],
+    'pl.1cp': ['ܲܢ', 'ܵܬ݂ܲܢ'],
+    'pl.2ms': ['ܘܼܟ݂', 'ܵܬ݂ܘܼܟ݂'],
+    'pl.2fs': ['ܵܟ݂ܝ', 'ܵܬ݂ܵܟ݂ܝ'],
+    'pl.2cp': ['ܲܘܟ݂ܘܿܢ', 'ܵܬ݂ܲܘܟ݂ܘܿܢ'],
+    'pl.3ms': ['ܘܼܗܝ', 'ܵܬ݂ܹܗ'],
+    'pl.3fs': ['ܘܼܗ̇', 'ܵܬ݂ܵܗ̇'],
+    'pl.3cp': ['ܲܝܗܘܿܢ', 'ܵܬ݂ܗܘܿܢ'],
+  };
+
+  const plFemNO = {
+    'pl.1cs': ['ܝܼ̈', 'ܵܬ݂ܝܼ̈'],
+    'pl.1cp': ['ܲܢ̈', 'ܵܬ݂ܲܢ̈'],
+    'pl.2ms': ['ܘܼ̈ܟ݂', 'ܵܬ݂ܘܼ̈ܟ݂'],
+    'pl.2fs': ['ܵܟ݂ܝ̈', 'ܵܬ݂ܵܟ݂ܝ̈'],
+    'pl.2cp': ['ܲܘ̈ܟ݂ܘܿܢ', 'ܵܬ݂ܲܘ̈ܟ݂ܘܿܢ'],
+    'pl.3ms': ['ܘܼ̈ܗܝ', '̈ܵܬ݂ܹܗ'],
+    'pl.3fs': ['ܘܼ̈ܗ̇', '̈ܵܬ݂ܵܗ̇'],
+    'pl.3cp': ['ܲܝ̈ܗܘܿܢ', 'ܵܬ݂ܗ̈ܘܿܢ'],
+  };
+
+  const build = (key) => {
+    if (key.startsWith('sg.')) {
+      const diac = o ? 'ܿ' : 'ܼ';
+      return `${stem}${diac}ܬ݂${suffixes.sgCore[key]}`;
+    }
+
+    const irregular = irs !== undefined
+      || ((key === 'pl.3ms' || key === 'pl.3fs') && sirs !== undefined);
+
+    const base = irregular ? (irs ?? sirs) : (irp ?? stem);
+    const set = irregular ? plFemIRS : plFemNO;
+
+    return `${base}${set[key][1]}`; // column 1 only
+  };
+
+  return groups.map(
+    ([meta, [sg, pl]]) => ({
+      meta,
+      values: [
+        { value: build(sg) },
+        { value: build(pl) },
+      ],
+    }),
+  );
+}
+
+function aiiInflNoun(template, stem, opts) {
+  const groups = [
+    ['my', ['sg.1cs', 'pl.1cs']],
+    ['our', ['sg.1cp', 'pl.1cp']],
+    ['your (to a man)', ['sg.2ms', 'pl.2ms']],
+    ['your (to a woman)', ['sg.2fs', 'pl.2fs']],
+    ['your (to a group)', ['sg.2cp', 'pl.2cp']],
+    ['his', ['sg.3ms', 'pl.3ms']],
+    ['her', ['sg.3fs', 'pl.3fs']],
+    ['their', ['sg.3cp', 'pl.3cp']],
+  ];
+
+  const suffixes = {
+    sgCore: {
+      'sg.1cs': 'ܝܼ',
+      'sg.2ms': 'ܘܼܟ݂',
+      'sg.2fs': 'ܵܟ݂ܝ',
+      'sg.3ms': 'ܹܗ',
+      'sg.3fs': 'ܵܗ̇',
+      'sg.1cp': 'ܲܢ',
+      'sg.2cp': 'ܲܘܟ݂ܘܿܢ',
+      'sg.3cp': 'ܗܘܿܢ',
+    },
+  };
+
+  const map = {
+    'aii-infl-noun/m': aiiInflNounM,
+    'aii-infl-noun/f': aiiInflNounF,
+    'aii-infl-noun/f-vowel': aiiInflNounFVowel,
+  };
+
+  const fn = map[template];
+  return fn(stem, opts, groups, suffixes);
+}
+
+function createDynamicNounInflPreTable(inflRows) {
+  // console.log(schemaTense.right_heading);
+
+  return {
+    heading: 'Possessive Determiner',
+    heading_2: ['one', 'two or more'],
+    rows: inflRows,
+  };
 }
 
 function correctedProgressive(inputString, strongRadicals) {
@@ -695,8 +935,6 @@ function replacePlaceholders(inputString, strongRadicals) {
 }
 
 function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, isVisualConj) {
-  // console.log(schemaTense.right_heading);
-
   return {
     heading: schemaTense.left_heading,
     heading_2: schemaTense.right_heading,
@@ -1000,5 +1238,6 @@ if (typeof module === 'object') {
   module.exports = {
     createAtwatehBoxesFrag,
     replacePlaceholders,
+    aiiInflNoun,
   };
 }

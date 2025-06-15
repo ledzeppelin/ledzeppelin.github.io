@@ -4,14 +4,42 @@ $(document).ready(() => {
   const APP_NAME = IS_DICTIONARY ? DICT_APP_NAME : 'searchable-assyrian-bible';
   const DICT_TAG_SEARCH_PARAM = 'tag';
   const DICT_AII_EXACT_SEARCH_PARAM = 'assyrian-word';
+  const ASSYRIAN_ENGLISH_DICTIONARY = 'assyrian-english dictionary';
 
   let searchQuery;
+
+  const updateDictionaryTitle = (title = ASSYRIAN_ENGLISH_DICTIONARY) => {
+    // so SERP will contain the updated title
+    document.title = title;
+    document.querySelector('meta[property="og:title"]').content = title;
+    document.querySelector('meta[name="twitter:title"]').content = title;
+  };
+
+  const l2FullNames = {
+    ipa: 'Audio Pronunciations',
+    category: 'Categories',
+    from: 'Etymologies',
+    pos: 'Parts of Speech',
+    special: 'Language Basics',
+    pattern: 'Verb Conjugation Patterns',
+  };
+
+  const tagQueryStringToTitle = (str) => {
+    const colon = str.indexOf(':');
+    const key = str.slice(0, colon);
+    const value = str.slice(colon + 1);
+
+    const section = l2FullNames[key].toLowerCase();
+    return `${section}: ${value}`;
+  };
+
   function shouldLoadMore() {
     const lastRes = $('#search-results').children().last();
     if (lastRes.length) {
       // https://stackoverflow.com/a/3898152
       // lastRes.offset().top means distance from top of doc to top border of element
 
+      // full device height, ignores the keyboard on mobile
       const viewportHeight = Math.max(
         window.visualViewport ? window.visualViewport.height : 0,
         $(window).height(),
@@ -21,6 +49,13 @@ $(document).ready(() => {
 
       // eslint-disable-next-line max-len
       const isTopOfLastVisible = $(window).scrollTop() + viewportHeight + slack >= lastRes.offset().top;
+
+      // $('#scroll-debug').text(new Date().toISOString());
+      // eslint-disable-next-line max-len
+      // $('#scroll-debug').text(`vh: ${viewportHeight}, scroll: ${$(window).scrollTop()}, lastRes.offset().top: ${lastRes.offset().top}`);
+      // eslint-disable-next-line max-len
+      // $('#scroll-debug').text(`px til load: ${$(window).scrollTop() + viewportHeight + slack - lastRes.offset().top}`);
+
       // eslint-disable-next-line max-len
       if (isTopOfLastVisible && searchQuery !== null && searchQuery.i < searchQuery.results.length) {
         return true;
@@ -31,6 +66,7 @@ $(document).ready(() => {
 
   $(window).scroll(() => {
     if (shouldLoadMore()) {
+      // appears as several vocalized per unvocalized "result"
       loadResults(searchQuery, PAGINATE_AMT);
     }
   });
@@ -135,6 +171,9 @@ $(document).ready(() => {
         loadResults(searchQuery, INITIAL_AMT);
       }
 
+      if (IS_DICTIONARY && document.title !== ASSYRIAN_ENGLISH_DICTIONARY) {
+        updateDictionaryTitle();
+      }
       const url = new URL(window.location.href);
       AiiUtils.updateURL(url, APP_NAME, [['search', searchStr]]);
     }
@@ -224,6 +263,7 @@ $(document).ready(() => {
           loadResults(searchQuery, 1);
         }
 
+        updateDictionaryTitle(tagQueryStringToTitle(tagSearchParam));
         AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_TAG_SEARCH_PARAM, tagSearchParam]]);
       }
     } else {
@@ -245,6 +285,7 @@ $(document).ready(() => {
       const maxNumVocalized = 5;
       loadResults(searchQuery, maxNumVocalized);
 
+      updateDictionaryTitle(aiiExactSearchParam);
       AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_AII_EXACT_SEARCH_PARAM, aiiExactSearchParam]]);
     } else {
       window.history.replaceState(null, document.title, window.location.pathname);
