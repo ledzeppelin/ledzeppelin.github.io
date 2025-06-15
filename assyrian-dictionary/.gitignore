@@ -5,6 +5,7 @@ js/json/aii-dict-no-tr.json
 js/json/aii-numbers-table-no-tr.json
 js/json/indexed-tags.json
 js/json/verb-denominal-forms.json
+js/json/dynamic-noun-forms.json
 
 js/consts/aii-dict.js
 js/consts/aii-dict-tags.cur.js

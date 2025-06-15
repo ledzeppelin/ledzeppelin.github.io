@@ -1,10 +1,8 @@
 import json
 from collections import defaultdict
 from pprint import pprint
-from is_valid_aii_v import is_valid_aii_v
-import sys
-sys.path.append('py')
-from vars.consts import linkage_types
+from .is_valid_aii_v import is_valid_aii_v
+from ..vars.consts import linkage_types
 
 def dict_keys():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:

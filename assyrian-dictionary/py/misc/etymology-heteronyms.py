@@ -1,6 +1,4 @@
 import json
-import sys
-sys.path.append('py')
 
 def heteronyms():
     with open('./js/json/aii-dict-no-tr.json', encoding="utf-8") as f:

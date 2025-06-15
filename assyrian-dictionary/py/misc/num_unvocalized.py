@@ -1,6 +1,4 @@
-import sys
-sys.path.append('py')
-from datadump_to_dict import datadump_to_dict
+from ..datadump_to_dict import datadump_to_dict
 
 def vocalized_counts(aii_dict):
 

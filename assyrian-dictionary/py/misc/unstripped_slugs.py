@@ -2,7 +2,7 @@ import json
 from urllib.parse import quote
 import webbrowser
 import re
-from is_valid_aii_v import is_valid_aii_v
+from .is_valid_aii_v import is_valid_aii_v
 
 def strip_markers():
     # this is a port of /shared_js/aii-utils.js

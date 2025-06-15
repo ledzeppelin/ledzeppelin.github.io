@@ -1,6 +1,4 @@
 import json
-import sys
-sys.path.append('py')
 
 def has_consecutive_identical_chars(input_string):
     for i in range(1, len(input_string)):

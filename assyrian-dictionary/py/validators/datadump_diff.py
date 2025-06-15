@@ -2,9 +2,7 @@ import json
 from collections import defaultdict
 import difflib
 from typing import Callable
-import sys
-sys.path.append('py')
-from vars.consts import linkage_types
+from ..vars.consts import linkage_types
 
 def is_valid_aii_v(item):
     is_valid = 'forms' in item and item['forms'][0]['tags'][0] == 'canonical'

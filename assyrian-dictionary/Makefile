@@ -1,4 +1,4 @@
-all: deps common-words aii-number-list scaffold schema-check dict isolates-check validate-dynamic-conj validate-conj-forms
+all: deps common-words aii-number-list scaffold schema-check dict isolates-check validate-dynamic-conj validate-conj-forms validate-dynamic-noun-forms
 some: scaffold schema-check dict isolates-check validate-dynamic-conj
 scan-articles: missing-roots validate-conj-patterns
 
@@ -19,7 +19,7 @@ scaffold:
 	cat js/json/_aii.jsonl | jq > js/json/jq.aii.jsonl
 
 dict:
-	python3 py/dict_to_json.py
+	python3 -m py.dict_to_json
 
 	@if [ -f js/consts/aii-dict.js ]; then \
 		cp js/consts/aii-dict.js js/consts/aii-dict.prev.js; \
@@ -70,10 +70,10 @@ download:
 	python3 py/download_datadump.py
 
 datadump-diff:
-	python3 py/validators/datadump_diff.py
+	python3 -m py.validators.datadump_diff
 
 schema-check:
-	python3 py/validators/schema_check.py
+	python3 -m py.validators.schema_check
 
 isolates-check:
 	python3 py/validators/isolates.py
@@ -85,7 +85,10 @@ validate-conj-patterns:
 	python py/dynamic_conj/validator.py
 
 validate-dynamic-conj:
-	python py/dynamic_conj/test_aii_conj.py
+	python -m py.dynamic_conj.test_aii_conj
 
 validate-conj-forms:
 	cd js && node cli/verb-conjugation.tests.js
+
+validate-dynamic-noun-forms:
+	cd js && node cli/dynamic-noun-forms.tests.js

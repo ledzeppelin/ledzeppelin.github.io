@@ -1,6 +1,5 @@
-from vars.ht_schemas import adj_wrap
-
-omitted_infl_schema = {'aii-particle-infl-zi'}
+# omitted_infl_schema = {'aii-particle-infl-zi'}
+omitted_infl_schema = set()
 
 noun_infl_schema = {
     'aii-infl-noun':{

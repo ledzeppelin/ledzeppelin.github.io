@@ -5,11 +5,11 @@ import json
 import os
 import re
 import copy
-from vars import consts
-from vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
-from vars.infl_schemas import noun_infl_schema, omitted_infl_schema
-from ipa_to_mp3 import ipa_to_mp3
-from conjugate_verbs import set_verb_conj
+from .vars import consts
+from .vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
+from .vars.infl_schemas import noun_infl_schema, omitted_infl_schema
+from .ipa_to_mp3 import ipa_to_mp3
+from .conjugate_verbs import set_verb_conj
 
 def annotated_row(meta, aii_values):
     row = defaultdict(list)
@@ -20,6 +20,7 @@ def annotated_row(meta, aii_values):
         row['values'].append(val_obj)
 
     return row
+
 
 def set_examples(item_sense, sense):
     if 'examples' in item_sense:
@@ -63,7 +64,7 @@ def literally_etys_to_senses(item):
 
 
 def parse_categories(item):
-    omit_categories = {'aii:Syriac letter names'}
+    omit_categories = {'aii:Assyrian alphabet'}
     # omit_categories = set()
 
     tiered_categories = []
@@ -99,23 +100,39 @@ def parse_senses(item, aii_v, obj):
 
     return senses
 
-def set_infl(item, obj, aii_v, verb_denominal_forms = None):
+def set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms):
     if 'inflection_templates' not in item:
         return
 
+    dynamic_noun_infl = {'aii-infl-noun/m', 'aii-infl-noun/f', 'aii-infl-noun/f-vowel'}
     html_template_name = item['inflection_templates'][-1]['name']
+    leaf_template = item['inflection_templates'][0]
 
     if html_template_name == 'aii-conj':
         set_verb_conj(item, obj, aii_v, verb_denominal_forms)
+    elif leaf_template['name'] in dynamic_noun_infl:
+        call_site = {
+            'name':leaf_template['name'],
+            '1': leaf_template['args'].pop('1')
+        }
+        call_site['optional_args'] = leaf_template['args']
+
+        set_noun_infl(item, obj, html_template_name)
+        obj['table']['call_site'] = call_site
+        dynamic_noun_forms[aii_v].append(obj.pop('table'))
+
+        obj['dynamic_noun_template'] = call_site
     elif html_template_name in noun_infl_schema:
-        set_noun_infl(item, obj, html_template_name, aii_v)
+        set_noun_infl(item, obj, html_template_name)
     elif html_template_name in omitted_infl_schema:
         pass
     else:
         raise Exception(f'html_template_name: {html_template_name} not found')
 
+    if 'table' in obj and 'dynamic_noun_template' in obj:
+        raise Exception('oh dear')
 
-def set_noun_infl(item, obj, template_name, aii_v):
+def set_noun_infl(item, obj, template_name):
     # for noun/preposition
     template = copy.deepcopy(noun_infl_schema[template_name]['template'])
     omit = noun_infl_schema[template_name]['omit']
@@ -462,12 +479,14 @@ def datadump_to_dict():
     aii_dict = defaultdict(lambda: defaultdict(list))
     aii_sounds = defaultdict(lambda: defaultdict(list))
     verb_denominal_forms = {}
+    dynamic_noun_forms = defaultdict(list)
 
 
     BLACKLIST = {
         'ܡܦܪܲܣܚܲܙܹܐ',
         'ܡܚܘܛܡܠܠ',
         #####
+        'ܦ̮ܝܼܙܝܼܵܐ',
     }
 
     vocalized_cache = {generate_aii_v(item, item['word']) for item in data}
@@ -511,7 +530,7 @@ def datadump_to_dict():
         set_head_template(item, obj, aii_v)
         # t2 linkages
         set_linkage_table(item, obj, aii_v)
-        set_infl(item, obj, aii_v, verb_denominal_forms)
+        set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms)
 
         add_etymology(obj, item, aii_v)
 
@@ -528,5 +547,8 @@ def datadump_to_dict():
 
     with open('./js/json/verb-denominal-forms.json', 'w') as f:
         json.dump(verb_denominal_forms, f, ensure_ascii=False, indent=4)
+
+    with open('./js/json/dynamic-noun-forms.json', 'w') as f:
+        json.dump(dynamic_noun_forms, f, ensure_ascii=False, indent=4)
 
     return aii_dict, collapse_sounds(aii_sounds), numbers_table
