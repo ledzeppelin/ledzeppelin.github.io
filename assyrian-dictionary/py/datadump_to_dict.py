@@ -486,7 +486,6 @@ def datadump_to_dict():
         'ܡܦܪܲܣܚܲܙܹܐ',
         'ܡܚܘܛܡܠܠ',
         #####
-        'ܦ̮ܝܼܙܝܼܵܐ',
     }
 
     vocalized_cache = {generate_aii_v(item, item['word']) for item in data}

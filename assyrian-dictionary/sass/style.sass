@@ -39,69 +39,48 @@ $view-margin-y: 20px
 
 
 #tagged-results-meta
-  @include eng-text('xs')
-  display: none
-  margin: $view-margin-y $side-padding + $searchbar-inset-x
-  margin-bottom: calc(-1 * $view-margin-y / 2)
-  padding: 0
+  @include eng-text('s')
+  margin: 0 $side-padding + $searchbar-inset-x 4px
 
   #matched-tag
     font-weight: 500
 
-#top-tags-menu
-  margin: $view-margin-y $side-padding $view-margin-y $side-padding + $searchbar-inset-x
 
+$top-tags-margin: 6px
 
-$list-indent: 16px
-$list-y-margin: 8px
-$list-margin: $list-y-margin 0 $list-y-margin $list-indent
+#top-tags-container
+  margin: $view-margin-y $side-padding - $top-tags-margin
+  text-align: center
 
-.top-tags-group
-  @include eng-text('s', 400)
-  margin: $list-margin
-  padding: 0
+  button,
+  a
+    @include eng-text('s', 400)
+    border-style: solid
+    border-width: 1px
+    margin: $top-tags-margin
 
-  & > li
-    list-style-type: none
-
-  &:not(.always-show)
-    display: none
-
-.top-tags-items
-  margin: $list-margin
-  padding: 0
-
-  & > li
-    // using inline-block allows us to remove whitespace which affects html elements
+  li,
+  a
     display: inline-block
 
-    &:not(:last-child)::after
-      content: ' |'
-      $space-px: 3px
-      margin-left: 3px
-      margin-right: 3px + $space-px
+  button
+    border-radius: 10px
+    padding: 8px 12px
+    $duration: 100ms
+    transition: color $duration, background-color $duration, border-color $duration
 
-    &.hide-divider::after
-      content: ''
+    &:not(.active)
+      cursor: pointer
 
-    &:not(.always-show)
-      display: none
+  a
+    border-radius: 8px
+    padding: 4px 8px
 
+#top-tags-menu
+  list-style-type: none
+  margin: 0
+  padding: 0
 
-.top-tag-anchor
-  &.exact-search-match
-    font-weight: 500
-    pointer-events: none
-
-  .highlighted
-    font-weight: 700
-
-.tag-menu-btn-l2
-  .expandable-btn-text
-    .highlighted
-      font-weight: 500
-
-$tri-root-offset: -17px
 
 .expandable-btn
   align-items: center
@@ -112,27 +91,27 @@ $tri-root-offset: -17px
   margin: 0
   padding: 0
 
+  @media (hover: hover) and (pointer: fine) // use underline on desktop
+    &:hover
+      border-radius: 6px
+
+
   .expandable-btn-text
     @include eng-text('s', 400)
 
   .expandable-btn-icon
     font-size: $half-icon-size * 2
     font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24
+    transition: transform 200ms
 
     &.expanded
       transform: rotate(90deg)
-
-.show-gloss-terms-btn,
-.show-examples-btn,
-.show-other-forms-btn
-  .expandable-btn-icon
-    transition: transform 200ms
 
 
 .free-text-search-result
   border-radius: 12px
   display: block
-  margin: 0 $side-padding $side-padding
+  margin: 0 $side-padding $view-margin-y
   padding: $searchbar-inset-x
   position: relative
   text-decoration: none
@@ -142,9 +121,20 @@ $tri-root-offset: -17px
   &:active
     text-decoration: none
 
+  &> .aii-v-word
+    // harcoding this for now but can be inferred from button size padding/margin
+    margin-right: 20px
+
   &> .aii-v-word-tr-container
     margin-bottom: 8px
 
+.free-text-btn-icon
+  font-size: $half-icon-size * 2
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
+  position: absolute
+  right: $button-padding + $close-x
+  top: $button-padding + $close-x
+  // border: 1px solid #333
 
 .search-result
   display: flex // so we can set order
@@ -259,7 +249,6 @@ $cir-pad: $microrad-height + 2 * $microrad-border-width + $add-space
     padding: 0
     width: $more-defs-button-diam
 
-
     .inflections-button
       font-size: $half-icon-size * 2
       font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
@@ -296,8 +285,8 @@ $cir-pad: $microrad-height + 2 * $microrad-border-width + $add-space
 
 .microrad-legend
   position: absolute
-  right: $searchbar-inset-x
-  top: $searchbar-inset-x
+  right: $searchbar-inset-x + 24px
+  top: $searchbar-inset-x - 3px
 
   > div
     margin-left: 4px

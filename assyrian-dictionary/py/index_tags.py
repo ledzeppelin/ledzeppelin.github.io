@@ -1,7 +1,7 @@
 import json
 from collections import defaultdict
 
-from vars.consts import attached_pronouns, subject_pronouns
+from .vars.consts import attached_pronouns, subject_pronouns
 expected_counts = {
     'pos:attached pronoun': len(attached_pronouns),
     'pos:subject pronoun': len(subject_pronouns)
@@ -50,31 +50,11 @@ def tag_counts_grouped(tag_counter):
     # {'ipa': ['standard', 'Urmian', 'Nineveh Plains']}
     return results
 
-def conjugations_patterns(pattern_tag_names):
-    return [
-        {
-            'name': 'Verb Conjugation Patterns',
-            'children': generate_patterns_list(pattern_tag_names)
-        }
-    ]
-
-def generate_patterns_list(pattern_tag_names):
-    res = []
-    for pattern_tag_name in pattern_tag_names:
-        res.append({
-            'name': pattern_tag_name,
-            'tag': f"pattern:{pattern_tag_name}",
-        })
-
-    return res
-
-
-def append_l2(tag_type, tag_names, l2_full_name, fuse_results):
+def append_l2(tag_type, tag_names, l2_entry, fuse_results):
     children =  []
     for tag_name in tag_names:
         child = {
             'name': tag_name,
-            'tag': f"{tag_type}:{tag_name}",
         }
 
         if f"{tag_type}:{tag_name}" in expected_counts:
@@ -85,9 +65,13 @@ def append_l2(tag_type, tag_names, l2_full_name, fuse_results):
 
 
     fuse_results.append({
-        'name': l2_full_name,
+        'name': l2_entry['name'],
+        'sort_key': l2_entry['sort_key'],
+        'emoji': l2_entry['emoji'],
+        'tag_key': tag_type,
         'children': children
     })
+
 
 def sort_dictionary_tags(fuse_results):
     for l1 in fuse_results:
@@ -97,28 +81,47 @@ def sort_dictionary_tags(fuse_results):
                 key=lambda child: child.get('sort_key', child['name'])
             )
 
-    return sorted(fuse_results, key=lambda l1: l1['name'])
+    return sorted(fuse_results, key=lambda l1: l1.get('sort_key', l1['name']))
 
 def parse_indices(tag_counter):
     # omit = {'category', 'from', 'ipa'}
     omit = set()
-    # should be in parity with l2FullNames in searchable-assyrian-bible/js/shared_docready.js
+
     l2_full_names = {
-        'ipa': 'Audio Pronunciations',
-        'category': 'Categories',
-        'from': 'Etymologies',
-        'pos': 'Parts of Speech',
-        'special': 'Language Basics',
+        'from': {
+            'name': 'Etymologies',
+            'sort_key': '1',
+            'emoji': '🌎',
+        },
+        'ipa': {
+            'name': 'Pronunciations',
+            'sort_key': '2',
+            'emoji': '🔈',
+        },
+        'pattern': {
+            'name': 'Verb Patterns',
+            'sort_key': '3',
+            'emoji': '🧠',
+        },
+        'pos': {
+            'name': 'Parts of Speech',
+            'sort_key': '4',
+            'emoji': '🧩',
+        },
+        'category': {
+            'name': 'Categories',
+            'sort_key': '5',
+            'emoji': '🗂️',
+        },
+        'special': {
+            'name': 'Language Basics',
+            'sort_key': '6',
+            'emoji': '📚',
+        },
     }
 
     grouped_tags = tag_counts_grouped(tag_counter)
-
-    conj_patterns = conjugations_patterns(grouped_tags['pattern'])
-
-    for tag_type_to_rem in ['pattern']:
-        grouped_tags.pop(tag_type_to_rem)
-
-    fuse_results = conj_patterns
+    fuse_results = []
     for tag_type, tag_names in grouped_tags.items():
         if tag_type in omit:
             pass

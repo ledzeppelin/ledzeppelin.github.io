@@ -19,7 +19,7 @@ def common_tier2_categories(jsonlines) -> Set[str]:
     category_sets = (set(obj["tier2_categories"]) for obj in jsonlines)
     return set.intersection(*category_sets)
 
-NUM_OMIT_T2_CATS = [3]
+NUM_OMIT_T2_CATS = [2]
 UNFILTERED_WORDS_WITH_T2_CATS = []
 
 def collapse_etymologies(obj, inner_obj, jsonlines):
@@ -83,7 +83,7 @@ def unvocalized_contains_root(aii_v_s):
 def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
     # structure dictionary in a format that can be indexed by fusejs and on a per vocalized
     # 1. add ipas
-    # 2. check if common word
+    # 2. check if commonly used
     # 3. check if in numbers table
     # 4. collapse etymologies if possible
 
@@ -137,7 +137,7 @@ def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
                 idx = deduped_common_words.index(aii_v)
                 obj['min_common_word_idx'] = min(obj['min_common_word_idx'], idx)
                 inner_obj['is_common_word'] = True
-                inner_obj['tier1_tags'].append('special:common word')
+                inner_obj['tier1_tags'].append('special:commonly used')
             except ValueError:
                 pass
 
@@ -199,13 +199,13 @@ def validate_t0_tags(obj):
 def validate_t1_tags(aii_v):
     if 'tier1_tags' in aii_v:
         # per functions.js the DOM elements with .tier1-tag should appear in this order:
-        # ipa -> common words -> assyrian alphabet -> tier 1 etymology
+        # ipa -> commonly used -> assyrian alphabet -> tier 1 etymology
         tier1 = []
         if 'ipas' in aii_v:
             tier1 += [f'ipa:{accent}' for ipa in aii_v['ipas'] for accent in ipa[0]]
 
         if 'is_common_word' in aii_v:
-            tier1 += ['special:common word']
+            tier1 += ['special:commonly used']
         if 'is_alphabet_letter' in aii_v:
             tier1 += ['special:assyrian alphabet']
         if 'tier1_etymology' in aii_v:

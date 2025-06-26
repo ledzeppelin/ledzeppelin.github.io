@@ -15,16 +15,7 @@ $(document).ready(() => {
     document.querySelector('meta[name="twitter:title"]').content = title;
   };
 
-  const l2FullNames = {
-    ipa: 'Audio Pronunciations',
-    category: 'Categories',
-    from: 'Etymologies',
-    pos: 'Parts of Speech',
-    special: 'Language Basics',
-    pattern: 'Verb Conjugation Patterns',
-  };
-
-  const tagQueryStringToTitle = (str) => {
+  const tagQueryStringToTitle = (str, l2FullNames) => {
     const colon = str.indexOf(':');
     const key = str.slice(0, colon);
     const value = str.slice(colon + 1);
@@ -34,7 +25,14 @@ $(document).ready(() => {
   };
 
   function shouldLoadMore() {
+    // console.log(searchQuery.i)
+    // == checks if null or undefined, as opposed to ===
+    if (searchQuery == null || searchQuery.i >= searchQuery.results.length) {
+      return false;
+    }
+
     const lastRes = $('#search-results').children().last();
+
     if (lastRes.length) {
       // https://stackoverflow.com/a/3898152
       // lastRes.offset().top means distance from top of doc to top border of element
@@ -57,7 +55,7 @@ $(document).ready(() => {
       // $('#scroll-debug').text(`px til load: ${$(window).scrollTop() + viewportHeight + slack - lastRes.offset().top}`);
 
       // eslint-disable-next-line max-len
-      if (isTopOfLastVisible && searchQuery !== null && searchQuery.i < searchQuery.results.length) {
+      if (isTopOfLastVisible) {
         return true;
       }
     }
@@ -102,14 +100,15 @@ $(document).ready(() => {
     const searchStr = $(e.currentTarget).val().trim();
 
     if (IS_DICTIONARY) {
-      topTagsMenuClearHighlightedMatches();
       $('#numbers-table').children().hide();
-      $('#tagged-results-meta').hide();
+      if (searchStr.length === 0) {
+        $('#top-tags-container').show();
+      } else {
+        $('#top-tags-container').hide();
+      }
     }
 
     if (searchStr.length === 0) {
-      // https://stackoverflow.com/a/51169659
-      $('#searchbar').removeClass('aii-search-text');
       $('#clear-text').hide();
       $('#search-results').empty();
       searchQuery = null; // not needed but helps readability
@@ -119,9 +118,6 @@ $(document).ready(() => {
       $('#clear-text').show();
 
       if (AiiUtils.atLeastOneAiiLetter(searchStr)) {
-        $('#searchbar').addClass('aii-search-text');
-        $('#clear-text').addClass('clear-aii-text');
-
         if (AiiUtils.atLeastOneDiacritic(searchStr)) {
           // console.log('vocalized search');
           const normalizedSearchStr = searchStr.normalize('NFC');
@@ -139,16 +135,6 @@ $(document).ready(() => {
           };
         }
       } else {
-        // console.log('hello');
-        $('#searchbar').removeClass('aii-search-text');
-        $('#clear-text').removeClass('clear-aii-text');
-        // handles english query for both dictionary and searchable bible
-
-        if (IS_DICTIONARY) {
-          const tagSearchResults = fuseTags.search(`'"${searchStr}"`);
-          topTagsMenuHighlightMatches(tagSearchResults);
-        }
-
         searchQuery = {
           // eslint-disable-next-line max-len
           results: runExtendedSearchQuery(searchStr, fuseEng),
@@ -177,6 +163,7 @@ $(document).ready(() => {
       const url = new URL(window.location.href);
       AiiUtils.updateURL(url, APP_NAME, [['search', searchStr]]);
     }
+
     console.timeEnd('keystroke');
   });
 
@@ -185,13 +172,15 @@ $(document).ready(() => {
     $('#searchbar').val('').focus().trigger('input');
   });
 
-  if (IS_DICTIONARY) {
-    $('#top-tags-menu').html(createTopTagsMenuFragment(aiiDictionaryTags));
-  }
-
   // read query string params if set
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
+
+  if (IS_DICTIONARY) {
+    // eslint-disable-next-line max-len
+    const shouldLimit = params.has(DICT_TAG_SEARCH_PARAM) || params.has(DICT_AII_EXACT_SEARCH_PARAM);
+    $('#top-tags-menu').html(createTopTagsMenuFragment(aiiDictionaryTags, shouldLimit));
+  }
 
   if (IS_DICTIONARY && params.has(DICT_TAG_SEARCH_PARAM)) {
     const tagSearchParam = params.get(DICT_TAG_SEARCH_PARAM);
@@ -208,7 +197,7 @@ $(document).ready(() => {
 
         $('#numbers-table').html(createTableFrag(aiiNumbersTable)).children().show();
         shouldLoadTagExactSearchResults = true;
-      } else if (tagSearchParam === 'special:common word') {
+      } else if (tagSearchParam === 'special:commonly used') {
         const compareFn = (a, b) => (
           a.item.min_common_word_idx < b.item.min_common_word_idx ? -1 : 1
         );
@@ -252,18 +241,20 @@ $(document).ready(() => {
       }
 
       if (shouldLoadTagExactSearchResults) {
-        highlightExactMatchInTopTagsMenu(tagSearchParam);
-        const matchedTagName = tagSearchParam.split(/:(.+)/)[1];
-        $('#matched-tag').text(matchedTagName);
-        $('#tagged-results-meta').show();
-
         searchQuery.i = 0;
         loadResults(searchQuery, 1);
         while (shouldLoadMore()) {
           loadResults(searchQuery, 1);
         }
 
-        updateDictionaryTitle(tagQueryStringToTitle(tagSearchParam));
+        const matchedTagName = tagSearchParam.split(/:(.+)/)[1];
+        $('#search-results').prepend(createTagMetaFrag(matchedTagName));
+
+        updateDictionaryTitle(tagQueryStringToTitle(
+          tagSearchParam,
+          // eslint-disable-next-line camelcase
+          Object.fromEntries(aiiDictionaryTags.map(({ tag_key, name }) => [tag_key, name])),
+        ));
         AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_TAG_SEARCH_PARAM, tagSearchParam]]);
       }
     } else {

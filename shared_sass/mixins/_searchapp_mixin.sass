@@ -18,7 +18,8 @@
 
   @include anchors($link, $link-dark, $visited-link, $visited-link-dark, $active-link, $active-link-dark)
 
-  #clear-text
+  #clear-text,
+  #search-icon
     color: $secondary-label
     @media (prefers-color-scheme: dark)
       color: $secondary-label-dark
@@ -38,7 +39,7 @@
     color: $label
     @media (prefers-color-scheme: dark)
       $border-color-dark: color.adjust($secondary-label-dark, $lightness: -10%)
-      background-color: $background-dark
+      background-color: color.adjust($secondary-background-dark, $lightness: 10%)
       border-color: $border-color-dark
       box-shadow: 0 1px 1px $border-color-dark
       color: $label-dark
@@ -92,6 +93,14 @@
     margin: 32px $side-padding 8px
     position: relative
 
+  #search-icon
+    font-size: $button-width
+    font-variation-settings: 'wght' 350
+    left: $side-padding
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+
   #clear-text
     -webkit-tap-highlight-color: transparent // prevent flicker when tapping on phone
     // background-color: rgba(255, 0, 0, .1)
@@ -105,11 +114,6 @@
     right: 0
     top: 50%
     transform: translateY(-50%)
-
-    &.clear-aii-text
-      left: 0
-      padding: $button-padding $button-padding $button-padding $button-padding + $close-x
-      right: auto
 
   #autofocus-tip-container
     font-family: 'Roboto Mono', monospace
@@ -136,11 +140,11 @@
 
   #searchbar
     // -webkit-appearance: none // removes top shadow (tested on SE 2nd gen iOS 14.5)
-    $text-indent: 4px // need extra padding for letters like ܓ
     @include aii-text('xs')
     border-radius: 24px
     border-style: solid
     border-width: 1px
+    box-shadow: rgba(#000, .16) 0 6px 12px, rgba(0, 0, 0, .06) 0 0 0 1px
     box-sizing: border-box // size of input won't increase due to padding
     direction: ltr // since we're using aii
     display: block
@@ -153,14 +157,11 @@
     // of the outline (confirm w/ focus when zoomed in)
     outline: 0
     padding-bottom: 6px
-    padding-left: $searchbar-inset-x
+    padding-left: $searchbar-inset-x + $button-width
     padding-right: $searchbar-inset-x + $button-width + 2px
     padding-top: 6px
     width: 100%
 
-    &.aii-search-text
-      direction: rtl
-      padding-left: $searchbar-inset-x + $button-width + 2px
-      padding-right: $searchbar-inset-x - $text-indent
-      text-indent: $text-indent
+    @media (prefers-color-scheme: dark)
+      box-shadow: none
 

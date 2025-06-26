@@ -39,7 +39,7 @@ dict:
 	cd js && brotli -4 -f consts/aii-dict.js -o consts/aii-dict.js.l4.br
 	cd js && brotli -4 -f consts/aii-dict.min.js -o consts/aii-dict.min.js.l4.br
 
-	python3 py/index_tags.py > js/json/indexed-tags.json
+	python3 -m py.index_tags > js/json/indexed-tags.json
 
 	python3 py/vars/verb_templates.py
 

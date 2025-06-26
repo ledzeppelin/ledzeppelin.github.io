@@ -30,13 +30,13 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 
 =rad-color($color, $dark-color)
-  background-color: color.mix($color, $secondary-background, 6%)
-  border-color: color.mix($color, $secondary-background, 32%)
+  background-color: rgba($color, .06)
+  border-color: rgba($color, .32)
   color: $color
 
   @media (prefers-color-scheme: dark)
-    background-color: color.mix($dark-color, $background-dark, 15%)
-    border-color: color.mix($dark-color, $background-dark, 44%)
+    background-color: rgba($dark-color, .06)
+    border-color: rgba($dark-color, .44)
     color: $dark-color
 
 =rad-colors($light-colors, $dark-colors)
@@ -55,6 +55,41 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 
 
+#top-tags-container
+  button,
+  a
+    background-color: transparent
+    border-color: color.adjust($secondary-background, $lightness: -10%)
+    @media (prefers-color-scheme: dark)
+      border-color: color.adjust($secondary-background-dark, $lightness: 12%)
+
+
+  button
+    color: $label
+    @media (prefers-color-scheme: dark)
+      color: $label-dark
+
+    @media (hover: hover) and (pointer: fine) // use underline on desktop
+      &:hover
+        background-color: color.adjust($secondary-background, $lightness: -8%)
+        border-color: color.adjust($secondary-background, $lightness: -8%)
+        @media (prefers-color-scheme: dark)
+          background-color: color.adjust($secondary-background-dark, $lightness: 6%)
+          border-color: color.adjust($secondary-background-dark, $lightness: 6%)
+
+
+
+    &.active
+      background-color: color.adjust($label, $lightness: 12%)
+      border-color: color.adjust($label, $lightness: 12%)
+      color: $secondary-background
+
+      @media (prefers-color-scheme: dark)
+        background-color: color.adjust($label-dark, $lightness: 6%)
+        border-color: color.adjust($label-dark, $lightness: 6%)
+        color: $background-dark
+
+
 #tagged-results-meta
   color: $secondary-label
   @media (prefers-color-scheme: dark)
@@ -67,58 +102,46 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
     color: $key-color-dark
 
 
-.tag-menu-btn-l1,
-.show-gloss-terms-btn,
-.show-examples-btn,
-.show-other-forms-btn
+.expandable-btn
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
-
-
-.tag-menu-btn-l2
-  color: $label
-  @media (prefers-color-scheme: dark)
-    color: $label-dark
-
-
-  .expandable-btn-text
-    .highlighted
-      color: $key-color
-      @media (prefers-color-scheme: dark)
-        color: $key-color-dark
-
-
-.top-tag-li
-  color: $secondary-label
-  @media (prefers-color-scheme: dark)
-    color: $secondary-label-dark
-
-
-.top-tag-anchor
-  &.exact-search-match
-    color: $key-color
-    @media (prefers-color-scheme: dark)
-      color: $key-color-dark
-
-
-.free-text-search-result
-  background-color: color.mix($background, $secondary-background, 30%)
-  box-shadow: rgba(#000, .16) 0 6px 12px, rgba(0, 0, 0, .06) 0 0 0 1px
-  transition: background-color .1s ease, box-shadow .1s ease
-
-  @media (prefers-color-scheme: dark)
-    background-color: color.mix($secondary-background-dark, $background-dark, 50%)
-    box-shadow: black 0 4px 6px 2px, rgba(white, .35) 0 0 2px 1px
 
   @media (hover: hover) and (pointer: fine) // use underline on desktop
     &:hover
-      background-color: color.mix($background, $secondary-background, 50%)
-      box-shadow: rgba(#000, .28) 0 6px 21px, rgba(0, 0, 0, .06) 0 0 0 1px
-      @media (prefers-color-scheme: dark)
-        background-color: color.mix($secondary-background-dark, $background-dark, 95%)
-        box-shadow: black 0 4px 6px 2px, rgba(white, .45) 0 0 2px 1px
+      $light-btn-color: color.adjust($secondary-background, $lightness: -4%)
+      background-color: $light-btn-color
+      box-shadow: -9px 0 0 0 $light-btn-color
 
+      @media (prefers-color-scheme: dark)
+        $dark-btn-color: color.adjust($background-dark, $lightness: 8%)
+        background-color: $dark-btn-color
+        box-shadow: -9px 0 0 0 $dark-btn-color
+
+
+
+.free-text-search-result
+  background-color: $background
+  box-shadow: rgba(#000, .16) 0 6px 12px, rgba(0, 0, 0, .06) 0 0 0 1px
+
+  @media (prefers-color-scheme: dark)
+    background-color: color.mix($secondary-background-dark, $background-dark, 65%)
+    box-shadow: none
+
+  @media (hover: hover) and (pointer: fine) // use underline on desktop
+    &:hover
+      box-shadow: rgba(#000, .36) 0 6px 21px, rgba(0, 0, 0, .06) 0 0 0 1px
+      @media (prefers-color-scheme: dark)
+        background-color: $secondary-background-dark
+        box-shadow: none
+
+
+
+
+.free-text-btn-icon
+  color: $secondary-label
+  @media (prefers-color-scheme: dark)
+    color: $secondary-label-dark
 
 
 .wiktionary-link-container
@@ -169,30 +192,6 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
-
-
-  .inflections-button-container
-    background-color: $background
-    border-color: $separator
-    @media (prefers-color-scheme: dark)
-      background-color: $secondary-background-dark
-      border-color: $secondary-background-dark
-
-
-    .inflections-button
-      color: $label
-      @media (prefers-color-scheme: dark)
-        color: $label-dark
-
-
-.more-paradigms-button
-  background-color: $background
-  border-color: $separator
-  color: $label
-  @media (prefers-color-scheme: dark)
-    background-color: $secondary-background-dark
-    border-color: $secondary-background-dark
-    color: $label-dark
 
 
 .gloss-container
@@ -296,25 +295,6 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
 
 @include rad-colors($apple-colors, $apple-colors-dark)
 
-.more-sounds-button
-  background-color: $background
-  border-color: $separator
-  color: $label
-  @media (prefers-color-scheme: dark)
-    background-color: $secondary-background-dark
-    border-color: $secondary-background-dark
-    color: $label-dark
-
-
-.play-sound
-  background-color: transparent
-  border-color: $separator
-  color: $label
-  @media (prefers-color-scheme: dark)
-    border-color: $separator-dark
-    color: $label-dark
-
-
 .free-text-t1-play-sound,
 .inactive-more-sounds-button
   border-color: rgba($separator, .15)
@@ -378,3 +358,24 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
   color: $secondary-label
   @media (prefers-color-scheme: dark)
     color: $secondary-label-dark
+
+
+.inflections-button-container,
+.play-sound,
+.more-sounds-button,
+.more-paradigms-button
+  background-color: $background
+  border-color: $separator
+  color: $label
+  @media (prefers-color-scheme: dark)
+    background-color: color.adjust($secondary-background-dark, $lightness: 2%)
+    border-color: color.adjust($secondary-background-dark, $lightness: 2%)
+    color: $label-dark
+
+  @media (hover: hover) and (pointer: fine) // use underline on desktop
+    &:hover
+      box-shadow: rgba(#000, .2) 0 0 6px 2px
+      @media (prefers-color-scheme: dark)
+        background-color: color.adjust($secondary-background-dark, $lightness: 8%)
+        border-color: color.adjust($secondary-background-dark, $lightness: 8%)
+        box-shadow: none
