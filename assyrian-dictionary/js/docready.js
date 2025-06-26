@@ -15,26 +15,23 @@ $(document).ready(() => {
     // this "primes" the link so that when its tapped, iOS correctly registers the click event
   });
 
-  $('#top-tags-menu').on('click', '.tag-menu-btn-l1', (e) => {
-    $(e.currentTarget).children('.expandable-btn-icon').toggleClass('expanded');
-    $(e.currentTarget).siblings('.top-tags-group:not(.always-show)').toggle();
+  $('#top-tags-menu').on('click', '.top-tags-menu-item', (e) => {
+    const tagName = $(e.currentTarget).data('tagName');
+
+    $('#top-tags-menu .top-tags-menu-item.active').removeClass('active');
+    $(e.currentTarget).addClass('active');
+
+    $('#top-tags-children').html(
+      createTopTagsChildrenFragment(aiiDictionaryTags, tagName),
+    );
   });
 
-  $('#top-tags-menu').on('click', '.tag-menu-btn-l2', (e) => {
-    $(e.currentTarget).children('.expandable-btn-icon').toggleClass('expanded');
-    $(e.currentTarget).next('.top-tags-items').children('.always-show').last()
-      .toggleClass('hide-divider');
+  $('#top-tags-menu').on('click', '.top-tags-menu-more', (e) => {
+    const $li = $(e.currentTarget).parent();
+    const $ul = $li.parent();
 
-    // we can't toggle() for display:inline-block when it's initially not shown
-    const $elements = $(e.currentTarget).next('.top-tags-items').children('.top-tag-li:not(.always-show)');
-    $elements.each((index, element) => {
-      const $element = $(element); // Use `element` instead of `this`
-      if ($element.css('display') === 'none') {
-        $element.css('display', 'inline-block');
-      } else {
-        $element.css('display', 'none');
-      }
-    });
+    $li.remove();
+    $ul.children().show();
   });
 
   $('#search-results').on('click', '.more-sounds-button', (e) => {

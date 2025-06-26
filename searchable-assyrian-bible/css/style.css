@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,select_to_speak,volume_up");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,search,select_to_speak,volume_up");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
@@ -85,11 +85,13 @@ a:active {
   }
 }
 
-#clear-text {
+#clear-text,
+#search-icon {
   color: rgb(134, 134, 137);
 }
 @media (prefers-color-scheme: dark) {
-  #clear-text {
+  #clear-text,
+  #search-icon {
     color: rgb(149, 149, 157);
   }
 }
@@ -111,7 +113,7 @@ kbd {
 }
 @media (prefers-color-scheme: dark) {
   kbd {
-    background-color: rgb(28, 28, 30);
+    background-color: rgb(78.8108108108, 78.8108108108, 83.1891891892);
     border-color: rgb(122.5, 122.5, 132.5);
     box-shadow: 0 1px 1px rgb(122.5, 122.5, 132.5);
     color: rgb(221, 221, 232);
@@ -256,6 +258,15 @@ body {
   position: relative;
 }
 
+#search-icon {
+  font-size: 24px;
+  font-variation-settings: "wght" 350;
+  left: 16px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 #clear-text {
   -webkit-tap-highlight-color: transparent;
   background-color: transparent;
@@ -268,11 +279,6 @@ body {
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-}
-#clear-text.clear-aii-text {
-  left: 0;
-  padding: 12px 12px 12px 12px;
-  right: auto;
 }
 
 #autofocus-tip-container {
@@ -307,22 +313,22 @@ kbd {
   border-radius: 24px;
   border-style: solid;
   border-width: 1px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 6px 12px, rgba(0, 0, 0, 0.06) 0 0 0 1px;
   box-sizing: border-box;
   direction: ltr;
   display: block;
   line-height: 2;
   outline: 0;
   padding-bottom: 6px;
-  padding-left: 20px;
+  padding-left: 44px;
   padding-right: 46px;
   padding-top: 6px;
   width: 100%;
 }
-#searchbar.aii-search-text {
-  direction: rtl;
-  padding-left: 46px;
-  padding-right: 16px;
-  text-indent: 4px;
+@media (prefers-color-scheme: dark) {
+  #searchbar {
+    box-shadow: none;
+  }
 }
 
 #search-results {

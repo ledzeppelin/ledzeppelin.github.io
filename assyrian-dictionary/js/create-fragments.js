@@ -6,6 +6,18 @@ const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
 const TAG_SEARCH_PARAM = 'tag';
 const AII_EXACT_SEARCH_PARAM = 'assyrian-word';
 
+function createTagMetaFrag(tagName) {
+  return $('<div/>', {
+    id: 'tagged-results-meta',
+  }).append(
+    'results tagged with ',
+    $('<span/>', {
+      id: 'matched-tag',
+      text: tagName,
+    }),
+  );
+}
+
 function createFreeTextResultFrag(aiiV) {
   return $('<a/>', {
     class: 'free-text-search-result',
@@ -13,98 +25,66 @@ function createFreeTextResultFrag(aiiV) {
   });
 }
 
-function createTopTagsMenuButton(buttonClassName, buttonText) {
+function createChevronExpanderButton(buttonClassName, buttonText) {
   return $('<button/>', { class: `expandable-btn ${buttonClassName}` }).append(
     $('<span/>', { class: 'expandable-btn-text', text: buttonText }),
     $('<span/>', { class: 'expandable-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right' }),
   );
 }
 
-function createTopTagsMenuFragment(dictTags) {
+function createTopTagsMenuFragment(dictTags, shouldLimit) {
   const frag = $(document.createDocumentFragment());
-  frag.append(createTopTagsMenuButton('tag-menu-btn-l1', 'Most Popular'));
-
   dictTags.forEach((item) => {
-    const itemsFrag = $('<ul/>', { class: 'top-tags-items' });
-    item.children.forEach((child) => {
-      itemsFrag.append(
-        $('<li/>', { class: 'top-tag-li' }).append(
-          $('<a/>', {
-            class: 'top-tag-anchor',
-            text: child.name,
-            href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, child.tag]])}`,
-          }),
-        ),
-      );
-    });
-
     frag.append(
-      $('<ul/>', { class: 'top-tags-group' }).append(
-        $('<li/>').append(
-          createTopTagsMenuButton('tag-menu-btn-l2', item.name),
-          itemsFrag,
-        ),
+      $('<li/>').append(
+        $('<button/>', {
+          class: 'top-tags-menu-item',
+          html: `${item.emoji}&nbsp;&nbsp;${item.name}`,
+          'data-tag-name': item.name,
+        }),
       ),
     );
   });
 
+  if (shouldLimit) {
+    const vw = document.documentElement.clientWidth; // viewport width
+
+    let limit = 1;
+    if (vw >= 582) { // max_width
+      limit = 3;
+    } else if (vw >= 428) { // iphone 12 pro max
+      limit = 2;
+    }
+
+    const $lis = frag.children('li');
+
+    $('<li/>')
+      .append($('<button/>', { class: 'top-tags-menu-more', text: 'More' }))
+      .insertAfter($lis.eq(limit - 1));
+
+    $lis.slice(limit).hide();
+  }
+
   return frag;
 }
 
-function topTagsMenuHighlightMatches(results) {
-  let maxTags = 20;
-  // maxTags = 9999;
-  if (results.length > 0) {
-    results.forEach((tagGroup) => {
-      tagGroup.matches.forEach((match) => {
-        // console.log(match);
-        if (match.key === 'name') {
-          const ele = $('#top-tags-menu').find('.top-tags-group').eq(tagGroup.refIndex);
-          ele.addClass('always-show').find('.expandable-btn-text').html(highlightEngIndices(match.value, match.indices));
-        } else if (match.key === 'children.name' && maxTags > 0) {
-          const ele = $('#top-tags-menu')
-            .find('.top-tags-items').eq(tagGroup.refIndex)
-            .children('.top-tag-li')
-            .eq(match.refIndex);
+function createTopTagsChildrenFragment(dictTags, parentName) {
+  const frag = $(document.createDocumentFragment());
 
-          ele.addClass('always-show').children('a').html(highlightEngIndices(match.value, match.indices));
-          ele.closest('.top-tags-group').addClass('always-show');
-          maxTags -= 1;
-        }
+  dictTags.forEach((item) => {
+    if (item.name === parentName) {
+      item.children.forEach((child) => {
+        frag.append(
+          $('<a/>', {
+            text: child.name,
+            href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, `${item.tag_key}:${child.name}`]])}`,
+          }),
+        );
       });
-    });
+    }
+  });
 
-    $('#top-tags-menu .top-tags-group').each((_, element) => {
-      const lastAlwaysShow = $(element).find('.top-tag-li.always-show').last();
-      if (lastAlwaysShow.length) {
-        lastAlwaysShow.addClass('hide-divider');
-      }
-    });
-  }
-}
-
-function topTagsMenuClearHighlightedMatches() {
-  $('#top-tags-menu').find('.expanded').removeClass('expanded');
-  $('#top-tags-menu').find('.highlighted').contents().unwrap();
-  $('#top-tags-menu').find('.hide-divider').removeClass('hide-divider');
-  $('#top-tags-menu').find('.exact-search-match').removeClass('exact-search-match');
-
-  $('#top-tags-menu .always-show').removeClass('always-show');
-  // we remove inline styles set by toggle, to test
-  // type "cate", click "Most Popular" to show more, then delete "cate"
-  const hideOrShow = '.top-tags-group, .top-tag-li';
-  $('#top-tags-menu').find(hideOrShow).removeAttr('style');
-}
-
-function highlightExactMatchInTopTagsMenu(tagSearchParam) {
-  const href = `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, tagSearchParam]])}`;
-
-  $('#top-tags-menu')
-    .find(`a[href="${href}"]`).addClass('exact-search-match')
-    // eslint-disable-next-line newline-per-chained-call
-    .parent().addClass('always-show hide-divider')
-    // eslint-disable-next-line newline-per-chained-call
-    .closest('.top-tags-group').addClass('always-show');
+  return frag;
 }
 
 function createAiiVFrag(aiiV) {
@@ -136,8 +116,8 @@ function createCommonWordFrag() {
   frag.append(
     $('<a/>', {
       class: 'tier1-tag',
-      text: 'common word',
-      href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, 'special:common word']])}`,
+      text: 'commonly used',
+      href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[TAG_SEARCH_PARAM, 'special:commonly used']])}`,
     }),
     ' ',
   );
@@ -638,7 +618,7 @@ function createOtherFormsFrag(jsonline, aiiV) {
 
 function createOtherFormsButtonFrag(jsonline) {
   if ('other_forms' in jsonline) {
-    return createTopTagsMenuButton('show-other-forms-btn', 'related terms');
+    return createChevronExpanderButton('show-other-forms-btn', 'related terms');
   }
   return null;
 }
@@ -1126,7 +1106,7 @@ function createConjFrag(jsonline, aiiV) {
 
 function createGlossTermsButtonFrag(sense) {
   if ('other_forms' in sense) {
-    return createTopTagsMenuButton('show-gloss-terms-btn', 'gloss terms');
+    return createChevronExpanderButton('show-gloss-terms-btn', 'gloss terms');
   }
   return null;
 }
@@ -1143,7 +1123,7 @@ function createGlossTermsTableFrag(sense) {
 
 function createExamplesButtonFrag(sense) {
   if ('examples' in sense) {
-    return createTopTagsMenuButton('show-examples-btn', 'examples');
+    return createChevronExpanderButton('show-examples-btn', 'examples');
   }
   return null;
 }

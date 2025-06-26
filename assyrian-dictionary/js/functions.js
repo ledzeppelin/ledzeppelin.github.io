@@ -30,7 +30,7 @@ function generateFreeTextTier1Skeleton(aiiV) {
   });
 
   if ('is_common_word' in aiiV) {
-    frag.append($('<div/>', { class: classes, text: 'common word' }));
+    frag.append($('<div/>', { class: classes, text: 'commonly used' }));
   }
 
   if ('is_alphabet_letter' in aiiV) {
@@ -76,6 +76,9 @@ function createFragmentsGroupedByUnvocalizedSpelling(result, isTagSearch = false
   const resultFragmentsGrouped = $(document.createDocumentFragment());
   result.item.aii_v_s.forEach((aiiV) => {
     const resultFragment = createFreeTextResultFrag(aiiV.aii_v).addClass(TO_BE_REMOVED);
+    resultFragment.append(
+      $('<span/>', { class: 'free-text-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right' }),
+    );
     resultFragment.append(
       createAiiVFrag(aiiV.aii_v),
       $('<div/>', { class: 'aii-v-word-tr-container' }).append(
