@@ -330,6 +330,10 @@ kbd {
     box-shadow: none;
   }
 }
+#searchbar.aii-search-text {
+  direction: rtl;
+  text-align: left;
+}
 
 #search-results {
   padding: 16px 16px;

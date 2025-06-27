@@ -109,6 +109,7 @@ $(document).ready(() => {
     }
 
     if (searchStr.length === 0) {
+      $('#searchbar').removeClass('aii-search-text');
       $('#clear-text').hide();
       $('#search-results').empty();
       searchQuery = null; // not needed but helps readability
@@ -118,6 +119,8 @@ $(document).ready(() => {
       $('#clear-text').show();
 
       if (AiiUtils.atLeastOneAiiLetter(searchStr)) {
+        $('#searchbar').addClass('aii-search-text');
+
         if (AiiUtils.atLeastOneDiacritic(searchStr)) {
           // console.log('vocalized search');
           const normalizedSearchStr = searchStr.normalize('NFC');
@@ -135,6 +138,8 @@ $(document).ready(() => {
           };
         }
       } else {
+        $('#searchbar').removeClass('aii-search-text');
+
         searchQuery = {
           // eslint-disable-next-line max-len
           results: runExtendedSearchQuery(searchStr, fuseEng),
