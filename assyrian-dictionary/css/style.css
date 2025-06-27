@@ -818,6 +818,10 @@ kbd {
     box-shadow: none;
   }
 }
+#searchbar.aii-search-text {
+  direction: rtl;
+  text-align: left;
+}
 
 #search-results {
   margin: 20px 0;
