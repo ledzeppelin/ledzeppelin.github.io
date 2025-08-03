@@ -6,11 +6,11 @@ const INDEX_HTML = LOCAL_DEVELOPMENT ? 'index.html' : '';
 const TAG_SEARCH_PARAM = 'tag';
 const AII_EXACT_SEARCH_PARAM = 'assyrian-word';
 
-function createTagMetaFrag(tagName) {
+function createTagMetaFrag(tagName, tagSection) {
   return $('<div/>', {
     id: 'tagged-results-meta',
   }).append(
-    'results tagged with ',
+    `${tagSection}: `,
     $('<span/>', {
       id: 'matched-tag',
       text: tagName,
@@ -89,26 +89,6 @@ function createTopTagsChildrenFragment(dictTags, parentName) {
 
 function createAiiVFrag(aiiV) {
   return $('<div/>', { class: 'aii-v-word', text: aiiV });
-}
-
-function createWiktionaryFrag(aiiNotV) {
-  const anchor = $('<a/>', {
-    text: aiiNotV,
-    href: `https://en.wiktionary.org/wiki/${aiiNotV}#Assyrian_Neo-Aramaic`,
-  });
-
-  const firstChar = aiiNotV.substring(0, 1);
-
-  if (firstChar === 'ܓ') {
-    anchor.addClass('indent-word');
-  } else if (firstChar === 'ܢ') {
-    anchor.addClass('indent-word-more');
-  }
-
-  return $('<div/>', { class: 'wiktionary-link-container' }).append(
-    $('<span/>', { text: 'from wiktionary ' }),
-    anchor,
-  );
 }
 
 function createCommonWordFrag() {
@@ -894,6 +874,22 @@ function correctedProgressive(inputString, strongRadicals) {
   return inputString;
 }
 
+const FORMS_WITH_SIYAME = new Set(['pp-p', 'an-pm', 'an-pf', 'in-p']);
+// const FORMS_WITH_SIYAME = new Set(['pp-p']);
+function correctSiyamePlacement(templateStr, strongRadicals, grammaticalPerson ) {
+  if (!FORMS_WITH_SIYAME.has(grammaticalPerson)) return templateStr;
+
+  const lastIdx = strongRadicals.lastIndexOf('ܪ');
+  if (lastIdx === -1) return templateStr;
+
+  const COMBINING_DIAERESIS = '\u{0308}';
+  const templatizedRadical = `{{{${lastIdx+1}}}}`;
+  return templateStr
+    .replaceAll(COMBINING_DIAERESIS, '')
+    .replaceAll(templatizedRadical, `${templatizedRadical}${COMBINING_DIAERESIS}`)
+    .normalize('NFC');
+}
+
 function replacePlaceholders(inputString, strongRadicals) {
   // eslint-disable-next-line no-param-reassign
   inputString = correctedProgressive(inputString, strongRadicals);
@@ -921,9 +917,9 @@ function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, i
     rows: schemaTense.rows.map(({ left, right }) => ({
       meta: left,
       values: right.map(({ value, type }) => ({
-        value: replacePlaceholders(patternArguments[value], strongRadicals),
+        value: replacePlaceholders(correctSiyamePlacement(patternArguments[value], strongRadicals, value), strongRadicals),
         ...(isVisualConj && {
-          template_str: patternArguments[value],
+          template_str: correctSiyamePlacement(patternArguments[value], strongRadicals, value),
           template_atwateh: strongRadicals,
         }),
       })),
@@ -932,6 +928,8 @@ function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, i
   };
 }
 
+
+// used for additional paradigms
 function createVerbConjPreTable2(schemaTense, patternArguments, strongRadicals) {
   // console.log(schemaTense.right_heading);
 
@@ -962,7 +960,7 @@ function createVerbConjPreTable2(schemaTense, patternArguments, strongRadicals) 
       right.forEach(({ value, type }) => {
         if (type === 'arg') {
           const resolved = replacePlaceholders(
-            patternArguments[value],
+            correctSiyamePlacement(patternArguments[value], strongRadicals, value),
             strongRadicals,
           );
           aiiWords.push(resolved);
@@ -1216,6 +1214,7 @@ function getOrdinal(n) {
 // This allows us to run code in a Node.js context and also in browser-side JavaScript
 if (typeof module === 'object') {
   module.exports = {
+    correctSiyamePlacement,
     createAtwatehBoxesFrag,
     replacePlaceholders,
     aiiInflNoun,

@@ -89,32 +89,32 @@ def parse_indices(tag_counter):
 
     l2_full_names = {
         'from': {
-            'name': 'Etymologies',
+            'name': 'etymologies',
             'sort_key': '1',
             'emoji': '🌎',
         },
         'ipa': {
-            'name': 'Pronunciations',
+            'name': 'pronunciations',
             'sort_key': '2',
             'emoji': '🔈',
         },
         'pattern': {
-            'name': 'Verb Patterns',
+            'name': 'verb patterns',
             'sort_key': '3',
             'emoji': '🧠',
         },
         'pos': {
-            'name': 'Parts of Speech',
+            'name': 'parts of speech',
             'sort_key': '4',
             'emoji': '🧩',
         },
         'category': {
-            'name': 'Categories',
+            'name': 'categories',
             'sort_key': '5',
             'emoji': '🗂️',
         },
         'special': {
-            'name': 'Language Basics',
+            'name': 'language basics',
             'sort_key': '6',
             'emoji': '📚',
         },

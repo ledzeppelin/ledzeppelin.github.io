@@ -17,13 +17,6 @@ def unique_forms(item):
 
     return set(matching_forms)
 
-def find_keys_without_vn(schema):
-    results = set()
-    for pattern_name, pattern_data in schema.items():
-        if "vn" not in pattern_data["parameters"]:
-            results.add(pattern_name)
-    return results
-
 def set_verb_conj(item, obj, aii_v, verb_denominal_forms):
     irregular_patterns = {
         'azel',
@@ -52,8 +45,6 @@ def set_verb_conj(item, obj, aii_v, verb_denominal_forms):
 
     if template_name == 'aii-conj-haweh':
         obj['verb_conjugation']['schema'] = 'verb-conj-schema-haweh'
-    elif template_name in find_keys_without_vn(conj_schema):
-        obj['verb_conjugation']['schema'] = 'verb-conj-schema-no-vn'
     else:
         obj['verb_conjugation']['schema'] = 'verb-conj-schema'
 

@@ -18,7 +18,7 @@ def adj_wrap(gram_category):
 
 ht_schema = {
     "aii-adjective": {
-        'omit': { "1", "head", "tr" },
+        'omit': { "1", "head", "tr", "tr2" },
         'forms': {
             "f",
             "fpl",
@@ -116,7 +116,7 @@ ht_schema = {
     },
     "aii-suffix": {
         'omit': { "1" },
-        'forms': {"f", "pl"},
+        'forms': {"f", "pl", "pl2", "pl3"},
         'genders': {"g"},
     },
     "aii-verb": {
@@ -175,6 +175,8 @@ forms_abbrev = {
     "aii-suffix": {
         "f": 'feminizing',
         "pl": 'pluralizing',
+        "pl2": 'pluralizing (alternate)',
+        "pl3": 'pluralizing (2nd alternate)',
     },
     "aii-verb": {
         "head2": 'alternate',

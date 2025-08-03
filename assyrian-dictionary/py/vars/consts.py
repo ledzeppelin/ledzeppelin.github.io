@@ -75,6 +75,7 @@ language_codes = {
   'ira-mid': 'Middle Iranian',
   'ira-old': 'Old Iranian',
   'ira-pro': 'Proto-Iranian',
+  'ira-nwi': 'Northwestern Iranian',
   'it': 'Italian',
   'ja': 'Japanese',
   'jpa': 'Jewish Palestinian Aramaic',
