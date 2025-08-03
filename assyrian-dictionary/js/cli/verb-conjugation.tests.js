@@ -16,6 +16,7 @@ const {
 global.AiiUtils = require('../../../shared_js/aii-utils').AiiUtils;
 
 const {
+  correctSiyamePlacement,
   replacePlaceholders,
   createAtwatehBoxesFrag,
 } = require('../create-fragments');
@@ -34,8 +35,9 @@ aiiDictionary.forEach((aiiNotV) => {
         const key = jsonline.verb_conjugation.alt_pattern || jsonline.verb_conjugation.pattern;
         const params = conjPatterns[key].parameters;
         Object.entries(params).forEach(([grammaticalPerson, templateStr]) => {
+
+          templateStr = correctSiyamePlacement(templateStr, jsonline.verb_conjugation.strong_radicals, grammaticalPerson);
           const form = replacePlaceholders(templateStr, jsonline.verb_conjugation.strong_radicals);
-          // eslint-disable-next-line max-len
           const htmlForm = createAtwatehBoxesFrag(templateStr, jsonline.verb_conjugation.strong_radicals);
 
           console.assert(

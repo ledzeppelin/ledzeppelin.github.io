@@ -1,7 +1,4 @@
-all:: deps tests
+all:: tests
 
-deps:
-	npm install
-
-tests::
+tests:
 	node cli/aii-utils.tests.js

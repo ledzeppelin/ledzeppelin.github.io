@@ -3,7 +3,6 @@ bible: scrape-chapters process-verses generate-sitemap mark-verses
 
 deps:
 	pip3 install -r _scraper/requirements.txt
-	cd js && npm install
 
 scrape-chapters:
 	cd _scraper && time scrapy runspider --set FEED_EXPORT_ENCODING=utf-8 --nolog scrape_bible_chapters.py -O ../js/bible-verses.json
@@ -11,7 +10,6 @@ scrape-chapters:
 # TODO: stderr should say `make scrape-chapters` needs to run first
 process-verses:
 	cd js && node cli/parse-bible-verses.js > consts/bible.min.js
-# 	cd js && node parse-bible-verses.js | node_modules/uglify-js/bin/uglifyjs --output consts/bible.min.js
 
 generate-sitemap:
 	cd js && node cli/generate-sitemap.js

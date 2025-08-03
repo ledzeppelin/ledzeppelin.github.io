@@ -15,13 +15,12 @@ $(document).ready(() => {
     document.querySelector('meta[name="twitter:title"]').content = title;
   };
 
-  const tagQueryStringToTitle = (str, l2FullNames) => {
+  const tagQueryStringToGroupAndTitle = (str, l2FullNames) => {
     const colon = str.indexOf(':');
     const key = str.slice(0, colon);
     const value = str.slice(colon + 1);
 
-    const section = l2FullNames[key].toLowerCase();
-    return `${section}: ${value}`;
+    return [l2FullNames[key], value];
   };
 
   function shouldLoadMore() {
@@ -252,14 +251,15 @@ $(document).ready(() => {
           loadResults(searchQuery, 1);
         }
 
-        const matchedTagName = tagSearchParam.split(/:(.+)/)[1];
-        $('#search-results').prepend(createTagMetaFrag(matchedTagName));
 
-        updateDictionaryTitle(tagQueryStringToTitle(
+        const [tagSection, tagName] = tagQueryStringToGroupAndTitle(
           tagSearchParam,
-          // eslint-disable-next-line camelcase
           Object.fromEntries(aiiDictionaryTags.map(({ tag_key, name }) => [tag_key, name])),
-        ));
+        )
+
+        $('#search-results').prepend(createTagMetaFrag(tagName, tagSection));
+
+        updateDictionaryTitle(`${tagSection}: ${tagName}`);
         AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_TAG_SEARCH_PARAM, tagSearchParam]]);
       }
     } else {

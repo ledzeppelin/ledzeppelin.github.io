@@ -1,7 +1,4 @@
-all: deps tests
-
-deps:
-	cd js && npm install
+all: tests
 
 tests:
 	cd js && node cli/aii-translit.tests.js

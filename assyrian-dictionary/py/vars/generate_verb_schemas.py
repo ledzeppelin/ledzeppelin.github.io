@@ -682,12 +682,6 @@ schema_definitions = {
             "verbalNoun", "agentNoun", "instanceNoun"],
         'is_haweh': False
     },
-    "verb-conj-schema-no-vn": {
-        'tenses': ["presentParticiple", "pastParticiple", "pastTense",
-            "presentFutureTense", "imperativeMood", "passivePastTense",
-            "agentNoun", "instanceNoun"],
-        'is_haweh': False
-    },
     "verb-conj-schema-haweh": {
         'tenses': ["presentParticiple", "pastParticiple", "pastTense",
             "presentTense", "copula", "futureTense",

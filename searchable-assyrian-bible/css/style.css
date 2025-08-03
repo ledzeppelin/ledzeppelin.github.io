@@ -313,7 +313,7 @@ kbd {
   border-radius: 24px;
   border-style: solid;
   border-width: 1px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0 6px 12px, rgba(0, 0, 0, 0.06) 0 0 0 1px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 1px 6px;
   box-sizing: border-box;
   direction: ltr;
   display: block;

@@ -342,7 +342,6 @@ function loadResults(searchQuery, PAGINATE_AMT) {
 
       resultFragment.append(
         createCategoriesFrag(result.item, '0'),
-        createWiktionaryFrag(aiiNotV),
       );
 
       const DEBUG_HIGHLIGHT = false;

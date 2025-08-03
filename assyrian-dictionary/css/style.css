@@ -123,23 +123,6 @@
   }
 }
 
-.wiktionary-link-container {
-  border-bottom-color: rgba(91, 91, 96, 0.29);
-}
-@media (prefers-color-scheme: dark) {
-  .wiktionary-link-container {
-    border-bottom-color: rgba(119, 119, 127, 0.6);
-  }
-}
-.wiktionary-link-container span {
-  color: rgb(134, 134, 137);
-}
-@media (prefers-color-scheme: dark) {
-  .wiktionary-link-container span {
-    color: rgb(149, 149, 157);
-  }
-}
-
 .aii-v-word {
   color: rgb(28, 28, 30);
 }
@@ -801,7 +784,7 @@ kbd {
   border-radius: 24px;
   border-style: solid;
   border-width: 1px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0 6px 12px, rgba(0, 0, 0, 0.06) 0 0 0 1px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 1px 6px;
   box-sizing: border-box;
   direction: ltr;
   display: block;
@@ -945,33 +928,6 @@ kbd {
   padding-left: 36px;
   padding-right: 36px;
   position: relative;
-}
-
-.wiktionary-link-container {
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  padding-bottom: 4px;
-  text-align: right;
-}
-.wiktionary-link-container span {
-  font-weight: 400;
-  line-height: 1.4;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-}
-.wiktionary-link-container a {
-  direction: rtl;
-  font-family: "Noto Sans Syriac Eastern";
-  font-weight: 400;
-  line-height: 1.4;
-  font-size: 16.8px;
-  font-family: "Noto Sans Syriac";
-}
-.wiktionary-link-container a.indent-word {
-  margin-right: 5px;
-}
-.wiktionary-link-container a.indent-word-more {
-  margin-right: 8px;
 }
 
 button {

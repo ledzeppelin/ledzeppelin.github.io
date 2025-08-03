@@ -149,26 +149,6 @@ $table-y-spacing: 32px
 $v-word-spacing: 40px
 
 
-.wiktionary-link-container
-  border-bottom-style: solid
-  border-bottom-width: 1px
-  padding-bottom: 4px
-  text-align: right
-
-  span
-    @include eng-text('xs')
-
-  a
-    @include syc-text('xs')
-
-    &.indent-word
-      // otherwise slidetoggle on mobile safari for words starting wth ܓ cuts off atuta
-      // background-color: rgba(red, .1)
-      margin-right: 5px
-
-    &.indent-word-more
-      margin-right: 8px
-
 button
   touch-action: manipulation // disable double tap: https://stackoverflow.com/a/53236027
 

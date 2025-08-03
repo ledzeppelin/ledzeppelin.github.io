@@ -3,9 +3,8 @@ some: scaffold schema-check dict isolates-check validate-dynamic-conj
 scan-articles: missing-roots validate-conj-patterns
 
 deps:
-	brew install lua jq brotli luarocks
+	brew install lua jq brotli
 # 	brew install colordiff
-	luarocks install dkjson
 	cd js && npm install
 	pip3 install -r requirements.txt
 
@@ -33,7 +32,7 @@ dict:
 
 	cd js && node cli/numbers-table-json-to-obj.js > ./consts/aii-numbers-table.js
 
-	cd js && uglifyjs consts/aii-dict.js --output consts/aii-dict.min.js
+	cd js && node_modules/uglify-js/bin/uglifyjs consts/aii-dict.js --output consts/aii-dict.min.js
 	cd js && gzip -k -f consts/aii-dict.js consts/aii-dict.min.js
 	python3 py/size_check.py
 	cd js && brotli -4 -f consts/aii-dict.js -o consts/aii-dict.js.l4.br
