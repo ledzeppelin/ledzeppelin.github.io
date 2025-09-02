@@ -29,6 +29,7 @@ language_codes = {
   'akk-lbb': 'Late Babylonian',
   'akk-nas': 'Neo-Assyrian',
   'am': 'Amharic',
+  'ang': 'Old English',
   'apc': 'North Levantine Arabic',
   'ar': 'Arabic',
   'arc': 'Aramaic',
