@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import re
+from collections import Counter
 import copy
 from .vars import consts
 from .vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
@@ -100,7 +101,7 @@ def parse_senses(item, aii_v, obj):
 
     return senses
 
-def set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms):
+def set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms, NOUN_INFL_CNT):
     if 'inflection_templates' not in item:
         return
 
@@ -122,8 +123,10 @@ def set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms):
         dynamic_noun_forms[aii_v].append(obj.pop('table'))
 
         obj['dynamic_noun_template'] = call_site
+        NOUN_INFL_CNT['dynamic'] += 1
     elif html_template_name in noun_infl_schema:
         set_noun_infl(item, obj, html_template_name)
+        NOUN_INFL_CNT['static'] += 1
     elif html_template_name in omitted_infl_schema:
         pass
     else:
@@ -491,6 +494,7 @@ def datadump_to_dict():
     vocalized_cache = {generate_aii_v(item, item['word']) for item in data}
     cnt_str = f"{len(vocalized_cache)} Assyrian words"
     cnt_lst = ['#'*len(cnt_str), cnt_str, '#'*len(cnt_str) ]
+    NOUN_INFL_CNT = Counter()
     print('\n'.join(cnt_lst))
 
     for item in data:
@@ -529,7 +533,7 @@ def datadump_to_dict():
         set_head_template(item, obj, aii_v)
         # t2 linkages
         set_linkage_table(item, obj, aii_v)
-        set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms)
+        set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms, NOUN_INFL_CNT)
 
         add_etymology(obj, item, aii_v)
 
@@ -542,7 +546,7 @@ def datadump_to_dict():
         aii_dict[aii_not_v][aii_v].append(obj)
 
     numbers_table = generate_numbers_table()
-
+    print (f"noun inflections: {NOUN_INFL_CNT}")
 
     with open('./js/json/verb-denominal-forms.json', 'w') as f:
         json.dump(verb_denominal_forms, f, ensure_ascii=False, indent=4)
