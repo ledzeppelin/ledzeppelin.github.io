@@ -36,6 +36,7 @@ language_codes = {
   'arc-cpa': 'Christian Palestinian Aramaic',
   'arc-imp': 'Imperial Aramaic',
   'arz': 'Egyptian Arabic',
+  'axm': 'Middle Armenian',
   'az': 'Azerbaijani',
   'ber': 'Berber',
   'bn': 'Bengali',

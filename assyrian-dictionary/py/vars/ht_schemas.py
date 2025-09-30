@@ -110,7 +110,7 @@ ht_schema = {
         'genders': {"2", "g", "g2"},
     },
     "aii-proper-noun": {
-        'omit': { "1", "tr", "tr2" },
+        'omit': { "1", "tr", "tr2", "head" },
         'forms': { "head2" },
         'genders': {"2", "g", "g2"},
     },
