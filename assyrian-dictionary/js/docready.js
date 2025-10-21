@@ -2,6 +2,11 @@ $(document).ready(() => {
   const SPEED_MS = 200;
   const howlCache = {};
 
+  const sb = document.getElementById('searchbar');
+  sb.classList.remove('loading-dict');
+  sb.placeholder = 'Search "hi", "ܫܠܵܡܵܐ", "shlama"';
+
+
   $(document).on('touchstart', '.free-text-search-result', () => {
     // workaround for iOS chrome
     // 1. touch tag or type one char

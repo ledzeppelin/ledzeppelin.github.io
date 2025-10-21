@@ -49,19 +49,7 @@ https://stackoverflow.com/a/65036296 -->
 <script type="text/javascript" src="../shared_js/aii-utils.js"></script>
 <script type="text/javascript" src="../assyrian-transliterator/js/aii-translit.js"></script>
 <script type="text/javascript" src="js/aii-translit-wrapper.js"></script>
-<script type="text/javascript" src="js/consts/aii-dict.min.js"></script>
 <script type="text/javascript" src="js/consts/aii-dict-tags.js"></script>
-<script type="text/javascript" src="js/consts/aii-numbers-table.js"></script>
-<script type="text/javascript" src="js/consts/conj-patterns.js"></script>
-<script type="text/javascript" src="js/consts/conj-schemas.js"></script>
-<!-- ######################################################################## -->
-
-<script type="text/javascript" src="../searchable-assyrian-bible/js/shared_search_funcs.js"></script>
-<script type="text/javascript" src="js/create-fragments.js"></script>
-<script type="text/javascript" src="js/functions.js"></script>
-<script type="text/javascript" src="js/pre_docready.js"></script>
-<script type="text/javascript" src="../searchable-assyrian-bible/js/shared_docready.js"></script>
-<script type="text/javascript" src="js/docready.js"></script>
 
 </head>
 <body>
@@ -84,7 +72,7 @@ https://stackoverflow.com/a/65036296 -->
       <span>type </span><kbd>/</kbd><span> to search</span>
     </span>
     
-    <input id='searchbar' type="text" placeholder='Search "hi", "ܫܠܵܡܵܐ", "shlama"' autocapitalize="off">
+    <input id='searchbar' type="text" class="loading-dict" autocapitalize="off">
   </div>
 
   <div id="top-tags-container">
@@ -102,7 +90,20 @@ https://stackoverflow.com/a/65036296 -->
 </div>
 
 </body>
+
+<script type="text/javascript" src="js/create-top-tags-fragment.js"></script>
+<script type="text/javascript" src="js/consts/aii-dict.min.js"></script>
+<script type="text/javascript" src="js/consts/aii-numbers-table.js"></script>
+<script type="text/javascript" src="js/consts/conj-patterns.js"></script>
+<script type="text/javascript" src="js/consts/conj-schemas.js"></script>
+<!-- ######################################################################## -->
+
+<script type="text/javascript" src="../searchable-assyrian-bible/js/shared_search_funcs.js"></script>
+<script type="text/javascript" src="js/create-fragments.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/pre_docready.js"></script>
+<script type="text/javascript" src="../searchable-assyrian-bible/js/shared_docready.js"></script>
+<script type="text/javascript" src="js/docready.js"></script>
+
+
 </html>
-
-
-

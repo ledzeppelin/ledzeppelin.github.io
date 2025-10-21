@@ -32,42 +32,6 @@ function createChevronExpanderButton(buttonClassName, buttonText) {
   );
 }
 
-function createTopTagsMenuFragment(dictTags, shouldLimit) {
-  const frag = $(document.createDocumentFragment());
-  dictTags.forEach((item) => {
-    frag.append(
-      $('<li/>').append(
-        $('<button/>', {
-          class: 'top-tags-menu-item',
-          html: `${item.emoji}&nbsp;&nbsp;${item.name}`,
-          'data-tag-name': item.name,
-        }),
-      ),
-    );
-  });
-
-  if (shouldLimit) {
-    const vw = document.documentElement.clientWidth; // viewport width
-
-    let limit = 1;
-    if (vw >= 582) { // max_width
-      limit = 3;
-    } else if (vw >= 428) { // iphone 12 pro max
-      limit = 2;
-    }
-
-    const $lis = frag.children('li');
-
-    $('<li/>')
-      .append($('<button/>', { class: 'top-tags-menu-more', text: 'More' }))
-      .insertAfter($lis.eq(limit - 1));
-
-    $lis.slice(limit).hide();
-  }
-
-  return frag;
-}
-
 function createTopTagsChildrenFragment(dictTags, parentName) {
   const frag = $(document.createDocumentFragment());
 

@@ -180,11 +180,6 @@ $(document).ready(() => {
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
 
-  if (IS_DICTIONARY) {
-    // eslint-disable-next-line max-len
-    const shouldLimit = params.has(DICT_TAG_SEARCH_PARAM) || params.has(DICT_AII_EXACT_SEARCH_PARAM);
-    $('#top-tags-menu').html(createTopTagsMenuFragment(aiiDictionaryTags, shouldLimit));
-  }
 
   if (IS_DICTIONARY && params.has(DICT_TAG_SEARCH_PARAM)) {
     const tagSearchParam = params.get(DICT_TAG_SEARCH_PARAM);

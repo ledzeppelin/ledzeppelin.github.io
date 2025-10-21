@@ -170,3 +170,33 @@
       direction: rtl
       text-align: left
 
+    &.loading-dict
+      $light-rail: color.scale($background, $lightness: -8%)
+      $dark-core:  color.scale($secondary-background-dark, $lightness: 12%)
+
+      animation: sb-shimmer 2.1s linear infinite
+      background-image: linear-gradient(90deg, $light-rail 15%, $background 45%, $background 55%, $light-rail 85%)
+      background-size: 260% 100%
+      border-color: inherit
+      color: transparent
+      pointer-events: none
+
+      &::placeholder
+        color: transparent
+
+      @media (prefers-color-scheme: dark)
+        background-image: linear-gradient(90deg, $secondary-background-dark 15%, $dark-core 45%, $dark-core 55%, $secondary-background-dark 85%)
+
+
+      // respect reduced-motion
+      @media (prefers-reduced-motion: reduce)
+        animation: none
+        background-position: 0 0
+
+      @keyframes sb-shimmer
+        from
+          background-position: 240% 0
+
+        to
+          background-position: -240% 0
+

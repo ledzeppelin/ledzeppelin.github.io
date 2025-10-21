@@ -805,6 +805,36 @@ kbd {
   direction: rtl;
   text-align: left;
 }
+#searchbar.loading-dict {
+  animation: sb-shimmer 2.1s linear infinite;
+  background-image: linear-gradient(90deg, rgb(234.6, 234.6, 234.6) 15%, #fff 45%, #fff 55%, rgb(234.6, 234.6, 234.6) 85%);
+  background-size: 260% 100%;
+  border-color: inherit;
+  color: transparent;
+  pointer-events: none;
+}
+#searchbar.loading-dict::placeholder {
+  color: transparent;
+}
+@media (prefers-color-scheme: dark) {
+  #searchbar.loading-dict {
+    background-image: linear-gradient(90deg, rgb(54, 54, 57) 15%, rgb(77.292972973, 77.292972973, 81.587027027) 45%, rgb(77.292972973, 77.292972973, 81.587027027) 55%, rgb(54, 54, 57) 85%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #searchbar.loading-dict {
+    animation: none;
+    background-position: 0 0;
+  }
+}
+@keyframes sb-shimmer {
+  from {
+    background-position: 240% 0;
+  }
+  to {
+    background-position: -240% 0;
+  }
+}
 
 #search-results {
   margin: 20px 0;
