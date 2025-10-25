@@ -19,7 +19,7 @@ def common_tier2_categories(jsonlines) -> Set[str]:
     category_sets = (set(obj["tier2_categories"]) for obj in jsonlines)
     return set.intersection(*category_sets)
 
-NUM_OMIT_T2_CATS = [2]
+NUM_OMIT_T2_CATS = [4]
 UNFILTERED_WORDS_WITH_T2_CATS = []
 
 def collapse_etymologies(obj, inner_obj, jsonlines):

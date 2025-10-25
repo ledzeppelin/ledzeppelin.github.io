@@ -60,6 +60,7 @@ language_codes = {
   'gez': "Ge'ez",
   'gkm': 'Byzantine Greek',
   'grc': 'Ancient Greek',
+  'grc-koi': 'Koine Greek',
   'hbo': 'Biblical Hebrew',
   'he': 'Hebrew',
   'he-IL': 'Israeli Hebrew',
