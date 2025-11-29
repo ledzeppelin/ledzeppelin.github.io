@@ -99,6 +99,11 @@ ht_schema = {
         'forms': { "head2" },
         'genders': set(),
     },
+    "aii-prefix": {
+        'omit': { "1" },
+        'forms': set(),
+        'genders': set(),
+    },
     "aii-present-participle": {
         'omit': { "1" },
         'forms': set(),
