@@ -3,13 +3,8 @@
 // sass-lint:disable no-vendor-prefixes
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap')
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Western:wght@100..900&display=swap')
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap')
-
-// replace this when Western is available on google fonts
-@font-face
-  font-family: 'Noto Sans Syriac Western'
-  font-weight: 100 900 // https://stackoverflow.com/a/73857218
-  src: url('../../fonts/NotoSansSyriacWestern[wght].ttf') format('truetype')
 
 @function vw($px-vw, $base-vw: 768px)
   @return calc(($px-vw * 100vw) / $base-vw)

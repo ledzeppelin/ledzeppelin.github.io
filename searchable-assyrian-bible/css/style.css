@@ -1,13 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,search,select_to_speak,volume_up");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Western:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100..700&display=swap");
-@font-face {
-  font-family: "Noto Sans Syriac Western";
-  font-weight: 100 900;
-  src: url("../../fonts/NotoSansSyriacWestern[wght].ttf") format("truetype");
-}
 #bible-promotion-container,
 .aii-verse,
 .aii-tr,

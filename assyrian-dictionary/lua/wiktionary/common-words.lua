@@ -1,5 +1,5 @@
--- From Dec 20th, 2024
--- https://en.wiktionary.org/w/index.php?title=Module:Swadesh/data/aii
+-- From Nov 26, 2025
+-- https://en.wiktionary.org/w/index.php?title=Module:Swadesh/data/aii&oldid=88296333
 -- From Feb 8th, 2024
 -- https://en.wiktionary.org/w/index.php?title=Appendix:Assyrian_Neo-Aramaic_Swadesh_list
 
@@ -12,28 +12,24 @@ m[2] = {
     {term = "ܐܲܢ݇ܬܝ", notes = "feminine", ipa = "[ˈʔat.]"}
 }
 m[3] = {
-    {term = "ܗܲܘ", notes = "masculine", ipa = "[ˈhaw.]"},
-    {term = "ܗܲܝ", notes = "feminine", ipa = "[ˈhaj.]"},
+    {term = "ܗ̇ܘ", notes = "masculine", ipa = "[ʔawaː]"},
+    {term = "ܗ̇ܝ", notes = "feminine", ipa = "[ʔajaː]"},
 }
 m[4] = {{term = "ܐܲܚܢܲܢ", ipa = "[ˈʔax.nan.]"}}
 m[5] = {
-    {term = "ܐܲܢ݇ܬܘܿܢ", notes = "masculine", ipa = "[ˈʔat.toːn]"},
-    {term = "ܐܲܢ݇ܬܹܝܢ", notes = "feminine", ipa = "[ˈʔat.teːn]"},
+    {term = "ܐܲܚܬܘܿܢ", ipa = "[ʔax.tonː]"},
 }
 m[6] = {
-    {term = "ܗܸܢܘܿܢ", notes = "masculine", ipa = "[ˈhɪn.noːn]"},
-    {term = "ܗܸܢܹܝܢ", notes = "feminine", ipa = "[ˈhɪn.neːn]"},
+    {term = "ܐܵܢܝܼ", ipa = "[ʔɑːniː]"},
 }
 m[7] = {
-    {term = "ܗܵܢܵܐ", notes = "masculine singular", ipa = "[ˈhɑːnɑː]"},
-    {term = "ܗܵܕ݂ܹܐ", notes = "feminine singular", ipa = "[ˈhɑːðeː]"},
-    {term = "ܗܵܠܹܝܢ", notes = "plural", ipa = "[ˈhɑːleːn]"},
+    {term = "ܐܵܗܵܐ", notes = "singular", ipa = "[aːhaː]"},
+    {term = "ܐܲܢܹܐ", notes = "plural", ipa = "[ʔan.ne.]"},
 }
 m[8] = {
-    {term = "ܗܵܘ", notes = "masculine singular", ipa = "[ˈhɑːw]"},
-    {term = "ܗܵܝ", notes = "feminine singular", ipa = "[ˈhɑːj]"},
-    {term = "ܗܵܢܘܿܢ", notes = "masculine plural", ipa = "[ˈhɑːnoːn]"},
-    {term = "ܗܵܢܹܝܢ", notes = "feminine plural", ipa = "[ˈhɑːneːn]"},
+    {term = "ܗ̇ܘ", notes = "masculine", ipa = "[ʔawaː]"},
+    {term = "ܗ̇ܝ", notes = "feminine", ipa = "[ʔajaː]"},
+    {term = "ܐܵܢܝܼ", notes = "plural", ipa = "[ʔɑːniː]"},
 }
 m[9] = {{term = "ܐܵܟ݂ܵܐ", ipa = "[ˈʔɑːxɑː]"}}
 m[10] = {{term = "ܬܲܡܵܐ", ipa = "[ˈtam.mɑː]"}}
@@ -47,7 +43,10 @@ m[16] = {
     {term = "ܠܲܝܬ", ipa = "[ˈlaj.t]"},
 }
 m[17] = {{term = "ܟܠ", ipa = "[ˈkul.]"}}
-m[18] = {{term = "ܪܵܒܵܐ", ipa = "[ˈrɑːbɑː]"}}
+m[18] = {
+    {term = "ܟܲܒܝܼܪܵܐ", ipa = "[kab.ˈbiːrɑː]"},
+    {term = "ܪܵܒܵܐ", ipa = "[ˈrɑːbɑː]"},
+}
 m[19] = {{term = "ܚܲܕ݇ܟܡܵܐ", ipa = "[ˈxak.mɑː]"}}
 m[20] = {{term = "ܚܲܕ݇ܟ̰ܵܐ", ipa = "[ˈxat͡ʃ.t͡ʃɑː]"}}
 m[21] = {{term = "ܐ݇ܚܪܹܢܵܐ", ipa = "[xəˈreːnɑː]"}}
@@ -86,7 +85,7 @@ m[38] = {{term = "ܐ݇ܢܵܫܵܐ", ipa = "[ˈnɑːʃɑː]"}}
 m[39] = {{term = "ܫܲܒ݂ܪܵܐ", ipa = "[ˈʃaw.rɑː]"}}
 m[40] = {
     {term = "ܒܲܟ݂ܬܵܐ", ipa = "[ˈbax.tɑː]"},
-    {term = "ܒܲܪ݇ܬ ܙܲܘܓܵܐ", ipa = "[bat.‿ˈzaw.ɡɑː]"},
+    {term = "ܒܲܪ݇ܬ݂ ܙܲܘܓܵܐ", ipa = "[baθ‿ˈzaw.ɡɑː]"},
 }
 m[41] = {
     {term = "ܓܲܒ݂ܪܵܐ", ipa = "[ˈɡaw.rɑː]"},
@@ -94,7 +93,7 @@ m[41] = {
 }
 m[42] = {{term = "ܝܸܡܵܐ", ipa = "[ˈjɪm.mɑː]"}}
 m[43] = {
-    {term = "ܐܲܒ݂ܵܐ", ipa = "[ˈʔaw.wɑː]"},
+    {term = "ܐܲܒ݂ܵܐ", ipa = "[ˈʔawɑː]"},
     {term = "ܒܵܒܵܐ", ipa = "[ˈbɑːbɑː]"}
 }
 m[44] = {{term = "ܚܲܝ݇ܘܬ݂ܵܐ", ipa = "[ˈxaj.wəθɑː]"}}
@@ -107,18 +106,18 @@ m[46] = {
 m[47] = {{term = "ܟܲܠܒܵܐ", ipa = "[ˈkal.bɑː]"}}
 m[48] = {{term = "ܩܲܠܡܵܐ", ipa = "[ˈqal.mɑː]"}}
 m[49] = {{term = "ܚܘܼܘܹܐ", ipa = "[ˈxuw.weː]"}}
-m[50] = {{term = "ܬܲܘܠܥܵܐ", ipa = "[ˈtaw.ləʕɑː]"}}
+m[50] = {{term = "ܬܲܘܠܸܥܬ݂ܵܐ", ipa = "[tawˈlɪʕ.θɑː]"}}
 m[51] = {{term = "ܐܝܼܠܵܢܵܐ", ipa = "[ʔiːˈlɑːnɑː]"}}
 m[52] = {{term = "ܥܵܒ݂ܵܐ", ipa = "[ˈʕɑːwɑː]"}}
 m[53] = {{term = "ܚܘܼܛܪܵܐ", ipa = "[ˈxutˤ.rɑː]"}}
 m[54] = {{term = "ܦܹܐܪܵܐ", ipa = "[ˈpeːʔrɑː]"}}
 m[55] = {
     {term = "ܙܲܪܥܵܐ", ipa = "[ˈzar.ʕɑː]"},
-    {term = "ܒܲܙܲܪܵܐ", ipa = "[bazˈzar.rɑː]"}
+    {term = "ܒܵܙܲܪܥܵܐ", ipa = "[bɑːˈzar.ʕɑː]"}
 }
 m[56] = {{term = "ܛܲܪܦܵܐ", ipa = "[ˈtˤar.pɑː]"}}
 m[57] = {{term = "ܫܸܪܫܵܐ", ipa = "[ˈʃɪr.ʃɑː]"}}
-m[58] = {{term = "ܩܠܵܦܬܵܐ", ipa = "[ˈqəlɑːptɑː]"}}
+m[58] = {{term = "ܩܲܠܦܵܐ", ipa = "[qalpɑː]"}}
 m[59] = {{term = "ܗܲܒܵܒ݂ܵܐ", ipa = "[habˈbɑːwɑː]"}}
 m[60] = {
     {term = "ܓܸܠܵܐ", ipa = "[ˈɡɪl.lɑː]"},
@@ -143,12 +142,12 @@ m[76] = {{term = "ܦܘܼܡܵܐ", ipa = "[ˈpum.mɑː]"}}
 m[77] = {{term = "ܟܹܟܵܐ", ipa = "[ˈkeːkɑː]"}}
 m[78] = {{term = "ܠܸܫܵܢܵܐ", ipa = "[lɪʃ.ˈʃɑːnɑː]"}}
 m[79] = {{term = "ܛܸܦܪܵܐ", ipa = "[ˈtˤɪp.rɑː]"}}
-m[80] = {{term = "ܐܲܩܠܵܐ", ipa = "[ˈʔaq.lɑː]"}}
+m[80] = {{term = "ܥܲܩܠܵܐ", ipa = "[ˈʕaq.lɑː]"}}
 m[81] = {{term = "ܪܸܓ݂ܠܵܐ", ipa = "[ˈrɪɣ.lɑː]"}}
 m[82] = {{term = "ܒܸܪܟܵܐ", ipa = "[ˈbɪr.kɑː]"}}
 m[83] = {{term = "ܐܝܼܕ݂ܵܐ", ipa = "[ˈʔiːðɑː]"}}
 m[84] = {{term = "ܓܘܼܠܦܵܐ", ipa = "[ˈɡul.pɑː]"}}
-m[85] = {{term = "ܟܹܪ݇ܣܵܐ", ipa = "[ˈkeːsɑː]"}}
+m[85] = {{term = "ܟܲܪܣܵܐ", ipa = "[ˈkar.sɑː]"}}
 m[86] = {{term = "ܡܲܥܝܹ̈ܐ", ipa = "[ˈmaʕ.jeː]"}}
 m[87] = {{term = "ܩܕ݂ܵܠܵܐ", ipa = "[ˈqəðɑːlɑː]"}}
 m[88] = {{term = "ܚܲܨܵܐ", ipa = "[ˈxɑːsˤɑː]"}}
@@ -289,5 +288,3 @@ m[206] = {
 m[207] = {{term = "ܫܸܡܵܐ", ipa = "[ˈʃɪm.mɑː]"}}
 
 return m
-
-
