@@ -1055,7 +1055,7 @@ function createConjFrag(jsonline, aiiV) {
       );
       const tableFrag = createTableFrag(preTable, aiiV, useProgressivePrefix);
       if (schemaTense.children?.length) {
-        const $paradigmsButton = $('<button/>', { class: 'material-symbols-rounded more-paradigms-button', text: 'keyboard_arrow_down' });
+        const $paradigmsButton = $('<button/>', { class: 'more-paradigms-button', text: 'show more' });
         tableFrag.append(
           $('<div/>', { class: 'more-paradigms-button-container' }).append(
             $paradigmsButton,

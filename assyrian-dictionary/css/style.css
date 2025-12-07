@@ -514,6 +514,12 @@
   }
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .more-paradigms-button:hover {
+    box-shadow: rgba(0, 0, 0, 0.12) 0 0 6px 2px;
+  }
+}
+
 body {
   background-color: rgb(242, 242, 247);
 }
@@ -1639,19 +1645,15 @@ button {
 }
 
 .more-paradigms-button {
-  border-radius: 50%;
+  font-weight: 500;
+  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  border-radius: 8px;
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
-  font-size: 24px;
-  font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
-  height: 38px;
-  padding: 0;
-  transition: transform 200ms;
-  width: 38px;
-}
-.more-paradigms-button.expanded {
-  transform: rotate(180deg);
+  padding: 6px 10px;
 }
 
 .play-sound-container {
