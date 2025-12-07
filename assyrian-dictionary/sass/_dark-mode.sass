@@ -367,3 +367,10 @@ $apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $appl
         background-color: color.adjust($secondary-background-dark, $lightness: 8%)
         border-color: color.adjust($secondary-background-dark, $lightness: 8%)
         box-shadow: none
+
+
+
+.more-paradigms-button
+  @media (hover: hover) and (pointer: fine) // use underline on desktop
+    &:hover
+      box-shadow: rgba(#000, .12) 0 0 6px 2px

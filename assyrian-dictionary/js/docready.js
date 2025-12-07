@@ -55,6 +55,9 @@ $(document).ready(() => {
 
   $('#search-results').on('click', '.more-paradigms-button', (e) => {
     $(e.currentTarget).toggleClass('expanded');
+    $(e.currentTarget).text(
+      $(e.currentTarget).hasClass('expanded') ? 'show less' : 'show more'
+    );
     $(e.currentTarget).parent().parent().next('.more-paradigms')
       .children('.more-info.has-heading')
       .slideToggle(SPEED_MS)

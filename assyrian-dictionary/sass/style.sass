@@ -595,21 +595,12 @@ $infl-row-y-pad: 6px
   justify-content: center
 
 .more-paradigms-button
-  $br-width: 1px
-
-  border-radius: 50%
+  @include eng-text('s', 500)
+  border-radius: 8px
   border-style: solid
-  border-width: $br-width
+  border-width: 1px
   cursor: pointer
-  font-size: $half-icon-size * 2
-  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24
-  height: $button-diameter
-  padding: 0
-  transition: transform 200ms
-  width: $button-diameter
-
-  &.expanded
-    transform: rotate(180deg)
+  padding: 6px 10px
 
 
 

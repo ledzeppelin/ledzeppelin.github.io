@@ -39,8 +39,8 @@ function runExtendedSearchQuery(searchStr, fuse, isAii = false) {
     `^"${searchStr} "`, // would match "Eat "
     `'" ${searchStr}${COMMA}"`, // would match  " eat,"
     `'" ${searchStr}${CLOSE_PAREN}"`, // would match  " eat)", " ground)"
-    `'" ${searchStr} "`, // would match " eat "
     `" ${searchStr}"$`, // would match sentence ending in " eat"
+    `'" ${searchStr} "`, // would match " eat "
     // matches word isolates
 
     `^"${searchStr}"`, // would match "Eating "

@@ -70,10 +70,24 @@ https://stackoverflow.com/a/65036296 -->
 <div id="subtitle">assyrian-english dictionary</div>
 <div id="created-by-container"><span class="webapp-backlink-meta">created by 😎 </span><a class="creator-backlink-href" href='../'>ܫܪܘܟܝܢ</a></div>
 
-<!-- <div id="backlink-promotion-container">
+<div id="backlink-promotion-container">
   <div class="webapp-backlink-meta">✝️🎄 video of my baptism on christmas eve 1988 🎄✝️</div>
   <div class="webapp-backlink-meta"><a class="webapp-backlink-href" href="https://youtu.be/XpOyvs-IFEs">https://youtu.be/XpOyvs-IFEs</a></div>
-</div> -->
+</div>
+
+
+<script>
+  const d = new Date();
+  const month = d.getMonth(); // 11 = December
+  const day   = d.getDate();
+
+  const keep = month === 11 && day >= 18 && day <= 30;
+
+  if (!keep) {
+    document.getElementById("backlink-promotion-container")?.remove();
+  }
+</script>
+
 
 <div id='app-container'>
   <!-- <div id="scroll-debug" style="position: fixed; top: 45%; left: 50%; transform: translateX(-50%); z-index: 99; font-family: sans-serif; backdrop-filter: blur(10px); padding: 10px; color: red">hello</div> -->
@@ -94,7 +108,7 @@ https://stackoverflow.com/a/65036296 -->
 
   <div id='search-results'></div>
   <div id='numbers-table'></div>
-  <div id='wiktionary-datadump'>5,999 Assyrian words taken from the <a href="https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/index.html">kaikki dictionary</a>, based off the November 20th, 2025 <a href="https://dumps.wikimedia.org/enwiktionary/">wiktionary datadump</a>.  Updates to <a href="https://en.wiktionary.org/wiki/%DC%AB%DC%A0%DC%A1%DC%90#Assyrian_Neo-Aramaic">assyrian wiktionary articles</a> will be uptaken throughout year.</div>
+  <div id='wiktionary-datadump'>6,015 Assyrian words taken from the <a href="https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/index.html">kaikki dictionary</a>, based off the December 1st, 2025 <a href="https://dumps.wikimedia.org/enwiktionary/">wiktionary datadump</a>.  Updates to <a href="https://en.wiktionary.org/wiki/%DC%AB%DC%A0%DC%A1%DC%90#Assyrian_Neo-Aramaic">assyrian wiktionary articles</a> will be uptaken throughout year.</div>
 
 <!-- January, February, March, April, May, June, July, August, September, October, November, December -->
 
