@@ -84,7 +84,22 @@ $(document).ready(() => {
 
   $('#searchbar').on('focus', () => {
     $('#autofocus-tip-container').hide();
+
+    const isMobile = window.matchMedia(
+      "(max-width: 640px) and (hover: none) and (pointer: coarse)"
+    ).matches;
+
+    if (isMobile) {
+      $("#title, #subtitle, #created-by-container, #backlink-promotion-container").hide();
+      $("#show-header-wrapper").show();
+    }
   });
+
+  $('#show-header').on('click', (e) => {
+    $("#title, #subtitle, #created-by-container, #backlink-promotion-container").show();
+    $(e.currentTarget).parent().hide();
+  });
+
 
   $('#searchbar').on('blur', (e) => {
     if ($(e.currentTarget).val().length === 0) {
