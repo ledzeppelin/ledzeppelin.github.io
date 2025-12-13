@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,pause,play_arrow,search,select_to_speak,volume_up");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check,chevron_left,chevron_right,close,content_copy,keyboard_arrow_down,keyboard_arrow_right,keyboard_arrow_up,pause,play_arrow,search,select_to_speak,volume_up");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac:wght@400;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Eastern:wght@100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Syriac+Western:wght@100..900&display=swap");
@@ -89,6 +89,17 @@ a:active {
   #clear-text,
   #search-icon {
     color: rgb(149, 149, 157);
+  }
+}
+
+#show-header {
+  border-color: rgb(210.4285714286, 210.4285714286, 227.5714285714);
+  color: rgb(28, 28, 30);
+}
+@media (prefers-color-scheme: dark) {
+  #show-header {
+    border-color: rgb(83.772972973, 83.772972973, 88.427027027);
+    color: rgb(221, 221, 232);
   }
 }
 
@@ -250,7 +261,7 @@ body {
 }
 
 #searchbar-container {
-  margin: 32px 16px 8px;
+  margin: 20px 16px 8px;
   position: relative;
 }
 
@@ -261,6 +272,25 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+}
+
+#show-header-wrapper {
+  display: none;
+  margin-top: 20px;
+}
+
+#show-header {
+  -webkit-tap-highlight-color: transparent;
+  background: none;
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  display: block;
+  font-size: 24px;
+  margin: 0 auto;
+  padding: 2px 8px;
+  touch-action: manipulation;
 }
 
 #clear-text {
