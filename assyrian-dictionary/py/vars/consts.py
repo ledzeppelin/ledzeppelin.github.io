@@ -88,6 +88,7 @@ language_codes = {
   'kmr': 'Northern Kurdish',
   'ko': 'Korean',
   'la': 'Latin',
+  'la-med': 'Medieval Latin',
   'lez': 'Lezgi',
   'lhs': 'Mlahsö',
   'lsd': 'Lishana Deni',

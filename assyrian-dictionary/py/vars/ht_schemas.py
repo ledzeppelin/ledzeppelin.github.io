@@ -26,8 +26,8 @@ ht_schema = {
             "mpl",
             "pl",
         },
-        'genders': set(),
-        'default_gender': adj_wrap('masculine')
+        'genders': { "g" },
+        'default_gender': adj_wrap('masculine'),
     },
     "aii-adverb": {
         'omit': {
@@ -74,7 +74,7 @@ ht_schema = {
         'genders': set(),
     },
     "aii-numeral": {
-        'omit': { "1" },
+        'omit': { "1", "head", "tr" },
         'forms': {"cstr", "f", "head2", "m", "pl", "pl2"},
         'genders': {"2", "g"},
     },
@@ -86,7 +86,7 @@ ht_schema = {
     "aii-past-participle": {
         'omit': { "1", "head" },
         'forms': {"f", "pl"},
-        'genders': set(),
+        'genders': {"g"},
         'default_gender': adj_wrap('masculine'),
     },
     "aii-phrase": {
@@ -111,7 +111,7 @@ ht_schema = {
     },
     "aii-pronoun": {
         'omit': { "1", "head", "tr", "tr2" },
-        'forms': {"f", "head2", "pl", "ms", "fs", "m", "mpl", "fpl", "s"},
+        'forms': {"f", "head2", "head3", "pl", "ms", "fs", "m", "mpl", "fpl", "s"},
         'genders': {"2", "g", "g2"},
     },
     "aii-proper-noun": {
@@ -134,14 +134,22 @@ ht_schema = {
 # should be 1:1 relation between keys in gender_abbrev and forms_abbrev
 
 gender_abbrev = {
-    "aii-adjective": { },
+    "aii-adjective": {
+        "m": adj_wrap('masculine'),
+        "m-s": adj_wrap('masculine'),
+        "f": adj_wrap('feminine'),
+        "f-s":  adj_wrap('feminine'),
+    },
     "aii-interj": {
         "m": 'for masculine noun',
         "m-s": 'for masculine noun',
         "f-s": 'for feminine noun',
         "p": 'for plural noun',
     },
-    "aii-past-participle": {},
+    "aii-past-participle": {
+        "m-s": adj_wrap('masculine'),
+        "f": adj_wrap('feminine'),
+    },
     "aii-suffix": {
         "m-s": 'masculinizing',
     },
