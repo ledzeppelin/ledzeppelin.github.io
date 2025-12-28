@@ -5,6 +5,7 @@ import json
 import os
 import re
 from collections import Counter
+from pprint import pprint
 import copy
 from .vars import consts
 from .vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
@@ -191,7 +192,7 @@ def set_head_template(item, obj, aii_v):
             pos_gender_abbrev = gender_abbrev.get(ht_name, gender_abbrev['default'])
 
             if arg in ("2", "g"):
-                obj['gender'] = pos_gender_abbrev[val]
+                obj["gender"] = pos_gender_abbrev[val]
 
             if arg == "g2":
                 obj['other_forms']['rows'].append(
@@ -202,9 +203,7 @@ def set_head_template(item, obj, aii_v):
             raise Exception(f'"{arg}" not in omit, forms or genders for ht {ht_name} for:\n\n {item}')
 
 
-    if 'default_gender' in ht_schema[ht_name] and len(ht_schema[ht_name]['genders']) == 0:
-        if 'gender' in obj:
-            raise Exception('oh dear')
+    if 'default_gender' in ht_schema[ht_name] and 'gender' not in obj:
         obj['gender'] = ht_schema[ht_name]['default_gender']
 
 def set_linkage_table(parent, obj, aii_v):
@@ -232,7 +231,7 @@ def set_linkage_table(parent, obj, aii_v):
             )
             already_there.add(word_linkage)
 
-def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
+def parse_sounds(item, aii_sounds, aii_not_v, aii_v, urls_with_ipa_parens):
     ipas = []
     if 'sounds' in item:
         for sound in item['sounds']:
@@ -242,6 +241,13 @@ def parse_sounds(item, aii_sounds, aii_not_v, aii_v):
             # for 128-bit algo, 50% chance of collision after 2^64 ipas, ie hexdigest(16)
             #                   50% chance of collision after 2^32 ipas, ie hexdigest(8)
             hash_str = hashlib.shake_128(enc_str).hexdigest(16)
+
+            ipa_str = sound.get("ipa", "")
+            if "(" in ipa_str or ")" in ipa_str:
+                urls_with_ipa_parens.add(
+                    f"https://en.wiktionary.org/wiki/{aii_not_v}"
+                )
+
             if 'tags' in sound:
                 omit_ipas = {'singular', 'plural', 'masculine', 'feminine'}
                 if not any(tag in omit_ipas for tag in sound['tags']):
@@ -352,6 +358,12 @@ def annotate_row_if_not_there2(meta, aii_values, obj):
             )
 
 
+def remove_inline_modifier(s: str) -> str:
+    # "ܚܸܙܘܵܐ<t:vision>" -> "ܚܸܙܘܵܐ"
+    # https://en.wiktionary.org/wiki/Template:affix#Inline_modifiers
+    return re.sub(r"(?:\n?<[^>]*>)+$", "", s)
+
+
 def add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias):
     if ety['name'] == 'cog' and '2' in ety['args']:
         set_cognate(obj, item, ety)
@@ -364,19 +376,19 @@ def add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias):
             raise Exception(f'{aii_v} too many doublets')
         for doublet_num in ['2', '3', '4']:
             if doublet_num in ety['args']:
-                annotate_row_if_not_there(alias, [ety['args'][doublet_num]], obj)
+                annotate_row_if_not_there(alias, [remove_inline_modifier(ety['args'][doublet_num])], obj)
     elif ety['name'] in ('affix', 'af', 'com', 'compound', 'surf', 'blend', 'univerbation') and ety['args']['1'] == 'aii':
         if ety['name'] in ('affix', 'af'):
             for lang in ['lang1', 'lang2']:
                 if lang in ety["args"] and ety["args"][lang] != 'aii':
                     return
                     # raise Exception(f'only aii allowed for {aii_v}')
-        aii_affixes = [ety['args']['2']]
+        aii_affixes = [remove_inline_modifier(ety['args']['2'])]
         if '6' in ety['args']:
             raise Exception(f'{aii_v} too many affixes')
         for affix_num in ['3', '4', '5']:
             if affix_num in ety['args']:
-                aii_affixes.append(ety['args'][affix_num])
+                aii_affixes.append(remove_inline_modifier(ety['args'][affix_num]))
         annotate_row_if_not_there2(alias, aii_affixes, obj)
 
 
@@ -497,6 +509,8 @@ def datadump_to_dict():
     NOUN_INFL_CNT = Counter()
     print('\n'.join(cnt_lst))
 
+    urls_with_ipa_parens = set()
+
     for item in data:
         aii_not_v = item['word']
         aii_v = generate_aii_v(item, aii_not_v)
@@ -541,9 +555,22 @@ def datadump_to_dict():
         if tier2_categories:
             obj['tier2_categories'] = tier2_categories
 
-        parse_sounds(item, aii_sounds, aii_not_v, aii_v)
+        parse_sounds(item, aii_sounds, aii_not_v, aii_v, urls_with_ipa_parens)
 
         aii_dict[aii_not_v][aii_v].append(obj)
+
+    if urls_with_ipa_parens:
+        print("urls with ipa parentheticals:")
+        pprint(sorted(urls_with_ipa_parens))
+
+        # for url in urls_with_ipa_parens:
+        #     import webbrowser
+        #     try:
+        #         chrome = webbrowser.get("chrome")
+        #     except:
+        #         chrome = webbrowser.get()
+        #     chrome.open(url)
+
 
     numbers_table = generate_numbers_table()
     print (f"noun inflections: {NOUN_INFL_CNT}")
