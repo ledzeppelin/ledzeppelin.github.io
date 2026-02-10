@@ -1,5 +1,4 @@
 from collections import defaultdict
-# from pprint import pprint
 import hashlib
 import json
 import os
@@ -7,6 +6,7 @@ import re
 from collections import Counter
 from pprint import pprint
 import copy
+from collections import Counter
 from .vars import consts
 from .vars.ht_schemas import ht_schema_omit, ht_schema, forms_abbrev, gender_abbrev
 from .vars.infl_schemas import noun_infl_schema, omitted_infl_schema
@@ -66,7 +66,7 @@ def literally_etys_to_senses(item):
 
 
 def parse_categories(item):
-    omit_categories = {'aii:Assyrian alphabet'}
+    omit_categories = {'aii:Syriac letter names'}
     # omit_categories = set()
 
     tiered_categories = []
@@ -485,6 +485,15 @@ def generate_numbers_table():
 
     return res
 
+def set_duplicate_sounds(item, aii_not_v, duplicate_sounds_urls):
+    sounds = item.get("sounds")
+    if isinstance(sounds, list):
+        standard_count = sum(
+            1 for s in sounds
+            if isinstance(s, dict) and s.get("tags") == ["Standard"]
+        )
+        if standard_count > 1:
+            duplicate_sounds_urls[aii_not_v] += 1
 
 
 def datadump_to_dict():
@@ -495,11 +504,13 @@ def datadump_to_dict():
     aii_sounds = defaultdict(lambda: defaultdict(list))
     verb_denominal_forms = {}
     dynamic_noun_forms = defaultdict(list)
+    duplicate_sounds_urls = defaultdict(int)
 
 
     BLACKLIST = {
         'ܡܦܪܲܣܚܲܙܹܐ',
         'ܡܚܘܛܡܠܠ',
+        'ܚܛܝܼܬ݂ܹܗ ܝܠܵܗ̇',
         #####
     }
 
@@ -555,7 +566,9 @@ def datadump_to_dict():
         if tier2_categories:
             obj['tier2_categories'] = tier2_categories
 
+
         parse_sounds(item, aii_sounds, aii_not_v, aii_v, urls_with_ipa_parens)
+        set_duplicate_sounds(item, aii_not_v, duplicate_sounds_urls)
 
         aii_dict[aii_not_v][aii_v].append(obj)
 
@@ -580,5 +593,25 @@ def datadump_to_dict():
 
     with open('./js/json/dynamic-noun-forms.json', 'w') as f:
         json.dump(dynamic_noun_forms, f, ensure_ascii=False, indent=4)
+
+    if duplicate_sounds_urls:
+        single = [k for k, v in duplicate_sounds_urls.items() if v == 1]
+        multiple = [k for k, v in duplicate_sounds_urls.items() if v > 1]
+
+
+        print(f"abc123 {len(multiple)}")
+        IPA_THRESHOLD = 50
+        if len(multiple) > IPA_THRESHOLD:
+            for slug in multiple:
+                url = f"https://en.wiktionary.org/wiki/{slug}"
+                print(url)
+                # import webbrowser
+                # try:
+                #     chrome = webbrowser.get("chrome")
+                # except:
+                #     chrome = webbrowser.get()
+                # chrome.open(url)
+
+
 
     return aii_dict, collapse_sounds(aii_sounds), numbers_table
