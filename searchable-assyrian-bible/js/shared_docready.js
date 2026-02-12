@@ -90,13 +90,13 @@ $(document).ready(() => {
     ).matches;
 
     if (isMobile) {
-      $("#title, #subtitle, #created-by-container, #backlink-promotion-container").hide();
+      $("#title, #subtitle, #created-by-container, #backlink-promotion-container").addClass('mobile-header-hidden');
       $("#show-header-wrapper").show();
     }
   });
 
   $('#show-header').on('click', (e) => {
-    $("#title, #subtitle, #created-by-container, #backlink-promotion-container").show();
+    $("#title, #subtitle, #created-by-container, #backlink-promotion-container").removeClass('mobile-header-hidden');
     $(e.currentTarget).parent().hide();
   });
 
