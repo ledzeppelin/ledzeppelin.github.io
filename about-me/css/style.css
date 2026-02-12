@@ -441,6 +441,7 @@ body {
   color: white;
   margin: 0 0 8px 16px;
   text-shadow: black 1px 1px 3px;
+  white-space: nowrap;
   z-index: 3;
 }
 
