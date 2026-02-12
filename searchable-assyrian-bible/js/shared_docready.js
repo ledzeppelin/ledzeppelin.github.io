@@ -8,6 +8,11 @@ $(document).ready(() => {
 
   let searchQuery;
 
+  if (typeof dictionaryReady !== 'undefined') {
+    const $searchbar = $('#searchbar');
+    $searchbar.prop('disabled', true).data('placeholder', $searchbar.attr('placeholder')).attr('placeholder', 'Loading dictionary...');
+  }
+
   const updateDictionaryTitle = (title = ASSYRIAN_ENGLISH_DICTIONARY) => {
     // so SERP will contain the updated title
     document.title = title;
@@ -195,124 +200,139 @@ $(document).ready(() => {
   const url = new URL(window.location.href);
   const params = new URLSearchParams(url.search);
 
+  // tag menu uses aiiDictionaryTags (not aiiDictionary), so it can render immediately
   if (IS_DICTIONARY) {
     // eslint-disable-next-line max-len
     const shouldLimit = params.has(DICT_TAG_SEARCH_PARAM) || params.has(DICT_AII_EXACT_SEARCH_PARAM);
     $('#top-tags-menu').html(createTopTagsMenuFragment(aiiDictionaryTags, shouldLimit));
   }
 
-  if (IS_DICTIONARY && params.has(DICT_TAG_SEARCH_PARAM)) {
-    const tagSearchParam = params.get(DICT_TAG_SEARCH_PARAM);
-    if (tagSearchParam.length) {
-      let tagExactSearchResults = [];
-      let shouldLoadTagExactSearchResults = false;
-      // console.time('tag');
-      tagExactSearchResults = fuseTagsExact.search(`="${tagSearchParam}"`);
+  const initSearchFromUrl = () => {
+    const $searchbar = $('#searchbar');
+    $searchbar.prop('disabled', false);
+    if ($searchbar.data('placeholder')) {
+      $searchbar.attr('placeholder', $searchbar.data('placeholder'));
+    }
 
-      if (tagSearchParam === 'special:numbers table') {
-        searchQuery = {
-          results: [],
-        };
+    if (IS_DICTIONARY && params.has(DICT_TAG_SEARCH_PARAM)) {
+      const tagSearchParam = params.get(DICT_TAG_SEARCH_PARAM);
+      if (tagSearchParam.length) {
+        let tagExactSearchResults = [];
+        let shouldLoadTagExactSearchResults = false;
+        // console.time('tag');
+        tagExactSearchResults = fuseTagsExact.search(`="${tagSearchParam}"`);
 
-        $('#numbers-table').html(createTableFrag(aiiNumbersTable)).children().show();
-        shouldLoadTagExactSearchResults = true;
-      } else if (tagSearchParam === 'special:commonly used') {
-        const compareFn = (a, b) => (
-          a.item.min_common_word_idx < b.item.min_common_word_idx ? -1 : 1
-        );
+        if (tagSearchParam === 'special:numbers table') {
+          searchQuery = {
+            results: [],
+          };
 
-        searchQuery = {
-          results: tagExactSearchResults.sort(compareFn),
-          queryType: DictionaryQueryType.TAG,
-        };
-        shouldLoadTagExactSearchResults = true;
-      } else if (tagSearchParam === 'pos:numeral') {
-        const compareFn = (a, b) => (
-          a.item.min_numeral_idx < b.item.min_numeral_idx ? -1 : 1
-        );
+          $('#numbers-table').html(createTableFrag(aiiNumbersTable)).children().show();
+          shouldLoadTagExactSearchResults = true;
+        } else if (tagSearchParam === 'special:commonly used') {
+          const compareFn = (a, b) => (
+            a.item.min_common_word_idx < b.item.min_common_word_idx ? -1 : 1
+          );
 
-        searchQuery = {
-          results: tagExactSearchResults.sort(compareFn),
-          queryType: DictionaryQueryType.TAG,
-        };
-        shouldLoadTagExactSearchResults = true;
-      } else if (tagSearchParam === 'special:assyrian alphabet') {
-        const compareFn = (a, b) => (
-          a.item.alpha_idx < b.item.alpha_idx ? -1 : 1
-        );
+          searchQuery = {
+            results: tagExactSearchResults.sort(compareFn),
+            queryType: DictionaryQueryType.TAG,
+          };
+          shouldLoadTagExactSearchResults = true;
+        } else if (tagSearchParam === 'pos:numeral') {
+          const compareFn = (a, b) => (
+            a.item.min_numeral_idx < b.item.min_numeral_idx ? -1 : 1
+          );
 
-        searchQuery = {
-          results: tagExactSearchResults.sort(compareFn),
-          queryType: DictionaryQueryType.TAG,
-        };
-        shouldLoadTagExactSearchResults = true;
-      } else if (tagExactSearchResults.length) {
-        const compareFn = (a, b) => (
-          // eslint-disable-next-line max-len
-          minVocalizedTR(tagSearchParam, a.item) < minVocalizedTR(tagSearchParam, b.item) ? -1 : 1
-        );
+          searchQuery = {
+            results: tagExactSearchResults.sort(compareFn),
+            queryType: DictionaryQueryType.TAG,
+          };
+          shouldLoadTagExactSearchResults = true;
+        } else if (tagSearchParam === 'special:assyrian alphabet') {
+          const compareFn = (a, b) => (
+            a.item.alpha_idx < b.item.alpha_idx ? -1 : 1
+          );
 
-        searchQuery = {
-          results: tagExactSearchResults.sort(compareFn),
-          queryType: DictionaryQueryType.TAG,
-        };
-        shouldLoadTagExactSearchResults = true;
-      }
+          searchQuery = {
+            results: tagExactSearchResults.sort(compareFn),
+            queryType: DictionaryQueryType.TAG,
+          };
+          shouldLoadTagExactSearchResults = true;
+        } else if (tagExactSearchResults.length) {
+          const compareFn = (a, b) => (
+            // eslint-disable-next-line max-len
+            minVocalizedTR(tagSearchParam, a.item) < minVocalizedTR(tagSearchParam, b.item) ? -1 : 1
+          );
 
-      if (shouldLoadTagExactSearchResults) {
-        searchQuery.i = 0;
-        loadResults(searchQuery, 1);
-        while (shouldLoadMore()) {
-          loadResults(searchQuery, 1);
+          searchQuery = {
+            results: tagExactSearchResults.sort(compareFn),
+            queryType: DictionaryQueryType.TAG,
+          };
+          shouldLoadTagExactSearchResults = true;
         }
 
+        if (shouldLoadTagExactSearchResults) {
+          searchQuery.i = 0;
+          loadResults(searchQuery, 1);
+          while (shouldLoadMore()) {
+            loadResults(searchQuery, 1);
+          }
 
-        const [tagSection, tagName] = tagQueryStringToGroupAndTitle(
-          tagSearchParam,
-          Object.fromEntries(aiiDictionaryTags.map(({ tag_key, name }) => [tag_key, name])),
-        )
 
-        $('#search-results').prepend(createTagMetaFrag(tagName, tagSection));
+          const [tagSection, tagName] = tagQueryStringToGroupAndTitle(
+            tagSearchParam,
+            Object.fromEntries(aiiDictionaryTags.map(({ tag_key, name }) => [tag_key, name])),
+          )
 
-        updateDictionaryTitle(`${tagSection}: ${tagName}`);
-        AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_TAG_SEARCH_PARAM, tagSearchParam]]);
+          $('#search-results').prepend(createTagMetaFrag(tagName, tagSection));
+
+          updateDictionaryTitle(`${tagSection}: ${tagName}`);
+          AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_TAG_SEARCH_PARAM, tagSearchParam]]);
+        }
+      } else {
+        window.history.replaceState(null, document.title, window.location.pathname);
+        $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);
       }
-    } else {
-      window.history.replaceState(null, document.title, window.location.pathname);
-      $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);
-    }
-  } else if (IS_DICTIONARY && params.has(DICT_AII_EXACT_SEARCH_PARAM)) {
-    const aiiExactSearchParam = params.get(DICT_AII_EXACT_SEARCH_PARAM);
-    if (aiiExactSearchParam.length) {
-      searchQuery = {
-        results: fuseAiiVocalized.search(`="${aiiExactSearchParam}"`),
-        aii_v_query: aiiExactSearchParam,
-        i: 0,
-        queryType: DictionaryQueryType.AII_EXACT_SEARCH,
-      };
+    } else if (IS_DICTIONARY && params.has(DICT_AII_EXACT_SEARCH_PARAM)) {
+      const aiiExactSearchParam = params.get(DICT_AII_EXACT_SEARCH_PARAM);
+      if (aiiExactSearchParam.length) {
+        searchQuery = {
+          results: fuseAiiVocalized.search(`="${aiiExactSearchParam}"`),
+          aii_v_query: aiiExactSearchParam,
+          i: 0,
+          queryType: DictionaryQueryType.AII_EXACT_SEARCH,
+        };
 
-      // we set this to surface typos where a vocalized headword appears in different
-      // unvocalized articles, ex. ܒܪ̈ܲܚܡܹܐ
-      const maxNumVocalized = 5;
-      loadResults(searchQuery, maxNumVocalized);
+        // we set this to surface typos where a vocalized headword appears in different
+        // unvocalized articles, ex. ܒܪ̈ܲܚܡܹܐ
+        const maxNumVocalized = 5;
+        loadResults(searchQuery, maxNumVocalized);
 
-      updateDictionaryTitle(aiiExactSearchParam);
-      AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_AII_EXACT_SEARCH_PARAM, aiiExactSearchParam]]);
-    } else {
-      window.history.replaceState(null, document.title, window.location.pathname);
-      $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);
+        updateDictionaryTitle(aiiExactSearchParam);
+        AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_AII_EXACT_SEARCH_PARAM, aiiExactSearchParam]]);
+      } else {
+        window.history.replaceState(null, document.title, window.location.pathname);
+        $('#canonical-link').attr('href', `https://www.sharrukin.io/${DICT_APP_NAME}/`);
+      }
+    } else if (params.has('search')) {
+      const searchParam = params.get('search');
+      if (searchParam.length) {
+        // console.log('hide it');
+        $('#autofocus-tip-container').hide();
+        $('#searchbar').val(searchParam).trigger('input');
+      } else {
+        window.history.replaceState(null, document.title, window.location.pathname);
+        $('#canonical-link').attr('href', `https://www.sharrukin.io/${APP_NAME}/`);
+      }
     }
-  } else if (params.has('search')) {
-    const searchParam = params.get('search');
-    if (searchParam.length) {
-      // console.log('hide it');
-      $('#autofocus-tip-container').hide();
-      $('#searchbar').val(searchParam).trigger('input');
-    } else {
-      window.history.replaceState(null, document.title, window.location.pathname);
-      $('#canonical-link').attr('href', `https://www.sharrukin.io/${APP_NAME}/`);
-    }
+
+    console.timeEnd('shared docready load');
+  };
+
+  if (typeof dictionaryReady !== 'undefined') {
+    dictionaryReady.then(initSearchFromUrl);
+  } else {
+    initSearchFromUrl();
   }
-
-  console.timeEnd('shared docready load');
 });
