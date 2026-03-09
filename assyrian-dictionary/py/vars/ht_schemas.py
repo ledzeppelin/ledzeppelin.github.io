@@ -116,7 +116,7 @@ ht_schema = {
     },
     "aii-proper-noun": {
         'omit': { "1", "tr", "tr2", "head" },
-        'forms': { "head2" },
+        'forms': { "head2", "f"},
         'genders': {"2", "g", "g2"},
     },
     "aii-suffix": {

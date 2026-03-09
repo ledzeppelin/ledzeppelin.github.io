@@ -598,9 +598,9 @@ def datadump_to_dict():
         multiple = [k for k, v in duplicate_sounds_urls.items() if v > 1]
 
 
-        print(f"abc123 {len(multiple)}")
         IPA_THRESHOLD = 50
         if len(multiple) > IPA_THRESHOLD:
+            print(f"ipa threshold exceeded: {len(multiple)}")
             for slug in multiple:
                 url = f"https://en.wiktionary.org/wiki/{slug}"
                 print(url)
