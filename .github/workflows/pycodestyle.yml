@@ -1,0 +1,23 @@
+name: pycodestyle
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install pycodestyle
+        run: pip install pycodestyle
+      - name: Check linting and formatting
+        run: pycodestyle --max-line-length=150 --exclude=venv,node_modules .
+

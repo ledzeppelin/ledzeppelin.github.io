@@ -1,6 +1,7 @@
 import json
 from collections import defaultdict
 
+
 def headword_matches_url_slug():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
@@ -18,6 +19,6 @@ def headword_matches_url_slug():
 
     return aii_dict
 
+
 foo = headword_matches_url_slug()
 print(foo)
-

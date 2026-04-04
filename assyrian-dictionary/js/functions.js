@@ -15,7 +15,6 @@ function generateFreeTextTier1Skeleton(aiiV) {
 
   aiiV.ipas?.forEach(([accents, ipa]) => {
     accents.forEach((accent) => {
-      // eslint-disable-next-line max-len
       // const longIpa = '[bʃɪmmɑː‿dbaːbaː‿wbroːnaː‿wruːħaː‿dquðʃaː] [bʃɪmmɑː‿dbaːbaː‿wbroːnaː‿wruːħaː‿dquðʃaː]';
       frag.append(
         $('<div/>', { class: `${classes} free-text-t1-ipa-container` }).append(
@@ -346,7 +345,6 @@ function loadResults(searchQuery, PAGINATE_AMT) {
 
       const DEBUG_HIGHLIGHT = false;
       if (DEBUG_HIGHLIGHT === false) {
-        // eslint-disable-next-line max-len
         highlightAiiExactSearchFragment(result, resultFragment, searchQuery, isRoot, indexedAiiV);
       }
 

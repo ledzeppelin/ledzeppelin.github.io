@@ -1,4 +1,3 @@
-/* eslint-disable lines-between-class-members */
 class AiiUtils {
   static validLetters = 'ܦܒܬܛܕܟܓܩܣܨܙܫܚܥܗܡܢܪܠܐܘܝ';
 

@@ -6,7 +6,7 @@ from ..datadump_to_dict import datadump_to_dict
 aii_dict, aii_collapsed_sounds1, numbers_table_ = datadump_to_dict()
 
 stripped_doesnt_match = []
-regex = strip_markers() # pylint: disable=C0103
+regex = strip_markers()
 
 for aii_not_v, aii_v_s in aii_dict.items():
     for aii_v, jsonlines in aii_v_s.items():

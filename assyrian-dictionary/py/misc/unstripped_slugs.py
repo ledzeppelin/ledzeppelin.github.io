@@ -4,6 +4,7 @@ import webbrowser
 import re
 from .is_valid_aii_v import is_valid_aii_v
 
+
 def strip_markers():
     # this is a port of /shared_js/aii-utils.js
     COMBINING_TILDE_ABOVE = '\u0303'
@@ -31,11 +32,11 @@ def strip_markers():
         SUPERSCRIPT_ALAPH,
     ]
 
-
     diacritic_range = f'{"".join(other_marks)}{SYRIAC_START}-{SYRIAC_END}'
     non_capture_group = f'(?:[{diacritic_range}])'
 
     return non_capture_group
+
 
 def unstripped_slugs():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
@@ -51,5 +52,6 @@ def unstripped_slugs():
             print(stripped_slug, item['word'])
             replaced = quote(item['word'])
             # webbrowser.open_new_tab(f'https://en.wiktionary.org/wiki/{replaced}#Assyrian_Neo-Aramaic')
+
 
 unstripped_slugs()

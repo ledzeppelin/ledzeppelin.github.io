@@ -26,9 +26,9 @@ function createFreeTextResultFrag(aiiV) {
 }
 
 function createChevronExpanderButton(buttonClassName, buttonText) {
-  return $('<button/>', { class: `expandable-btn ${buttonClassName}` }).append(
-    $('<span/>', { class: 'expandable-btn-text', text: buttonText }),
-    $('<span/>', { class: 'expandable-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right' }),
+  return $('<button/>', {class: `expandable-btn ${buttonClassName}`}).append(
+    $('<span/>', {class: 'expandable-btn-text', text: buttonText}),
+    $('<span/>', {class: 'expandable-btn-icon material-symbols-rounded', text: 'keyboard_arrow_right'}),
   );
 }
 
@@ -59,7 +59,7 @@ function createTopTagsMenuFragment(dictTags, shouldLimit) {
     const $lis = frag.children('li');
 
     $('<li/>')
-      .append($('<button/>', { class: 'top-tags-menu-more', text: 'More' }))
+      .append($('<button/>', {class: 'top-tags-menu-more', text: 'More'}))
       .insertAfter($lis.eq(limit - 1));
 
     $lis.slice(limit).hide();
@@ -88,7 +88,7 @@ function createTopTagsChildrenFragment(dictTags, parentName) {
 }
 
 function createAiiVFrag(aiiV) {
-  return $('<div/>', { class: 'aii-v-word', text: aiiV });
+  return $('<div/>', {class: 'aii-v-word', text: aiiV});
 }
 
 function createCommonWordFrag() {
@@ -212,7 +212,7 @@ function createTier1TagsFrag(aiiV, singletonJsonline) {
   }
 
   if (notEmpty) {
-    return $('<div/>', { class: 'aii-v-meta-container' }).append(frag);
+    return $('<div/>', {class: 'aii-v-meta-container'}).append(frag);
   }
 
   return frag;
@@ -221,7 +221,7 @@ function createTier1TagsFrag(aiiV, singletonJsonline) {
 function createIpaContainerFrag(aiiV) {
   let frag = $(document.createDocumentFragment());
   if ('ipas' in aiiV) {
-    frag = $('<div/>', { class: 'sound-containers' });
+    frag = $('<div/>', {class: 'sound-containers'});
     const accentCounts = {};
     aiiV.ipas.forEach(([accents, ipa, ipaHash]) => {
       frag.append(
@@ -229,8 +229,8 @@ function createIpaContainerFrag(aiiV) {
       );
     });
     frag.append(
-      $('<div/>', { class: 'ipa-info' }).append(
-        $('<span/>', { text: 'audio is machine-generated from ipa' }),
+      $('<div/>', {class: 'ipa-info'}).append(
+        $('<span/>', {text: 'audio is machine-generated from ipa'}),
       ),
     );
   }
@@ -251,7 +251,7 @@ function createIpaAccentNameContainers(accents, accentCounts) {
     }
 
     frag.append(
-      $('<div/>', { class: 'accent-name-container' }).append(
+      $('<div/>', {class: 'accent-name-container'}).append(
         $('<a/>', {
           class: 'accent-name tier1-tag tier1-tag-ipa',
           text: accent,
@@ -265,8 +265,8 @@ function createIpaAccentNameContainers(accents, accentCounts) {
 }
 
 function createSoundContainerFrag(accents, ipa, ipaHash, accentCounts) {
-  return $('<div/>', { class: 'sound-container' }).append(
-    $('<div/>', { class: 'play-sound-container' }).append(
+  return $('<div/>', {class: 'sound-container'}).append(
+    $('<div/>', {class: 'play-sound-container'}).append(
       // https://stackoverflow.com/a/62414510
       $('<button/>', {
         class: 'material-symbols-rounded play-sound',
@@ -274,7 +274,7 @@ function createSoundContainerFrag(accents, ipa, ipaHash, accentCounts) {
         'data-filename': `./audio/${ipaHash}.mp3`,
       }),
       $('<div/>').append(
-        $('<div/>', { class: 'ipa', text: ipa }),
+        $('<div/>', {class: 'ipa', text: ipa}),
         createIpaAccentNameContainers(accents, accentCounts),
       ),
     ),
@@ -307,10 +307,10 @@ function createRadicalLegend(strongRadicals) {
     return $(document.createDocumentFragment());
   }
 
-  const legend = $('<div/>', { class: 'microrad-legend' });
+  const legend = $('<div/>', {class: 'microrad-legend'});
   for (let i = 0; i < strongRadicals.length; i += 1) {
     const clrClass = strongRadicals[i] === false ? 'rad-is-weak' : `rad-clr-${i}`;
-    const microrad = $('<div/>', { class: `microrad ${clrClass}`, text: i + 1 });
+    const microrad = $('<div/>', {class: `microrad ${clrClass}`, text: i + 1});
     legend.prepend(microrad);
   }
   return legend;
@@ -323,17 +323,17 @@ function createShowInflectionsButton(jsonline) {
   const isColorfulVerbConj = jsonline?.verb_conjugation?.strong_radicals?.length;
 
   if (isInflection || isVerbConj || isColorfulVerbConj) {
-    const frag = $('<button/>', { class: 'inflections-button-container' }).append(
-      $('<span/>', { class: 'material-symbols-rounded inflections-button', text: 'keyboard_arrow_down' }),
+    const frag = $('<button/>', {class: 'inflections-button-container'}).append(
+      $('<span/>', {class: 'material-symbols-rounded inflections-button', text: 'keyboard_arrow_down'}),
     );
 
     if (isColorfulVerbConj) {
       const strongRadicals = conjPatterns[jsonline.verb_conjugation.pattern].is_radical_strong;
-      const wrapper = $('<div/>', { class: 'colorful-verb-wrapper' });
+      const wrapper = $('<div/>', {class: 'colorful-verb-wrapper'});
 
       strongRadicals.forEach((isRadicalStrong, i) => {
         const clrClass = isRadicalStrong === false ? 'rad-is-weak' : `rad-clr-${i}`;
-        const square = $('<div/>', { class: `microrad microrad-along-arc-${i} ${clrClass}`, text: i+1 });
+        const square = $('<div/>', {class: `microrad microrad-along-arc-${i} ${clrClass}`, text: i + 1});
         wrapper.append(square);
       });
       return wrapper.append(frag);
@@ -363,7 +363,7 @@ function createVerbPatternFrag(key, obj, tierTag) {
 function createEtymologyFrag(etyKey, obj, tierTag) {
   const frag = $(document.createDocumentFragment()).append(' from ');
 
-  const innerFrag = $('<ul/>', { class: 'ety-list' });
+  const innerFrag = $('<ul/>', {class: 'ety-list'});
   obj[etyKey].forEach((et) => {
     innerFrag.append(
       $('<li/>').append(
@@ -382,7 +382,7 @@ function createEtymologyFrag(etyKey, obj, tierTag) {
 }
 
 function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
-  // eslint-disable-next-line no-param-reassign
+
   templateStr = correctedProgressive(templateStr, templateAtwateh);
 
   const tripleBraceRegex = new RegExp(`{{{([1-9ܐܝܘ])}}}(${AiiUtils.diacriticCharClass}*)`, 'g');
@@ -408,7 +408,7 @@ function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
     if (offset === 0) {
       cssClass += ' tinyrad-is-first';
     }
-    fragment.append($('<span/>', { class: cssClass, text: letter }));
+    fragment.append($('<span/>', {class: cssClass, text: letter}));
     i = offset + match.length;
     matchCount += 1;
     return '';
@@ -418,7 +418,7 @@ function createAtwatehBoxesFrag(templateStr, templateAtwateh) {
     fragment.append(templateStr.slice(i));
   }
 
-  return $('<div/>', { class: 'radical-highlighted-verb-form' }).append(fragment);
+  return $('<div/>', {class: 'radical-highlighted-verb-form'}).append(fragment);
 }
 
 function createTableRowsFrag(table, aiiV) {
@@ -439,13 +439,13 @@ function createTableRowsFrag(table, aiiV) {
       const rowValue = $(document.createDocumentFragment());
       if ('cog_value' in aii) {
         rowValues.append(
-          $('<div/>', { class: 'cog-val-container', text: aii.cog_value }),
+          $('<div/>', {class: 'cog-val-container', text: aii.cog_value}),
         );
       } else {
         let valFrag;
         let doesMatch = '';
         if (aii.value === aiiV) {
-          valFrag = $('<span/>', { class: 'infl-val does-match', text: aii.value });
+          valFrag = $('<span/>', {class: 'infl-val does-match', text: aii.value});
           doesMatch = ' does-match';
         } else if (table.disable_fuse === undefined && fuseAiiVocalized.search(`="${aii.value}"`).length > 0) {
           // fuseAiiVocalized a global which is imported before this file is imported
@@ -456,18 +456,18 @@ function createTableRowsFrag(table, aiiV) {
             href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[AII_EXACT_SEARCH_PARAM, aii.value]])}`,
           });
         } else {
-          valFrag = $('<span/>', { class: 'infl-val', text: aii.value });
+          valFrag = $('<span/>', {class: 'infl-val', text: aii.value});
         }
 
         const tr = aiiTranslitWrapper(aii.value, AiiUtils.validLetters, aiiTranslit);
         // const tr = aiiTranslit(aii.value).phonetic;
         rowValue.append(
           valFrag,
-          $('<span/>', { class: `infl-tr${doesMatch}`, text: tr }),
+          $('<span/>', {class: `infl-tr${doesMatch}`, text: tr}),
         );
 
         rowValues.append(
-          $('<div/>', { class: 'infl-val-container' }).append(
+          $('<div/>', {class: 'infl-val-container'}).append(
             rowValue,
           ),
         );
@@ -475,9 +475,9 @@ function createTableRowsFrag(table, aiiV) {
     });
 
     tableRows.append(
-      $('<div/>', { class: `infl-row ${extraYPadding}` }).append(
-        $('<div/>', { class: 'infl-meta', text: row.meta }),
-        $('<div/>', { class: 'infl-vals' }).append(rowValues),
+      $('<div/>', {class: `infl-row ${extraYPadding}`}).append(
+        $('<div/>', {class: 'infl-meta', text: row.meta}),
+        $('<div/>', {class: 'infl-vals'}).append(rowValues),
       ),
     );
   });
@@ -488,12 +488,12 @@ function createTableRowsFrag(table, aiiV) {
 function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
   // rest of table
   const tableRows = createTableRowsFrag(table, aiiV);
-  const frag = $('<div/>', { class: 'more-info' });
+  const frag = $('<div/>', {class: 'more-info'});
 
   // heading
   if ('heading' in table) {
     frag.addClass('has-heading');
-    const headingMeta = $('<div/>', { class: 'infl-meta' });
+    const headingMeta = $('<div/>', {class: 'infl-meta'});
     if (table.heading === 'Subject Pronoun') {
       headingMeta.append(
         $('<a/>', {
@@ -506,14 +506,14 @@ function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
     }
 
     frag.append(
-      $('<div/>', { class: 'infl-row is-heading' }).append(
+      $('<div/>', {class: 'infl-row is-heading'}).append(
         headingMeta,
       ),
     );
     if ('heading_2' in table) {
-      const heading2 = $('<div/>', { class: 'infl-vals' });
+      const heading2 = $('<div/>', {class: 'infl-vals'});
       table.heading_2.forEach((val) => {
-        const heading2Meta = $('<span/>', { class: 'infl-val-eng' });
+        const heading2Meta = $('<span/>', {class: 'infl-val-eng'});
 
         if (useProgressivePrefix && val === 'Present Participle') {
           const progPrefix = 'ܒܸ-';
@@ -529,7 +529,7 @@ function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
         }
 
         heading2.append(
-          $('<div/>', { class: 'infl-val-container' }).append(
+          $('<div/>', {class: 'infl-val-container'}).append(
             heading2Meta,
           ),
         );
@@ -537,7 +537,7 @@ function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
       frag.find('.infl-row').append(heading2);
     }
     return frag.append(
-      $('<div/>', { class: 'headered-rows' }).append(tableRows),
+      $('<div/>', {class: 'headered-rows'}).append(tableRows),
     );
   }
 
@@ -545,8 +545,8 @@ function createTableFrag(table, aiiV = null, useProgressivePrefix = false) {
 }
 
 function createGlossFrag(sense, j) {
-  return $('<li/>', { class: 'gloss-container', val: j + 1 }).append(
-    $('<span/>', { class: 'gloss', text: sense.gloss }),
+  return $('<li/>', {class: 'gloss-container', val: j + 1}).append(
+    $('<span/>', {class: 'gloss', text: sense.gloss}),
     createCategoriesFrag(sense, '3'),
     createGlossTermsButtonFrag(sense),
     createGlossTermsTableFrag(sense),
@@ -568,7 +568,7 @@ function createFromRootFrag(jsonline) {
         href: `./${INDEX_HTML}?${AiiUtils.paramsToString([[AII_EXACT_SEARCH_PARAM, jsonline.of_root]])}`,
       });
     } else {
-      rootHtml = $('<span/>', { class: 'of-root-aii', text: jsonline.of_root });
+      rootHtml = $('<span/>', {class: 'of-root-aii', text: jsonline.of_root});
     }
 
     const rootTr = $('<span/>', {
@@ -579,7 +579,7 @@ function createFromRootFrag(jsonline) {
     return frag.append(
       ' of root ',
       // ' of root of root of root of root of root of root of root of root of root of',
-      $('<span/>', { class: 'of-root-container' }).append(
+      $('<span/>', {class: 'of-root-container'}).append(
         rootTr,
         '&nbsp;&nbsp;',
         rootHtml,
@@ -605,7 +605,7 @@ function createOtherFormsButtonFrag(jsonline) {
 
 function createInflFrag(jsonline, aiiV) {
   if ('table' in jsonline) {
-    // eslint-disable-next-line no-param-reassign
+
     jsonline.table.disable_fuse = true;
     return createTableFrag(jsonline.table, aiiV);
   }
@@ -675,7 +675,7 @@ function aiiInflNounM(
 
   return groups.map(([meta, [sg, pl]]) => ({
     meta,
-    values: [{ value: build(sg) }, { value: build(pl) }],
+    values: [{value: build(sg)}, {value: build(pl)}],
   }));
 }
 
@@ -738,8 +738,8 @@ function aiiInflNounF(
     ([meta, [sg, pl]]) => ({
       meta,
       values: [
-        { value: build(sg) },
-        { value: build(pl) },
+        {value: build(sg)},
+        {value: build(pl)},
       ],
     }),
   );
@@ -785,7 +785,7 @@ function aiiInflNounFVowel(
     }
 
     const irregular = irs !== undefined
-      || ((key === 'pl.3ms' || key === 'pl.3fs') && sirs !== undefined);
+            || ((key === 'pl.3ms' || key === 'pl.3fs') && sirs !== undefined);
 
     const base = irregular ? (irs ?? sirs) : (irp ?? stem);
     const set = irregular ? plFemIRS : plFemNO;
@@ -797,8 +797,8 @@ function aiiInflNounFVowel(
     ([meta, [sg, pl]]) => ({
       meta,
       values: [
-        { value: build(sg) },
-        { value: build(pl) },
+        {value: build(sg)},
+        {value: build(pl)},
       ],
     }),
   );
@@ -860,7 +860,7 @@ function correctedProgressive(inputString, strongRadicals) {
   const YUDH = 'ܝ';
 
   if (inputString === gStrongPRP && strongRadicals[0] === YUDH) {
-    // eslint-disable-next-line no-param-reassign
+
     return 'ܒ{{{1}}}ܼ{{{2}}}ܵ{{{3}}}ܵܐ';
   }
   if (inputString === gWeak3PRP) {
@@ -875,15 +875,16 @@ function correctedProgressive(inputString, strongRadicals) {
 }
 
 const FORMS_WITH_SIYAME = new Set(['pp-p', 'an-pm', 'an-pf', 'in-p']);
+
 // const FORMS_WITH_SIYAME = new Set(['pp-p']);
-function correctSiyamePlacement(templateStr, strongRadicals, grammaticalPerson ) {
+function correctSiyamePlacement(templateStr, strongRadicals, grammaticalPerson) {
   if (!FORMS_WITH_SIYAME.has(grammaticalPerson)) return templateStr;
 
   const lastIdx = strongRadicals.lastIndexOf('ܪ');
   if (lastIdx === -1) return templateStr;
 
   const COMBINING_DIAERESIS = '\u{0308}';
-  const templatizedRadical = `{{{${lastIdx+1}}}}`;
+  const templatizedRadical = `{{{${lastIdx + 1}}}}`;
   return templateStr
     .replaceAll(COMBINING_DIAERESIS, '')
     .replaceAll(templatizedRadical, `${templatizedRadical}${COMBINING_DIAERESIS}`)
@@ -891,7 +892,7 @@ function correctSiyamePlacement(templateStr, strongRadicals, grammaticalPerson )
 }
 
 function replacePlaceholders(inputString, strongRadicals) {
-  // eslint-disable-next-line no-param-reassign
+
   inputString = correctedProgressive(inputString, strongRadicals);
 
   // Only capture a single digit [1-9] or weak radical (Alap, Yudh, Waw)
@@ -914,9 +915,9 @@ function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, i
   return {
     heading: schemaTense.left_heading,
     heading_2: schemaTense.right_heading,
-    rows: schemaTense.rows.map(({ left, right }) => ({
+    rows: schemaTense.rows.map(({left, right}) => ({
       meta: left,
-      values: right.map(({ value, type }) => ({
+      values: right.map(({value, type}) => ({
         value: replacePlaceholders(correctSiyamePlacement(patternArguments[value], strongRadicals, value), strongRadicals),
         ...(isVisualConj && {
           template_str: correctSiyamePlacement(patternArguments[value], strongRadicals, value),
@@ -924,7 +925,7 @@ function createVerbConjPreTable(schemaTense, patternArguments, strongRadicals, i
         }),
       })),
     })),
-    ...(schemaTense.disable_fuse === true && { disable_fuse: schemaTense.disable_fuse }),
+    ...(schemaTense.disable_fuse === true && {disable_fuse: schemaTense.disable_fuse}),
   };
 }
 
@@ -954,10 +955,10 @@ function createVerbConjPreTable2(schemaTense, patternArguments, strongRadicals) 
   return {
     heading: schemaTense.left_heading,
     heading_2: schemaTense.right_heading,
-    rows: schemaTense.rows.map(({ left, right }) => {
+    rows: schemaTense.rows.map(({left, right}) => {
       const aiiWords = [];
 
-      right.forEach(({ value, type }) => {
+      right.forEach(({value, type}) => {
         if (type === 'arg') {
           const resolved = replacePlaceholders(
             correctSiyamePlacement(patternArguments[value], strongRadicals, value),
@@ -1024,9 +1025,9 @@ function createCollapsedParadigmFrag(
 
   const menuIdx = 5;
 
-  const selectMenu = $('<select>', { class: 'infl-val-eng', id: `collapsed-paradigms-${slice}`, 'data-slice': slice })
+  const selectMenu = $('<select>', {class: 'infl-val-eng', id: `collapsed-paradigms-${slice}`, 'data-slice': slice})
     .append(
-      children.map(({ right_heading: [label] }, i) => $('<option>', { value: i, text: label })),
+      children.map(({right_heading: [label]}, i) => $('<option>', {value: i, text: label})),
     ).val(menuIdx);
 
   const $collapsedTableFrag = createTableFrag(preTables[menuIdx], aiiV, useProgressivePrefix);
@@ -1041,7 +1042,7 @@ function createConjFrag(jsonline, aiiV) {
   if ('verb_conjugation' in jsonline) {
     const frag = $(document.createDocumentFragment());
 
-    const { schema } = jsonline.verb_conjugation;
+    const {schema} = jsonline.verb_conjugation;
     const patternKey = jsonline.verb_conjugation.alt_pattern || jsonline.verb_conjugation.pattern;
     const patternArguments = conjPatterns[patternKey].parameters;
     const useProgressivePrefix = ['irregular', 'g-strong', 'g-weak-1', 'g-weak-2', 'g-weak-3'].includes(jsonline.verb_conjugation.pattern);
@@ -1055,9 +1056,9 @@ function createConjFrag(jsonline, aiiV) {
       );
       const tableFrag = createTableFrag(preTable, aiiV, useProgressivePrefix);
       if (schemaTense.children?.length) {
-        const $paradigmsButton = $('<button/>', { class: 'more-paradigms-button', text: 'show more' });
+        const $paradigmsButton = $('<button/>', {class: 'more-paradigms-button', text: 'show more'});
         tableFrag.append(
-          $('<div/>', { class: 'more-paradigms-button-container' }).append(
+          $('<div/>', {class: 'more-paradigms-button-container'}).append(
             $paradigmsButton,
           ),
         );
@@ -1111,7 +1112,7 @@ function createGlossTermsButtonFrag(sense) {
 
 function createGlossTermsTableFrag(sense) {
   if ('other_forms' in sense) {
-    const frag = $('<div/>', { class: 't3-linkages-and-examples' });
+    const frag = $('<div/>', {class: 't3-linkages-and-examples'});
     // set_linkage_table in datadump_to_dict.py ensures aiiV is omitted from t3 table
     frag.append(createTableRowsFrag(sense.other_forms, null));
     return frag;
@@ -1129,12 +1130,12 @@ function createExamplesButtonFrag(sense) {
 function createExamplesTableFrag(sense) {
   if (!('examples' in sense)) return null;
 
-  const frag = $('<div/>', { class: 't3-linkages-and-examples' });
+  const frag = $('<div/>', {class: 't3-linkages-and-examples'});
 
   sense.examples.forEach((example) => {
     const aiiText = example.is_quotation ? `”${example.text}“` : example.text;
 
-    const englishDiv = $('<div/>', { class: 'example-english' });
+    const englishDiv = $('<div/>', {class: 'example-english'});
     const englishText = example.is_quotation ? `"${example.english}"` : example.english;
 
     if (example.english_ref) {
@@ -1159,10 +1160,10 @@ function createExamplesTableFrag(sense) {
     }
 
     frag.append(
-      $('<div/>', { class: 'example-row' }).append(
-        $('<div/>', { class: 'example-row-vals' }).append(
-          $('<div/>', { class: 'example-text', text: aiiText }),
-          $('<div/>', { class: 'example-tr', text: aiiTranslit(aiiText).phonetic }),
+      $('<div/>', {class: 'example-row'}).append(
+        $('<div/>', {class: 'example-row-vals'}).append(
+          $('<div/>', {class: 'example-text', text: aiiText}),
+          $('<div/>', {class: 'example-tr', text: aiiTranslit(aiiText).phonetic}),
           englishDiv,
           literalDiv,
         ),
@@ -1190,7 +1191,7 @@ function createCategoriesFrag(sense, tierN) {
         ),
       );
     });
-    return $('<ul/>', { class: `t${tierN}-categories`, html: frag });
+    return $('<ul/>', {class: `t${tierN}-categories`, html: frag});
   }
 
   return null;

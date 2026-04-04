@@ -1,4 +1,3 @@
-
 def num_isolates():
     file_path = 'js/consts/aii-dict.min.js'
 
@@ -13,5 +12,6 @@ def num_isolates():
 
     if sum(occurrences):
         print(f'there are {occurrences} isolate characters in {file_path}')
+
 
 num_isolates()

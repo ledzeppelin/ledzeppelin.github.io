@@ -11,6 +11,7 @@ def gather(lines, key):
     should_collapse = len(vals) == len(lines) and all(v == vals[0] for v in vals)
     return vals, should_collapse
 
+
 def common_tier2_categories(jsonlines) -> Set[str]:
     if any("tier2_categories" not in obj for obj in jsonlines):
         return set()
@@ -19,8 +20,10 @@ def common_tier2_categories(jsonlines) -> Set[str]:
     category_sets = (set(obj["tier2_categories"]) for obj in jsonlines)
     return set.intersection(*category_sets)
 
+
 NUM_OMIT_T2_CATS = [4]
 UNFILTERED_WORDS_WITH_T2_CATS = []
+
 
 def collapse_etymologies(obj, inner_obj, jsonlines):
     of_roots, should_collapse_of_roots = gather(jsonlines, 'of_root')
@@ -59,11 +62,10 @@ def collapse_etymologies(obj, inner_obj, jsonlines):
         if 'tier0_categories' in obj:
             # check same tier 2 categories exist in all jsonlines per unvocalized spelling
             if obj['tier0_categories'] != sorted(common_t2):
-                raise Exception (obj['tier0_categories'])
+                raise Exception(obj['tier0_categories'])
         else:
             obj['tier0_categories'] = sorted(common_t2)
             obj['tier0_tags'] = [f"category:{cat}" for cat in obj['tier0_categories']]
-
 
     inner_obj['jsonlines'] = jsonlines
 
@@ -100,7 +102,6 @@ def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
     if deduped_cardinal_numbers != cardinal_numbers:
         raise Exception(cardinal_numbers)
 
-
     with open('./js/json/common-words.json', encoding="utf-8") as user_file:
         parsed_json = json.load(user_file)
 
@@ -108,7 +109,7 @@ def aii_dict_to_fuse(aii_dict, sounds, numbers_table):
 
     fuse_data = []
     for aii_not_v, aii_v_s in aii_dict.items():
-        obj = defaultdict(lambda:float('inf'))
+        obj = defaultdict(lambda: float('inf'))
 
         contains_root = unvocalized_contains_root(aii_v_s)
         obj['aii_not_v'] = aii_not_v
@@ -184,6 +185,7 @@ def validate_tag_order(objs):
                 for sense in jsonline['senses']:
                     validate_t3_tags(sense)
 
+
 def validate_t0_tags(obj):
     if 'tier0_tags' in obj:
         # per functions.js the DOM elements with .tier0-tag should appear in this order:
@@ -214,6 +216,7 @@ def validate_t1_tags(aii_v):
         if tier1 != aii_v['tier1_tags']:
             raise Exception(f'{tier1} doesnt equal {aii_v['tier1_tags']}')
 
+
 def validate_t2_tags(jsonline):
     if 'pos' not in jsonline:
         raise Exception('pos isnt in jsonline')
@@ -232,6 +235,7 @@ def validate_t2_tags(jsonline):
 
         if tier2 != jsonline['tier2_tags']:
             raise Exception(f'{tier2} doesnt equal {jsonline['tier2_tags']}')
+
 
 def validate_t3_tags(sense):
     if 'tier3_tags' in sense:
