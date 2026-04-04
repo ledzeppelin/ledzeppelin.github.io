@@ -3,6 +3,7 @@ from pprint import pprint
 from urllib.parse import quote
 import webbrowser
 
+
 def new_slugs():
     prev_file, cur_file = './js/json/_aii.prev.jsonl', './js/json/_aii.jsonl'
 
@@ -25,7 +26,7 @@ def new_slugs():
     # LIMIT = 9999
     print(len(list(prev_words ^ words)))
     for slug in prev_words ^ words:
-        i+=1
+        i += 1
         if i > LIMIT:
             break
         print(slug)

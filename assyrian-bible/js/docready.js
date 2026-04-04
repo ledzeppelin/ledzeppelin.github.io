@@ -2,7 +2,6 @@ $(document).ready(() => {
   $('#reading-level').change((e) => {
     const readingLevelInit = parseInt($(e.currentTarget).val(), 10);
     // this logic is all copied from query string parameter logic later in this file
-    // eslint-disable-next-line max-len
     const [readingLevelUnused, bookShortName, chapter, startHighlight, endHighlight] = processQueryStringParams();
     if (bookShortName !== null && chapter !== null && startHighlight !== null) {
       // the purpose of this logic is to maintain highlights when someone changes reading level
@@ -10,13 +9,11 @@ $(document).ready(() => {
       if (endHighlight !== null) {
         // 1. highlight range of verses
         const highlightVerses = `${chapter}:${startHighlight}-${endHighlight}`;
-        // eslint-disable-next-line max-len, object-curly-newline
         setDisplayedVerses({ readingLevelInit, bookShortNameInit: bookShortName, chapterInit: chapter, highlightVerses });
         parents.forEach((parent) => $(`${parent} .highlightable`).slice(startHighlight - 1, endHighlight).addClass('highlighted'));
       } else {
         // 2. highlight a single verse
         const highlightVerses = `${chapter}:${startHighlight}`;
-        // eslint-disable-next-line max-len, object-curly-newline
         setDisplayedVerses({ readingLevelInit, bookShortNameInit: bookShortName, chapterInit: chapter, highlightVerses });
         parents.forEach((parent) => $(`${parent} .highlightable`).slice(startHighlight - 1, startHighlight).addClass('highlighted'));
       }
@@ -68,7 +65,6 @@ $(document).ready(() => {
       const bookShortName = $('#books').find(':selected').val();
       setNumChapters(bible[bookShortName].length);
       $('#chapters').val(bible[bookShortName].length);
-      // eslint-disable-next-line max-len
       setDisplayedVerses({ bookShortNameInit: bookShortName, chapterInit: bible[bookShortName].length });
       scrollToStartOfBook();
     }
@@ -86,7 +82,6 @@ $(document).ready(() => {
       .appendTo('#books');
   });
 
-  // eslint-disable-next-line max-len
   const [readingLevel, bookShortName, chapter, startHighlight, endHighlight] = processQueryStringParams();
   if (readingLevel != null) {
     $('#reading-level').val(readingLevel);
@@ -105,13 +100,11 @@ $(document).ready(() => {
         if (endHighlight !== null) {
           // 1. highlight range of verses
           const highlightVerses = `${chapter}:${startHighlight}-${endHighlight}`;
-          // eslint-disable-next-line max-len
           setDisplayedVerses({ bookShortNameInit: bookShortName, chapterInit: chapter, highlightVerses });
           parents.forEach((parent) => $(`${parent} .highlightable`).slice(startHighlight - 1, endHighlight).addClass('highlighted'));
         } else {
           // 2. highlight a single verse
           const highlightVerses = `${chapter}:${startHighlight}`;
-          // eslint-disable-next-line max-len
           setDisplayedVerses({ bookShortNameInit: bookShortName, chapterInit: chapter, highlightVerses });
           parents.forEach((parent) => $(`${parent} .highlightable`).slice(startHighlight - 1, startHighlight).addClass('highlighted'));
         }

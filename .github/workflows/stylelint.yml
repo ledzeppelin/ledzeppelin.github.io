@@ -1,0 +1,27 @@
+name: stylelint
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: npm install
+      - name: Check linting and formatting
+        run: npx stylelint "**/*.scss"
+      - name: Compile SCSS
+        run: make sass-compile
+      - name: Check for uncommitted CSS changes
+        run: |
+          if [ -n "$(git diff --name-only)" ]; then
+            echo "::error::Compiled CSS is out of date. Run sass locally and commit the changes."
+            git diff --name-only
+            exit 1
+          fi

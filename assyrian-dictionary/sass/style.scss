@@ -1,0 +1,817 @@
+@use 'sass:color';
+@use 'sass:list';
+@use 'constants' as *;
+@use '../../shared_sass/constants/symbols' as *;
+@use '../../shared_sass/mixins/mixins' as *;
+@use '../../shared_sass/mixins/searchapp_mixin' as *;
+@use 'dark-mode' as *;
+
+
+$max-width: 582px;
+$side-padding: 16px;
+$searchbar-inset-x: 20px;
+$close-x: $searchbar-inset-x - $side-padding;
+$button-padding: 12px;
+$half-icon-size: 12px;
+$button-diameter: 3 * $half-icon-size + 2px;
+
+@include search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x);
+
+$view-margin-y: 20px;
+
+#search-results {
+  margin: $view-margin-y 0;
+}
+
+#numbers-table {
+  margin: $view-margin-y $side-padding + $searchbar-inset-x;
+
+  .more-info {
+    margin: 0;
+  }
+}
+
+
+#tagged-results-meta {
+  @include eng-text('s');
+
+  margin: 0 $side-padding + $searchbar-inset-x 4px;
+
+  #matched-tag {
+    font-weight: 500;
+  }
+}
+
+
+$top-tags-margin: 6px;
+
+#top-tags-container {
+  margin: $view-margin-y $side-padding - $top-tags-margin;
+  text-align: center;
+
+  button,
+  a {
+    @include eng-text('s', 400);
+
+    border-style: solid;
+    border-width: 1px;
+    margin: $top-tags-margin;
+  }
+
+  li,
+  a {
+    display: inline-block;
+  }
+
+  button {
+    border-radius: 10px;
+    padding: 8px 12px;
+    $duration: 100ms;
+
+    transition: color $duration, background-color $duration, border-color $duration;
+
+    &:not(.active) {
+      cursor: pointer;
+    }
+  }
+
+  a {
+    border-radius: 8px;
+    padding: 4px 8px;
+  }
+}
+
+#top-tags-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  .top-tags-menu-more {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+
+.expandable-btn {
+  align-items: center;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  display: flex;
+  margin: 0;
+  padding: 0;
+
+  @media (hover: hover) and (pointer: fine) { // use underline on desktop
+    &:hover {
+      border-radius: 6px;
+    }
+  }
+
+
+  .expandable-btn-text {
+    @include eng-text('s', 400);
+  }
+
+  .expandable-btn-icon {
+    font-size: $half-icon-size * 2;
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    transition: transform 200ms;
+
+    &.expanded {
+      transform: rotate(90deg);
+    }
+  }
+}
+
+
+.free-text-search-result {
+  border-radius: 12px;
+  display: block;
+  margin: 0 $side-padding $view-margin-y;
+  padding: $searchbar-inset-x;
+  position: relative;
+  text-decoration: none;
+
+  &:hover,
+  &:visited,
+  &:active {
+    text-decoration: none;
+  }
+
+  & > .aii-v-word {
+    // harcoding this for now but can be inferred from button size padding/margin
+    margin-right: 20px;
+  }
+
+  & > .aii-v-word-tr-container {
+    margin-bottom: 8px;
+  }
+}
+
+.free-text-btn-icon {
+  font-size: $half-icon-size * 2;
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+  position: absolute;
+  right: $button-padding + $close-x;
+  top: $button-padding + $close-x;
+  // border: 1px solid #333
+}
+
+.search-result {
+  display: flex; // so we can set order
+  flex-direction: column;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  padding-left: $side-padding + $searchbar-inset-x;
+  padding-right: $side-padding + $searchbar-inset-x;
+  position: relative;
+}
+
+$table-y-spacing: 32px;
+$v-word-spacing: 40px;
+
+
+button {
+  touch-action: manipulation; // disable double tap: https://stackoverflow.com/a/53236027
+}
+
+.aii-v-word-container {
+  padding-bottom: $v-word-spacing;
+
+  &.show-first {
+    order: -1;
+  }
+}
+
+.aii-v-word {
+  @include aii-text('l');
+  // safeguard for ܨܲܚܨܹܐ
+  padding-bottom: 6px;
+  text-align: left;
+
+  .highlighted,
+  &.exact-aii-search-match {
+    font-weight: 500;
+  }
+}
+
+.aii-v-word-tr-container {
+  align-items: center;
+  display: flex;
+
+  .aii-v-word-tr {
+    @include eng-text('m', $is-translit: true);
+
+    .highlighted {
+      font-weight: 500;
+    }
+  }
+}
+
+.aii-v-meta-container {
+  @include eng-text('s');
+  // margin-bottom: 16px
+  margin-top: 6px;
+}
+
+
+.jsonline {
+  padding-top: 16px;
+}
+
+$microrad-height: 14px;
+$microrad-border-width: 2px;
+
+$add-space: 4px;
+
+//////////////////////////////////////////////
+// dont adjust these only change $add-space //
+//////////////////////////////////////////////
+$more-defs-button-diam: 38px;
+$cir-pad: $microrad-height + 2 * $microrad-border-width + $add-space;
+
+
+.pos {
+  @include eng-text('s');
+
+  align-items: center;
+  display: flex;
+  gap: 6px;
+
+  & > * {
+    align-self: flex-end;
+  }
+
+  .colorful-verb-wrapper {
+    // background-color: lightblue
+    height: $more-defs-button-diam + $add-space;
+    margin-left: auto;
+    // outline: 1px solid #333
+    padding: $cir-pad $cir-pad 0 $cir-pad;
+    position: relative;
+    width: $more-defs-button-diam;
+  }
+
+  .inflections-button-container {
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    flex-shrink: 0;
+    height: $more-defs-button-diam;
+    margin-left: auto;
+    padding: 0;
+    width: $more-defs-button-diam;
+
+    .inflections-button {
+      font-size: $half-icon-size * 2;
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      margin-top: 4px;
+      transition: transform 200ms;
+
+      &.expanded {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+
+@mixin position-microrad-along-arc($i, $radius) {
+  $angle: $i * 45deg;
+  $orbit-name: orbit-#{$i};
+  $orbit-end: translate(-50%, 0) rotate(-$angle) translate($radius) rotate(90deg);
+
+  animation: #{$orbit-name} .4s ease;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: $orbit-end;
+  z-index: 5 - $i;
+
+  @keyframes #{$orbit-name} {
+    from {
+      transform: translate(-50%, 0) rotate(0deg) translate($radius) rotate(90deg);
+    }
+
+    to {
+      transform: $orbit-end;
+    }
+  }
+}
+
+@each $total in 2, 3, 4, 5 {
+  @for $i from 0 through ($total - 1) {
+    .microrad-along-arc-#{$i} {
+      @include position-microrad-along-arc($i, 28px + $add-space);
+    }
+  }
+}
+
+
+.microrad-legend {
+  position: absolute;
+  right: $searchbar-inset-x + 24px;
+  top: $searchbar-inset-x - 3px;
+
+  > div {
+    margin-left: 4px;
+  }
+}
+
+.microrad {
+  @include eng-text('xs', 500);
+
+  border-radius: 3px;
+  border-style: solid;
+  border-width: $microrad-border-width;
+  display: inline-block;
+  height: $microrad-height;
+  line-height: $microrad-height;
+  text-align: center;
+  vertical-align: middle; // for firefox
+  width: 10px;
+}
+
+
+.of-root-container {
+  display: inline-block;
+}
+
+.of-root-tr {
+  @include eng-text('s', $is-translit: true);
+}
+
+.of-root-aii {
+  @include aii-text('s');
+}
+
+$y-margin: 8px;
+
+.free-text-t0,
+.free-text-t1,
+.free-text-t2 {
+  @include eng-text('s');
+
+  margin-bottom: 2px;
+  margin-top: $y-margin; // no margin collapsing since these are inline-block
+}
+
+
+$sound-button-padding: 6px;
+$sound-accent-offset: 8px;
+
+.free-text-t1-ipa-container {
+  align-items: center;
+  display: flex !important; // prevent inline-block from .tier1-tag, ex. ipa:nineveh+plains
+  margin-bottom: 12px;
+  margin-top: 12px;
+
+  .free-text-ordinal {
+    @include eng-text('s');
+  }
+
+  .free-text-t1-play-sound {
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    font-size: $half-icon-size * 2;
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    margin-right: $sound-accent-offset;
+    padding: $sound-button-padding;
+  }
+}
+
+.free-text-ipa {
+  @include eng-text('m');
+  // otherwise letters of ipa [mɡarɡɪm] for 'mgargim' don't appear aligned to baseline on windows
+  font-family: sans-serif;
+  overflow-wrap: anywhere; // break long words "holy spirit"
+  white-space: normal;
+}
+
+$sense-indent: 34px;
+
+.free-text-senses {
+  margin: 0;
+  padding-left: $sense-indent;
+}
+
+.senses {
+  margin: 0;
+  padding-left: $sense-indent;
+  padding-top: 6px;
+
+  &.only-one-gloss {
+    list-style-type: none;
+  }
+}
+
+
+// $display-toggle: auto
+$display-toggle: none;
+
+
+.gloss-container {
+  @include eng-text('s');
+}
+
+.free-text-gloss {
+  @include eng-text('s', $using-aii: true);
+
+  .highlighted {
+    font-weight: 500;
+  }
+}
+
+.gloss {
+  @include eng-text('s', $using-aii: true);
+
+  .highlighted {
+    font-weight: 500;
+  }
+}
+
+
+.ety-list {
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+
+.ety-list > li {
+  display: inline-block;
+
+  &:not(:last-child)::after {
+    content: ',\00A0';
+  }
+}
+
+
+// https://chriskirknielsen.com/blog/inline-lists-with-conditional-separators/
+.t3-categories {
+  padding: 0;
+}
+
+.t0-categories {
+  @include eng-text('s');
+
+  margin: 0 0 $v-word-spacing;
+  padding: 0;
+
+  &::before {
+    content: 'see also: ';
+  }
+}
+
+
+.t3-categories > li,
+.t0-categories > li {
+  display: inline-block;
+
+  &:not(:last-child)::after {
+    content: ' |';
+    $space-px: 3px;
+
+    margin-left: 3px;
+    margin-right: 3px + $space-px;
+  }
+}
+
+
+.t3-linkages-and-examples {
+  display: $display-toggle;
+
+  & > .example-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 0;
+
+    .example-row-vals {
+      border-left-style: solid;
+      border-left-width: 3px;
+      padding: 8px 0;
+      padding-left: 12px;
+    }
+  }
+}
+
+$table-y-margin: 24px;
+
+.more-info { // all t2 tables like head templates and inflections
+  display: $display-toggle;
+
+  &.has-heading {
+    margin: $table-y-margin 0;
+
+    // if the very next sibling is .more-paradigms, margin-bottom is 0
+    &:has(+ .more-paradigms) {
+      margin: $table-y-margin 0 0;
+    }
+  }
+}
+
+
+$infl-row-y-pad: 6px;
+
+.infl-row {
+  align-items: baseline;
+  display: flex;
+  gap: 8px;
+  padding: 2 * $infl-row-y-pad 0 0; // check verb form "azen"
+  // padding: $infl-row-y-pad 0
+
+  &:last-child {
+    padding-bottom: $infl-row-y-pad;
+  }
+
+  &.is-heading {
+    align-items: end;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    padding-bottom: $infl-row-y-pad;
+  }
+
+  .infl-meta {
+    @include eng-text('s', 400);
+
+    white-space: nowrap; // improve readability for expanded verb forms
+  }
+
+  .infl-vals {
+    margin-left: auto;
+  }
+}
+
+
+// 2 tables for vis verb conj
+//   has heading
+//     1. root entry table
+//     2. verb conj table
+
+
+.headered-rows > .rows-y-padding {
+  margin: 12px 0;
+
+  &:first-child {
+    margin-top: 0;
+    // background-color: rgba(red, .1)
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+    // background-color: rgba(blue, .1)
+  }
+}
+
+.cog-val-container {
+  @include eng-text('s');
+  // background-color: rgba(red, .1)
+  // padding should help match height of infl-val-container
+  padding-bottom: 7px;
+  padding-top: 4px;
+  text-align: right;
+}
+
+.infl-val-container {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+
+  .infl-val {
+    @include aii-text('s');
+
+    &.does-match {
+      @include aii-text('s', 500);
+    }
+  }
+
+  .infl-val-eng {
+    @include eng-text('s');
+  }
+
+  select {
+    &.infl-val-eng {
+      box-sizing: border-box;
+      max-width: 100%;
+      min-width: 0;
+      text-align: right;
+      width: 100%;
+    }
+  }
+
+  .infl-tr {
+    @include eng-text('s', $is-translit: true);
+
+    &.does-match {
+      @include eng-text('s', 500, $is-translit: true);
+    }
+  }
+
+  .infl-val-anchor {
+    @include aii-text('s');
+  }
+}
+
+
+.radical-highlighted-verb-form {
+  @include aii-text('s');
+
+  margin: 8px 0;
+}
+
+.tinyrad {
+  @include aii-text('s');
+
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 2px;
+  margin: 0 1px;
+  // need y-padding for diacritics
+  padding: 2px 4px;
+}
+
+.tinyrad-is-first {
+  margin-right: 0;
+}
+
+.rad-is-weak {
+  border-style: dotted;
+}
+
+.sound-containers {
+  &:not(.always-show) {
+    display: none;
+  }
+
+  .sound-container {
+    padding-top: 12px;
+  }
+}
+
+.inactive-more-sounds-button {
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+  flex-shrink: 0;
+  font-size: $half-icon-size * 2;
+  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  height: $button-diameter - 2px;
+  line-height: $button-diameter - 2px;
+  margin-right: 8px;
+  text-align: center;
+  width: $button-diameter - 2px;
+}
+
+
+.more-sounds-button {
+  $br-width: 1px;
+
+  border-radius: 50%;
+  border-style: solid;
+  border-width: $br-width;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: $half-icon-size * 2;
+  font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  height: $button-diameter;
+  margin-right: 8px;
+  padding: 0;
+  transition: transform 200ms;
+  width: $button-diameter;
+
+  &::before {
+    content: 'select_to_speak';
+  }
+
+  &.expanded {
+    font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    transform: rotate(180deg);
+
+    &::before {
+      content: 'keyboard_arrow_down';
+    }
+  }
+}
+
+
+.more-paradigms {
+  display: flow-root; // disable margin collapsing for smooth slidetoggle animations
+
+  .more-info:first-child {
+    margin-top: 0;
+  }
+}
+
+.more-paradigms-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.more-paradigms-button {
+  @include eng-text('s', 500);
+
+  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  padding: 6px 10px;
+}
+
+
+.play-sound-container {
+  align-items: center;
+  display: flex;
+
+  .play-sound {
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    cursor: pointer;
+    font-size: $half-icon-size * 2;
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    padding: $sound-button-padding;
+    transition: border 200ms, color 200ms, font-variation-settings 200ms;
+
+    &.playing-sound {
+      // border-width: 3px
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+  }
+
+  .accent-name-container {
+    @include eng-text('s');
+
+    margin-left: $sound-accent-offset;
+  }
+}
+
+
+.sound-meta-container {
+  display: none;
+  $sound-meta-offset: 2 * $half-icon-size + 2 * $sound-button-padding + $sound-accent-offset;
+
+  margin-bottom: 12px;
+  margin-left: $sound-meta-offset;
+}
+
+.ipa {
+  @include eng-text('m');
+  // otherwise letters of ipa [mɡarɡɪm] for 'mgargim' don't appear aligned to baseline on windows
+  font-family: sans-serif;
+  margin-left: 8px;
+  overflow-wrap: anywhere; // break long words "holy spirit"
+  // slight flicker on iPhone for chrome for words like [t͡ʃæl.vɑː],
+  // more pronounced when line-height is 1.5
+  transition: color 200ms;
+}
+
+.ipa-info {
+  @include eng-text('xs');
+
+  margin-left: 46px;
+}
+
+.tag-highlight {
+  font-weight: 500;
+}
+
+.tr-backlink-container {
+  font-style: normal;
+  margin-top: -4px;
+}
+
+
+#wiktionary-datadump {
+  @include eng-text('xs');
+
+  margin: $view-margin-y 0;
+  padding-left: $side-padding + $searchbar-inset-x;
+  padding-right: $side-padding + $searchbar-inset-x;
+  text-align: justify;
+}
+
+.example-text {
+  @include aii-text('s');
+
+  text-align: right;
+}
+
+.example-tr {
+  @include eng-text('s', $is-translit: true);
+}
+
+.example-english {
+  @include eng-text('s');
+}
+
+.example-english-ref {
+  @include eng-text('s', $using-aii: true);
+}
+
+.tier1-tag,
+.tier2-tag,
+.in-numbers-table {
+  display: inline-block;
+}

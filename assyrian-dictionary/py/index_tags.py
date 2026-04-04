@@ -2,10 +2,12 @@ import json
 from collections import defaultdict
 
 from .vars.consts import attached_pronouns, subject_pronouns
+
 expected_counts = {
     'pos:attached pronoun': len(attached_pronouns),
     'pos:subject pronoun': len(subject_pronouns)
 }
+
 
 def tag_counts():
     with open('./js/json/aii-dict-no-tr.json', encoding="utf-8") as f:
@@ -30,6 +32,7 @@ def tag_counts():
     # raise Exception(counter)
     return counter
 
+
 def tag_counts_grouped(tag_counter):
     MIN_OCCURRENCES = 4
     # MIN_OCCURRENCES = 1
@@ -37,7 +40,6 @@ def tag_counts_grouped(tag_counter):
     for tag, expected_count in expected_counts.items():
         if tag_counter[tag] != expected_count:
             raise Exception(f"Expecting {expected_count} {tag.replace('pos:', '')}, got {tag_counter[tag]}")
-
 
     exempt_from_min_occurrences = {'pos:4-letter root', 'pos:5-letter root'}
     results = defaultdict(list)
@@ -50,8 +52,9 @@ def tag_counts_grouped(tag_counter):
     # {'ipa': ['standard', 'Urmian', 'Nineveh Plains']}
     return results
 
+
 def append_l2(tag_type, tag_names, l2_entry, fuse_results):
-    children =  []
+    children = []
     for tag_name in tag_names:
         child = {
             'name': tag_name,
@@ -61,8 +64,6 @@ def append_l2(tag_type, tag_names, l2_entry, fuse_results):
             child['sort_key'] = f'pronoun {tag_name}'
 
         children.append(child)
-
-
 
     fuse_results.append({
         'name': l2_entry['name'],
@@ -82,6 +83,7 @@ def sort_dictionary_tags(fuse_results):
             )
 
     return sorted(fuse_results, key=lambda l1: l1.get('sort_key', l1['name']))
+
 
 def parse_indices(tag_counter):
     # omit = {'category', 'from', 'ipa'}
@@ -131,6 +133,7 @@ def parse_indices(tag_counter):
             raise Exception(f'{tag_type} not found')
 
     return sort_dictionary_tags(fuse_results)
+
 
 # print(tag_counts())
 

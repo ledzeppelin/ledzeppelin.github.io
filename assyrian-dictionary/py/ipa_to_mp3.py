@@ -10,8 +10,9 @@ from botocore.exceptions import BotoCoreError, ClientError
 # AWS_ACCESS_KEY_ID
 # AWS_SECRET_ACCESS_KEY
 # AWS_DEFAULT_REGION
-session = Session()
+session = Session(region_name=os.environ.get("AWS_DEFAULT_REGION", "us-east-1"))
 polly = session.client("polly")
+
 
 def ipa_to_mp3(ipa, hash_str, use_cached_audio):
     output = os.path.join('./audio', f"{hash_str}.mp3")
@@ -32,16 +33,14 @@ def ipa_to_mp3(ipa, hash_str, use_cached_audio):
             Text=phoneme_slow,
             TextType="ssml",
             OutputFormat="mp3",
-            Engine = 'neural',
+            Engine='neural',
             VoiceId="Hala",
             # VoiceId="Zayd",
         )
     except (BotoCoreError, ClientError) as error:
-        # The service returned an error, exit gracefully
         print(error)
+        print("Try setting AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY")
         sys.exit(-1)
-
-
 
     # Access the audio stream from the response
     if "AudioStream" in response:

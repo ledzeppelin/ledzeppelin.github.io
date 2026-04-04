@@ -2,6 +2,8 @@
 
 import json
 from collections import defaultdict
+
+
 # see https://en.wiktionary.org/wiki/%DC%92-#Particle
 def canonical_spellings():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
@@ -24,8 +26,10 @@ def canonical_spellings():
             num_canonical += 1
 
     print(num_canonical)
-    print(f'{round(100*(num_numltiple_canonical/num_canonical), 2)}% of vocalized spellings have multiple canonical spellings)')
+    print(
+        f'{round(100 * (num_numltiple_canonical / num_canonical), 2)}% of vocalized spellings have multiple canonical spellings)')
     return aii_dict
+
 
 foo = canonical_spellings()
 print(foo)

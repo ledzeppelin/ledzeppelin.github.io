@@ -37,7 +37,7 @@ try:
         Text=phoneme_slow,
         TextType="ssml",
         OutputFormat="mp3",
-        Engine = 'neural',
+        Engine='neural',
         VoiceId="Hala",
         # VoiceId="Zayd",
     )
@@ -45,7 +45,6 @@ except (BotoCoreError, ClientError) as error:
     # The service returned an error, exit gracefully
     print(error)
     sys.exit(-1)
-
 
 # Access the audio stream from the response
 if "AudioStream" in response:

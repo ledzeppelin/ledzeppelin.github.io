@@ -3,6 +3,7 @@
 import os
 import sys
 
+
 def main():
     # Files to compare
     new_file = "js/consts/aii-dict.min.js.gz"
@@ -30,7 +31,7 @@ def main():
 
     # ANSI escape codes for colors
     GREEN = "\033[92m"
-    RED   = "\033[91m"
+    RED = "\033[91m"
     RESET = "\033[0m"
 
     # Decide which color and message to print

@@ -1,3 +1,4 @@
+/* global AiiUtils */
 function createFuseInstances(keys2D, searchObjectArray) {
   const instances = [];
 

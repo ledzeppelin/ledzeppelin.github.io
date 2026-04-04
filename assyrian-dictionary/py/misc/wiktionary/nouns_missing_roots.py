@@ -1,5 +1,6 @@
 import json
 
+
 def nouns_missing_roots():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]

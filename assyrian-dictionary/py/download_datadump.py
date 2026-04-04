@@ -8,10 +8,9 @@ from tempfile import NamedTemporaryFile
 from requests import get
 from tqdm import tqdm
 
-
-DUMP_URL  = "https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz"
-BASE_DIR  = Path("js/json")
-CUR_FILE  = BASE_DIR / "_aii.jsonl"
+DUMP_URL = "https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz"
+BASE_DIR = Path("js/json")
+CUR_FILE = BASE_DIR / "_aii.jsonl"
 PREV_FILE = BASE_DIR / "_aii.prev.jsonl"
 BASE_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -39,8 +38,9 @@ def stream_decompressed_lines(url):
 
         # gzip can now use r.raw directly
         with gzip.GzipFile(fileobj=r.raw) as gz, \
-             io.TextIOWrapper(gz, encoding="utf-8") as txt:
-            yield from txt          # re-yield every line verbatim
+                io.TextIOWrapper(gz, encoding="utf-8") as txt:
+            yield from txt  # re-yield every line verbatim
+
 
 def build_filtered_dump() -> Path:
     with NamedTemporaryFile(

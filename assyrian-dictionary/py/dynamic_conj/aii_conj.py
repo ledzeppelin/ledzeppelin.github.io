@@ -1,6 +1,7 @@
 import re
 from .utils import AiiConjugation
 
+
 def aii_conj(aii_v):
     # given the non-past, 3rd person, single, masculine form of a verb
     # return the template name and the arguments to that template which generate the other forms
@@ -18,11 +19,9 @@ def aii_conj(aii_v):
             'args': args,
         }
 
-
     for pattern, num_atwateh, regex in patterns:
-        match =  re.match(regex, aii_v)
+        match = re.match(regex, aii_v)
         if len(vowel_diacritics_stripped) == num_atwateh and match:
-
             args = list(match.groups())
             matched_patterns.append(
                 {
@@ -37,6 +36,5 @@ def aii_conj(aii_v):
         return matched_patterns[0]
 
     raise Exception(f'{aii_v} matched {", ".join(matched_patterns)} - it should only match one conjugation pattern')
-
 
 # print(aii_conj('ܥܵܐܹܠ'))

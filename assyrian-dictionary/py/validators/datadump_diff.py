@@ -4,9 +4,11 @@ import difflib
 from typing import Callable
 from ..vars.consts import linkage_types
 
+
 def is_valid_aii_v(item):
     is_valid = 'forms' in item and item['forms'][0]['tags'][0] == 'canonical'
     return is_valid or item['pos'] != 'root'
+
 
 class DiffInfo:
     def __init__(self, prev_file, file):
@@ -80,7 +82,6 @@ class DiffInfo:
                             counter[category['name']] += 1
         return counter
 
-
     def ety_counters(self, filename):
         with open(f'./js/json/{filename}', encoding="utf-8") as f:
             data = [json.loads(line) for line in f]
@@ -124,13 +125,14 @@ class DiffInfo:
                 else:
                     ht_deep[ht_name][key] += 1
 
-        ht_deep.pop('head') # we don't really care abt this
+        ht_deep.pop('head')  # we don't really care abt this
         return ht_shallow, ht_deep
 
     def shallow_head_template_counters(self, filename):
         shallow, _ = self.head_template_counters(filename)
 
         return shallow
+
     def deep_head_template_counters(self, filename):
         _, deep = self.head_template_counters(filename)
         return deep
@@ -153,7 +155,6 @@ class DiffInfo:
             if not item['inflection_templates'][-1]['name'] == 'aii-conj':
                 continue
             shallow[pos_template_name] += 1
-
 
         return shallow
 
@@ -200,7 +201,7 @@ class DiffInfo:
             if not is_valid_aii_v(item):
                 continue
             for sense in item['senses']:
-                for key, values in sense.items(): # ex. key == meronyms
+                for key, values in sense.items():  # ex. key == meronyms
                     if key not in linkage_types:
                         continue
                     for value in values:
@@ -241,7 +242,7 @@ class DiffInfo:
             if not is_valid_aii_v(item):
                 continue
             for sense in item['senses']:
-                if not 'examples' in sense:
+                if 'examples' not in sense:
                     continue
                 for example in sense['examples']:
                     for key, val in example.items():
@@ -249,6 +250,7 @@ class DiffInfo:
                         if key == 'type':
                             type_counter[val] += 1
         return counter, type_counter
+
 
 diffInfo = DiffInfo('_aii.prev.jsonl', '_aii.jsonl')
 diffInfo.print_diffs()
