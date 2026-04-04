@@ -1,0 +1,190 @@
+@use 'sass:list';
+@use '../../shared_sass/constants/symbols' as *;
+@use '../../shared_sass/constants/constants' as *;
+@use '../../shared_sass/mixins/mixins' as *;
+@use '../../shared_sass/mixins/mixins_bible' as *;
+@use 'dark-mode' as *;
+
+$key-color: dodgerblue;
+$max-width: 768px;
+$side-padding: 16px;
+
+body {
+  margin: 0 auto;
+  max-width: $max-width;
+}
+
+#title {
+  @include syrc-header($key-color);
+}
+
+#subtitle {
+  @include subtitle($key-color);
+}
+
+@include backlinks;
+
+#reading-level-container {
+  margin-bottom: 4px; // we need some spacing for iOS so the bottom blue outline doesn't get cut off
+  padding-left: $side-padding;
+  padding-right: $side-padding;
+  text-align: center;
+}
+
+#bible-controls-container {
+  -webkit-backdrop-filter: blur(10px);
+  align-items: center; // stylelint-disable-line order/properties-alphabetical-order -- controls in row are vertically aligned in the center
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-evenly;
+  padding: 12px $side-padding;
+  // when resizing width of browser, there may be a fractional pixel gap above this container due to variable
+  // #title and #subtitle elements above, see: https://samhermes.com/posts/closing-gap-above-sticky-elements/
+  position: sticky;
+  top: 0;
+
+  @media screen and (width <= $mobile-viewport-width-max) {
+    justify-content: space-between;
+  }
+}
+
+
+select {
+  @include eng-text('m');
+
+  font-family: sans-serif;
+}
+
+button {
+  font-family: sans-serif;
+  touch-action: manipulation; // disable double tap: https://stackoverflow.com/a/53236027
+}
+
+#prev-chapter,
+#next-chapter {
+  font-size: 24px;
+  font-variation-settings: 'OPSZ' 24;
+
+  @media screen and (width <= $mobile-viewport-width-max) {
+    font-size: 16px; // should match size of eng-text from select element for drop downs
+    font-variation-settings: 'wght' 700, 'OPSZ' 20; // lowest we can go
+  }
+}
+
+
+// --------------
+// bible contents
+// --------------
+#bible {
+  margin-left: $side-padding;
+  margin-right: $side-padding;
+  // https://stackoverflow.com/a/9519147
+}
+
+$row-spacing: 28px;
+
+.aii-book-name {
+  @include aii-text('xl', 600);
+
+  margin-bottom: calc($row-spacing / 2);
+  margin-top: calc($row-spacing / 2);
+  text-align: center;
+}
+
+.header,
+.header-2 {
+  @include aii-text('l', 600);
+}
+
+.reference {
+  @include aii-text('m', 400);
+}
+
+#search-bible-backlink-container {
+  padding-bottom: 6px;
+  padding-top: 2px;
+  text-align: right;
+}
+
+.verses-ol {
+  list-style-type: none;
+  margin-block-end: 0;
+  margin-block-start: 0;
+  margin-bottom: 1.5 * $row-spacing;
+  padding-inline-start: 0;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+li {
+  margin-bottom: 4px;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.aii-verse {
+  @include aii-text('m');
+
+  margin-top: $row-spacing;
+  text-align: right;
+
+  .marker {
+    // https://developer.mozilla.org/en-US/docs/Web/CSS/@counter-style
+    // https://caniuse.com/css-at-counter-style
+    // we dont use ::marker because safari/webkit can't read display aii numerals rtl and we also dont want period after ar numerals
+    border-radius: 4px;
+    font-weight: 600;
+    margin-left: 4px;
+    padding: 0 4px;
+  }
+}
+
+
+.aii-tr {
+  @include eng-text('m', $is-translit: true);
+}
+
+.tr-backlink-container {
+  font-style: normal;
+  margin-top: -6px;
+  padding-bottom: 6px;
+}
+
+
+.translation-caption {
+  @include eng-text('xs');
+
+  margin-top: -2px;
+}
+
+.eng-verse {
+  @include eng-text('m');
+
+  .marker {
+    border-radius: 4px;
+    font-weight: 700;
+    margin-right: 4px;
+    padding: 2px 4px;
+  }
+
+
+  .missing-verse {
+    @include eng-text('xs');
+
+    &::before {
+      content: '(';
+    }
+
+    &::after {
+      content: ')';
+    }
+  }
+}
+
+#copyright-container {
+  @include copyright-container($side-padding);
+}

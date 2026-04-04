@@ -1,5 +1,6 @@
 import json
 
+
 def verbs_missing_roots():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
@@ -17,6 +18,7 @@ def verbs_missing_roots():
                     root = ety['args'].get('1', None)
         if not root:
             print(f'https://en.wiktionary.org/wiki/{item['word']}#Assyrian_Neo-Aramaic')
+
 
 msg = 'aii-conj pages that are missing rootbox under etymology section'
 

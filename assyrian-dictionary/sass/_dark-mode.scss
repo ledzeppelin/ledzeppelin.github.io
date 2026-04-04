@@ -1,0 +1,517 @@
+@use 'sass:color';
+@use 'sass:list';
+@use 'constants' as *;
+@use '../../shared_sass/constants/colors' as *;
+
+
+$key-color-dark: color.adjust($key-color, $lightness: 10%);
+
+// https://developer.apple.com/design/human-interface-guidelines/color#iOS-iPadOS-system-colors
+// iOS, iPadOS system colors - Accessible (Light)
+$apple-blue: rgb(0 64 221);
+$apple-red: rgb(215 0 21);
+$apple-green: rgb(36 138 61);
+$apple-purple: rgb(173 68 171);
+$apple-yellow: rgb(178 80 0);
+$apple-colors: ($apple-blue, $apple-red, $apple-green, $apple-purple, $apple-yellow);
+
+// iOS, iPadOS system colors - Accessible (Dark)
+$apple-blue-dark: rgb(64 156 255);
+$apple-red-dark: rgb(255 105 97);
+$apple-green-dark-1: rgb(49 222 75);
+$apple-green-dark: color.mix($apple-green-dark-1, $apple-green, 60%); // since Accessible (Dark) is too bright
+$apple-purple-dark: rgb(218 143 255);
+$apple-yellow-dark: rgb(255 212 38);
+$apple-colors-dark: ($apple-blue-dark, $apple-red-dark, $apple-green-dark, $apple-purple-dark, $apple-yellow-dark);
+
+
+@mixin rad-color($color, $dark-color) {
+  background-color: rgba($color, .06);
+  border-color: rgba($color, .32);
+  color: $color;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: rgba($dark-color, .06);
+    border-color: rgba($dark-color, .44);
+    color: $dark-color;
+  }
+}
+
+@mixin rad-colors($light-colors, $dark-colors) {
+  .rad-is-weak {
+    border-color: $secondary-label;
+    color: $secondary-label;
+
+    @media (prefers-color-scheme: dark) {
+      border-color: $secondary-label-dark;
+      color: $secondary-label-dark;
+    }
+  }
+
+  @for $i from 0 through 4 {
+    .rad-clr-#{$i} {
+      $color: list.nth($light-colors, $i + 1);
+      $dark-color: list.nth($dark-colors, $i + 1);
+
+      @include rad-color($color, $dark-color);
+    }
+  }
+}
+
+
+#top-tags-container {
+  button,
+  a {
+    background-color: transparent;
+    border-color: color.adjust($secondary-background, $lightness: -10%);
+
+    @media (prefers-color-scheme: dark) {
+      border-color: color.adjust($secondary-background-dark, $lightness: 12%);
+    }
+  }
+
+
+  button {
+    color: $label;
+
+    @media (prefers-color-scheme: dark) {
+      color: $label-dark;
+    }
+
+    @media (hover: hover) and (pointer: fine) { // use underline on desktop
+      &:hover {
+        background-color: color.adjust($secondary-background, $lightness: -8%);
+        border-color: color.adjust($secondary-background, $lightness: -8%);
+
+        @media (prefers-color-scheme: dark) {
+          background-color: color.adjust($secondary-background-dark, $lightness: 6%);
+          border-color: color.adjust($secondary-background-dark, $lightness: 6%);
+        }
+      }
+    }
+
+
+    &.active {
+      background-color: color.adjust($label, $lightness: 12%);
+      border-color: color.adjust($label, $lightness: 12%);
+      color: $secondary-background;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color.adjust($label-dark, $lightness: 6%);
+        border-color: color.adjust($label-dark, $lightness: 6%);
+        color: $background-dark;
+      }
+    }
+  }
+}
+
+
+#tagged-results-meta {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+#matched-tag {
+  color: $key-color;
+
+  @media (prefers-color-scheme: dark) {
+    color: $key-color-dark;
+  }
+}
+
+
+.expandable-btn {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+
+  @media (hover: hover) and (pointer: fine) { // use underline on desktop
+    &:hover {
+      $light-btn-color: color.adjust($secondary-background, $lightness: -4%);
+
+      background-color: $light-btn-color;
+      box-shadow: -9px 0 0 0 $light-btn-color;
+
+      @media (prefers-color-scheme: dark) {
+        $dark-btn-color: color.adjust($background-dark, $lightness: 8%);
+
+        background-color: $dark-btn-color;
+        box-shadow: -9px 0 0 0 $dark-btn-color;
+      }
+    }
+  }
+}
+
+
+.free-text-search-result {
+  background-color: $background;
+  box-shadow: rgb(#000, .16) 0 6px 12px, rgb(0 0 0 / 6%) 0 0 0 1px;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color.mix($secondary-background-dark, $background-dark, 65%);
+    box-shadow: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) { // use underline on desktop
+    &:hover {
+      box-shadow: rgb(#000, .36) 0 6px 21px, rgb(0 0 0 / 6%) 0 0 0 1px;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: $secondary-background-dark;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+
+.free-text-btn-icon {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.aii-v-word {
+  color: $label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $label-dark;
+  }
+
+
+  .highlighted,
+  &.exact-aii-search-match {
+    color: $key-color;
+
+    @media (prefers-color-scheme: dark) {
+      color: $key-color-dark;
+    }
+  }
+}
+
+
+.aii-v-word-tr-container {
+  .aii-v-word-tr {
+    color: $label;
+
+    @media (prefers-color-scheme: dark) {
+      color: $label-dark;
+    }
+
+
+    .highlighted {
+      color: $key-color;
+
+      @media (prefers-color-scheme: dark) {
+        color: $key-color-dark;
+      }
+    }
+  }
+}
+
+
+.aii-v-meta-container {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.pos {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.gloss-container {
+  color: $label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $label-dark;
+  }
+}
+
+
+.free-text-gloss {
+  color: $label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $label-dark;
+  }
+
+
+  .highlighted {
+    color: $key-color;
+
+    @media (prefers-color-scheme: dark) {
+      color: $key-color-dark;
+    }
+  }
+}
+
+
+.gloss {
+  .highlighted {
+    color: $key-color;
+
+    @media (prefers-color-scheme: dark) {
+      color: $key-color-dark;
+    }
+  }
+}
+
+
+.t3-categories,
+.t0-categories {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.example-row-vals {
+  border-left-color: $separator;
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    border-left-color: $separator-dark;
+    color: $secondary-label-dark;
+  }
+}
+
+
+.more-info {
+  .infl-row {
+    &.is-heading {
+      border-bottom-color: $separator;
+
+      @media (prefers-color-scheme: dark) {
+        border-bottom-color: $separator-dark;
+      }
+    }
+  }
+}
+
+
+.infl-meta {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.cog-val-container {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.infl-val-container {
+  .infl-val {
+    color: $secondary-label;
+
+    @media (prefers-color-scheme: dark) {
+      color: $secondary-label-dark;
+    }
+
+
+    &.does-match {
+      color: $label;
+
+      @media (prefers-color-scheme: dark) {
+        color: $label-dark;
+      }
+    }
+  }
+
+  .infl-val-eng {
+    &:not(select) {
+      color: $secondary-label;
+
+      @media (prefers-color-scheme: dark) {
+        color: $secondary-label-dark;
+      }
+    }
+  }
+
+  .infl-tr {
+    color: $secondary-label;
+
+    @media (prefers-color-scheme: dark) {
+      color: $secondary-label-dark;
+    }
+
+
+    &.does-match {
+      color: $label;
+
+      @media (prefers-color-scheme: dark) {
+        color: $label-dark;
+      }
+    }
+  }
+}
+
+
+.radical-highlighted-verb-form {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+@include rad-colors($apple-colors, $apple-colors-dark);
+
+.free-text-t1-play-sound,
+.inactive-more-sounds-button {
+  border-color: rgba($separator, .15);
+  color: rgba($label, .25);
+
+  @media (prefers-color-scheme: dark) {
+    border-color: rgba($separator-dark, .3);
+    color: rgba($label-dark, .35);
+  }
+}
+
+
+.free-text-ordinal {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.play-sound-container {
+  .waiting {
+    color: color.adjust($label, $lightness: 50%);
+
+    @media (prefers-color-scheme: dark) {
+      color: color.mix($label-dark, $background-dark, 40%);
+    }
+  }
+
+
+  .accent-name-container {
+    color: $secondary-label;
+
+    @media (prefers-color-scheme: dark) {
+      color: $secondary-label-dark;
+    }
+  }
+}
+
+
+.ipa,
+.free-text-ipa {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+
+
+  &.playing-sound {
+    color: $label;
+
+    @media (prefers-color-scheme: dark) {
+      color: $label-dark;
+    }
+  }
+}
+
+
+.ipa-info {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.tag-highlight {
+  color: $key-color;
+
+  @media (prefers-color-scheme: dark) {
+    color: $key-color-dark;
+  }
+}
+
+
+.tr-backlink-container {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+#wiktionary-datadump {
+  color: $secondary-label;
+
+  @media (prefers-color-scheme: dark) {
+    color: $secondary-label-dark;
+  }
+}
+
+
+.inflections-button-container,
+.play-sound,
+.more-sounds-button,
+.more-paradigms-button {
+  background-color: $background;
+  border-color: $separator;
+  color: $label;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color.adjust($secondary-background-dark, $lightness: 2%);
+    border-color: color.adjust($secondary-background-dark, $lightness: 2%);
+    color: $label-dark;
+  }
+
+  @media (hover: hover) and (pointer: fine) { // use underline on desktop
+    &:hover {
+      box-shadow: rgba(#000, .2) 0 0 6px 2px;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: color.adjust($secondary-background-dark, $lightness: 8%);
+        border-color: color.adjust($secondary-background-dark, $lightness: 8%);
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+
+.more-paradigms-button {
+  @media (hover: hover) and (pointer: fine) { // use underline on desktop
+    &:hover {
+      box-shadow: rgba(#000, .12) 0 0 6px 2px;
+    }
+  }
+}

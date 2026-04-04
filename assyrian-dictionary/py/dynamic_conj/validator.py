@@ -3,14 +3,14 @@ import re
 from collections import defaultdict
 from utils import AiiConjugation
 
+
 def generate_conj_patterns():
     with open('js/json/aii-dict-no-tr.json', 'r') as file:
         data = json.load(file)
 
     ALREADY_MOVED = {
-    '',
+        '',
     }
-
 
     conj_patterns = defaultdict(set)
     for obj in data:
@@ -26,15 +26,15 @@ def generate_conj_patterns():
     return conj_patterns
 
 
-
 def fix_template_warning(old_pattern, new_pattern, _aii_v):
     if old_pattern != new_pattern:
         # print( '====Conjugation====')
         # print( f'{{{{aii-conj-verb/{new_pattern}|{'|'.join(_aii_stripped_atwateh)}}}}}')
-        print( f'{_aii_v} use {new_pattern} not {old_pattern}')
+        print(f'{_aii_v} use {new_pattern} not {old_pattern}')
         # print()
-            # print( f'{_aii_v} use {new_template} not {old_template}')
-            # print('')
+        # print( f'{_aii_v} use {new_template} not {old_template}')
+        # print('')
+
 
 conj = AiiConjugation()
 pattern_regexes = conj.get_patterns()
@@ -49,11 +49,10 @@ print('#' * len(msg))
 print(msg)
 print('#' * len(msg))
 
-
 for cur_pattern, aii_vs in _conj_patterns.items():
     for aii_v in aii_vs:
         matched_patterns = []
-        vowel_diacritics_stripped  = re.sub(f"[^{conj.LETTERS}]", '', aii_v)
+        vowel_diacritics_stripped = re.sub(f"[^{conj.LETTERS}]", '', aii_v)
 
         if aii_v in conj.special_cases:
             matched_patterns.append(aii_v)
@@ -71,4 +70,3 @@ for cur_pattern, aii_vs in _conj_patterns.items():
             pass
         else:
             raise Exception(f'{aii_v} matched multiple regexes {matched_patterns}')
-

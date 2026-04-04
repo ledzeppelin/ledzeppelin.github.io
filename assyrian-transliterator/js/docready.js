@@ -122,7 +122,6 @@ $(document).ready(() => {
     // if transliteration updates before css/fonts load, sizing is off, copy/paste this
     // and reload from querystring parameters
     //
-    // eslint-disable-next-line max-len
     // ܓ̰ܘܼܘܸܒ ܠܹܗ ܝܼܫܘܿܥ ܒܹܐܡܵܪܵܐ: ”ܐܵܢܵܐ ܝܘܸܢ. ܘܒܸܬ ܚܵܙܹܝܬܘܿܢ ܒܪܘܿܢܵܐ ܕܐܢܵܫܵܐ ܝܬܝܼܒ݂ܵܐ ܡ̣ܢ ܝܲܡܝܼܢܵܐ ܕܚܲܝܠܬܵܢܵܐ ܘܒܹܐܬܵܝܵܐ ܥܲܠ ܥܢܵܢܵܐ ܕܫܡܲܝܵܐ.“
     processQueryStringParams();
   });

@@ -2,7 +2,7 @@
 omitted_infl_schema = set()
 
 noun_infl_schema = {
-    'aii-infl-noun':{
+    'aii-infl-noun': {
         'heading': 'Possessive Determiner',
         'heading_2': ['one', 'two or more'],
         'omit': {
@@ -44,7 +44,7 @@ noun_infl_schema = {
         }
     },
 
-    'aii-infl-noun-unc':{
+    'aii-infl-noun-unc': {
         'heading': 'Possessive Determiner',
         'omit': {
             "abs.", "cstr.", "emph.", "number"
@@ -76,7 +76,7 @@ noun_infl_schema = {
             },
         }
     },
-    'aii-infl-prep':{
+    'aii-infl-prep': {
         'heading': 'Object Pronoun',
         'omit': {
             "heading", "base", '1',

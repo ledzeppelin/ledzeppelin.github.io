@@ -6,8 +6,10 @@ ht_schema_omit = {
     "head": {},
 }
 
+
 def adj_wrap(gram_category):
     return f"describing {gram_category} noun"
+
 
 # when resolving issues from uptaking new dictionary
 # 1. add missing value to either 'forms' or 'genders' set
@@ -18,7 +20,7 @@ def adj_wrap(gram_category):
 
 ht_schema = {
     "aii-adjective": {
-        'omit': { "1", "head", "tr", "tr2" },
+        'omit': {"1", "head", "tr", "tr2"},
         'forms': {
             "f",
             "fpl",
@@ -26,12 +28,12 @@ ht_schema = {
             "mpl",
             "pl",
         },
-        'genders': { "g" },
+        'genders': {"g"},
         'default_gender': adj_wrap('masculine'),
     },
     "aii-adverb": {
         'omit': {
-            "1", "head", "tr", "tr2" 
+            "1", "head", "tr", "tr2"
         },
         'forms': {
             "head2",
@@ -40,19 +42,19 @@ ht_schema = {
         'genders': set(),
     },
     "aii-conjunction": {
-        'omit': { "1", "tr" },
+        'omit': {"1", "tr"},
         'forms': set(),
         'genders': set(),
     },
     "aii-interj": {
-        'omit': { "1", "head", "tr", 'ftr', 'pltr' },
+        'omit': {"1", "head", "tr", 'ftr', 'pltr'},
         'forms': {"f", "fs", "ms", "pl"},
-        'genders': { "g" },    
+        'genders': {"g"},
     },
     "aii-noun": {
         'omit': {
             "1",
-            "head",                
+            "head",
             "pltr",
             "tr",
             "tr2",
@@ -69,64 +71,64 @@ ht_schema = {
         }
     },
     "aii-noun form": {
-        'omit': { "1" },
+        'omit': {"1"},
         'forms': set(),
         'genders': set(),
     },
     "aii-numeral": {
-        'omit': { "1", "head", "tr" },
+        'omit': {"1", "head", "tr"},
         'forms': {"cstr", "f", "head2", "m", "pl", "pl2"},
         'genders': {"2", "g"},
     },
     "aii-particle": {
-        'omit': { "1" },
+        'omit': {"1"},
         'forms': {"head2", "head3", "head4"},
         'genders': set(),
     },
     "aii-past-participle": {
-        'omit': { "1", "head" },
+        'omit': {"1", "head"},
         'forms': {"f", "pl"},
         'genders': {"g"},
         'default_gender': adj_wrap('masculine'),
     },
     "aii-phrase": {
-        'omit': { "1", "head", "tr" },
+        'omit': {"1", "head", "tr"},
         'forms': set(),
         'genders': set(),
     },
     "aii-prep": {
-        'omit': { "1", "head", "tr" },
-        'forms': { "head2" },
+        'omit': {"1", "head", "tr"},
+        'forms': {"head2"},
         'genders': set(),
     },
     "aii-prefix": {
-        'omit': { "1" },
+        'omit': {"1"},
         'forms': set(),
         'genders': set(),
     },
     "aii-present-participle": {
-        'omit': { "1" },
+        'omit': {"1"},
         'forms': set(),
         'genders': set(),
     },
     "aii-pronoun": {
-        'omit': { "1", "head", "tr", "tr2" },
+        'omit': {"1", "head", "tr", "tr2"},
         'forms': {"f", "head2", "head3", "pl", "ms", "fs", "m", "mpl", "fpl", "s"},
         'genders': {"2", "g", "g2"},
     },
     "aii-proper-noun": {
-        'omit': { "1", "tr", "tr2", "head" },
-        'forms': { "head2", "f"},
+        'omit': {"1", "tr", "tr2", "head"},
+        'forms': {"head2", "f"},
         'genders': {"2", "g", "g2"},
     },
     "aii-suffix": {
-        'omit': { "1" },
+        'omit': {"1"},
         'forms': {"f", "pl", "pl2", "pl3"},
         'genders': {"g"},
     },
     "aii-verb": {
-        'omit': { "1"},
-        'forms': { "head2"},
+        'omit': {"1"},
+        'forms': {"head2"},
         'genders': set(),
     },
 }
@@ -138,7 +140,7 @@ gender_abbrev = {
         "m": adj_wrap('masculine'),
         "m-s": adj_wrap('masculine'),
         "f": adj_wrap('feminine'),
-        "f-s":  adj_wrap('feminine'),
+        "f-s": adj_wrap('feminine'),
     },
     "aii-interj": {
         "m": 'for masculine noun',
@@ -153,7 +155,7 @@ gender_abbrev = {
     "aii-suffix": {
         "m-s": 'masculinizing',
     },
-    "aii-verb": { },
+    "aii-verb": {},
     'default': {
         "m": 'masculine',
         "m-s": 'masculine',

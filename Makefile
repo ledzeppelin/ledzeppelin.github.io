@@ -1,4 +1,8 @@
-all: deps webapps
+all: check-python deps webapps
+
+check-python:
+	@python3 -c 'import sys; exit(0) if sys.version_info >= (3, 12) else exit(1)' \
+		|| (echo "Error: Python 3.12+ is required. Found: $$(python3 --version)" && exit 1)
 
 up:
 	docker compose up -d --build --remove-orphans
@@ -6,8 +10,7 @@ up:
 down:
 	docker compose down --remove-orphans
 
-sass-watch-all:
-	node_modules/sass/sass.js --watch shared_sass \
+SASS_DIRS = \
 	assyrian-bible/sass:assyrian-bible/css \
 	assyrian-transliterator/sass:assyrian-transliterator/css \
 	searchable-assyrian-bible/sass:searchable-assyrian-bible/css \
@@ -16,9 +19,14 @@ sass-watch-all:
 	new-bet-nahrain/sass:new-bet-nahrain/css \
 	assyrian-bible-study/sass:assyrian-bible-study/css
 
+sass-compile:
+	npx sass $(SASS_DIRS)
+
+sass-watch-all:
+	node_modules/sass/sass.js --watch shared_sass $(SASS_DIRS)
+
 deps:
 	npm install
-	pip3 install pylint
 
 webapps:
 	cd assyrian-bible && make all
