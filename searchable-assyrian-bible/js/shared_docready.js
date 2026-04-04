@@ -1,3 +1,4 @@
+/* global AiiUtils */
 $(document).ready(() => {
   console.time('shared docready load');
   const DICT_APP_NAME = 'assyrian-dictionary';
@@ -44,16 +45,12 @@ $(document).ready(() => {
 
       const slack = 0; // if scroll is choppy, increase this
 
-      // eslint-disable-next-line max-len
       const isTopOfLastVisible = $(window).scrollTop() + viewportHeight + slack >= lastRes.offset().top;
 
       // $('#scroll-debug').text(new Date().toISOString());
-      // eslint-disable-next-line max-len
       // $('#scroll-debug').text(`vh: ${viewportHeight}, scroll: ${$(window).scrollTop()}, lastRes.offset().top: ${lastRes.offset().top}`);
-      // eslint-disable-next-line max-len
       // $('#scroll-debug').text(`px til load: ${$(window).scrollTop() + viewportHeight + slack - lastRes.offset().top}`);
 
-      // eslint-disable-next-line max-len
       if (isTopOfLastVisible) {
         return true;
       }
@@ -155,7 +152,6 @@ $(document).ready(() => {
         $('#searchbar').removeClass('aii-search-text');
 
         searchQuery = {
-          // eslint-disable-next-line max-len
           results: runExtendedSearchQuery(searchStr, fuseEng),
           ...(IS_DICTIONARY && { queryType: DictionaryQueryType.ENG }),
         };
@@ -196,7 +192,6 @@ $(document).ready(() => {
   const params = new URLSearchParams(url.search);
 
   if (IS_DICTIONARY) {
-    // eslint-disable-next-line max-len
     const shouldLimit = params.has(DICT_TAG_SEARCH_PARAM) || params.has(DICT_AII_EXACT_SEARCH_PARAM);
     $('#top-tags-menu').html(createTopTagsMenuFragment(aiiDictionaryTags, shouldLimit));
   }
@@ -248,7 +243,6 @@ $(document).ready(() => {
         shouldLoadTagExactSearchResults = true;
       } else if (tagExactSearchResults.length) {
         const compareFn = (a, b) => (
-          // eslint-disable-next-line max-len
           minVocalizedTR(tagSearchParam, a.item) < minVocalizedTR(tagSearchParam, b.item) ? -1 : 1
         );
 

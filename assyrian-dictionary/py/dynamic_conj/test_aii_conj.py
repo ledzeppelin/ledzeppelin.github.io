@@ -2,6 +2,7 @@ import unittest
 
 from .aii_conj import aii_conj
 
+
 class TestExample(unittest.TestCase):
     def test_array_comparison(self):
         tests = [
@@ -35,6 +36,7 @@ class TestExample(unittest.TestCase):
             str_args = f"|{'|'.join(result['args'])}" if result['args'] else ''
             str_result = f"{{{{{result['title']}{str_args}}}}}"
             self.assertEqual(str_result, expected, f"{aii_v} should be {expected} not {str_result}")
+
 
 if __name__ == '__main__':
     unittest.main()

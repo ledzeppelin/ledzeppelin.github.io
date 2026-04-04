@@ -1,3 +1,4 @@
+/* global AiiUtils */
 function processQueryStringParams() {
   let readingLevel = null;
   let bookShortName = null;
@@ -21,7 +22,6 @@ function processQueryStringParams() {
     if (params.has('chapter')) {
       const chapterAndVerses = params.get('chapter').split(':');
       const tmpChapter = parseInt(chapterAndVerses[0], 10);
-      // eslint-disable-next-line max-len
       const isValidChapter = Number.isInteger(tmpChapter) && tmpChapter > 0 && tmpChapter - 1 < bible[bookShortName].length;
       if (isValidChapter) {
         // 3. specific chapter in book
@@ -29,7 +29,6 @@ function processQueryStringParams() {
         if (chapterAndVerses.length > 1) {
           const verses = chapterAndVerses[1].split('-');
           const tmpStartHighlight = parseInt(verses[0], 10);
-          // eslint-disable-next-line max-len
           if (Number.isInteger(tmpStartHighlight) && tmpStartHighlight >= 1) {
             let numVersesInChapter = 0;
             bible[bookShortName][chapter - 1].forEach((verseSection) => {
@@ -42,7 +41,6 @@ function processQueryStringParams() {
               startHighlight = tmpStartHighlight;
               if (verses.length > 1) {
                 const tmpEndHighlight = parseInt(verses[1], 10);
-                // eslint-disable-next-line max-len
                 if (Number.isInteger(tmpEndHighlight) && tmpEndHighlight > startHighlight && tmpEndHighlight - 1 < numVersesInChapter) {
                   // 1. highlight range of verses
                   endHighlight = tmpEndHighlight;

@@ -1,0 +1,91 @@
+@use 'sass:color';
+@use 'sass:list';
+@use 'constants' as *;
+@use '../../shared_sass/constants/colors' as *;
+@use '../../shared_sass/constants/symbols' as *;
+@use '../../shared_sass/mixins/mixins' as *;
+@use '../../shared_sass/mixins/mixins_bible' as *;
+@use '../../shared_sass/mixins/searchapp_mixin' as *;
+@use 'dark-mode' as *;
+
+$max-width: 600px;
+$side-padding: 16px;
+$searchbar-inset-x: 20px;
+$close-x: 0;
+$button-padding: 12px;
+
+#bible-promotion-container {
+  text-align: right;
+}
+
+@include search-app($key-color, $max-width, $side-padding, $button-padding, $searchbar-inset-x, $close-x);
+
+#search-results {
+  padding: 16px $side-padding;
+}
+
+.search-result {
+  padding-top: $side-padding;
+  // background-color: lightgray
+}
+
+.verse-meta {
+  @include aii-text('m');
+
+  margin-bottom: 0;
+  margin-top: 16px;
+  text-align: right;
+}
+
+.highlighted {
+  font-weight: 500;
+}
+
+.highlighted2 {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+
+.aii-verse,
+.aii-tr,
+.eng-verse {
+  margin-bottom: 4px;
+}
+
+.aii-verse {
+  @include aii-text('m');
+
+  text-align: right;
+}
+
+.aii-tr {
+  @include eng-text('m', $is-translit: true);
+}
+
+.tr-backlink-container {
+  font-style: normal;
+  margin-top: -6px;
+  padding-bottom: 6px;
+}
+
+.translation-caption {
+  @include eng-text('xs');
+
+  margin-top: -2px;
+}
+
+.eng-verse {
+  @include eng-text('m');
+
+  &.missing-verse {
+    @include eng-text('xs');
+
+    &::before {
+      content: '(NLT Translation not available)';
+    }
+  }
+}
+
+#copyright-container {
+  @include copyright-container($side-padding);
+}

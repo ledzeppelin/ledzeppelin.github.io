@@ -1,10 +1,12 @@
 from .vars.verb_templates import conj_schema
 from .dynamic_conj.aii_conj import aii_conj
 
+
 def parse_verb_pattern(aii_conj_arg):
     # Output: ('G-strong', ['ܩ', 'ܪ', 'ܡ'])
     invocation = aii_conj(aii_conj_arg)
     return invocation['title'], [] if invocation['args'] is None else invocation['args']
+
 
 def unique_forms(item):
     # turn the relevant aii forms into a list whose values will be used to fill out the template
@@ -16,6 +18,7 @@ def unique_forms(item):
                 matching_forms.append(entry["form"])
 
     return set(matching_forms)
+
 
 def set_verb_conj(item, obj, aii_v, verb_denominal_forms):
     irregular_patterns = {
@@ -47,6 +50,5 @@ def set_verb_conj(item, obj, aii_v, verb_denominal_forms):
         obj['verb_conjugation']['schema'] = 'verb-conj-schema-haweh'
     else:
         obj['verb_conjugation']['schema'] = 'verb-conj-schema'
-
 
     obj['tier2_tags'].append(f'pattern:{pattern}')

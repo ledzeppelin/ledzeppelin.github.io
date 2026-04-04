@@ -4,6 +4,7 @@ from pprint import pprint
 from .is_valid_aii_v import is_valid_aii_v
 from ..vars.consts import linkage_types
 
+
 def dict_keys():
     with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
@@ -30,12 +31,11 @@ def dict_keys():
 
     return counter, counter_disambiguated
 
+
 res, res_disam = dict_keys()
 
 z_cnt, z_cnt_disam = [sorted(res.items(), key=lambda item: item[1], reverse=True) for res in dict_keys()]
 
-
 pprint(z_cnt)
 pprint(' ')
 pprint(z_cnt_disam)
-

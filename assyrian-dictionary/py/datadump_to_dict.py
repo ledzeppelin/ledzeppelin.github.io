@@ -13,6 +13,7 @@ from .vars.infl_schemas import noun_infl_schema, omitted_infl_schema
 from .ipa_to_mp3 import ipa_to_mp3
 from .conjugate_verbs import set_verb_conj
 
+
 def annotated_row(meta, aii_values):
     row = defaultdict(list)
     row['meta'] = meta
@@ -55,6 +56,7 @@ def set_examples(item_sense, sense):
                 res.append(obj)
         if res:
             sense['examples'] = res
+
 
 def literally_etys_to_senses(item):
     senses = []
@@ -102,6 +104,7 @@ def parse_senses(item, aii_v, obj):
 
     return senses
 
+
 def set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms, NOUN_INFL_CNT):
     if 'inflection_templates' not in item:
         return
@@ -114,7 +117,7 @@ def set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms, NOUN_IN
         set_verb_conj(item, obj, aii_v, verb_denominal_forms)
     elif leaf_template['name'] in dynamic_noun_infl:
         call_site = {
-            'name':leaf_template['name'],
+            'name': leaf_template['name'],
             '1': leaf_template['args'].pop('1')
         }
         call_site['optional_args'] = leaf_template['args']
@@ -136,11 +139,12 @@ def set_infl(item, obj, aii_v, verb_denominal_forms, dynamic_noun_forms, NOUN_IN
     if 'table' in obj and 'dynamic_noun_template' in obj:
         raise Exception('oh dear')
 
+
 def set_noun_infl(item, obj, template_name):
     # for noun/preposition
     template = copy.deepcopy(noun_infl_schema[template_name]['template'])
     omit = noun_infl_schema[template_name]['omit']
-    unique_keys = {key:pron for pron, val in template.items() for key in val}
+    unique_keys = {key: pron for pron, val in template.items() for key in val}
 
     for arg, aii in item['inflection_templates'][-1]['args'].items():
         if arg in omit:
@@ -156,7 +160,7 @@ def set_noun_infl(item, obj, template_name):
 
     rows = []
     for key, val in template.items():
-        rows.append( annotated_row(key, list(val.values())))
+        rows.append(annotated_row(key, list(val.values())))
 
     obj['table'] = {
         "heading": noun_infl_schema[template_name]['heading'],
@@ -202,16 +206,16 @@ def set_head_template(item, obj, aii_v):
         else:
             raise Exception(f'"{arg}" not in omit, forms or genders for ht {ht_name} for:\n\n {item}')
 
-
     if 'default_gender' in ht_schema[ht_name] and 'gender' not in obj:
         obj['gender'] = ht_schema[ht_name]['default_gender']
+
 
 def set_linkage_table(parent, obj, aii_v):
     already_there = already_there_set(obj)
     already_there.add(aii_v)
 
-    for linkage_key, linkage_val in consts.linkage_types.items(): # ex. {'alt_of': 'alternate',}
-        for linkage in parent.get(linkage_key, []): # ex. for synonym in synonyms
+    for linkage_key, linkage_val in consts.linkage_types.items():  # ex. {'alt_of': 'alternate',}
+        for linkage in parent.get(linkage_key, []):  # ex. for synonym in synonyms
             word_linkage = linkage['word']
             if word_linkage in already_there:
                 continue
@@ -230,6 +234,7 @@ def set_linkage_table(parent, obj, aii_v):
                 annotated_row(linkage_val, [word_linkage])
             )
             already_there.add(word_linkage)
+
 
 def parse_sounds(item, aii_sounds, aii_not_v, aii_v, urls_with_ipa_parens):
     ipas = []
@@ -261,6 +266,7 @@ def parse_sounds(item, aii_sounds, aii_not_v, aii_v, urls_with_ipa_parens):
     if ipas:
         aii_sounds[aii_not_v][aii_v].append(ipas)
 
+
 def collapse_sounds(aii_sounds):
     # intersection of all sublists
     aii_collapsed_sounds = defaultdict(lambda: {})
@@ -280,7 +286,6 @@ def collapse_sounds(aii_sounds):
                 # if aii_v == 'ܚܘܼܘܹܐ':
                 #     raise Exception(unique_ipas)
 
-
                 aii_collapsed_sounds[aii_not_v][aii_v] = unique_ipas_lst
 
                 if os.getenv('AII_DICT_GENERATE_AUDIO'):
@@ -291,7 +296,6 @@ def collapse_sounds(aii_sounds):
                             ipa_to_mp3(ipa, ipa_hash, False)
 
     return aii_collapsed_sounds
-
 
 
 def set_cognate(obj, item, ety):
@@ -320,6 +324,7 @@ def set_cognate(obj, item, ety):
     obj['other_forms']['rows'].append(cognate)
     # check duplicate cogs
 
+
 def already_there_set(obj):
     already_there = set()
     if 'other_forms' in obj and 'rows' in obj['other_forms']:
@@ -328,6 +333,7 @@ def already_there_set(obj):
                 if 'value' in value:
                     already_there.add(value['value'])
     return already_there
+
 
 def annotate_row_if_not_there(meta, aii_values, obj):
     already_there = already_there_set(obj)
@@ -377,7 +383,8 @@ def add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias):
         for doublet_num in ['2', '3', '4']:
             if doublet_num in ety['args']:
                 annotate_row_if_not_there(alias, [remove_inline_modifier(ety['args'][doublet_num])], obj)
-    elif ety['name'] in ('affix', 'af', 'com', 'compound', 'surf', 'blend', 'univerbation') and ety['args']['1'] == 'aii':
+    elif (ety['name'] in ('affix', 'af', 'com', 'compound', 'surf', 'blend', 'univerbation')
+          and ety['args']['1'] == 'aii'):
         if ety['name'] in ('affix', 'af'):
             for lang in ['lang1', 'lang2']:
                 if lang in ety["args"] and ety["args"][lang] != 'aii':
@@ -417,6 +424,7 @@ def add_etymology(obj, item, aii_v):
             etymology = list(dict.fromkeys(etymology))
             obj['tier2_etymology'] = etymology
 
+
 def generate_aii_v(item, aii_not_v):
     # we use forms instead of head_templates since the order of positional
     # parameters generated by template:head and Module:aii-headword differs
@@ -437,6 +445,7 @@ def generate_aii_v(item, aii_not_v):
     # however, ~10% of the time this is due to the page being misnamed w/ diacritics, ex.
     # https://en.wiktionary.org/wiki/%DC%A9%DC%98%DC%BC%DC%A0%DC%98%DC%BC%DC%93%DD%82
     return aii_not_v
+
 
 def append_number_cell_to_row(row, cell_val):
     if isinstance(cell_val, list) and len(cell_val) != 1:
@@ -462,7 +471,7 @@ def generate_numbers_table():
             "(Multiplier)",
             "(Fractional)",
         ],
-        "rows" : []
+        "rows": []
     }
 
     for number, obj in aii_number_list.items():
@@ -485,6 +494,7 @@ def generate_numbers_table():
 
     return res
 
+
 def set_duplicate_sounds(item, aii_not_v, duplicate_sounds_urls):
     sounds = item.get("sounds")
     if isinstance(sounds, list):
@@ -506,7 +516,6 @@ def datadump_to_dict():
     dynamic_noun_forms = defaultdict(list)
     duplicate_sounds_urls = defaultdict(int)
 
-
     BLACKLIST = {
         'ܡܦܪܲܣܚܲܙܹܐ',
         'ܡܚܘܛܡܠܠ',
@@ -515,7 +524,7 @@ def datadump_to_dict():
 
     vocalized_cache = {generate_aii_v(item, item['word']) for item in data}
     cnt_str = f"{len(vocalized_cache)} Assyrian words"
-    cnt_lst = ['#'*len(cnt_str), cnt_str, '#'*len(cnt_str) ]
+    cnt_lst = ['#' * len(cnt_str), cnt_str, '#' * len(cnt_str)]
     NOUN_INFL_CNT = Counter()
     print('\n'.join(cnt_lst))
 
@@ -551,7 +560,6 @@ def datadump_to_dict():
             obj['pos'] = consts.pos_abbrev[item['pos']]
             obj['tier2_tags'] = [f"pos:{consts.pos_abbrev[item['pos']]}"]
 
-
         obj['senses'] = parse_senses(item, aii_v, obj)
 
         set_head_template(item, obj, aii_v)
@@ -564,7 +572,6 @@ def datadump_to_dict():
         tier2_categories = parse_categories(item)
         if tier2_categories:
             obj['tier2_categories'] = tier2_categories
-
 
         parse_sounds(item, aii_sounds, aii_not_v, aii_v, urls_with_ipa_parens)
         set_duplicate_sounds(item, aii_not_v, duplicate_sounds_urls)
@@ -583,9 +590,8 @@ def datadump_to_dict():
         #         chrome = webbrowser.get()
         #     chrome.open(url)
 
-
     numbers_table = generate_numbers_table()
-    print (f"noun inflections: {NOUN_INFL_CNT}")
+    print(f"noun inflections: {NOUN_INFL_CNT}")
 
     with open('./js/json/verb-denominal-forms.json', 'w') as f:
         json.dump(verb_denominal_forms, f, ensure_ascii=False, indent=4)
@@ -596,7 +602,6 @@ def datadump_to_dict():
     if duplicate_sounds_urls:
         single = [k for k, v in duplicate_sounds_urls.items() if v == 1]
         multiple = [k for k, v in duplicate_sounds_urls.items() if v > 1]
-
 
         IPA_THRESHOLD = 50
         if len(multiple) > IPA_THRESHOLD:
@@ -610,7 +615,5 @@ def datadump_to_dict():
                 # except:
                 #     chrome = webbrowser.get()
                 # chrome.open(url)
-
-
 
     return aii_dict, collapse_sounds(aii_sounds), numbers_table

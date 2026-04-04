@@ -3,14 +3,14 @@ import unicodedata
 import scrapy
 from yattag import Doc
 
-
-#NLT edge case...
+# NLT edge case...
 nlt_edge_cases = {
     "REV.7.NLT:5": "from Judah 12,000, from Reuben 12,000, from Gad 12,000",
     "REV.7.NLT:6": "from Asher 12,000, from Naphtali, 12,000, from Manasseh 12,000",
     "REV.7.NLT:7": "from Simeon 12,000, from Levi 12,000, from Issachar 12,000",
     "REV.7.NLT:8": "from Zebulun 12,000, from Joseph 12,000, from Benjamin 12,000"
 }
+
 
 def str_ref_to_list(ref_replacement):
     short_names = {
@@ -43,6 +43,7 @@ def str_ref_to_list(ref_replacement):
                 ]
                 return values
             raise ValueError('the reference is syntactically invalid')
+
 
 ref_replacements = [
     # Mark 1
@@ -608,12 +609,13 @@ ref_replacements.sort(reverse=True)
 if len(ref_replacements) != len(set(ref_replacements)):
     raise Exception("duplicates in list")
 
+
 class TestSpider(scrapy.Spider):
     name = "bible"
 
     custom_settings = {
         'HTTPCACHE_ENABLED': True,
-        'HTTPCACHE_EXPIRATION_SECS': 0, # default is 0
+        'HTTPCACHE_EXPIRATION_SECS': 0,  # default is 0
     }
 
     books_chapters = [
@@ -656,7 +658,7 @@ class TestSpider(scrapy.Spider):
     start_urls = []
     for book_chapters in books_chapters:
         (book, chapters) = book_chapters
-        for chapter in range(1, chapters+1):
+        for chapter in range(1, chapters + 1):
             for translation, code in translations.items():
                 chapter_of_translation = f"{book}.{chapter}.{translation}"
                 start_url = f"https://www.bible.com/bible/{code}/{chapter_of_translation}"
@@ -666,7 +668,7 @@ class TestSpider(scrapy.Spider):
 
     # https://stackoverflow.com/a/38234394
     def parse(self, response):
-        chapter = response.url.split("/")[-1] # ex. REV.22.AII
+        chapter = response.url.split("/")[-1]  # ex. REV.22.AII
         filename = 'bible_chapters/' + chapter + '.html'
         with open(filename, 'wb') as file:
             file.write(response.body)
@@ -674,21 +676,21 @@ class TestSpider(scrapy.Spider):
         verse_num = 1
         consec_header = 1
         consec_ref = 1
-        chapter_name,chapter_number,translation = chapter.split('.')
+        chapter_name, chapter_number, translation = chapter.split('.')
         children = response.css(f'div[data-usfm="{chapter_name}.{chapter_number}"] > div')
         for child in children:
             heading = (child.css('.s1 .heading::text').get() or
-                child.css('.ms .heading::text').get() or
-                child.css('.qa .heading::text').get())
+                       child.css('.ms .heading::text').get() or
+                       child.css('.qa .heading::text').get())
             reference = (child.css('.r .heading::text').get() or
-                child.css('.mr .heading::text').get())
+                         child.css('.mr .heading::text').get())
             if heading is not None and translation == 'AII':
                 yield {
                     'meta': f"{chapter}:{verse_num}:header:{consec_header}",
-                    'body': heading \
-                        .replace("‌ܐ", 'ܐ') \
-                        .replace("ܗ‌ܝ", 'ܗܝ') \
-                        .replace("ܬ‌ܝ", 'ܬܝ')
+                    'body': (heading
+                             .replace("‌ܐ", 'ܐ')
+                             .replace("ܗ‌ܝ", 'ܗܝ')
+                             .replace("ܬ‌ܝ", 'ܬܝ'))
                 }
                 consec_header += 1
 
@@ -705,7 +707,7 @@ class TestSpider(scrapy.Spider):
                         prev_replacements.append(ref_replacement)
                         book, chap, start, end = str_ref_to_list(ref_replacement)
                         doc, tag, text = Doc().tagtext()
-                        with tag('a', klass = 'bible-backlink', href=f'?book={book}&chapter={chap}:{start}-{end}'):
+                        with tag('a', klass='bible-backlink', href=f'?book={book}&chapter={chap}:{start}-{end}'):
                             text(ref_replacement)
                         reference = reference.replace(ref_replacement, doc.getvalue())
                 yield {
@@ -717,7 +719,7 @@ class TestSpider(scrapy.Spider):
                 while True:
                     verse_key = f"{chapter}:{verse_num}"
                     verse = child.css(f".v{verse_num} .content::text").get()
-                    next_verse = child.css(f".v{verse_num+1} .content::text").get()
+                    next_verse = child.css(f".v{verse_num + 1} .content::text").get()
                     verse_data = parse_verse(verse_key, verse_num, verse, next_verse, response)
 
                     if verse_data is not None:
@@ -774,9 +776,8 @@ def parse_verse(verse_key, verse_num, verse, next_verse, response):
             .replace('ܒܸܪܚܵܫܵܐ', 'ܒܸܪ݇ܚܵܫܵܐ') \
             .replace('ܪܗܘܿܡܹ', 'ܪܗ݇ܘܿܡܹ')
 
-            # .replace('', '')
-            # .replace('', '')
-
+        # .replace('', '')
+        # .replace('', '')
 
         # this is ugly but we we'll fix later
         sentence = sentence.replace('ܚܲܕܘܼ', '1111111111') \
@@ -791,9 +792,6 @@ def parse_verse(verse_key, verse_num, verse, next_verse, response):
             .replace('4444444444', 'ܡܲܫܚܲܕܬܵܐ') \
             .replace('5555555555', 'ܚܲܕ݇ܒܫܵܒܵܐ')
 
-
-
-
         # replacements = {
         #     'ܚܲܕ': 'ܚܲܕ݇',
         #     'ܚܲܕܟܡܵܐ': 'ܚܲܕ݇ܟܡܵܐ',
@@ -802,7 +800,6 @@ def parse_verse(verse_key, verse_num, verse, next_verse, response):
         # }
         # for initial, replacement in replacements.items():
         #     sentence =re.sub(rf"{initial}($|\s)", f'{replacement}\\1', sentence)
-
 
         sentence_single_space = re.sub(' +', ' ', sentence)
 
@@ -820,6 +817,7 @@ def parse_verse(verse_key, verse_num, verse, next_verse, response):
         }
 
     return None
+
 
 if __name__ == "__main__":
     print(TestSpider.books_chapters)

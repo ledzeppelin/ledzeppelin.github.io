@@ -1,0 +1,48 @@
+@use 'sass:list';
+
+@function curtain-shadow($incr) {
+  $step: 1px;
+  $ts: ();
+
+  @for $i from 1 through $incr {
+    $ts: list.append($ts, 0 $step * $i 0 rgba(white, .15 * (1 - (calc(1 / $incr) * $i))), comma);
+  }
+
+  @return $ts;
+}
+
+
+@mixin song-title-max {
+  text-shadow: curtain-shadow(115);
+}
+
+@mixin song-title-min {
+  text-shadow: curtain-shadow(25);
+}
+
+
+@keyframes perspectivize-lyric {
+  0% {
+    @include song-title-max;
+  }
+
+  4% {
+    @include song-title-max;
+  }
+
+  44% {
+    @include song-title-min;
+  }
+
+  52% {
+    @include song-title-min;
+  }
+
+  92% {
+    @include song-title-max;
+  }
+
+  100% {
+    @include song-title-max;
+  }
+}
