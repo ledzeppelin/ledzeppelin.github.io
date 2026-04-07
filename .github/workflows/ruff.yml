@@ -1,4 +1,4 @@
-name: pycodestyle
+name: ruff
 
 on:
   push:
@@ -16,8 +16,9 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-      - name: Install pycodestyle
-        run: pip install pycodestyle
-      - name: Check linting and formatting
-        run: pycodestyle --max-line-length=150 --exclude=venv,node_modules .
-
+      - name: Install ruff
+        run: pip install ruff
+      - name: Check linting
+        run: ruff check
+      - name: Check formatting
+        run: ruff format --check

@@ -4,7 +4,7 @@ scan-articles: missing-roots validate-conj-patterns
 
 deps:
 	brew install lua jq brotli
-# 	brew install colordiff
+	brew install colordiff
 	cd js && npm install
 	pip3 install -r requirements.txt
 

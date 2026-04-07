@@ -30,22 +30,27 @@ def stream_decompressed_lines(url):
 
         # attach tqdm to r.raw.read (in-place)
         tqdm.wrapattr(
-            r.raw, "read",
+            r.raw,
+            "read",
             total=total,
-            unit="B", unit_scale=True, unit_divisor=1024,
-            desc="Downloading"
+            unit="B",
+            unit_scale=True,
+            unit_divisor=1024,
+            desc="Downloading",
         )
 
         # gzip can now use r.raw directly
-        with gzip.GzipFile(fileobj=r.raw) as gz, \
-                io.TextIOWrapper(gz, encoding="utf-8") as txt:
+        with (
+            gzip.GzipFile(fileobj=r.raw) as gz,
+            io.TextIOWrapper(gz, encoding="utf-8") as txt,
+        ):
             yield from txt  # re-yield every line verbatim
 
 
 def build_filtered_dump() -> Path:
     with NamedTemporaryFile(
-            mode="w", encoding="utf-8", delete=False,
-            suffix=".jsonl", dir=BASE_DIR) as out:
+        mode="w", encoding="utf-8", delete=False, suffix=".jsonl", dir=BASE_DIR
+    ) as out:
         tmp_path = Path(out.name)
         progress_bar = tqdm(desc="Writing aii entries", unit=" lines")
         for line in stream_decompressed_lines(DUMP_URL):
@@ -55,7 +60,10 @@ def build_filtered_dump() -> Path:
                 obj = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            if obj.get("lang_code") == "aii" and obj.get("lang") == "Assyrian Neo-Aramaic":
+            if (
+                obj.get("lang_code") == "aii"
+                and obj.get("lang") == "Assyrian Neo-Aramaic"
+            ):
                 json.dump(obj, out, ensure_ascii=False)
                 out.write("\n")
                 progress_bar.update(1)

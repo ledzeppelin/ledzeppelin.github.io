@@ -11,8 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 # with lfs for most accurate eslint coverage
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Check linting and formatting
         run: npx eslint

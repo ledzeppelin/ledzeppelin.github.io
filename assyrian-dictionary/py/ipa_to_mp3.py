@@ -15,14 +15,14 @@ polly = session.client("polly")
 
 
 def ipa_to_mp3(ipa, hash_str, use_cached_audio):
-    output = os.path.join('./audio', f"{hash_str}.mp3")
+    output = os.path.join("./audio", f"{hash_str}.mp3")
     if use_cached_audio and os.path.exists(output):
         return
 
     try:
         # Request speech synthesis
         # https://gist.github.com/sloanlance/b8562252583967e08f5c69775518b366
-        speed = 'slow'
+        speed = "slow"
         phoneme_slow = f"\
             <speak> \
                 <prosody volume='x-loud' rate='{speed}'> \
@@ -33,7 +33,7 @@ def ipa_to_mp3(ipa, hash_str, use_cached_audio):
             Text=phoneme_slow,
             TextType="ssml",
             OutputFormat="mp3",
-            Engine='neural',
+            Engine="neural",
             VoiceId="Hala",
             # VoiceId="Zayd",
         )

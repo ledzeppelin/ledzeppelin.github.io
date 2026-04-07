@@ -2,27 +2,27 @@ import json
 
 
 def verbs_missing_roots():
-    with open('./js/json/_aii.jsonl', encoding="utf-8") as f:
+    with open("./js/json/_aii.jsonl", encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
     for item in data:
-        if 'inflection_templates' not in item:
+        if "inflection_templates" not in item:
             continue
 
-        if item['inflection_templates'][-1]['name'] != 'aii-conj':
+        if item["inflection_templates"][-1]["name"] != "aii-conj":
             continue
 
         root = None
-        if 'etymology_templates' in item:
-            for ety in item['etymology_templates']:
-                if ety['name'] == 'aii-root':
-                    root = ety['args'].get('1', None)
+        if "etymology_templates" in item:
+            for ety in item["etymology_templates"]:
+                if ety["name"] == "aii-root":
+                    root = ety["args"].get("1", None)
         if not root:
-            print(f'https://en.wiktionary.org/wiki/{item['word']}#Assyrian_Neo-Aramaic')
+            print(f"https://en.wiktionary.org/wiki/{item['word']}#Assyrian_Neo-Aramaic")
 
 
-msg = 'aii-conj pages that are missing rootbox under etymology section'
+msg = "aii-conj pages that are missing rootbox under etymology section"
 
-print('#' * len(msg))
+print("#" * len(msg))
 print(msg)
-print('#' * len(msg))
+print("#" * len(msg))
 verbs_missing_roots()
