@@ -1,7 +1,7 @@
 import json
 from collections import Counter
 
-with open('./js/json/common-words.json', encoding="utf-8") as user_file:
+with open("./js/json/common-words.json", encoding="utf-8") as user_file:
     parsed_json = json.load(user_file)
 
 dupes = [item for item, count in Counter(parsed_json).items() if count > 1]
@@ -16,4 +16,4 @@ print(dupes)
 
 abc = ["foo", "bar", "baz"].index("baz")
 # print(abc)
-print('hello')
+print("hello")

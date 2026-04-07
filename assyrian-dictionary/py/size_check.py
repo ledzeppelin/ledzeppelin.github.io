@@ -53,7 +53,9 @@ def main():
     if diff_bytes == 0:
         print(f"new dump is {direction}.")
     else:
-        print(f"{color}new dump is {diff_kb_abs:.2f}KB {direction} ({pct_abs:.2f}%){RESET}")
+        print(
+            f"{color}new dump is {diff_kb_abs:.2f}KB {direction} ({pct_abs:.2f}%){RESET}"
+        )
 
 
 if __name__ == "__main__":

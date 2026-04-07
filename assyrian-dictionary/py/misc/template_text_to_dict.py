@@ -52,7 +52,7 @@ aii-conj-haweh
 """
 
 # Extract the key-value pairs
-matches = re.findall(r'\|([\w\-]+)=(.+)', input_text)
+matches = re.findall(r"\|([\w\-]+)=(.+)", input_text)
 
 # Filter out "which_template"
 result_dict = {key: value.strip() for key, value in matches if key != "which_template"}

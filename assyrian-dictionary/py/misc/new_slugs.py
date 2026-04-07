@@ -1,11 +1,8 @@
 import json
-from pprint import pprint
-from urllib.parse import quote
-import webbrowser
 
 
 def new_slugs():
-    prev_file, cur_file = './js/json/_aii.prev.jsonl', './js/json/_aii.jsonl'
+    prev_file, cur_file = "./js/json/_aii.prev.jsonl", "./js/json/_aii.jsonl"
 
     with open(cur_file, encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
@@ -15,11 +12,11 @@ def new_slugs():
 
     words = set()
     for item in data:
-        words.add(item['word'])
+        words.add(item["word"])
 
     prev_words = set()
     for item in prev_data:
-        prev_words.add(item['word'])
+        prev_words.add(item["word"])
 
     i = 0
     LIMIT = 2
@@ -30,7 +27,7 @@ def new_slugs():
         if i > LIMIT:
             break
         print(slug)
-        replaced = quote(slug)
+        # replaced = quote(slug)
         # webbrowser.open_new_tab(f'https://en.wiktionary.org/wiki/{replaced}#Assyrian_Neo-Aramaic')
 
 
