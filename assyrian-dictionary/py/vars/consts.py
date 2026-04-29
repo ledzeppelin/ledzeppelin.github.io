@@ -133,6 +133,7 @@ language_codes = {
     "ti": "Tigrinya",
     "tig": "Tigre",
     "tmr": "Jewish Babylonian Aramaic",
+    "tpw": "Old Tupi",
     "tr": "Turkish",
     "trk-pro": "Proto-Turkic",
     "tru": "Turoyo",
