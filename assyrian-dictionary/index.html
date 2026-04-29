@@ -1,74 +1,81 @@
 <!DOCTYPE html>
 <html lang="syr">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-48Y7ENQMTX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-48Y7ENQMTX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
 
-  gtag('config', 'G-48Y7ENQMTX');
-</script>
-<title>assyrian-english dictionary</title>
-<meta name="description" content="Search in Assyrian or English">
-<link rel="canonical" href="https://www.sharrukin.io/assyrian-dictionary/" id="canonical-link" />
+        function gtag() {
+            dataLayer.push(arguments);
+        }
 
-<!-- Facebook Meta Tags -->
-<meta property="og:type" content="website">
-<meta property="og:title" content="assyrian-english dictionary">
-<meta property="og:description" content="Search in Assyrian or English">
-<meta property="og:image" content="https://www.sharrukin.io/assyrian-dictionary/default.jpg">
+        gtag('js', new Date());
 
-<!-- Twitter Meta Tags -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="assyrian-english dictionary">
-<meta name="twitter:description" content="Search in Assyrian or English">
-<meta name="twitter:image" content="https://www.sharrukin.io/assyrian-dictionary/default.jpg">
-<!-- Meta Tags Generated via https://www.opengraph.xyz -->
+        gtag('config', 'G-48Y7ENQMTX');
+    </script>
+    <title>assyrian-english dictionary</title>
+    <meta name="description" content="Search in Assyrian or English">
+    <link rel="canonical" href="https://www.sharrukin.io/assyrian-dictionary/" id="canonical-link"/>
 
-<!-- charset must be utf8 otherwise we have issues when running on a server
-https://stackoverflow.com/a/65036296 -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Facebook Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="assyrian-english dictionary">
+    <meta property="og:description" content="Search in Assyrian or English">
+    <meta property="og:image" content="https://www.sharrukin.io/assyrian-dictionary/default.jpg">
 
-<link rel="icon" href="favicons/favicon-32.png" sizes="32x32">
-<link rel="icon" href="favicons/favicon-128.png" sizes="128x128">
-<link rel="apple-touch-icon" href="favicons/favicon-180.png" sizes="180x180">
-<link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="assyrian-english dictionary">
+    <meta name="twitter:description" content="Search in Assyrian or English">
+    <meta name="twitter:image" content="https://www.sharrukin.io/assyrian-dictionary/default.jpg">
+    <!-- Meta Tags Generated via https://www.opengraph.xyz -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="css/style.css">
+    <!-- charset must be utf8 otherwise we have issues when running on a server
+    https://stackoverflow.com/a/65036296 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- order of these imports doesn't matter since they don't have dependencies -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+    <link rel="icon" href="favicons/favicon-32.png" sizes="32x32">
+    <link rel="icon" href="favicons/favicon-128.png" sizes="128x128">
+    <link rel="apple-touch-icon" href="favicons/favicon-180.png" sizes="180x180">
+    <link rel="icon" href="favicons/favicon-192.png" sizes="192x192">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+          integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- order of these imports doesn't matter since they don't have dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
 
 
-<script type="text/javascript" src="../shared_js/aii-utils.js"></script>
-<script type="text/javascript" src="../assyrian-transliterator/js/aii-translit.js"></script>
-<script type="text/javascript" src="js/aii-translit-wrapper.js"></script>
-<script type="text/javascript" src="js/consts/aii-dict.min.js"></script>
-<script type="text/javascript" src="js/consts/aii-dict-tags.js"></script>
-<script type="text/javascript" src="js/consts/aii-numbers-table.js"></script>
-<script type="text/javascript" src="js/consts/conj-patterns.js"></script>
-<script type="text/javascript" src="js/consts/conj-schemas.js"></script>
-<!-- ######################################################################## -->
+    <script type="text/javascript" src="../shared_js/aii-utils.js"></script>
+    <script type="text/javascript" src="../assyrian-transliterator/js/aii-translit.js"></script>
+    <script type="text/javascript" src="js/aii-translit-wrapper.js"></script>
+    <script type="text/javascript" src="js/consts/aii-dict.min.js"></script>
+    <script type="text/javascript" src="js/consts/aii-dict-tags.js"></script>
+    <script type="text/javascript" src="js/consts/aii-numbers-table.js"></script>
+    <script type="text/javascript" src="js/consts/conj-patterns.js"></script>
+    <script type="text/javascript" src="js/consts/conj-schemas.js"></script>
+    <!-- ######################################################################## -->
 
-<script type="text/javascript" src="../searchable-assyrian-bible/js/shared_search_funcs.js"></script>
-<script type="text/javascript" src="js/create-fragments.js"></script>
-<script type="text/javascript" src="js/functions.js"></script>
-<script type="text/javascript" src="js/pre_docready.js"></script>
-<script type="text/javascript" src="../searchable-assyrian-bible/js/shared_docready.js"></script>
-<script type="text/javascript" src="js/docready.js"></script>
+    <script type="text/javascript" src="../searchable-assyrian-bible/js/shared_search_funcs.js"></script>
+    <script type="text/javascript" src="js/create-fragments.js"></script>
+    <script type="text/javascript" src="js/functions.js"></script>
+    <script type="text/javascript" src="js/pre_docready.js"></script>
+    <script type="text/javascript" src="../searchable-assyrian-bible/js/shared_docready.js"></script>
+    <script type="text/javascript" src="js/docready.js"></script>
 
 </head>
 <body>
 
 <div id="title">ܦܘܫܩ ܡܠ̈ܐ</div>
 <div id="subtitle">assyrian-english dictionary</div>
-<div id="created-by-container"><span class="webapp-backlink-meta">created by 😎 </span><a class="creator-backlink-href" href='../'>ܫܪܘܟܝܢ</a></div>
+<div id="created-by-container"><span class="webapp-backlink-meta">created by 😎 </span><a class="creator-backlink-href"
+                                                                                         href='../'>ܫܪܘܟܝܢ</a></div>
 
 <!-- <div id="backlink-promotion-container">
   <div class="webapp-backlink-meta">✝️🎄 video of my baptism on christmas eve 1988 🎄✝️</div>
@@ -76,7 +83,7 @@ https://stackoverflow.com/a/65036296 -->
 </div>
  -->
 <div id="show-header-wrapper">
-  <button id="show-header" class="material-symbols-rounded">keyboard_arrow_up</button>
+    <button id="show-header" class="material-symbols-rounded">keyboard_arrow_up</button>
 </div>
 
 
@@ -94,27 +101,32 @@ https://stackoverflow.com/a/65036296 -->
  -->
 
 <div id='app-container'>
-  <!-- <div id="scroll-debug" style="position: fixed; top: 45%; left: 50%; transform: translateX(-50%); z-index: 99; font-family: sans-serif; backdrop-filter: blur(10px); padding: 10px; color: red">hello</div> -->
-  <div id='searchbar-container'>
-    <button id='clear-text' class="material-symbols-rounded">close</button>
-    <span id='search-icon' class="material-symbols-rounded">search</span>
-    <span id='autofocus-tip-container'>
+    <!-- <div id="scroll-debug" style="position: fixed; top: 45%; left: 50%; transform: translateX(-50%); z-index: 99; font-family: sans-serif; backdrop-filter: blur(10px); padding: 10px; color: red">hello</div> -->
+    <div id='searchbar-container'>
+        <button id='clear-text' class="material-symbols-rounded">close</button>
+        <span id='search-icon' class="material-symbols-rounded">search</span>
+        <span id='autofocus-tip-container'>
       <span>type </span><kbd>/</kbd><span> to search</span>
     </span>
-    
-    <input id='searchbar' type="text" placeholder='Search "hi", "ܫܠܵܡܵܐ", "shlama"' autocapitalize="off">
-  </div>
 
-  <div id="top-tags-container">
-    <ul id="top-tags-menu"></ul>
-    <div id="top-tags-children"></div>
-  </div>
+        <input id='searchbar' type="text" placeholder='Search "hi", "ܫܠܵܡܵܐ", "shlama"' autocapitalize="off">
+    </div>
 
-  <div id='search-results'></div>
-  <div id='numbers-table'></div>
-  <div id='wiktionary-datadump'>6,291 Assyrian words taken from the <a href="https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/index.html">kaikki dictionary</a>, based off the March 1st, 2026 <a href="https://dumps.wikimedia.org/enwiktionary/">wiktionary datadump</a>.  Updates to <a href="https://en.wiktionary.org/wiki/%DC%AB%DC%A0%DC%A1%DC%90#Assyrian_Neo-Aramaic">assyrian wiktionary articles</a> will be uptaken throughout year.</div>
+    <div id="top-tags-container">
+        <ul id="top-tags-menu"></ul>
+        <div id="top-tags-children"></div>
+    </div>
 
-<!-- January, February, March, April, May, June, July, August, September, October, November, December -->
+    <div id='search-results'></div>
+    <div id='numbers-table'></div>
+    <div id='wiktionary-datadump'>6,324 Assyrian words taken from the <a
+            href="https://kaikki.org/dictionary/Assyrian%20Neo-Aramaic/index.html">kaikki dictionary</a>, based off the
+        April 1st, 2026 <a href="https://dumps.wikimedia.org/enwiktionary/">wiktionary datadump</a>. Updates to <a
+                href="https://en.wiktionary.org/wiki/%DC%AB%DC%A0%DC%A1%DC%90#Assyrian_Neo-Aramaic">assyrian wiktionary
+            articles</a> will be uptaken throughout year.
+    </div>
+
+    <!-- January, February, March, April, May, June, July, August, September, October, November, December -->
 
 
 </div>

@@ -688,6 +688,7 @@ function aiiInflNounF(
     ircstr,
     mpl = false,
     st = false,
+    'sg-3cp': sg3cp,
   },
   groups,
   suffixes,
@@ -715,8 +716,10 @@ function aiiInflNounF(
   };
 
   const build = (key) => {
-    /* singular logic unchanged */
     if (key.startsWith('sg.')) {
+      if (key === 'sg.3cp' && sg3cp !== undefined) {
+        return `${ircstr}ܲܬ݂${suffixes.sgCore[key]}`;
+      }
       const t = st ? 'ܬ݂' : 'ܬ';
       return `${stem}${t}${suffixes.sgCore[key]}`;
     }
