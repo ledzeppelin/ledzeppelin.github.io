@@ -441,15 +441,12 @@ def generate_aii_v(item, aii_not_v):
     # ex.  ܒܸܪ̈ܟܵܟܹܐ is using template:head where {"1": "aii"}
     # additionally the head_template for certain pos like determiners doesn't get parsed
 
-    valid_aii_v = "forms" in item and item["forms"][0]["tags"][0] == "canonical"
-    if valid_aii_v:
-        return item["forms"][0]["form"]
-
-    if item["pos"] == "root":
-        return aii_not_v
+    forms = item.get("forms")
+    if forms and forms[0].get("tags", [])[:1] == ["canonical"]:
+        return forms[0]["form"]
 
     # see headword_matches_url_slug.py
-    #
+    # for roots and
     # for when the vocalized spelling is the same as the unvocalized spelling, ex. 'ܘ-'
     # however, ~10% of the time this is due to the page being misnamed w/ diacritics, ex.
     # https://en.wiktionary.org/wiki/%DC%A9%DC%98%DC%BC%DC%A0%DC%98%DC%BC%DC%93%DD%82

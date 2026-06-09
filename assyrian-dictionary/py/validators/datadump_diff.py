@@ -5,7 +5,8 @@ from ..vars.consts import linkage_types
 
 
 def is_valid_aii_v(item):
-    is_valid = "forms" in item and item["forms"][0]["tags"][0] == "canonical"
+    forms = item.get("forms")
+    is_valid = forms and forms[0].get("tags", [])[:1] == ["canonical"]
     return is_valid or item["pos"] != "root"
 
 
