@@ -1,5 +1,8 @@
 let searchQuery = null;
 const PAGINATE_AMT = 1;
+// value is used for synchronous loadResults calls prior to async within loadMoreObserver callback by way of scheduleLoadMoreCheck()
+// this explicitly synchronous call prevents "flicker" on lower end devices for initial loads and keystrokes
+const INITIAL_AMT = 5;
 const IS_DICTIONARY = true;
 
 // console.time('test');

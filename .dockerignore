@@ -1,0 +1,14 @@
+.git
+venv
+**/node_modules
+photoshop
+**/*.psd
+
+assyrian-bible/_scraper
+
+assyrian-dictionary/js/json/jq.aii.jsonl
+assyrian-dictionary/js/json/_aii.jsonl
+assyrian-dictionary/js/json/_aii.prev.jsonl
+assyrian-dictionary/js/consts/aii-dict.js
+assyrian-dictionary/js/consts/aii-dict.prev.js
+assyrian-dictionary/js/consts/aii-dict-tags.prev.js

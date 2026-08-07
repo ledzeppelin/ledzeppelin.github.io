@@ -27,17 +27,6 @@
   }
 
 
-  #show-header {
-    border-color: color.adjust($secondary-background, $lightness: -10%);
-    color: $label;
-
-    @media (prefers-color-scheme: dark) {
-      border-color: color.adjust($secondary-background-dark, $lightness: 12%);
-      color: $label-dark;
-    }
-  }
-
-
   #autofocus-tip-container {
     color: $secondary-label;
 
@@ -116,6 +105,16 @@
     @include backlink-promotion($label, $label-dark);
   }
 
+  $search-engaged-width-max: 640px;
+
+  @media (max-width: $search-engaged-width-max) and (hover: none) and (pointer: coarse) {
+    body.search-engaged :is(#title, #subtitle, #created-by-container) {
+      height: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+  }
+
   @include backlinks;
 
   #app-container {
@@ -136,32 +135,6 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-  }
-
-
-  #show-header-wrapper {
-    display: none;
-    margin-top: 20px;
-  }
-
-  .mobile-header-hidden {
-    height: 0 !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-  }
-
-  #show-header {
-    -webkit-tap-highlight-color: transparent;
-    background: none; // stylelint-disable-line order/properties-alphabetical-order
-    border-radius: 8px;
-    border-style: solid;
-    border-width: 1px;
-    cursor: pointer;
-    display: block;
-    font-size: $button-width;
-    margin: 0 auto;
-    padding: 2px 8px;
-    touch-action: manipulation;
   }
 
 
