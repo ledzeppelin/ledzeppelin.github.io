@@ -1,5 +1,9 @@
 $(document).ready(() => {
   console.time('shared docready load');
+
+  // TEMP -- remove before committing
+  // document.body.style.backgroundColor = '#e4f0f6'; // blue
+
   const DICT_APP_NAME = 'assyrian-dictionary';
   const APP_NAME = IS_DICTIONARY ? DICT_APP_NAME : 'searchable-assyrian-bible';
   const DICT_TAG_SEARCH_PARAM = 'tag';
@@ -23,46 +27,55 @@ $(document).ready(() => {
     return [l2FullNames[key], value];
   };
 
-  function shouldLoadMore() {
-    // console.log(searchQuery.i)
-    // == checks if null or undefined, as opposed to ===
-    if (searchQuery == null || searchQuery.i >= searchQuery.results.length) {
-      return false;
-    }
+  // ----------------------------------------------
+  // infinite scroll, via a sentinel after the list |
+  // ----------------------------------------------
+  const sentinel = document.createElement('div');
+  sentinel.id = 'load-more-sentinel';
+  sentinel.style.height = '1px'; // a zero-area target always reports intersectionRatio 0
+  document.querySelector('#search-results').after(sentinel);
 
-    const lastRes = $('#search-results').children().last();
+  let observerCallbacks = 0;
 
-    if (lastRes.length) {
-      // https://stackoverflow.com/a/3898152
-      // lastRes.offset().top means distance from top of doc to top border of element
+  // eslint-disable-next-line no-unused-vars
+  function renderLoadMoreDebug(entry) {
+    observerCallbacks += 1;
 
-      // full device height, ignores the keyboard on mobile
-      const viewportHeight = Math.max(
-        window.visualViewport ? window.visualViewport.height : 0,
-        $(window).height(),
-      );
+    // rootBounds is the viewport the browser resolved, rootMargin included. positive means
+    // the sentinel has crossed the load line, negative means it hasn't reached it yet.
+    const pxPastLoadLine = entry.rootBounds
+      ? Math.round(entry.rootBounds.bottom - entry.boundingClientRect.top)
+      : 'n/a';
 
-      const slack = 0; // if scroll is choppy, increase this
-
-      const isTopOfLastVisible = $(window).scrollTop() + viewportHeight + slack >= lastRes.offset().top;
-
-      // $('#scroll-debug').text(new Date().toISOString());
-      // $('#scroll-debug').text(`vh: ${viewportHeight}, scroll: ${$(window).scrollTop()}, lastRes.offset().top: ${lastRes.offset().top}`);
-      // $('#scroll-debug').text(`px til load: ${$(window).scrollTop() + viewportHeight + slack - lastRes.offset().top}`);
-
-      if (isTopOfLastVisible) {
-        return true;
-      }
-    }
-    return false;
+    $('#scroll-debug').text(`\nobserver callbacks  ${observerCallbacks}\nsentinel            ${entry.isIntersecting ? 'in view' : 'out of view'}\npx past load        ${pxPastLoadLine}\n---\nloaded              ${searchQuery ? `${searchQuery.i} / ${searchQuery.results.length}` : '0 / 0'}`);
   }
 
-  $(window).scroll(() => {
-    if (shouldLoadMore()) {
-      // appears as several vocalized per unvocalized "result"
-      loadResults(searchQuery, PAGINATE_AMT);
+  // callback runs when sentinel enters, leaves, or when scheduleLoadMoreCheck() is invoked
+  const loadMoreObserver = new IntersectionObserver(([entry]) => {
+    // renderLoadMoreDebug(entry);
+
+    if (!entry.isIntersecting) {
+      return;
     }
+
+    // == checks if null or undefined, as opposed to ===
+    if (searchQuery == null || searchQuery.i >= searchQuery.results.length) {
+      return;
+    }
+
+    // appears as several vocalized per unvocalized "result"
+    loadResults(searchQuery, PAGINATE_AMT);
+
+    scheduleLoadMoreCheck();
+  }, {
+    rootMargin: '0px 0px 400px 0px',
   });
+
+  function scheduleLoadMoreCheck() {
+    // forces the callback to run with the sentinel's current state.
+    loadMoreObserver.unobserve(sentinel);
+    loadMoreObserver.observe(sentinel);
+  }
 
   // ---------
   // hotkeys |
@@ -78,26 +91,23 @@ $(document).ready(() => {
     }
   });
 
+  // dismiss the mobile keyboard once a drag starts, to free up room for results.
+  const blurSearchbarOnDrag = (e) => {
+    // closest() so a text-selection drag inside the input is left alone
+    if (!e.target.closest('#searchbar-container')) {
+      $('#searchbar').blur();
+    }
+  };
+
   $('#searchbar').on('focus', () => {
     $('#autofocus-tip-container').hide();
 
-    const isMobile = window.matchMedia(
-      "(max-width: 640px) and (hover: none) and (pointer: coarse)"
-    ).matches;
-
-    if (isMobile) {
-      $("#title, #subtitle, #created-by-container, #backlink-promotion-container").addClass('mobile-header-hidden');
-      $("#show-header-wrapper").show();
-    }
+    document.body.classList.add('search-engaged');
+    document.addEventListener('touchmove', blurSearchbarOnDrag, {passive: true});
   });
-
-  $('#show-header').on('click', (e) => {
-    $("#title, #subtitle, #created-by-container, #backlink-promotion-container").removeClass('mobile-header-hidden');
-    $(e.currentTarget).parent().hide();
-  });
-
 
   $('#searchbar').on('blur', (e) => {
+    document.removeEventListener('touchmove', blurSearchbarOnDrag);
     if ($(e.currentTarget).val().length === 0) {
       // console.log('showing');
       $('#autofocus-tip-container').show();
@@ -137,14 +147,14 @@ $(document).ready(() => {
           searchQuery = {
             results: runExtendedSearchQuery(normalizedSearchStr, fuseAiiVocalized, true),
             aii_v_query: normalizedSearchStr,
-            ...(IS_DICTIONARY && { queryType: DictionaryQueryType.AII_VOCALIZED }),
+            ...(IS_DICTIONARY && {queryType: DictionaryQueryType.AII_VOCALIZED}),
           };
         } else {
           // console.log('unvocalized search');
           searchQuery = {
             results: runExtendedSearchQuery(searchStr, fuseAiiUnvocalized, true),
             aii_not_v_query: searchStr,
-            ...(IS_DICTIONARY && { queryType: DictionaryQueryType.AII_UNVOCALIZED }),
+            ...(IS_DICTIONARY && {queryType: DictionaryQueryType.AII_UNVOCALIZED}),
           };
         }
       } else {
@@ -152,7 +162,7 @@ $(document).ready(() => {
 
         searchQuery = {
           results: runExtendedSearchQuery(searchStr, fuseEng),
-          ...(IS_DICTIONARY && { queryType: DictionaryQueryType.ENG }),
+          ...(IS_DICTIONARY && {queryType: DictionaryQueryType.ENG}),
         };
       }
 
@@ -160,16 +170,8 @@ $(document).ready(() => {
       // console.time('test2');
       $('#search-results').empty();
 
-      if (IS_DICTIONARY) {
-        // shouldLoadMore needs at least 1 element to determine if we've scrolled past any part of
-        //  that element so we call it once before while loop
-        loadResults(searchQuery, 1);
-        while (shouldLoadMore()) {
-          loadResults(searchQuery, 1);
-        }
-      } else {
-        loadResults(searchQuery, INITIAL_AMT);
-      }
+      loadResults(searchQuery, INITIAL_AMT);
+      scheduleLoadMoreCheck();
 
       if (IS_DICTIONARY && document.title !== ASSYRIAN_ENGLISH_DICTIONARY) {
         updateDictionaryTitle();
@@ -254,16 +256,13 @@ $(document).ready(() => {
 
       if (shouldLoadTagExactSearchResults) {
         searchQuery.i = 0;
-        loadResults(searchQuery, 1);
-        while (shouldLoadMore()) {
-          loadResults(searchQuery, 1);
-        }
-
+        loadResults(searchQuery, INITIAL_AMT);
+        scheduleLoadMoreCheck();
 
         const [tagSection, tagName] = tagQueryStringToGroupAndTitle(
           tagSearchParam,
-          Object.fromEntries(aiiDictionaryTags.map(({ tag_key, name }) => [tag_key, name])),
-        )
+          Object.fromEntries(aiiDictionaryTags.map(({tag_key, name}) => [tag_key, name])),
+        );
 
         $('#search-results').prepend(createTagMetaFrag(tagName, tagSection));
 
@@ -286,8 +285,8 @@ $(document).ready(() => {
 
       // we set this to surface typos where a vocalized headword appears in different
       // unvocalized articles, ex. ܒܪ̈ܲܚܡܹܐ
-      const maxNumVocalized = 5;
-      loadResults(searchQuery, maxNumVocalized);
+      const maxNumUnvocalized = 5;
+      loadResults(searchQuery, maxNumUnvocalized);
 
       updateDictionaryTitle(aiiExactSearchParam);
       AiiUtils.updateURL(url, DICT_APP_NAME, [[DICT_AII_EXACT_SEARCH_PARAM, aiiExactSearchParam]]);
