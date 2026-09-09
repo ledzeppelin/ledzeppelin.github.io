@@ -368,6 +368,24 @@ def remove_inline_modifier(s: str) -> str:
     return re.sub(r"(?:\n?<[^>]*>)+$", "", s)
 
 
+def normalize_ety_tree_template(ety):
+    args = ety["args"]
+    keyword = args.get("2", "").removeprefix(":")
+    keyword = consts.ety_tree_keyword_aliases.get(keyword, keyword)
+    terms = [args[key] for key in sorted(args.keys() & {"3", "4", "5", "6"})]
+
+    if keyword in consts.derivation_templates:
+        codes = ",".join(term.split(":", 1)[0] for term in terms)
+        return {"name": keyword, "args": {"1": args["1"], "2": codes}}
+
+    if any(re.match(r"^[a-z][a-z0-9-]*:", term) for term in terms):
+        return None
+
+    shifted = {"1": args["1"]}
+    shifted.update({str(i): term for i, term in enumerate(terms, start=2)})
+    return {"name": keyword, "args": shifted}
+
+
 def add_other_forms_from_ety_templates(ety, obj, item, aii_v, alias):
     if ety["name"] == "cog" and "2" in ety["args"]:
         set_cognate(obj, item, ety)
@@ -412,10 +430,16 @@ def add_etymology(obj, item, aii_v):
     if "etymology_templates" in item:
         etymology = []
         for ety in item["etymology_templates"]:
+            if ety["name"] == "ety":
+                ety = normalize_ety_tree_template(ety)
+                if ety is None:
+                    continue
+
             if ety["name"] in consts.derivation_templates:
                 if ety["args"]["1"] == "aii":
-                    lang_name = consts.language_codes[ety["args"]["2"]]
-                    etymology.append(lang_name.lower())
+                    for code in ety["args"]["2"].split(","):
+                        lang_name = consts.language_codes[code]
+                        etymology.append(lang_name.lower())
                 elif ety["args"]["1"] == "syc":
                     for code in ["syc", ety["args"]["2"]]:
                         lang_name = consts.language_codes[code]

@@ -69,6 +69,7 @@ download:
 	python3 py/download_datadump.py
 
 datadump-diff:
+	python3 -m py.validators.density_check
 	python3 -m py.validators.datadump_diff
 
 schema-check:

@@ -45,6 +45,7 @@ language_codes = {
     "ckb": "Central Kurdish",
     "cop": "Coptic",
     "de": "German",
+    "dra-sou-pro": "Proto-South Dravidian",
     "egx-dem": "Demotic",
     "egy": "Egyptian",
     "el": "Greek",
@@ -91,6 +92,7 @@ language_codes = {
     "la-med": "Medieval Latin",
     "lez": "Lezgi",
     "lhs": "Mlahsö",
+    "lre": "Laurentian",
     "lsd": "Lishana Deni",
     "ltc": "Middle Chinese",
     "mid": "Mandaic",
@@ -189,6 +191,12 @@ derivation_templates = {
     "sl",
     "slbor",
     "uder",
+}
+
+# https://en.wiktionary.org/wiki/Template:etymon
+# {{ety|aii|:af|...}} names the old template in its 2nd param, sans the colon
+ety_tree_keyword_aliases = {
+    "univ": "univerbation",
 }
 
 other_forms_from_ety_templates = {
