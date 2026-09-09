@@ -1,6 +1,5 @@
 import json
 from collections import defaultdict
-import difflib
 from ..vars.consts import linkage_types
 
 
@@ -37,39 +36,50 @@ class DiffInfo:
             cnt_name = "COUNTERS"
             full_title = f"### {title} {cnt_name} ###"
             padding = "#" * len(full_title)
-            print(
-                "\n".join([padding, full_title, padding]),
-                self.get_edits_string(
-                    json.dumps(prev_count, indent=2, sort_keys=True),
-                    json.dumps(count, indent=2, sort_keys=True),
-                ),
-            )
+            print("\n".join([padding, full_title, padding]))
+            print(self.get_edits_string(prev_count, count))
+            print()
 
-    def get_edits_string(self, old: str, new: str) -> str:
-        # from: https://stackoverflow.com/a/74336612
+    def flatten(self, counter, prefix=""):
+        if isinstance(counter, dict):
+            for key, val in counter.items():
+                yield from self.flatten(val, f"{prefix}{key}.")
+        elif isinstance(counter, (list, tuple)):
+            for i, val in enumerate(counter):
+                yield from self.flatten(val, f"{prefix}[{i}].")
+        else:
+            yield prefix.rstrip("."), counter
+
+    def get_edits_string(self, old, new) -> str:
         def RED(text: str) -> str:
             return f"\033[31m{text}\033[0m"
 
         def GREEN(text: str) -> str:
             return f"\033[32m{text}\033[0m"
 
+        old_flat = dict(self.flatten(old))
+        new_flat = dict(self.flatten(new))
+
+        rows = [
+            (key, old_flat.get(key), new_flat.get(key))
+            for key in sorted(old_flat.keys() | new_flat.keys())
+            if old_flat.get(key) != new_flat.get(key)
+        ]
+
+        if not rows:
+            return "  (no changes)"
+
+        width = max(len(key) for key, _, _ in rows)
         result = ""
+        for key, old_val, new_val in rows:
+            delta = (new_val or 0) - (old_val or 0)
+            colour = GREEN if delta > 0 else RED
+            before = "-" if old_val is None else old_val
+            after = "-" if new_val is None else new_val
+            change = f"{before} -> {after}"
+            result += colour(f"  {key:<{width}}  {change:<18} {delta:+}") + "\n"
 
-        lines = difflib.ndiff(
-            old.splitlines(keepends=True), new.splitlines(keepends=True)
-        )
-        for line in lines:
-            line = line.rstrip()
-            if line.startswith("+"):
-                result += GREEN(line) + "\n"
-            elif line.startswith("-"):
-                result += RED(line) + "\n"
-            elif line.startswith("?"):
-                continue
-            else:
-                result += line + "\n"
-
-        return result
+        return result.rstrip("\n")
 
     def cat_counters(self, filename):
         with open(f"./js/json/{filename}", encoding="utf-8") as f:
